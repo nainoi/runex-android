@@ -1,0 +1,121 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:fillViewport="true"
+    android:orientation="vertical"
+    tools:context=".ui.home.HomeScreen">
+
+    <RelativeLayout
+        android:id="@+id/content_container"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imv_banner_event"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/banner_event_layout"
+            android:layout_alignParentTop="true"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop"
+            android:src="@mipmap/im_run_temp" />
+
+        <RelativeLayout
+            android:id="@+id/banner_event_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@color/overlayDark"
+            android:padding="@dimen/space_24dp">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/imv_app_logo"
+                style="@style/TextHeadLine.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/space_24dp"
+                android:adjustViewBounds="true"
+                android:gravity="center_horizontal"
+                android:text="@string/app_name"
+                android:textStyle="bold" />
+
+            <com.google.android.material.button.MaterialButton
+                android:id="@+id/btn_price"
+                style="@style/ButtonPrice.Free"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/imv_app_logo"
+                android:layout_centerHorizontal="true"
+                android:text="@string/free" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_banner_event_name"
+                style="@style/TextTitle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_price"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/space_24dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_24dp"
+                android:layout_marginBottom="@dimen/space_16dp"
+                android:gravity="center_horizontal"
+                android:text="PATTAN TRIATHLON FESTIVAL 2019"
+                android:textAllCaps="true"
+                android:textStyle="bold" />
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_banner_event_date"
+                style="@style/TextBody2.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_banner_event_name"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:gravity="center_horizontal"
+                android:text="9 สิงหาคม - 31 ตุลาคม 2562" />
+
+        </RelativeLayout>
+
+
+        <com.google.android.material.textview.MaterialTextView
+            android:id="@+id/tv_latest_event_topic"
+            style="@style/TextSubTitle.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/banner_event_layout"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_16dp"
+            android:layout_toEndOf="@+id/ic_latest_event_topic"
+            android:gravity="center_vertical"
+            android:minHeight="@dimen/space_48dp"
+            android:text="@string/latest"
+            android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/ic_latest_event_topic"
+            android:layout_width="@dimen/space_48dp"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/tv_latest_event_topic"
+            android:layout_alignBottom="@+id/tv_latest_event_topic"
+            android:layout_marginStart="@dimen/space_8dp"
+            android:layout_marginEnd="@dimen/space_8dp"
+            android:adjustViewBounds="true"
+            android:padding="@dimen/space_8dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_launcher_background"
+            android:tint="@color/icon" />
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/event_list"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/tv_latest_event_topic"
+            android:overScrollMode="never"
+            tools:listitem="@layout/list_item_event" />
+
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>

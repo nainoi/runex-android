@@ -1,0 +1,83 @@
+<resources>
+    <!-- A -->
+    <string name="app_name">Runex</string>
+
+    <string name="activity">กิจกรรม</string>
+
+    <!-- B -->
+    <string name="back">ย้อนกลับ</string>
+
+    <!-- c -->
+    <string name="cancel">ยกเลิก</string>
+    <string name="close">ปิด</string>
+    <string name="challenges">ชาเลนจ์</string>
+
+    <!-- D -->
+    <string name="delete">ลบ</string>
+
+    <!-- E -->
+    <string name="email">อีเมล</string>
+    <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
+    <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
+    <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
+    <string name="events">อีเว้นท์</string>
+
+    <!-- F -->
+    <string name="forgot_password">ลืมรหัสผ่าน</string>
+    <string name="free">ฟรี</string>
+
+    <!-- G -->
+
+    <!-- H -->
+
+    <!-- I -->
+
+    <!-- J -->
+
+    <!-- K -->
+
+    <!-- L -->
+    <string name="latest">ล่าสุด</string>
+    <string name="login">เข้าสู่ระบบ</string>
+    <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
+    <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
+    <string name="logout">ออกจากระบบ</string>
+
+
+    <!-- M -->
+    <string name="menu">เมนู</string>
+    <string name="my_events">อีเว้นท์ของฉัน</string>
+
+    <!-- N -->
+    <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
+
+    <!-- O -->
+    <string name="ok">ตกลง</string>
+    <string name="or">หรือ</string>
+
+    <!-- P -->
+    <string name="password">รหัสผ่าน</string>
+    <string name="password_required">กรุณาระบุรหัสผ่าน</string>
+    <string name="profile">ข้อมูลส่วนตัว</string>
+
+    <!-- R -->
+    <string name="record">บันทึก</string>
+    <string name="runex_sync">RUNEX Sync</string>
+
+    <!-- S -->
+
+    <!-- T -->
+
+    <!-- U -->
+
+    <!-- V -->
+    <string name="version">เวอร์ชัน</string>
+
+    <!-- W -->
+    <string name="warning">แจ้งเตือน</string>
+
+    <!-- Y -->
+
+    <!-- Z -->
+
+</resources>

@@ -1,0 +1,179 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- TextView -->
+    <style name="TextCaption">
+        <item name="android:textSize">@dimen/text_caption</item>
+    </style>
+
+    <style name="TextCaption.Primary" parent="TextCaption">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextCaption.Primary.SingleLine" parent="TextCaption.Primary">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextCaption.Secondary" parent="TextCaption">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextCaption.Hint" parent="TextCaption">
+        <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextCaption.Hint.SingleLine" parent="TextCaption.Hint">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextCaption.White" parent="TextCaption">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextCaption.Error" parent="TextCaption">
+        <item name="android:textColor">@color/error</item>
+    </style>
+
+    <style name="TextBody">
+        <item name="android:textSize">@dimen/text_body</item>
+    </style>
+
+    <style name="TextBody.Primary" parent="TextBody">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextBody.Primary.SingleLine" parent="TextBody.Primary">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBody.Secondary" parent="TextBody">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextBody.Secondary.SingleLine" parent="TextBody.Secondary">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBody.Hint" parent="TextBody">
+        <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextBody.Hint.SingleLine" parent="TextBody.Hint">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBody.White" parent="TextBody">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextBody.Error" parent="TextBody">
+        <item name="android:textColor">@color/error</item>
+    </style>
+
+    <style name="TextBody2">
+        <item name="android:textSize">@dimen/text_body_2</item>
+    </style>
+
+    <style name="TextBody2.Primary" parent="TextBody2">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextBody2.Primary.SingleLine" parent="TextBody2.Primary">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBody2.Secondary" parent="TextBody2">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextBody2.Secondary.SingleLine" parent="TextBody2.Secondary">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBody2.Hint" parent="TextBody2">
+        <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextBody2.Hint.SingleLine" parent="TextBody2.Hint">
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+    </style>
+
+    <style name="TextBody2.White" parent="TextBody2">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextBody2.Error" parent="TextBody2">
+        <item name="android:textColor">@color/error</item>
+    </style>
+
+    <style name="TextSubTitle">
+        <item name="android:textSize">@dimen/text_sub_title</item>
+    </style>
+
+    <style name="TextSubTitle.Primary" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextSubTitle.Secondary" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextSubTitle.Hint" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextSubTitle.White" parent="TextSubTitle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextTitle">
+        <item name="android:textSize">@dimen/text_title</item>
+    </style>
+
+    <style name="TextTitle.Primary" parent="TextTitle">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextTitle.Secondary" parent="TextTitle">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextTitle.Hint" parent="TextTitle">
+        <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextTitle.White" parent="TextTitle">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextHeadLine">
+        <item name="android:textSize">@dimen/text_headline</item>
+    </style>
+
+    <style name="TextHeadLine.Primary" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextHeadLine.Secondary" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextHeadLine.Hint" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextHeadLine.White" parent="TextHeadLine">
+        <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <!-- TextView -->
+
+</resources>

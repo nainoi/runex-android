@@ -1,0 +1,75 @@
+package com.think.runex.ui.home
+
+
+import android.os.Bundle
+import androidx.fragment.app.Fragment
+import android.view.LayoutInflater
+import android.view.View
+import android.view.ViewGroup
+import androidx.lifecycle.Observer
+import androidx.lifecycle.ViewModelProviders
+import androidx.recyclerview.widget.LinearLayoutManager
+import com.jozzee.android.core.simpleName
+import com.jozzee.android.core.utility.Logger
+
+import com.think.runex.R
+import com.think.runex.feature.event.EventViewModel
+import com.think.runex.utility.InjectorUtils
+import kotlinx.android.synthetic.main.screen_home.*
+
+class HomeScreen : Fragment() {
+
+    private val eventViewModel: EventViewModel by lazy {
+        ViewModelProviders.of(this, InjectorUtils.provideEventListViewModelFactory())
+                .get(EventViewModel::class.java)
+    }
+
+    private val eventsAdapter: EventsAdapter by lazy { EventsAdapter() }
+
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        return inflater.inflate(R.layout.screen_home, container, false)
+    }
+
+
+    override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
+        super.onViewCreated(view, savedInstanceState)
+
+        setupComponents()
+        subscribeUi()
+
+        eventViewModel.getEvents()
+    }
+
+    private fun setupComponents() {
+        event_list.layoutManager = LinearLayoutManager(context)
+        //event_list.addItemDecoration(ListItemDecoration(marginList = getDimen(R.dimen.space_8dp), withTopOfFirstItem = false))
+        event_list.adapter = eventsAdapter
+    }
+
+    private fun subscribeUi() {
+        eventsAdapter.setOnItemClick { position, eventId ->
+        }
+
+        eventViewModel.events.observe(viewLifecycleOwner, Observer { eventList ->
+            if (view == null) {
+                return@Observer
+            }
+            eventsAdapter.submitList(eventList)
+        })
+
+        eventViewModel.setOnHandleError { statusCode, message ->
+            Logger.error(simpleName(), "Error: $statusCode, message: $message")
+        }
+
+    }
+
+    override fun onDestroyView() {
+        eventViewModel.events.removeObservers(viewLifecycleOwner)
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        event_list?.recycledViewPool?.clear()
+        super.onDestroy()
+    }
+}

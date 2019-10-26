@@ -1,0 +1,84 @@
+<resources>
+    <!-- A -->
+    <string name="app_name">Runex</string>
+    <string name="activity">Activity</string>
+
+    <!-- B -->
+    <string name="back">Back</string>
+
+    <!-- c -->
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="challenges">Challenges</string>
+
+    <!-- D -->
+    <string name="delete">Delete</string>
+
+    <!-- E -->
+    <string name="email">Email</string>
+    <string name="email_required">The email field is required.</string>
+    <string name="email_not_valid">The Email field must be a valid email.</string>
+    <string name="email_password_is_invalid">email or password is invalid.</string>
+    <string name="events">Events</string>
+
+    <!-- F -->
+    <string name="forgot_password">Forgot Password</string>
+    <string name="free">Free</string>
+
+    <!-- G -->
+
+    <!-- H -->
+
+    <!-- I -->
+
+    <!-- J -->
+
+    <!-- K -->
+
+    <!-- L -->
+    <string name="latest">Latest</string>
+    <string name="login">Log In</string>
+    <string name="login_with_facebook">Log In with Facebook</string>
+    <string name="login_with_google">Log In with Google</string>
+    <string name="logout">Logout</string>
+
+    <!-- M -->
+    <string name="menu">Menu</string>
+    <string name="my_events">My Events</string>
+
+    <!-- N -->
+    <string name="no_internet_connection">No Internet Connection</string>
+
+    <!-- O -->
+    <string name="ok">OK</string>
+    <string name="or">Or</string>
+
+    <!-- P -->
+    <string name="password">Password</string>
+    <string name="password_required">The password field is required.</string>
+    <string name="profile">Profile</string>
+
+    <!-- R -->
+    <string name="record">Record</string>
+    <string name="runex_sync">RUNEX Sync</string>
+
+    <!-- S -->
+
+    <!-- T -->
+
+    <!-- U -->
+
+    <!-- V -->
+    <string name="version">Version</string>
+
+    <!-- W -->
+    <string name="warning">Warning</string>
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+
+
+    <!-- Y -->
+
+    <!-- Z -->
+</resources>

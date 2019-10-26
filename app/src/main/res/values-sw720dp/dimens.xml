@@ -1,0 +1,7 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Event -->
+    <dimen name="event_image_width">96dp</dimen>
+    <dimen name="event_image_height">128dp</dimen>
+</resources>
