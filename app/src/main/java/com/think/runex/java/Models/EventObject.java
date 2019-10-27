@@ -241,6 +241,7 @@ public class EventObject {
              * end_event : 2019-12-30T16:45:00Z
              */
 
+            private String customRegDuration;
             private String id;
             private String name;
             private String description;
@@ -255,6 +256,14 @@ public class EventObject {
             private String end_event;
             private List<ProductBean> product;
             private List<TicketBean> ticket;
+
+            public String getCustomRegDuration() {
+                return customRegDuration;
+            }
+
+            public void setCustomRegDuration(String customRegDuration) {
+                this.customRegDuration = customRegDuration;
+            }
 
             public String getId() {
                 return id;

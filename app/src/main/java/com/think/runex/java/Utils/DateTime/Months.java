@@ -4,7 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class Months {
-    public List<String> TH = new ArrayList<String>(){{
+    public static final List<String> TH = new ArrayList<String>(){{
         add("ม.ค.");
         add("ก.พ.");
         add("มี.ค.");

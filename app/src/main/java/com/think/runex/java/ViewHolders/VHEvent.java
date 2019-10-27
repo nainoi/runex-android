@@ -37,9 +37,9 @@ public class VHEvent extends RecyclerView.ViewHolder {
         EventObject.DataBean.EventBean evtVal = evt.getEvent();
 
         // binding
-        lbEventName.setText( evtVal.getName() );
-        lbEventType.setText( evtVal.getCategory().getName() );
-        lbStartReg.setText(evtVal.getStart_reg());
+        lbEventName.setText( (evtVal.getName() +"").trim() );
+        lbEventType.setText( (evtVal.getCategory().getName() +"").toUpperCase() );
+        lbStartReg.setText(evtVal.getCustomRegDuration());
         Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover() ).into( imgCover );
     }
 }
