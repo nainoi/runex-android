@@ -25,15 +25,21 @@ import com.think.runex.feature.social.SocialPlatform
 import com.think.runex.feature.user.Profile
 import com.think.runex.feature.user.UserProvider
 import com.think.runex.java.Activities.BridgeFile
+import com.think.runex.java.App.Configs
+import com.think.runex.java.Constants.APIs
 import com.think.runex.java.Constants.Constants
+import com.think.runex.java.Constants.Globals
+import com.think.runex.java.Utils.Network.NetworkProps
+import com.think.runex.java.Utils.Network.NetworkUtils
+import com.think.runex.java.Utils.Network.Request.rqLogin
+import com.think.runex.java.Utils.Network.onNetworkCallback
 import com.think.runex.utility.InjectorUtils
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class LoginScreen : ScreenFragment(), SocialLoginListener {
-
+class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
     private val authViewModel: AuthViewModel by lazy {
         ViewModelProviders.of(this, InjectorUtils.provideAuthViewModelFactory(context!!)).get(AuthViewModel::class.java)
     }
@@ -75,9 +81,25 @@ class LoginScreen : ScreenFragment(), SocialLoginListener {
 
         btn_login.setOnClickListener {
             if (isDataValid()) {
-                performLogin()
+                // request login
+                apiLogin()
             }
         }
+    }
+
+
+    /** API methods  */
+    private fun apiLogin() {
+        val nw = NetworkUtils.newInstance(activity)
+        val props = NetworkProps()
+
+        // update props
+        props.addHeader("Authorization", "Bearer " + Globals.TOKEN)
+        props.setJsonAsObject(rqLogin("fakespmh.21@gmail.com", "p@ss1234", Configs.PLATFORM))
+        props.setUrl(APIs.LOGIN.VAL)
+
+        // call api
+        nw.postJSON(props, this)
     }
 
     private fun performLogin() = viewLifecycleOwner.lifecycleScope.launch {
@@ -92,6 +114,15 @@ class LoginScreen : ScreenFragment(), SocialLoginListener {
     }
 
     //  Interface Methods
+    override fun onSuccess(jsonString: String?) {
+        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+    }
+
+    override fun onFailure(jsonString: Exception?) {
+        Toast.makeText(activity, "fail", Toast.LENGTH_SHORT).show()
+
+    }
+
     override fun onLoginWithSocialCompleted(platform: Int, userProvider: UserProvider) {
         // prepare usage variables
         val tag: String = Constants.TAG.VAL

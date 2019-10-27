@@ -14,6 +14,7 @@ import com.think.runex.common.fadeIn
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.TokenManager
 import com.think.runex.java.Activities.BridgeFile
+import com.think.runex.java.App.App
 import com.think.runex.java.Pages.MainPage
 import com.think.runex.utility.InjectorUtils
 import kotlinx.coroutines.delay
@@ -42,11 +43,23 @@ class SplashScreen : ScreenFragment() {
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1000)
 
-            // exit from this process
-            activity!!.finish();
+            // prepare usage variables
+            val app = App.instance(activity);
 
-            // go to main page
-            bridgeFile();
+            // does token available
+            if (app.appEntity.token.expiredLong <= 0) {
+                replaceFragment(LoginScreen(),
+                        fadeIn(), clearStack = true, addToBackStack = false)
+
+            } else {
+                // exit from this process
+                activity!!.finish();
+
+                // go to main page
+                bridgeFile();
+
+            }
+
 
 //            if (TokenManager.isAlive()) {
 //                // pop out

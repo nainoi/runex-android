@@ -31,6 +31,26 @@ public class NetworkUtils {
     /**
      * Feature methods
      */
+    private void onSuccess(String json, onNetworkCallback callback) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                callback.onSuccess(json);
+
+            }
+        });
+    }
+
+    private void onFailed(Exception e, onNetworkCallback callback) {
+        activity.runOnUiThread(new Runnable() {
+            @Override
+            public void run() {
+                callback.onFailure(e);
+
+            }
+        });
+    }
+
     private void thread(Runnable runnable) {
         new Thread(runnable).start();
     }
@@ -59,27 +79,20 @@ public class NetworkUtils {
                     Response response = client.newCall(request).execute();
                     final String strResult = response.body().string();
 
-                    activity.runOnUiThread(new Runnable() {
-                        @Override
-                        public void run() {
-                            // prepare usage variables
-                            final String mtn = ct + "runOnUiThread() ";
+                    try {
+                        onSuccess(strResult, callback);
+                        callback.onSuccess(strResult);
 
-                            try {
-                                callback.onSuccess(strResult);
+                    } catch (Exception e) {
+                        L.e(mtn + "Err: " + e);
+                        onFailed(e, callback);
 
-                            } catch (Exception e) {
-                                L.e(mtn + "Err: " + e);
-                                callback.onFailure(e);
+                    }
 
-                            }
-
-                        }
-                    });
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e);
-                    callback.onFailure(e);
+                    onFailed(e, callback);
 
                 }
 
@@ -88,36 +101,45 @@ public class NetworkUtils {
         };
 
         // on thread
-        thread( runner );
+        thread(runner);
     }
 
     public void postJSON(NetworkProps props, onNetworkCallback callback) {
         // prepare usage variables
         final String mtn = ct + "postJSON() ";
-        RequestBody body = RequestBody.create(new Gson().toJson(props.jsonAsObject), JSON);
-        Request.Builder builder = new Request.Builder()
-                .url(props.url)
-                .post(body);
+        final Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                RequestBody body = RequestBody.create(new Gson().toJson(props.jsonAsObject), JSON);
+                Request.Builder builder = new Request.Builder()
+                        .url(props.url)
+                        .post(body);
 
-        // add headers
-        for (int a = 0; a < props.headers.size(); a++) {
-            // prepare usage variables
-            final String[][] header = props.headers.get(a);
+                // add headers
+                for (int a = 0; a < props.headers.size(); a++) {
+                    // prepare usage variables
+                    final String[][] header = props.headers.get(a);
 
-            // add header
-            builder.addHeader(header[0][0], header[0][1]);
-        }
+                    // add header
+                    builder.addHeader(header[0][0], header[0][1]);
+                }
 
-        // build request
-        Request request = builder.build();
+                // build request
+                Request request = builder.build();
 
-        try (Response response = client.newCall(request).execute()) {
-            callback.onSuccess(response.body().string());
+                try (Response response = client.newCall(request).execute()) {
+                    onSuccess(response.body().string(), callback);
 
-        } catch (Exception e) {
-            L.e(mtn + "Err: " + e.getMessage());
-            callback.onFailure(e);
-        }
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
+                    onFailed(e, callback);
+                }
+
+            }
+        };
+
+        thread(runner);
+
 
     }
 }
