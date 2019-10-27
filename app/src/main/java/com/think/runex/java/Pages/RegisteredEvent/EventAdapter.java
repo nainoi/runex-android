@@ -46,7 +46,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-
+        if( getItemViewType(position) == 0 ){
+            VHEvent vh = ((VHEvent)holder);
+            vh.bind( events.get( position ));
+        }
     }
 
     @Override

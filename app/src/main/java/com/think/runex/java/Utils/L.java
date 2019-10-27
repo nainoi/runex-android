@@ -9,4 +9,9 @@ public class L {
         Log.i(Constants.TAG.VAL, msg);
 
     }
+
+    public static void e(String msg){
+        Log.e(Constants.TAG.VAL, msg);
+
+    }
 }
