@@ -1,0 +1,42 @@
+{
+  "project_info": {
+    "project_number": "335446438728",
+    "firebase_url": "https://runex-f341b.firebaseio.com",
+    "project_id": "runex-f341b",
+    "storage_bucket": "runex-f341b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:335446438728:android:d2c88af428b546b031797d",
+        "android_client_info": {
+          "package_name": "com.think.runex"
+        }
+      },
+      "oauth_client": [],
+      "api_key": [
+        {
+          "current_key": "AIzaSyAb-C-jWRRLpSGFUnI4E-XxurvEymJdeo0"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "335446438728-l4nnon4l8js1chj2v372fv8ma84659ua.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "335446438728-kfcmirkp5ee4je1aiishpms3r7kthaik.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "com.think.runex.RunexSwift"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}

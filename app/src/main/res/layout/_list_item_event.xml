@@ -1,0 +1,73 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:paddingStart="@dimen/space_16dp"
+    android:paddingEnd="@dimen/space_16dp">
+
+    <com.google.android.material.card.MaterialCardView
+        android:id="@+id/card_event_image_layout"
+        android:layout_width="@dimen/event_image_width"
+        android:layout_height="@dimen/event_image_height"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_8dp"
+        app:cardCornerRadius="@dimen/space_8dp"
+        app:cardElevation="@dimen/space_4dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/imv_event"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:adjustViewBounds="true"
+            android:scaleType="centerCrop" />
+    </com.google.android.material.card.MaterialCardView>
+
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_event_name"
+        style="@style/TextSubTitle.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignTop="@+id/card_event_image_layout"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:layout_toEndOf="@+id/card_event_image_layout"
+        android:ellipsize="end"
+        android:maxLines="2"
+        android:textStyle="bold" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_event_description"
+        style="@style/TextBody.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/tv_event_name"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:layout_toEndOf="@+id/card_event_image_layout"
+        android:ellipsize="end"
+        android:maxLines="3"
+        android:visibility="gone" />
+
+    <com.google.android.material.textview.MaterialTextView
+        android:id="@+id/tv_event_time"
+        style="@style/TextBody.Hint"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/btn_price"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_toStartOf="@+id/btn_price"
+        android:layout_toEndOf="@+id/card_event_image_layout" />
+
+    <com.google.android.material.button.MaterialButton
+        android:id="@+id/btn_price"
+        style="@style/ButtonPrice"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
+        android:layout_below="@+id/tv_event_description"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/space_4dp"
+        android:layout_marginBottom="@dimen/space_8dp" />
+
+</RelativeLayout>

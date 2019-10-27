@@ -115,7 +115,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/tv_latest_event_topic"
             android:overScrollMode="never"
-            tools:listitem="@layout/list_item_event" />
+            tools:listitem="@layout/_list_item_event" />
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
@@ -18,10 +19,14 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.jozzee.android.core.simpleName
 import com.jozzee.android.core.utility.Logger
+import com.think.runex.R
 import com.think.runex.feature.user.UserProvider
+import com.think.runex.java.Constants.Constants
+import kotlinx.android.synthetic.main._list_item_event.*
 import java.lang.Exception
 
 class SocialLoginManger {
+    private val ct: String ="SocialLoginManager->"
     companion object {
         const val RC_GOOGLE_LOGIN = 1001
         //const val RC_FACEBOOK_LOGIN = 1002
@@ -45,6 +50,7 @@ class SocialLoginManger {
             val accessToken = AccessToken.getCurrentAccessToken()
             if (accessToken != null && accessToken.isExpired.not()) {
                 Logger.debug(simpleName(), "Login with Facebook as AccessToken: ${accessToken.token}")
+                Logger.info(Constants.TAG.VAL, "Login with Facebook as AccessToken: ${accessToken.token}")
                 onFacebookLoginResult(accessToken)
             }
         }
@@ -68,6 +74,10 @@ class SocialLoginManger {
      * Default is request email.
      */
     fun loginWithFacebook(fragment: Fragment, permissions: Collection<String> = listOf("email")) {
+        // prepare usage variables
+        val mtn: String = "loginWithFacebook() ";
+
+        Logger.info(Constants.TAG.VAL, mtn +"loginWithFacebook");
         LoginManager.getInstance().logIn(fragment, permissions)
     }
 
@@ -114,9 +124,13 @@ class SocialLoginManger {
 
     private fun getGoogleSignInClient(context: Context): GoogleSignInClient? {
         if (googleSignInClient == null) {
+            // prepare usage variables
+//            var serverClientId: String = context.getString(R.string.server_client_id)
+
             // Configure sign-in to request the user's ID, email address, and basic
             // profile. ID and basic profile are included in DEFAULT_SIGN_IN.
             val gso = GoogleSignInOptions.Builder(GoogleSignInOptions.DEFAULT_SIGN_IN)
+//                    .requestServerAuthCode(serverClientId)
                     .requestEmail()
                     .build()
             // Build a GoogleSignInClient with the options specified by gso.
@@ -126,6 +140,9 @@ class SocialLoginManger {
     }
 
     private fun onGoogleLoginResult(completedTask: Task<GoogleSignInAccount>) {
+        // prepare usage variables
+        val mtn: String = "onGoogleLoginResult() ";
+
         try {
             val account = completedTask.getResult(ApiException::class.java)
             if (account != null) {
@@ -152,7 +169,8 @@ class SocialLoginManger {
         } catch (e: Exception) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Logger.error(simpleName(), "Login with Google Error: " + e.message)
+            Logger.error(Constants.TAG.VAL, mtn +"Login with Google Error: " + e.message)
+
             e.printStackTrace()
             loginListener?.onLoginWithSocialError(e)
         }
@@ -173,7 +191,10 @@ class SocialLoginManger {
     }
 
     fun handleLogInResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        Logger.error(simpleName(), "handleLogInResult")
+        // prepare usage variables
+        val mtn: String = ct +"handleLoginResult() "
+        Logger.error(Constants.TAG.VAL, mtn +"handleLogInResult")
+
         when (requestCode) {
             CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode() -> {
                 facebookCallbackManager.onActivityResult(requestCode, resultCode, data)

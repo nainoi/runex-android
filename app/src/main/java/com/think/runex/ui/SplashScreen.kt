@@ -1,6 +1,7 @@
 package com.think.runex.ui
 
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -12,6 +13,8 @@ import com.think.runex.R
 import com.think.runex.common.fadeIn
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.TokenManager
+import com.think.runex.java.Activities.BridgeFile
+import com.think.runex.java.Pages.MainPage
 import com.think.runex.utility.InjectorUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -26,14 +29,35 @@ class SplashScreen : ScreenFragment() {
         return inflater.inflate(R.layout.screen_splash, container, false)
     }
 
+    /** Feature methods */
+    fun bridgeFile() {
+        val intent = Intent(context, BridgeFile::class.java);
+        startActivity(intent);
+    }
+
     override fun onStart() {
         super.onStart()
 
         authViewModel.initialToken()
         viewLifecycleOwner.lifecycleScope.launch {
             delay(1000)
-            replaceFragment(if (TokenManager.isAlive()) MainScreen() else LoginScreen(),
-                    fadeIn(), clearStack = true, addToBackStack = false)
+
+            // exit from this process
+            activity!!.finish();
+
+            // go to main page
+            bridgeFile();
+
+//            if (TokenManager.isAlive()) {
+//                // pop out
+//                activity!!.supportFragmentManager.popBackStack();
+//
+//                // go to main page
+//                mainPage()
+//
+//
+//            } else replaceFragment( LoginScreen(),
+//                    fadeIn(), clearStack = true, addToBackStack = false)
         }
     }
 }

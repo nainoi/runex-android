@@ -1,15 +1,18 @@
 package com.think.runex.ui.home
 
 
+import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProviders
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.simpleName
+import com.jozzee.android.core.ui.showToast
 import com.jozzee.android.core.utility.Logger
 
 import com.think.runex.R
@@ -40,6 +43,16 @@ class HomeScreen : Fragment() {
         eventViewModel.getEvents()
     }
 
+    private fun onClick(){
+        Toast.makeText(context, R.string.app_name, Toast.LENGTH_SHORT).show()
+
+        // prepare usage variables
+//        val intent = Intent(context, HomeScreenActivity::class.java)
+
+        // start activity
+//        startActivity(intent)
+    }
+
     private fun setupComponents() {
         event_list.layoutManager = LinearLayoutManager(context)
         //event_list.addItemDecoration(ListItemDecoration(marginList = getDimen(R.dimen.space_8dp), withTopOfFirstItem = false))
@@ -47,8 +60,7 @@ class HomeScreen : Fragment() {
     }
 
     private fun subscribeUi() {
-        eventsAdapter.setOnItemClick { position, eventId ->
-        }
+        eventsAdapter.setOnItemClick { position, eventId -> onClick() }
 
         eventViewModel.events.observe(viewLifecycleOwner, Observer { eventList ->
             if (view == null) {

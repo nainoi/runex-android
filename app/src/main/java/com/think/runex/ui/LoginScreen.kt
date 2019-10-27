@@ -6,6 +6,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.facebook.internal.CallbackManagerImpl
@@ -23,6 +24,8 @@ import com.think.runex.feature.social.SocialLoginManger.Companion.RC_GOOGLE_LOGI
 import com.think.runex.feature.social.SocialPlatform
 import com.think.runex.feature.user.Profile
 import com.think.runex.feature.user.UserProvider
+import com.think.runex.java.Activities.BridgeFile
+import com.think.runex.java.Constants.Constants
 import com.think.runex.utility.InjectorUtils
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.Dispatchers.IO
@@ -80,6 +83,7 @@ class LoginScreen : ScreenFragment(), SocialLoginListener {
     private fun performLogin() = viewLifecycleOwner.lifecycleScope.launch {
         authViewModel.login(edt_email.content(), edt_password.content())?.also { profile ->
             replaceFragment(MainScreen(), fadeIn(), clearStack = true, addToBackStack = false)
+
         }
     }
 
@@ -87,9 +91,23 @@ class LoginScreen : ScreenFragment(), SocialLoginListener {
         return true
     }
 
+    //  Interface Methods
     override fun onLoginWithSocialCompleted(platform: Int, userProvider: UserProvider) {
-        Logger.info(simpleName(), "Social login completed with: ${SocialPlatform.platformText(platform)}")
-        Logger.info(simpleName(), "USer: $userProvider")
+        // prepare usage variables
+        val tag: String = Constants.TAG.VAL
+
+        Logger.info(tag, "Social login completed with: ${SocialPlatform.platformText(platform)}")
+        Logger.info(tag, "User: $userProvider")
+
+//        replaceFragment(MainScreen(), fadeIn(), clearStack = true, addToBackStack = false)
+
+        // exit from this process
+        activity!!.finish();
+
+        // Bridge file activity
+//        val intent = Intent(context, BridgeFile::class.java)
+//        startActivity( intent );
+
     }
 
     override fun onLoginWithSocialCancel() {
@@ -100,14 +118,14 @@ class LoginScreen : ScreenFragment(), SocialLoginListener {
         Logger.error(simpleName(), "Social login error: ${exception.message}")
     }
 
-
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-
         if (requestCode == RC_GOOGLE_LOGIN ||
                 requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
             socialLoginManger.handleLogInResult(requestCode, resultCode, data)
+
         } else {
             super.onActivityResult(requestCode, resultCode, data)
+
         }
     }
 

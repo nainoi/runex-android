@@ -11,7 +11,7 @@ import com.think.runex.R
 import com.think.runex.common.displayFormat
 import com.think.runex.common.loadEventImage
 import com.think.runex.feature.event.Event
-import kotlinx.android.synthetic.main.list_item_event.view.*
+import kotlinx.android.synthetic.main._list_item_event.view.*
 
 class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
@@ -42,7 +42,7 @@ class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDif
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_event, parent, false))
+                    .inflate(R.layout._list_item_event, parent, false))
         }
 
         fun bind(data: Event, onItemClick: ((position: Int, eventId: String) -> Unit)? = null) {
