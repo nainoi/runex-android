@@ -25,4 +25,5 @@
     <color name="orange">#FB6401</color>
     <color name="orangeDark">#C03100</color>
     <color name="overlayDark">#77000000</color>
+    <color name="softGray">#EFEFEF</color>
 </resources>

@@ -19,23 +19,45 @@ import com.think.runex.java.ViewHolders.VHEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class RegisteredEventsPage extends xFragment {
+public class RegisteredEventsPage extends xFragment implements SwipeRefreshLayout.OnRefreshListener{
     /** Main variables */
     private final String ct = "RegisteredEventsPage->";
 
     // instance variables
-    private RecyclerView.Adapter<VHEvent> eventAdapter;
+    private RecyclerView.Adapter<RecyclerView.ViewHolder> eventAdapter;
     private List<MultiObject> events = new ArrayList<MultiObject>(){{
         add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
         add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
         add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
         add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
         add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
+        add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
+        add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
+        add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
+        add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
+        add( new MultiObject());
+        add( new MultiObject().setLayoutTypeId(1));
+
     }};
 
     // views
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
+
+    /** Implement methods */
+    @Override
+    public void onRefresh() {
+        refreshLayout.setRefreshing( false );
+    }
 
     @Nullable
     @Override
@@ -49,6 +71,7 @@ public class RegisteredEventsPage extends xFragment {
         // matching view
         recyclerView = v.findViewById(R.id.recycler_view);
         refreshLayout = v.findViewById(R.id.refresh_layout);
+        refreshLayout.setOnRefreshListener( this );
 
         // recycler view props
         recyclerViewProps();
