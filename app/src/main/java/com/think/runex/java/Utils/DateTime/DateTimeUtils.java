@@ -42,6 +42,7 @@ public class DateTimeUtils {
             display.MonthPosition = month;
             display.shortMonth = shortMonth;
             display.year = year;
+            display.timestamp = c.getTimeInMillis() / 1000;
 
             return display;
 

@@ -1,6 +1,7 @@
 package com.think.runex.ui
 
 
+import android.app.Activity
 import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -29,6 +30,7 @@ import com.think.runex.java.App.Configs
 import com.think.runex.java.Constants.APIs
 import com.think.runex.java.Constants.Constants
 import com.think.runex.java.Constants.Globals
+import com.think.runex.java.Customize.xFragment
 import com.think.runex.java.Utils.Network.NetworkProps
 import com.think.runex.java.Utils.Network.NetworkUtils
 import com.think.runex.java.Utils.Network.Request.rqLogin
@@ -40,6 +42,7 @@ import kotlinx.coroutines.launch
 import java.lang.Exception
 
 class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
+    // explicit variables
     private val authViewModel: AuthViewModel by lazy {
         ViewModelProviders.of(this, InjectorUtils.provideAuthViewModelFactory(context!!)).get(AuthViewModel::class.java)
     }
@@ -113,13 +116,26 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
         return true
     }
 
+    private fun resultCallback(){
+        activity!!.setResult(Activity.RESULT_OK)
+
+    }
+
     //  Interface Methods
     override fun onSuccess(jsonString: String?) {
         Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+
+        // activity result
+        activity!!.setResult( Activity.RESULT_OK );
+
+
     }
 
     override fun onFailure(jsonString: Exception?) {
         Toast.makeText(activity, "fail", Toast.LENGTH_SHORT).show()
+
+        // activity result
+        activity!!.setResult( Activity.RESULT_CANCELED );
 
     }
 
@@ -132,8 +148,14 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
 
 //        replaceFragment(MainScreen(), fadeIn(), clearStack = true, addToBackStack = false)
 
+        // activity result
+        activity!!.setResult( Activity.RESULT_OK );
+
         // exit from this process
         activity!!.finish();
+
+        // result
+//        resultCallback()
 
         // Bridge file activity
 //        val intent = Intent(context, BridgeFile::class.java)

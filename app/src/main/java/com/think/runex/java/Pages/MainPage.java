@@ -20,6 +20,8 @@ public class MainPage extends Fragment {
 
     // explicit variables
     private final int CHILD_CONTAINER_ID = R.id.navigation_frame;
+    private int mCurrentItemId = -1;
+
     // views
     private BottomNavigationView bottomNavigationView;
 
@@ -54,6 +56,9 @@ public class MainPage extends Fragment {
 
         }
 
+        // update current item id
+        if( onSelected ) mCurrentItemId = itemId;
+
         return onSelected;
     }
 
@@ -62,6 +67,7 @@ public class MainPage extends Fragment {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                if( item.getItemId() == mCurrentItemId ) return false;
                 return updateScreen( item.getItemId() );
             }
         });

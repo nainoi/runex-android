@@ -5,4 +5,5 @@ public class DisplayDateTimeObject {
     public int MonthPosition;
     public String shortMonth;
     public int year;
+    public long timestamp;
 }

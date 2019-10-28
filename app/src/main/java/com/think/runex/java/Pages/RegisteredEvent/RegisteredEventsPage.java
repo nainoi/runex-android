@@ -154,7 +154,6 @@ public class RegisteredEventsPage extends xFragment implements
                 // notify data has change
                 eventAdapter.notifyDataSetChanged();
 
-
                 // notify insert item
             } else eventAdapter.notifyItemRangeInserted(0, rsp.getData().size());
 

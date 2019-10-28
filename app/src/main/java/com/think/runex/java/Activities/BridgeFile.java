@@ -1,6 +1,7 @@
 package com.think.runex.java.Activities;
 
 import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 
 import androidx.annotation.Nullable;
@@ -13,6 +14,7 @@ import com.think.runex.java.Constants.Constants;
 import com.think.runex.java.Pages.MainPage;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.FragmentUtils;
+import com.think.runex.java.Utils.L;
 
 public class BridgeFile extends FragmentActivity {
     /** Main variables */
@@ -38,11 +40,12 @@ public class BridgeFile extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityUtils.activity = this;
+        ActivityUtils uts = ActivityUtils.newInstance( this );
+        uts.activity = this;
         setContentView(R.layout.activity_bridge_file);
 
         // fullscreen
-        ActivityUtils.fullScreen();
+        uts.fullScreen();
 
         // view matching
         viewMatching(  );
@@ -64,5 +67,14 @@ public class BridgeFile extends FragmentActivity {
     /** View matching */
     private void viewMatching(){
         bottomView = findViewById(R.id.bottom_navigation);
+    }
+
+    /** Life cycle */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // prepare usage variables
+        final String mtn = ct +"onActivityResult() ";
     }
 }

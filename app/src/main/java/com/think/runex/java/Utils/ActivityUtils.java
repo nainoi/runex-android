@@ -8,9 +8,16 @@ import androidx.fragment.app.FragmentActivity;
 
 public class ActivityUtils {
 
-    public static FragmentActivity activity;
+    public FragmentActivity activity;
 
-    public static void fullScreen(){
+    private ActivityUtils(FragmentActivity activity){
+        this.activity = activity;
+    }
+    public static ActivityUtils newInstance(FragmentActivity activity){
+        return new ActivityUtils( activity );
+    }
+
+    public void fullScreen(){
         activity.getWindow().setFlags(WindowManager.LayoutParams.FLAG_FULLSCREEN,
                 WindowManager.LayoutParams.FLAG_FULLSCREEN);
     }

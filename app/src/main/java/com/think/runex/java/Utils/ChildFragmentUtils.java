@@ -18,6 +18,16 @@ public class ChildFragmentUtils extends Fragment {
 
     }
 
+    public void addChildFragment(int childContainerId, Fragment fragment){
+        // prepare usage variables
+        final FragmentTransaction t = childFragmentManager.beginTransaction();
+        t.addToBackStack(Constants.Fragment.TAG());
+        t.add(childContainerId, fragment);
+        t.commit();
+
+
+    }
+
     public void replaceChildFragment(int childContainerId, Fragment fragment) {
         // prepare usage variables
         final FragmentTransaction t = childFragmentManager.beginTransaction();

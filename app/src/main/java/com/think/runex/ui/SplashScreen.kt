@@ -14,8 +14,10 @@ import com.think.runex.common.fadeIn
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.TokenManager
 import com.think.runex.java.Activities.BridgeFile
+import com.think.runex.java.Activities.LoginActivity
 import com.think.runex.java.App.App
 import com.think.runex.java.Pages.MainPage
+import com.think.runex.java.Utils.L
 import com.think.runex.utility.InjectorUtils
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
@@ -31,6 +33,10 @@ class SplashScreen : ScreenFragment() {
     }
 
     /** Feature methods */
+    fun loginPage() {
+        val intent = Intent(context, LoginActivity::class.java);
+        startActivity(intent);
+    }
     fun bridgeFile() {
         val intent = Intent(context, BridgeFile::class.java);
         startActivity(intent);
@@ -46,16 +52,25 @@ class SplashScreen : ScreenFragment() {
             // prepare usage variables
             val app = App.instance(activity);
 
-            // exit from this process
-            activity!!.finish();
+            // print token info
+            app.appEntity.token.printInfo();
 
             // go to main page
-            bridgeFile();
-//
+            activity!!.finish();
+
+            // go to bridge file
+            bridgeFile()
+
 //            // does token available
 //            if (app.appEntity.token.expiredLong <= 0) {
-//                replaceFragment(LoginScreen(),
-//                        fadeIn(), clearStack = true, addToBackStack = false)
+//                // exit from this process
+//                activity!!.finish()
+//
+//                // go to login page
+//                loginPage()
+//
+////                replaceFragment(LoginScreen(),
+////                        fadeIn(), clearStack = true, addToBackStack = false)
 //
 //            } else {
 //                // exit from this process
