@@ -29,7 +29,7 @@ public class PermissionUtils {
      */
     public boolean checkPermission(String permissionName) {
         return ContextCompat.checkSelfPermission(mActivity, permissionName)
-                != PackageManager.PERMISSION_GRANTED;
+                == PackageManager.PERMISSION_GRANTED;
     }
 
     public void requestPermissions(int requestCode, String... permissions) {

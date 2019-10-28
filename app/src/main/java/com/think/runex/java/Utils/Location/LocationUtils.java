@@ -1,4 +1,4 @@
-package com.think.runex.java.Utils;
+package com.think.runex.java.Utils.Location;
 
 import android.Manifest;
 import android.app.Activity;
@@ -13,6 +13,10 @@ import android.provider.Settings;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.think.runex.java.App.Configs;
+import com.think.runex.java.Utils.L;
+import com.think.runex.java.Utils.PermissionUtils;
+
 public class LocationUtils implements LocationListener {
     /**
      * Main variables
@@ -23,6 +27,7 @@ public class LocationUtils implements LocationListener {
     private Activity mActivity;
     private LocationManager mLocationManager;
     private PermissionUtils mPermissionUtils;
+    private LocationTrackingCallback mListener;
 
     public static LocationUtils newInstance(Activity activity) {
         return new LocationUtils(activity);
@@ -31,8 +36,8 @@ public class LocationUtils implements LocationListener {
     private LocationUtils(Activity activity) {
         mActivity = activity;
         mPermissionUtils = PermissionUtils.newInstance(activity);
-        mLocationManager = (LocationManager) activity
-                .getSystemService(Context.LOCATION_SERVICE);
+
+        init();
 
     }
 
@@ -45,7 +50,7 @@ public class LocationUtils implements LocationListener {
         // prepare usage variables
         final String mtn = ct +"onStatusChanged() ";
 
-        L.i(mtn +"");
+//        L.i(mtn +"");
 
     }
 
@@ -54,7 +59,12 @@ public class LocationUtils implements LocationListener {
         // prepare usage variables
         final String mtn = ct +"onLocationChanged() ";
 
-        L.i(mtn +"");
+        if( mListener != null ){
+            mListener.onLocationChanged( location );
+
+        } else L.e(mtn +"mListener["+ mListener +"] is not ready.");
+
+//        L.i(mtn +"location: "+ location.getLatitude() +" : "+ location.getLongitude());
 
     }
 
@@ -63,8 +73,15 @@ public class LocationUtils implements LocationListener {
         // prepare usage variables
         final String mtn = ct +"onProviderEnabled() ";
 
-        L.i(mtn +"");
+//        L.i(mtn +"");
 
+    }
+
+    /**
+     * Feature methods
+     */
+    public void addLocationListener( LocationTrackingCallback listener){
+        this.mListener = listener;
     }
 
     @Override
@@ -75,19 +92,31 @@ public class LocationUtils implements LocationListener {
         L.i(mtn +"");
 
     }
+    private void init(){
+        mLocationManager = (LocationManager) mActivity
+                .getSystemService(Context.LOCATION_SERVICE);
+    }
+    public void stop(){
+        mLocationManager.removeUpdates( this );
+        mLocationManager = null;
 
-    /**
-     * Feature methods
-     */
-    private void requestLocationUpdate() {
+    }
+    public void start() {
         // prepare usage variables
         final String mtn = ct +"requestLocationUpdate() ";
+
+        // init new location manager
+        if( mLocationManager == null ) init();
 
         try {
             if (mPermissionUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
                 mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                        1000L,
-                        1.0f,
+                        Configs.LocationTracker.MIN_TIME,
+                        Configs.LocationTracker.MIN_DISTANCE,
+                        this);
+                mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
+                        Configs.LocationTracker.MIN_TIME,
+                        Configs.LocationTracker.MIN_DISTANCE,
                         this);
 
             }
@@ -99,7 +128,7 @@ public class LocationUtils implements LocationListener {
     }
 
     public boolean isGPSAvailable() {
-        if (mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
             //Ask the user to enable GPS
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             builder.setTitle("Location Manager");
@@ -120,9 +149,13 @@ public class LocationUtils implements LocationListener {
                 }
             });
             builder.create().show();
+
+            return false;
+
         }
 
-        return false;
+        return true;
+
     }
 
 }

@@ -75,7 +75,7 @@ public class MyEventPage extends Fragment implements onNetworkCallback, View.OnC
 
         if (mApp.getAppEntity().isLoggedIn){
 
-        } else mApp.serveLoginPage(getActivity(), Configs.RC_LOGIN_WITH_EMAIL);
+        } else mApp.serveLoginPage(getActivity(), Globals.RC_LOGIN_WITH_EMAIL);
     }
 
     @Nullable
@@ -121,7 +121,7 @@ public class MyEventPage extends Fragment implements onNetworkCallback, View.OnC
                 App.instance(getActivity()).clear();
 
                 // perform login
-                App.instance(getActivity()).serveLoginPage(MyEventPage.this, Configs.RC_LOGIN_WITH_EMAIL);
+                App.instance(getActivity()).serveLoginPage(MyEventPage.this, Globals.RC_LOGIN_WITH_EMAIL);
 
             }
         });

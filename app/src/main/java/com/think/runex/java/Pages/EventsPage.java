@@ -15,6 +15,7 @@ import com.think.runex.R;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.App.Configs;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.xFragment;
 import com.think.runex.java.Utils.L;
 
@@ -49,7 +50,7 @@ public class EventsPage extends xFragment {
                 AppEntity appEntity = mApp.getAppEntity();
 
                 if( !appEntity.isLoggedIn ){
-                    App.instance(activity).serveLoginPage( EventsPage.this, Configs.RC_BACK_FROM_LOGIN);
+                    App.instance(activity).serveLoginPage( EventsPage.this, Globals.RC_BACK_FROM_LOGIN);
 
                 } else if( appEntity.token.isAlive() ){
                     L.i(mtn +"activity["+ activity +"]");
