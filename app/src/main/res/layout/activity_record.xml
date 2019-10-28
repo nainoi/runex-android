@@ -14,6 +14,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
+        <!-- Time -->
         <TextView
             android:id="@+id/v_time"
             android:textSize="16dp"
@@ -34,7 +35,98 @@
             android:textSize="56dp"
             android:textStyle="bold" />
 
+        <!-- running detail -->
+        <LinearLayout
+            android:id="@+id/frame_running_detail"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal"
+            android:weightSum="3">
 
+            <!-- Distance -->
+            <LinearLayout
+                android:id="@+id/frame_distance"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/v_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Distance"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/lb_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 KM"
+                    android:textColor="@color/orange"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            <!-- Calories-->
+            <LinearLayout
+                android:id="@+id/frame_calories"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/v_calories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Calories"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/lb_calories"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 Calories"
+                    android:textColor="@color/orange"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+
+            <!-- Step -->
+            <LinearLayout
+                android:id="@+id/frame_step"
+                android:layout_width="0dp"
+                android:layout_height="wrap_content"
+                android:layout_weight="1"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:paddingTop="12dp"
+                android:paddingBottom="12dp">
+
+                <TextView
+                    android:id="@+id/v_stemp"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Foot Step"
+                    android:textColor="@android:color/black" />
+
+                <TextView
+                    android:id="@+id/lb_step"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0 Steps"
+                    android:textColor="@color/orange"
+                    android:textSize="18dp" />
+
+            </LinearLayout>
+        </LinearLayout>
     </LinearLayout>
 
     <fragment

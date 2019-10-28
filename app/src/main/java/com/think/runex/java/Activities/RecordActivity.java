@@ -39,6 +39,8 @@ import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
+import java.text.DecimalFormat;
+
 public class RecordActivity extends FragmentActivity implements OnMapReadyCallback
         , View.OnClickListener
 //        , GoogleApiClient.ConnectionCallbacks
@@ -50,6 +52,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     private final String ct = "RecordActivity->";
 
     // instance variables
+    private DecimalFormat df = new DecimalFormat("#.##");
     private LocationUtils mLocUtils;
     private PermissionUtils mPmUtils;
     private GoogleMapUtils mMapUtils;
@@ -93,6 +96,9 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 // test add polyline
                 mMapUtils.addPolyline(xFrom, xTo);
 
+                // update view
+                lbDistance.setText( df.format(mMapUtils.distance )+" KM");
+
                 // update props
                 mLastLocation = xTo;
 
@@ -115,6 +121,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     // views
     private TextView lbTime;
+    private TextView lbDistance;
     private Button btnStart, btnPause;
 
 
@@ -144,6 +151,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
                 // pause
                 mRecorderUtils.pause();
+
 
                 break;
         }
@@ -317,6 +325,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
      * Matching views
      */
     private void matchingViews() {
+        lbDistance = findViewById(R.id.lb_distance);
         lbTime = findViewById(R.id.lb_time);
         btnStart = findViewById(R.id.btn_start);
         btnPause = findViewById(R.id.btn_pause);
