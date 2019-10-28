@@ -14,6 +14,7 @@ import android.provider.Settings;
 import androidx.appcompat.app.AlertDialog;
 
 import com.think.runex.java.App.Configs;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.PermissionUtils;
 
@@ -80,6 +81,14 @@ public class LocationUtils implements LocationListener {
     /**
      * Feature methods
      */
+    public Location getLastKnownLocation(){
+        if( mPermissionUtils.checkPermission(Globals.ACCESS_FINE_LOCAITON)) {
+            return mLocationManager.getLastKnownLocation(LocationManager.GPS_PROVIDER);
+
+        }
+
+        return null;
+    }
     public void addLocationListener( LocationTrackingCallback listener){
         this.mListener = listener;
     }
@@ -110,10 +119,10 @@ public class LocationUtils implements LocationListener {
 
         try {
             if (mPermissionUtils.checkPermission(Manifest.permission.ACCESS_FINE_LOCATION)) {
-                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
-                        Configs.LocationTracker.MIN_TIME,
-                        Configs.LocationTracker.MIN_DISTANCE,
-                        this);
+//                mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER,
+//                        Configs.LocationTracker.MIN_TIME,
+//                        Configs.LocationTracker.MIN_DISTANCE,
+//                        this);
                 mLocationManager.requestLocationUpdates(LocationManager.NETWORK_PROVIDER,
                         Configs.LocationTracker.MIN_TIME,
                         Configs.LocationTracker.MIN_DISTANCE,
@@ -128,7 +137,9 @@ public class LocationUtils implements LocationListener {
     }
 
     public boolean isGPSAvailable() {
-        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER)) {
+        if( mLocationManager == null ) init();
+
+        if (!mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             //Ask the user to enable GPS
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             builder.setTitle("Location Manager");

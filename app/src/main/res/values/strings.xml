@@ -63,6 +63,7 @@
     <string name="runex_sync">RUNEX Sync</string>
 
     <!-- S -->
+    <string name="background_service">background-service</string>
     <string name="server_client_id">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
 
     <!-- T -->

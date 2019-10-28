@@ -10,31 +10,46 @@ import java.util.Date;
 import java.util.List;
 
 public class DateTimeUtils {
-    /** Main variables */
+    /**
+     * Main variables
+     */
     private final String ct = "DateTimeUtils->";
     private static DateTimeUtils ins;
 
-    private DateTimeUtils(){}
-    public static DateTimeUtils instance(){
-        return ( ins == null ) ? ins = new DateTimeUtils() : ins;
+    private DateTimeUtils() {
     }
 
+    public static DateTimeUtils instance() {
+        return (ins == null) ? ins = new DateTimeUtils() : ins;
+    }
 
-    public DisplayDateTimeObject stringToDate(String strDate ){
+    public String toTimeFormat(long millisec) {
         // prepare usage variables
-        final String mtn = ct +"stringToDate() ";
+        final int allSec = (int) (millisec / 1000);
+        final int sec = allSec % 60;
+        final int min = (((allSec) / 60) % 60);
+        final int hour = (allSec / 3600);
 
-        try{
+        return (hour < 10 ? "0" + hour : hour + "") + ":" +
+                (min < 10 ? "0" + min : min + "") + ":" +
+                (sec < 10 ? "0" + sec : sec);
+    }
+
+    public DisplayDateTimeObject stringToDate(String strDate) {
+        // prepare usage variables
+        final String mtn = ct + "stringToDate() ";
+
+        try {
             // prepare usage variables
             SimpleDateFormat df = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
 
             // parse
             Calendar c = Calendar.getInstance();
-            c.setTimeInMillis( df.parse( strDate ).getTime() );
+            c.setTimeInMillis(df.parse(strDate).getTime());
 
             int date = c.get(Calendar.DATE);
             int month = c.get(Calendar.MONTH);
-            String shortMonth = Months.TH.get( month );
+            String shortMonth = Months.TH.get(month);
             int year = c.get(Calendar.YEAR) + 543;
 
             DisplayDateTimeObject display = new DisplayDateTimeObject();
@@ -46,8 +61,8 @@ public class DateTimeUtils {
 
             return display;
 
-        }catch ( Exception e ){
-            L.e(mtn +"Err: "+ e);
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e);
 
         }
 

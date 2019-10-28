@@ -20,4 +20,8 @@ public class Globals {
 
     //--> Permission request code
     public static final int RC_PERMISSION = 3101;
+
+    //--> Broadcast
+    public static final String BROADCAST_LOCATION = "BROADCAST";
+    public static final String BROADCAST_LOCATION_VAL = "BROADCAST";
 }
