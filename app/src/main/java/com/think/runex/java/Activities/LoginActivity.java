@@ -9,6 +9,7 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.internal.CallbackManagerImpl;
 import com.think.runex.R;
@@ -35,7 +36,7 @@ import java.util.List;
 
 import static com.think.runex.feature.social.SocialLoginManger.RC_GOOGLE_LOGIN;
 
-public class LoginActivity extends AppCompatActivity implements
+public class LoginActivity extends FragmentActivity implements
         SocialLoginListener,
         View.OnClickListener {
     /**
@@ -106,6 +107,11 @@ public class LoginActivity extends AppCompatActivity implements
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
+
+        // Activity utils
+        ActivityUtils actUtls = ActivityUtils.newInstance( this );
+        actUtls.activity = this;
+        actUtls.fullScreen();
 
         // activity manager
         activityUtils = ActivityUtils.newInstance(this);

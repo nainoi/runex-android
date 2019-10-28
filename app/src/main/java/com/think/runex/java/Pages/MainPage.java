@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
@@ -12,9 +13,11 @@ import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
+import com.think.runex.java.Activities.RecordActivity;
+import com.think.runex.java.Customize.xFragment;
 import com.think.runex.java.Utils.StaticChildFragmentUtils;
 
-public class MainPage extends Fragment {
+public class MainPage extends xFragment {
     /** Main variables */
     private final String ct = "MainPage->";
 
@@ -43,6 +46,11 @@ public class MainPage extends Fragment {
     }
 
     /** Feature methods */
+    private void recordPage(){
+        Intent i = new Intent(activity, RecordActivity.class);
+        startActivityForResult(i, 0);
+
+    }
     private boolean updateScreen(int itemId){
         // prepare usage variables
         boolean onSelected = true;
@@ -50,7 +58,7 @@ public class MainPage extends Fragment {
         switch( itemId ){
             case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
             case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new MyEventPage()); break;
-            case R.id.menu_record: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
+            case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
             case R.id.menu_profile: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new ProfilePage()); break;
             default: onSelected = false; break;
 
@@ -68,6 +76,14 @@ public class MainPage extends Fragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if( item.getItemId() == mCurrentItemId ) return false;
+                if( item.getItemId() == R.id.menu_record ) {
+                    // display record page
+                    recordPage();
+
+                    // exit from this process
+                    return false;
+                }
+
                 return updateScreen( item.getItemId() );
             }
         });
@@ -82,6 +98,10 @@ public class MainPage extends Fragment {
     @Override
     public void onResume() {
         super.onResume();
+
+        // same position
+        if( bottomNavigationView.getSelectedItemId() == mCurrentItemId ) return;
+
         // update screen
         updateScreen(bottomNavigationView.getSelectedItemId());
     }
