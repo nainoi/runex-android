@@ -81,7 +81,6 @@ public class NetworkUtils {
 
                     try {
                         onSuccess(strResult, callback);
-                        callback.onSuccess(strResult);
 
                     } catch (Exception e) {
                         L.e(mtn + "Err: " + e);

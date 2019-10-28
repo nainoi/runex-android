@@ -32,6 +32,7 @@ import static com.think.runex.java.Constants.Globals.GSON;
 
 public class RegisteredEventsPage extends xFragment implements
         onNetworkCallback,
+        View.OnClickListener,
         SwipeRefreshLayout.OnRefreshListener {
     /**
      * Main variables
@@ -66,7 +67,7 @@ public class RegisteredEventsPage extends xFragment implements
 
     // explicit variables
     private boolean ON_LOADING = false;
-
+    private boolean ON_REFRESH = false;
     // views
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
@@ -74,6 +75,22 @@ public class RegisteredEventsPage extends xFragment implements
     /**
      * Implement methods
      */
+    @Override
+    public void onClick(View view) {
+        // prepare usage variables
+        final String mtn = ct +"onClick() ";
+
+        if( ON_REFRESH ) {
+            // log
+            L.i(mtn +"on refresh...");
+
+            // exit from this process
+            return;
+        }
+
+
+
+    }
     @Override
     public void onSuccess(String jsonString) {
         // prepare usage variables
@@ -86,6 +103,7 @@ public class RegisteredEventsPage extends xFragment implements
 
             // prepare usage variables
             final EventObject rsp = GSON.fromJson(jsonString, EventObject.class);
+            final List<MultiObject> mlList = new ArrayList<>();
 
             L.i(mtn + "");
             L.i(mtn + "");
@@ -102,14 +120,14 @@ public class RegisteredEventsPage extends xFragment implements
                 //--> evt val
                 evtVal.setCustomRegDuration(start.Day + " " + start.shortMonth
                         + " - " + end.Day + " " + end.shortMonth + " " + end.year);
-                //--> multi obect
+                //--> multi object
                 ml.setAttachedObject(evt);
                 ml.setLayoutTypeId(0);
 
                 // keep object
-                events.add(ml);
+                mlList.add(ml);
                 // divider
-                events.add(new MultiObject().setLayoutTypeId(1));
+                mlList.add(new MultiObject().setLayoutTypeId(1));
 
                 // logs
                 L.i(mtn + "Name[" + a + "]: " + evt.getEvent().getName());
@@ -117,9 +135,31 @@ public class RegisteredEventsPage extends xFragment implements
             }
             L.i(mtn + "");
 
-            // notify data has changed
-            eventAdapter.notifyItemRangeInserted(0, rsp.getData().size());
 
+            // on refresh
+            if( ON_REFRESH ) {
+                // clear all item
+                events.clear();
+
+            }
+
+            // add all items
+            events.addAll( mlList );
+
+            // notify data has changed
+            if( ON_REFRESH ){
+                // clear flag
+                this.ON_REFRESH = false;
+
+                // notify data has change
+                eventAdapter.notifyDataSetChanged();
+
+
+                // notify insert item
+            } else eventAdapter.notifyItemRangeInserted(0, rsp.getData().size());
+
+            // hide progress dialog
+            refreshLayout.setRefreshing( false );
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e);
@@ -135,7 +175,11 @@ public class RegisteredEventsPage extends xFragment implements
 
     @Override
     public void onRefresh() {
-        refreshLayout.setRefreshing(false);
+        // update flag
+        ON_REFRESH = true;
+
+        // call api
+        apiGetEvents();
     }
 
     @Nullable
@@ -166,8 +210,12 @@ public class RegisteredEventsPage extends xFragment implements
      */
     private void apiGetEvents() {
         // prepare usage variables
+        final String mtn = ct +"apiGetEvents() ";
         final NetworkUtils nw = NetworkUtils.newInstance(getActivity());
         final NetworkProps props = new NetworkProps();
+
+        // log
+        L.i(mtn +"api get events...");
 
         // update props
         props.addHeader("Authorization", "Bearer " + Globals.TOKEN);

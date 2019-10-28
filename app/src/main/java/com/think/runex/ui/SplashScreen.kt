@@ -46,19 +46,25 @@ class SplashScreen : ScreenFragment() {
             // prepare usage variables
             val app = App.instance(activity);
 
-            // does token available
-            if (app.appEntity.token.expiredLong <= 0) {
-                replaceFragment(LoginScreen(),
-                        fadeIn(), clearStack = true, addToBackStack = false)
+            // exit from this process
+            activity!!.finish();
 
-            } else {
-                // exit from this process
-                activity!!.finish();
-
-                // go to main page
-                bridgeFile();
-
-            }
+            // go to main page
+            bridgeFile();
+//
+//            // does token available
+//            if (app.appEntity.token.expiredLong <= 0) {
+//                replaceFragment(LoginScreen(),
+//                        fadeIn(), clearStack = true, addToBackStack = false)
+//
+//            } else {
+//                // exit from this process
+//                activity!!.finish();
+//
+//                // go to main page
+//                bridgeFile();
+//
+//            }
 
 
 //            if (TokenManager.isAlive()) {
