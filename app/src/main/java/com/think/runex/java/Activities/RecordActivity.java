@@ -24,9 +24,11 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Constants.xDump;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
@@ -97,7 +99,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 mMapUtils.addPolyline(xFrom, xTo);
 
                 // update view
-                lbDistance.setText( df.format(mMapUtils.distance )+" KM");
+                lbDistance.setText(df.format(mMapUtils.distance) + " KM");
 
                 // update props
                 mLastLocation = xTo;
@@ -135,6 +137,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onClick(View view) {
+        final String mtn = ct + "onClick() ";
+
         switch (view.getId()) {
             case R.id.btn_start:
                 // start recording
@@ -152,6 +156,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 // pause
                 mRecorderUtils.pause();
 
+                // print
+                mMapUtils.print10Location();
 
                 break;
         }
