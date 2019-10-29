@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -22,6 +23,7 @@ import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.rqLogin;
+import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.LoginScreen;
 
@@ -44,19 +46,19 @@ public class MyEventPage extends Fragment implements onNetworkCallback, View.OnC
 
     /** Implement methods */
     @Override
-    public void onSuccess(String jsonString) {
+    public void onSuccess(xResponse rsp) {
         // prepaer usage variables
         final String mtn = ct +"onSuccess() ";
 
-        L.i(mtn +"jsonString: "+ jsonString);
+        L.i(mtn +"jsonString: "+ rsp.jsonString);
     }
 
     @Override
-    public void onFailure(Exception jsonString) {
+    public void onFailure(xResponse rsp) {
         // prepaer usage variables
         final String mtn = ct +"onSuccess() ";
 
-        L.e(mtn +"jsonString: "+ jsonString);
+        L.e(mtn +"jsonString: "+ rsp.jsonString);
 
     }
 
@@ -121,7 +123,7 @@ public class MyEventPage extends Fragment implements onNetworkCallback, View.OnC
                 App.instance(getActivity()).clear();
 
                 // perform login
-                App.instance(getActivity()).serveLoginPage(MyEventPage.this, Globals.RC_LOGIN_WITH_EMAIL);
+                App.instance(getActivity()).serveLoginPage(MyEventPage.this, Globals.RC_NEED_LOGIN);
 
             }
         });
@@ -147,6 +149,15 @@ public class MyEventPage extends Fragment implements onNetworkCallback, View.OnC
 
         // prepare usage variables
         final String mtn = ct +"onActivityResult() ";
+        final String resultCodeName = Globals.mapActivityResult( resultCode );
+
+        L.i(mtn +"result: "+ resultCodeName);
+
+        if( requestCode == Globals.RC_NEED_LOGIN ){
+            summaryPage();
+
+        }
+
 
 
     }

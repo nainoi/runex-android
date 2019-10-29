@@ -18,11 +18,6 @@ public class NetworkProps {
         return this;
     }
 
-    public NetworkProps setHeaders(List<String[][]> headers) {
-        this.headers = headers;
-        return this;
-    }
-
     public NetworkProps setJsonAsObject(Object jsonAsObject) {
         this.jsonAsObject = jsonAsObject;
         return this;

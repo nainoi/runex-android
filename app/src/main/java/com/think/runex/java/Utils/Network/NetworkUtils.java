@@ -3,7 +3,11 @@ package com.think.runex.java.Utils.Network;
 import android.app.Activity;
 
 import com.google.gson.Gson;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
+import com.think.runex.java.Utils.Network.Response.xResponse;
+
+import java.net.HttpURLConnection;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
@@ -31,21 +35,37 @@ public class NetworkUtils {
     /**
      * Feature methods
      */
-    private void onSuccess(String json, onNetworkCallback callback) {
+    private void onSuccess(int statusCode, String json, onNetworkCallback callback) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                callback.onSuccess(json);
+                // prepare usage variables
+                xResponse rsp = new xResponse();
+
+                // update props
+                rsp.setResponseCode( statusCode);
+                rsp.setJsonString( json );
+
+                // trigger
+                callback.onSuccess( rsp );
 
             }
         });
     }
 
-    private void onFailed(Exception e, onNetworkCallback callback) {
+    private void onFailed(int statusCode, Exception e, onNetworkCallback callback) {
         activity.runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                callback.onFailure(e);
+                // prepare usage variables
+                xResponse rsp = new xResponse();
+
+                // update props
+                rsp.setResponseCode(statusCode);
+                rsp.setJsonString(Globals.GSON.toJson( e ));
+
+                // trigger
+                callback.onFailure( rsp );
 
             }
         });
@@ -80,18 +100,18 @@ public class NetworkUtils {
                     final String strResult = response.body().string();
 
                     try {
-                        onSuccess(strResult, callback);
+                        onSuccess(response.code(), strResult, callback);
 
                     } catch (Exception e) {
                         L.e(mtn + "Err: " + e);
-                        onFailed(e, callback);
+                        onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
 
                     }
 
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e);
-                    onFailed(e, callback);
+                    onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
 
                 }
 
@@ -127,11 +147,11 @@ public class NetworkUtils {
                 Request request = builder.build();
 
                 try (Response response = client.newCall(request).execute()) {
-                    onSuccess(response.body().string(), callback);
+                    onSuccess(response.code(), response.body().string(), callback);
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());
-                    onFailed(e, callback);
+                    onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
                 }
 
             }

@@ -34,6 +34,7 @@ import com.think.runex.java.Customize.xFragment
 import com.think.runex.java.Utils.Network.NetworkProps
 import com.think.runex.java.Utils.Network.NetworkUtils
 import com.think.runex.java.Utils.Network.Request.rqLogin
+import com.think.runex.java.Utils.Network.Response.xResponse
 import com.think.runex.java.Utils.Network.onNetworkCallback
 import com.think.runex.utility.InjectorUtils
 import kotlinx.android.synthetic.main.screen_login.*
@@ -122,20 +123,20 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
     }
 
     //  Interface Methods
-    override fun onSuccess(jsonString: String?) {
-        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
-
-        // activity result
-        activity!!.setResult( Activity.RESULT_OK );
+    override fun onSuccess(jsonString: xResponse?) {
+//        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
+//
+//        // activity result
+//        activity!!.setResult( Activity.RESULT_OK );
 
 
     }
 
-    override fun onFailure(jsonString: Exception?) {
-        Toast.makeText(activity, "fail", Toast.LENGTH_SHORT).show()
-
-        // activity result
-        activity!!.setResult( Activity.RESULT_CANCELED );
+    override fun onFailure(jsonString: xResponse?) {
+//        Toast.makeText(activity, "fail", Toast.LENGTH_SHORT).show()
+//
+//        // activity result
+//        activity!!.setResult( Activity.RESULT_CANCELED );
 
     }
 

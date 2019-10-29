@@ -27,6 +27,8 @@ import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.rqLogin;
+import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.java.Utils.Network.Services.GetProfileService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -81,7 +83,9 @@ public class LoginActivity extends FragmentActivity implements
 
     }
 
-    /** Implement methods */
+    /**
+     * Implement methods
+     */
     @Override
     public void onLoginWithSocialCompleted(int platform, @NotNull UserProvider userProvider) {
         // prepare usage variables
@@ -109,7 +113,7 @@ public class LoginActivity extends FragmentActivity implements
         setContentView(R.layout.activity_login);
 
         // Activity utils
-        ActivityUtils actUtls = ActivityUtils.newInstance( this );
+        ActivityUtils actUtls = ActivityUtils.newInstance(this);
         actUtls.activity = this;
         actUtls.fullScreen();
 
@@ -128,22 +132,29 @@ public class LoginActivity extends FragmentActivity implements
 
         // view event listener
         viewEventListener();
+
+        // default account
+        inputEmail.setText("fakespmh.21@gmail.com");
+        inputPassword.setText("p@ss1234");
     }
 
     /**
      * Feature methods
      */
-    private void updateAppEntity(AppEntity appEntity){
-        App.instance(this).save( appEntity );
+    private void updateAppEntity(AppEntity appEntity) {
+        App.instance(this).save(appEntity);
 
     }
+
     private boolean validate() {
         return true;
     }
 
     private void loginWithEmail() {
         if (validate()) {
-            apiLogin();
+            apiLogin(new rqLogin(inputEmail.getText().toString(),
+                    inputPassword.getText().toString(),
+                    Globals.PLATFORM));
 
         }
     }
@@ -151,56 +162,91 @@ public class LoginActivity extends FragmentActivity implements
     /**
      * API methods
      */
-    private void apiLogin() {
+    private void apiGetProfile( ){
         // prepare usage variables
-        final String mtn = ct +"apiLogin() ";
-        NetworkUtils nw = NetworkUtils.newInstance(this);
-        NetworkProps props = new NetworkProps();
+        final String mtn = ct +"apiGetProfile() ";
 
-        // update props
-        props.addHeader("Authorization", "Bearer " + Globals.TOKEN);
-        props.setJsonAsObject(new rqLogin("fakespmh.21@gmail.com", "p@ss1234", "web"));
-        props.setUrl(APIs.LOGIN.VAL);
-
-        nw.postJSON(props, new onNetworkCallback() {
+        //--> fire
+        new GetProfileService(this, new onNetworkCallback() {
             @Override
-            public void onSuccess(String jsonString) {
-                L.i(mtn +"onSuccess: "+ jsonString);
+            public void onSuccess(xResponse response) {
+                L.i(mtn +"response-code: "+ response.responseCode);
+                L.i(mtn +"response-body: "+ response.jsonString);
 
-                try{
-                    // prepare usage variables
-                    final AppEntity appEntity = App.instance(LoginActivity.this).getAppEntity();
-                    final TokenObject token = Globals.GSON.fromJson( jsonString, TokenObject.class );
-
-                    // update token
-                    appEntity.setToken( token );
-                    //--> confirm user has logged in
-                    appEntity.setLoggedIn( true );
-
-                    // commit
-                    updateAppEntity( appEntity );
-
-                    // set activity result
-                    setResult( Activity.RESULT_OK );
-
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e);
-
-                    // set activity result
-                    setResult( Activity.RESULT_CANCELED );
-
-                }
+                // set activity result
+                setResult(Activity.RESULT_OK);
 
                 // exit from this process
                 finish();
             }
 
             @Override
-            public void onFailure(Exception jsonString) {
-                L.e(mtn +"onFailure: "+ jsonString);
+            public void onFailure(xResponse response) {
+                L.e(mtn +"response-code: "+ response.responseCode);
+                L.e(mtn +"msg: "+ response.message);
 
                 // set activity result
-                setResult( Activity.RESULT_CANCELED );
+                setResult(Activity.RESULT_CANCELED);
+
+                // exit from this process
+                finish();
+
+            }
+        }).doIt();
+    }
+    private void apiLogin(rqLogin request) {
+        // prepare usage variables
+        final String mtn = ct + "apiLogin() ";
+        NetworkUtils nw = NetworkUtils.newInstance(this);
+        NetworkProps props = new NetworkProps();
+
+        // update props
+        props.addHeader("Authorization", "Bearer " + Globals.TOKEN);
+        props.setJsonAsObject(request);
+        props.setUrl(APIs.LOGIN.VAL);
+
+        nw.postJSON(props, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse rsp) {
+
+                try {
+                    // prepare usage variables
+                    final String jsonString = rsp.jsonString;
+                    final AppEntity appEntity = App.instance(LoginActivity.this).getAppEntity();
+                    final TokenObject token = Globals.GSON.fromJson(jsonString, TokenObject.class);
+                    L.i(mtn + "onSuccess: " + jsonString);
+
+                    // update token
+                    appEntity.setToken(token);
+                    //--> confirm user has logged in
+                    appEntity.setLoggedIn(true);
+
+                    // commit
+                    updateAppEntity(appEntity);
+
+                    // call user profile
+                    apiGetProfile();
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e);
+
+                    // set activity result
+                    setResult(Activity.RESULT_CANCELED);
+
+                    // exit from this process
+                    finish();
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(xResponse res) {
+                L.e(mtn + "response code: " + res.responseCode);
+                L.e(mtn + "failed msg: " + res.jsonString);
+
+                // set activity result
+                setResult(Activity.RESULT_CANCELED);
             }
         });
 

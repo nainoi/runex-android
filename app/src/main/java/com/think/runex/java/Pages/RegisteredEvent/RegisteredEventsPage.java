@@ -1,17 +1,22 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.squareup.picasso.Callback;
+import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
@@ -23,8 +28,11 @@ import com.think.runex.java.Utils.DateTime.DisplayDateTimeObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
+import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.java.Utils.Network.Services.GetRegisteredEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -71,6 +79,8 @@ public class RegisteredEventsPage extends xFragment implements
     // views
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
+    private View frameNeedAuth;
+    private ImageView imgNeedAuth;
 
     /**
      * Implement methods
@@ -92,11 +102,25 @@ public class RegisteredEventsPage extends xFragment implements
 
     }
     @Override
-    public void onSuccess(String jsonString) {
+    public void onSuccess(xResponse xrsp) {
         // prepare usage variables
         final String mtn = ct + "onSuccess() ";
 
         try {
+
+            // hide progress
+            refreshLayout.setRefreshing( false );
+            
+            if( xrsp.responseCode == HttpURLConnection.HTTP_UNAUTHORIZED ){
+                // display need auth image
+                displayNeedAuth();
+
+                // exit from this process
+                return;
+            }
+
+            // prepare usage variables
+            final String jsonString = xrsp.jsonString;
 
             // logs
             L.i(mtn + "JSONResult: " + jsonString);
@@ -167,8 +191,12 @@ public class RegisteredEventsPage extends xFragment implements
     }
 
     @Override
-    public void onFailure(Exception jsonString) {
+    public void onFailure(xResponse xResponse) {
         Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+
+        // hide progress
+        refreshLayout.setRefreshing( false );
+
 
     }
 
@@ -194,9 +222,14 @@ public class RegisteredEventsPage extends xFragment implements
         recyclerView = v.findViewById(R.id.recycler_view);
         refreshLayout = v.findViewById(R.id.refresh_layout);
         refreshLayout.setOnRefreshListener(this);
+        imgNeedAuth = v.findViewById(R.id.img_need_auth);
+        frameNeedAuth = v.findViewById(R.id.frame_need_auth);
 
         // recycler view props
         recyclerViewProps();
+
+        // display progress dialog
+        refreshLayout.setRefreshing( true );
 
         // call api
         apiGetEvents();
@@ -204,24 +237,35 @@ public class RegisteredEventsPage extends xFragment implements
         return v;
     }
 
+    /** Feature methods */
+    private void hideNeedAuth(){
+        frameNeedAuth.setVisibility(View.INVISIBLE);
+
+    }
+    private void displayNeedAuth(){
+        // display need auth image
+        Picasso.get().load("https://cdn.onlinewebfonts.com/svg/img_513673.png")
+                .into(imgNeedAuth, new Callback() {
+                    @Override
+                    public void onSuccess() {
+                        frameNeedAuth.setVisibility(View.VISIBLE);
+
+                    }
+
+                    @Override
+                    public void onError(Exception e) {
+
+                    }
+                });
+
+    }
+
     /**
      * API methods
      */
     private void apiGetEvents() {
         // prepare usage variables
-        final String mtn = ct +"apiGetEvents() ";
-        final NetworkUtils nw = NetworkUtils.newInstance(getActivity());
-        final NetworkProps props = new NetworkProps();
-
-        // log
-        L.i(mtn +"api get events...");
-
-        // update props
-        props.addHeader("Authorization", "Bearer " + Globals.TOKEN);
-        props.setUrl(APIs.GET_REGISTERED_EVENT.VAL);
-
-        // call api
-        nw.get(props, this);
+        new GetRegisteredEventService(getActivity(), this).doIt();
     }
 
     /**
@@ -231,4 +275,5 @@ public class RegisteredEventsPage extends xFragment implements
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
         recyclerView.setAdapter(eventAdapter);
     }
+
 }

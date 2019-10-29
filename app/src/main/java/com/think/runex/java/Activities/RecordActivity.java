@@ -233,11 +233,6 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         // view event listener
         viewEventListener();
 
-//        mGoogleApiClient = new GoogleApiClient.Builder(this)
-//                .addConnectionCallbacks(this)
-//                .addOnConnectionFailedListener(this)
-//                .addApi(LocationServices.API).build();
-
         // Activity utils
         ActivityUtils actUtls = ActivityUtils.newInstance(this);
         actUtls.activity = this;

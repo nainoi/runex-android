@@ -35,6 +35,7 @@ public class TokenObject {
         L.i(mtn +"//---> Is Token Alive");
         L.i(mtn +"expire-timestamp: "+ expiredLong);
         L.i(mtn +"current-timestamp: "+ current);
+        L.i(mtn +"remaining-timestamp: "+ (expiredLong - current));
         L.i(mtn +"");
 
         return current <= expiredLong;

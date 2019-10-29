@@ -80,9 +80,6 @@ public class GoogleMapUtils {
         // end point
         points.add(new LatLng(to.latitude, to.longitude));
 
-        // hide last polyline
-        if (mLastPolyline != null) mLastPolyline.setVisible(false);
-
         // prepare usage variables
         final int color = Color.parseColor(Configs.GoogleMap.Polyline.COLOR);
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
@@ -92,6 +89,9 @@ public class GoogleMapUtils {
 //                .add(new LatLng(from.latitude, from.longitude),
 //                        new LatLng(to.latitude, to.longitude)));
         polyline.setColor(color);
+
+        // hide last polyline
+        if (mLastPolyline != null) mLastPolyline.remove();
 
         // keep last polyline
         mLastPolyline = polyline;

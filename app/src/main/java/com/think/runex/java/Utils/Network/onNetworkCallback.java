@@ -1,6 +1,8 @@
 package com.think.runex.java.Utils.Network;
 
+import com.think.runex.java.Utils.Network.Response.xResponse;
+
 public interface onNetworkCallback {
-    void onSuccess(String jsonString);
-    void onFailure(Exception jsonString);
+    void onSuccess(xResponse response);
+    void onFailure(xResponse response);
 }
