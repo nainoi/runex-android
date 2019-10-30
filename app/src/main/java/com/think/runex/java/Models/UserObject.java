@@ -9,7 +9,7 @@ public class UserObject {
      * msg : success
      */
 
-    private DataBean data;
+    private DataBean data = new DataBean();
     private String msg;
 
     public DataBean getData() {

@@ -21,6 +21,9 @@ public class Globals {
     //--> Permission name
     public static final String ACCESS_FINE_LOCAITON = Manifest.permission.ACCESS_FINE_LOCATION;
 
+    //--> Providers
+    public static final String PROVIDER_GOOGLE = "GoogleID";
+
     //--> xRequest code
     public static final int RC_BACK_FROM_LOGIN = 2201;
     public static final int RC_NEED_LOGIN = 2100;

@@ -22,13 +22,16 @@ import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.TokenObject;
+import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.rqLogin;
+import com.think.runex.java.Utils.Network.Request.rqSocialPd;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetProfileService;
+import com.think.runex.java.Utils.Network.Services.SocialsLoginPdService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import org.jetbrains.annotations.NotNull;
@@ -90,11 +93,15 @@ public class LoginActivity extends FragmentActivity implements
     public void onLoginWithSocialCompleted(int platform, @NotNull UserProvider userProvider) {
         // prepare usage variables
         final String mtn = ct + "onLoginWithSocialCompleted() ";
-
-        Toast.makeText(this, "AAA", Toast.LENGTH_SHORT).show();
+        final rqSocialPd request = getRqSocialPd( platform, userProvider );
 
         L.i(mtn + "Social login completed with: " + SocialPlatform.Companion.platformText(platform));
         L.i(mtn + "User: $userProvider" + Globals.GSON.toJson(userProvider));
+
+        // request token
+        apiSocialsLogin( request );
+
+
     }
 
     @Override
@@ -162,28 +169,45 @@ public class LoginActivity extends FragmentActivity implements
     /**
      * API methods
      */
-    private void apiGetProfile( ){
+    private void apiGetProfile() {
         // prepare usage variables
-        final String mtn = ct +"apiGetProfile() ";
+        final String mtn = ct + "apiGetProfile() ";
 
         //--> fire
         new GetProfileService(this, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                L.i(mtn +"response-code: "+ response.responseCode);
-                L.i(mtn +"response-body: "+ response.jsonString);
+                L.i(mtn + "response-code: " + response.responseCode);
+                L.i(mtn + "response-body: " + response.jsonString);
 
+                try {
+
+                    // prepare usage variables
+                    UserObject user = Globals.GSON.fromJson( response.jsonString, UserObject.class);
+                    App app = App.instance(LoginActivity.this);
+
+                    // save
+                    AppEntity appEntity = app.getAppEntity().setUser( user );
+
+                    // commit
+                    app.save( appEntity );
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e);
+
+                }
                 // set activity result
                 setResult(Activity.RESULT_OK);
 
                 // exit from this process
                 finish();
+
             }
 
             @Override
             public void onFailure(xResponse response) {
-                L.e(mtn +"response-code: "+ response.responseCode);
-                L.e(mtn +"msg: "+ response.message);
+                L.e(mtn + "response-code: " + response.responseCode);
+                L.e(mtn + "msg: " + response.message);
 
                 // set activity result
                 setResult(Activity.RESULT_CANCELED);
@@ -194,6 +218,26 @@ public class LoginActivity extends FragmentActivity implements
             }
         }).doIt();
     }
+    private void apiSocialsLogin( rqSocialPd request ){
+        // prepare usage variables
+        final String mtn = ct +"apiSocialLogin() ";
+
+        // fire
+        new SocialsLoginPdService(this, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                L.i(mtn +"code: "+ response.responseCode);
+                L.i(mtn +"body: "+ response.jsonString);
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                L.e(mtn +"code: "+ response.responseCode);
+                L.e(mtn +"body: "+ response.jsonString);
+
+            }
+        }).doIt( request );
+    }
     private void apiLogin(rqLogin request) {
         // prepare usage variables
         final String mtn = ct + "apiLogin() ";
@@ -201,7 +245,6 @@ public class LoginActivity extends FragmentActivity implements
         NetworkProps props = new NetworkProps();
 
         // update props
-        props.addHeader("Authorization", "Bearer " + Globals.TOKEN);
         props.setJsonAsObject(request);
         props.setUrl(APIs.LOGIN.VAL);
 
@@ -250,6 +293,32 @@ public class LoginActivity extends FragmentActivity implements
             }
         });
 
+    }
+
+    /** Getter */
+    private rqSocialPd getRqSocialPd(int platform, UserProvider userProvider){
+        // prepare usage variables
+        final String mtn = ct +"getRqSocialPd() ";
+        final rqSocialPd rq = new rqSocialPd();
+
+        rq.setAvartar(userProvider.getAvatar());
+        rq.setEmail(userProvider.getEmail());
+        rq.setFirst_name(userProvider.getFirstName());
+        rq.setLast_name(userProvider.getLastName());
+        rq.setFullname(userProvider.getFirstName() +" "+ userProvider.getLastName());
+        rq.setPf(Globals.PLATFORM);
+        rq.setProvider_id( userProvider.getId() );
+        rq.setVersions("versions");
+
+        if(SocialPlatform.Companion.platformText(platform).equalsIgnoreCase("Google")){
+            rq.setProvider("GoogleID");
+
+        } else if(SocialPlatform.Companion.platformText(platform).equalsIgnoreCase("Facebook")){
+            rq.setProvider(userProvider.getId());
+
+        } else L.e(mtn +"Patlform does not match.");
+
+        return rq;
     }
 
     /**

@@ -108,13 +108,16 @@ public class GoogleMapUtils {
         double lat2 = to.latitude;
         double lng1 = from.longitude;
         double lng2 = to.longitude;
-
         double distance = (((Math.acos(Math.sin(lat1 * Math.PI / 180)
                 * Math.sin(lat2 * Math.PI / 180) + Math.cos(lat1 * Math.PI / 180)
                 * Math.cos(lat2 * Math.PI / 180)
                 * Math.cos((lng1 - lng2) * Math.PI / 180))
                 * 180 / Math.PI) * 60 * 1.1515) * 1.609344);
 
+        // is NaN
+        if(Double.isNaN(distance)) return 0;
+
+        // return
         return distance;
     }
 

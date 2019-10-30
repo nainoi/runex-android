@@ -110,7 +110,7 @@ public class RegisteredEventsPage extends xFragment implements
 
             // hide progress
             refreshLayout.setRefreshing( false );
-            
+
             if( xrsp.responseCode == HttpURLConnection.HTTP_UNAUTHORIZED ){
                 // display need auth image
                 displayNeedAuth();
@@ -244,7 +244,7 @@ public class RegisteredEventsPage extends xFragment implements
     }
     private void displayNeedAuth(){
         // display need auth image
-        Picasso.get().load("https://cdn.onlinewebfonts.com/svg/img_513673.png")
+        Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/beverestlife.appspot.com/o/folderEmptyState.png?alt=media&token=ec2146a6-e656-4a05-a1ef-25db7529047b")
                 .into(imgNeedAuth, new Callback() {
                     @Override
                     public void onSuccess() {

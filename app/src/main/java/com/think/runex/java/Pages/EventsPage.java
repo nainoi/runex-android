@@ -1,10 +1,12 @@
 package com.think.runex.java.Pages;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -17,6 +19,7 @@ import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
 
 public class EventsPage extends xFragment {
@@ -29,7 +32,7 @@ public class EventsPage extends xFragment {
     // explicit variables
 
     // views
-    private View btnANL;
+    private TextView btnANL;
 
     @Nullable
     @Override
@@ -50,17 +53,28 @@ public class EventsPage extends xFragment {
                 AppEntity appEntity = mApp.getAppEntity();
 
                 if( !appEntity.isLoggedIn ){
-                    App.instance(activity).serveLoginPage( EventsPage.this, Globals.RC_BACK_FROM_LOGIN);
+                    mApp.serveLoginPage( EventsPage.this, Globals.RC_NEED_LOGIN);
 
                 } else if( appEntity.token.isAlive() ){
                     L.i(mtn +"activity["+ activity +"]");
-                    Toast.makeText(activity, "Hello Someone", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Hello "+ appEntity.user.getData().getFirstname_th(), Toast.LENGTH_SHORT).show();
                 }
 
             }
         });
 
+        binding();
+
         return v;
+    }
+
+    /** Feature methods */
+    private void binding(){
+        // prepare usage variables
+        UserObject user = mApp.getAppEntity().user;
+
+        // update
+        btnANL.setText( user.getData().getFirstname() +" "+ btnANL.getText());
     }
 
     @Override
@@ -69,6 +83,13 @@ public class EventsPage extends xFragment {
 
         // prepare usage variables
         final String mtn = ct +"onActivityResult() ";
+
+        // login successfully
+        if( requestCode == Globals.RC_NEED_LOGIN && resultCode == Activity.RESULT_OK ) {
+            // binding
+            binding();
+
+        }
 
         L.i(mtn +"back from logged in.");
     }

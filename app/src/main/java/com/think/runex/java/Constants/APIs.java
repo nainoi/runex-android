@@ -9,6 +9,9 @@ public enum  APIs {
 
     //--> L
     LOGIN(DOMAIN.VAL +"/api/v1/user/login"),
+
+    //--> S
+    SOCIALS_LOGIN(DOMAIN.VAL +"/api/v1/user/pd"),
     ;
 
     public final String VAL;
