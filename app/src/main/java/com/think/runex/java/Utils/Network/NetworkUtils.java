@@ -8,20 +8,26 @@ import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 
 import java.net.HttpURLConnection;
+import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
+import okhttp3.logging.HttpLoggingInterceptor;
+
+import static com.think.runex.java.Constants.APIs.DOMAIN;
 
 public class NetworkUtils {
 
     // instance variables
     private static final String ct = "NetworkUtils->";
-    private static final MediaType JSON = MediaType.get("application/json");
-    private static OkHttpClient client = new OkHttpClient();
+    private static final MediaType JSON = MediaType.get("application/json; charset=utf-8");
     private Activity activity;
+
+    // explicit variable
+    private final int HTTP_TEMPORARY_DERIRECT = 307;
 
     private NetworkUtils(Activity activity) {
         this.activity = activity;
@@ -96,7 +102,7 @@ public class NetworkUtils {
 
                     // prepare usage variables
                     Request request = builder.build();
-                    Response response = client.newCall(request).execute();
+                    Response response = getHttpClient().newCall(request).execute();
                     final String strResult = response.body().string();
 
                     try {
@@ -146,8 +152,23 @@ public class NetworkUtils {
                 // build request
                 Request request = builder.build();
 
-                try (Response response = client.newCall(request).execute()) {
-                    onSuccess(response.code(), response.body().string(), callback);
+                try (Response response = getHttpClient().newCall(request).execute()) {
+
+                    // response as temporary redirect
+                    if( response.code() == HTTP_TEMPORARY_DERIRECT ){
+                        // prepare usage variables
+                        String redirectUrl = response.header("Location");
+
+                        // conditions
+                        if( redirectUrl != null && !redirectUrl.isEmpty()){
+                            // update props
+                            props.url = DOMAIN.VAL + redirectUrl;
+
+                            // fire
+                            postJSON(props, callback);
+
+                        }
+                    } else onSuccess(response.code(), response.body().string(), callback);
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());
@@ -161,4 +182,17 @@ public class NetworkUtils {
 
 
     }
+    private OkHttpClient getHttpClient() {
+        HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
+        logging.level(HttpLoggingInterceptor.Level.BODY);
+
+        return new OkHttpClient.Builder()
+                .connectTimeout(10, TimeUnit.SECONDS)
+                .writeTimeout(30, TimeUnit.SECONDS)
+                .readTimeout(30, TimeUnit.SECONDS)
+                .addInterceptor(logging)
+                .build();
+    }
+
+
 }
