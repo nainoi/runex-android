@@ -12,14 +12,33 @@ public class FragmentUtils {
     /**
      * Main variables
      */
-    public static int containerId = -1;
-    public static FragmentActivity activity = null;
+    public int containerId = -1;
+    public FragmentActivity activity = null;
 
-    public static int getStackCount(){
+    private FragmentUtils(FragmentActivity activity, int containerId) {
+        this.containerId = containerId;
+        this.activity = activity;
+    }
+
+    public static FragmentUtils newInstance(FragmentActivity activity, int containerId) {
+        return new FragmentUtils(activity, containerId);
+    }
+
+    public int getStackCount() {
         return activity.getSupportFragmentManager().getBackStackEntryCount();
     }
 
-    public static void replaceFragment(Fragment fragment) {
+    public void replaceFragmentWithAnim(Fragment fragment) {
+        // prepare usage variables
+        final FragmentTransaction t = activity.getSupportFragmentManager().beginTransaction();
+        t.setCustomAnimations(android.R.anim.slide_in_left, 0, 0,
+                android.R.anim.slide_out_right);
+        t.addToBackStack(Constants.Fragment.TAG());
+        t.replace(containerId, fragment);
+        t.commit();
+    }
+
+    public void replaceFragment(Fragment fragment) {
         // prepare usage variables
         final FragmentTransaction t = activity.getSupportFragmentManager().beginTransaction();
         t.addToBackStack(Constants.Fragment.TAG());

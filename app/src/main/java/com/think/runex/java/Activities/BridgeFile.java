@@ -20,6 +20,8 @@ public class BridgeFile extends FragmentActivity {
     /** Main variables */
     private final String ct = "BridgeFile->";
 
+    // instance variables
+    private FragmentUtils mFragmentUtils;
 
     // explicit variables
     private final int CONTAINER_ID = R.id.bridge_file_container;
@@ -30,7 +32,7 @@ public class BridgeFile extends FragmentActivity {
     // on back pressed
     @Override
     public void onBackPressed() {
-        if( FragmentUtils.getStackCount() <= 1 ) finish();
+        if( mFragmentUtils.getStackCount() <= 1 ) finish();
         else {
             super.onBackPressed();
 
@@ -51,8 +53,7 @@ public class BridgeFile extends FragmentActivity {
         viewMatching(  );
 
         // Fragment inits
-        FragmentUtils.containerId = CONTAINER_ID;
-        FragmentUtils.activity = this;
+        mFragmentUtils = FragmentUtils.newInstance(this, CONTAINER_ID);
 
         // display main page
         mainPage();
@@ -61,7 +62,7 @@ public class BridgeFile extends FragmentActivity {
 
     /** Feature methods */
     private void mainPage(){
-        FragmentUtils.replaceFragment( new MainPage() );
+        mFragmentUtils.replaceFragment( new MainPage() );
     }
 
     /** View matching */

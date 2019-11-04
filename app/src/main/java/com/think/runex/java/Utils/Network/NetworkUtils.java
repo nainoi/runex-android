@@ -11,6 +11,7 @@ import java.net.HttpURLConnection;
 import java.util.concurrent.TimeUnit;
 
 import okhttp3.MediaType;
+import okhttp3.MultipartBody;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.RequestBody;
@@ -41,6 +42,17 @@ public class NetworkUtils {
     /**
      * Feature methods
      */
+    private void addHeaders(NetworkProps props, Request.Builder builder) {
+
+        for (int a = 0; a < props.headers.size(); a++) {
+            // prepare usage variables
+            final String[][] header = props.headers.get(a);
+
+            // add header
+            builder.addHeader(header[0][0], header[0][1]);
+        }
+    }
+
     private void onSuccess(int statusCode, String json, onNetworkCallback callback) {
         activity.runOnUiThread(new Runnable() {
             @Override
@@ -49,11 +61,11 @@ public class NetworkUtils {
                 xResponse rsp = new xResponse();
 
                 // update props
-                rsp.setResponseCode( statusCode);
-                rsp.setJsonString( json );
+                rsp.setResponseCode(statusCode);
+                rsp.setJsonString(json);
 
                 // trigger
-                callback.onSuccess( rsp );
+                callback.onSuccess(rsp);
 
             }
         });
@@ -68,10 +80,10 @@ public class NetworkUtils {
 
                 // update props
                 rsp.setResponseCode(statusCode);
-                rsp.setJsonString(Globals.GSON.toJson( e ));
+                rsp.setJsonString(Globals.GSON.toJson(e));
 
                 // trigger
-                callback.onFailure( rsp );
+                callback.onFailure(rsp);
 
             }
         });
@@ -92,13 +104,8 @@ public class NetworkUtils {
                     Request.Builder builder = new Request.Builder()
                             .url(props.url);
 
-                    for (int a = 0; a < props.headers.size(); a++) {
-                        // prepare usage variables
-                        final String[][] header = props.headers.get(a);
-
-                        // add header
-                        builder.addHeader(header[0][0], header[0][1]);
-                    }
+                    // add headers
+                    addHeaders(props, builder);
 
                     // prepare usage variables
                     Request request = builder.build();
@@ -129,25 +136,72 @@ public class NetworkUtils {
         thread(runner);
     }
 
+    public void postFormData(NetworkProps props, onNetworkCallback callback) {
+        // prepare usage variables
+        final String mtn = ct + "postFormData() ";
+        final Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // prepare usage variables
+                    MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
+                            .setType(MultipartBody.FORM);
+
+                    // add parts
+                    for (int a = 0; a < props.multiParts.size(); a++) {
+                        // prepare usage variables
+                        final Object[][] part = props.multiParts.get(a);
+
+                        L.i(mtn + "Part name: " + part[0][0] + " val: " + part[0][1]);
+
+//                        // conditions
+                        if (part[0][2] != null)
+                            multipartBuilder.addFormDataPart(part[0][0] + "", part[0][1] + "", (RequestBody) part[0][2]);
+                        else {
+                            multipartBuilder.addFormDataPart(part[0][0] + "", part[0][1] + "");
+
+                        }
+                    }
+
+                    RequestBody body = multipartBuilder.build();
+                    Request.Builder builder = new Request.Builder()
+                            .url(props.url)
+                            .post(body);
+
+                    try (Response response = getHttpClient().newCall(builder.build()).execute()) {
+                        onSuccess(response.code(), response.body().string(), callback);
+
+                    } catch (Exception e) {
+                        L.e(mtn + "Err: " + e.getMessage());
+                        onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+
+                    }
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
+                    onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+
+                }
+            }
+        };
+
+        thread(runner);
+    }
+
     public void postJSON(NetworkProps props, onNetworkCallback callback) {
         // prepare usage variables
         final String mtn = ct + "postJSON() ";
         final Runnable runner = new Runnable() {
             @Override
             public void run() {
+                // prepare usage variables
                 RequestBody body = RequestBody.create(new Gson().toJson(props.jsonAsObject), JSON);
                 Request.Builder builder = new Request.Builder()
                         .url(props.url)
                         .post(body);
 
                 // add headers
-                for (int a = 0; a < props.headers.size(); a++) {
-                    // prepare usage variables
-                    final String[][] header = props.headers.get(a);
-
-                    // add header
-                    builder.addHeader(header[0][0], header[0][1]);
-                }
+                addHeaders(props, builder);
 
                 // build request
                 Request request = builder.build();
@@ -155,12 +209,12 @@ public class NetworkUtils {
                 try (Response response = getHttpClient().newCall(request).execute()) {
 
                     // response as temporary redirect
-                    if( response.code() == HTTP_TEMPORARY_DERIRECT ){
+                    if (response.code() == HTTP_TEMPORARY_DERIRECT) {
                         // prepare usage variables
                         String redirectUrl = response.header("Location");
 
                         // conditions
-                        if( redirectUrl != null && !redirectUrl.isEmpty()){
+                        if (redirectUrl != null && !redirectUrl.isEmpty()) {
                             // update props
                             props.url = DOMAIN.VAL + redirectUrl;
 
@@ -182,6 +236,7 @@ public class NetworkUtils {
 
 
     }
+
     private OkHttpClient getHttpClient() {
         HttpLoggingInterceptor logging = new HttpLoggingInterceptor();
         logging.level(HttpLoggingInterceptor.Level.BODY);

@@ -12,13 +12,9 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
-import com.google.android.gms.common.ConnectionResult;
-import com.google.android.gms.common.api.GoogleApiClient;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -30,12 +26,14 @@ import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xDump;
+import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Pages.SendRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Location.FusedLocationProviderUtils;
 import com.think.runex.java.Utils.Location.LocationTrackingCallback;
 import com.think.runex.java.Utils.Location.LocationUtils;
 import com.think.runex.java.Utils.PermissionUtils;
@@ -43,13 +41,9 @@ import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
 import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecordActivity extends FragmentActivity implements OnMapReadyCallback
         , View.OnClickListener
-//        , GoogleApiClient.ConnectionCallbacks
-//        , GoogleApiClient.OnConnectionFailedListener
         , onRecorderCallback {
     /**
      * Main variables
@@ -123,6 +117,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     // explicit variables
     private boolean mZoomOnce = false;
+    private final int CONTAINER_ID = R.id.display_fragment_frame;
 
     // views
     private TextView lbTime;
@@ -159,8 +154,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 // pause
                 mRecorderUtils.pause();
 
-                // print
-                mMapUtils.print10Location();
+                // to send running result page
+                toSendRunningResultPage();
 
                 break;
         }
@@ -219,8 +214,6 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         }
 
     }
-
-//    private GoogleApiClient mGoogleApiClient;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -297,6 +290,11 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     /**
      * Feature methods
      */
+    private void toSendRunningResultPage(){
+        // prepare usage variables
+        FragmentUtils fu = FragmentUtils.newInstance(this, CONTAINER_ID);
+        fu.replaceFragmentWithAnim(new SendRunningResultPage());
+    }
     private void beforeGPSRecording() {
         // prepare usage variables
         final String mtn = ct + "beforeGPSRecording() ";

@@ -81,10 +81,13 @@ public class GoogleMapUtils {
         points.add(new LatLng(to.latitude, to.longitude));
 
         // prepare usage variables
+        final float polyWidth = mMap.getCameraPosition().zoom % 3 == 0
+                ? mMap.getCameraPosition().zoom / 3
+                : 5;
         final int color = Color.parseColor(Configs.GoogleMap.Polyline.COLOR);
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
                 .clickable(true)
-                .width(Configs.GoogleMap.Polyline.WIDTH)
+                .width(polyWidth)
                 .add(points.toArray(new LatLng[points.size()])));
 //                .add(new LatLng(from.latitude, from.longitude),
 //                        new LatLng(to.latitude, to.longitude)));
@@ -119,13 +122,5 @@ public class GoogleMapUtils {
 
         // return
         return distance;
-    }
-
-    private double deg2rad(double deg) {
-        return (deg * Math.PI / 180.0);
-    }
-
-    private double rad2deg(double rad) {
-        return (rad * 180.0 / Math.PI);
     }
 }

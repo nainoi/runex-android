@@ -56,8 +56,7 @@ public class EventsPage extends xFragment {
                     mApp.serveLoginPage( EventsPage.this, Globals.RC_NEED_LOGIN);
 
                 } else if( appEntity.token.isAlive() ){
-                    L.i(mtn +"activity["+ activity +"]");
-                    Toast.makeText(activity, "Hello "+ appEntity.user.getData().getFirstname_th(), Toast.LENGTH_SHORT).show();
+                    Toast.makeText(activity, "Hello "+ appEntity.user.getData().getFullname(), Toast.LENGTH_SHORT).show();
                 }
 
             }

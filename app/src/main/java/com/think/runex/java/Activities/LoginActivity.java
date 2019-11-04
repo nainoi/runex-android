@@ -93,14 +93,15 @@ public class LoginActivity extends FragmentActivity implements
     public void onLoginWithSocialCompleted(int platform, @NotNull UserProvider userProvider) {
         // prepare usage variables
         final String mtn = ct + "onLoginWithSocialCompleted() ";
-        final rqSocialPd request = getRqSocialPd( platform, userProvider );
+        final rqSocialPd request = getRqSocialPd(platform, userProvider);
 
-        L.i(mtn + "Social login completed with: " + SocialPlatform.Companion.platformText(platform));
-        L.i(mtn + "User: $userProvider" + Globals.GSON.toJson(userProvider));
+        L.i(mtn + " * * * Social Login Completed * * * ");
+        L.i(mtn + "platform: " + SocialPlatform.Companion.platformText(platform));
+        L.i(mtn + "user's provider: " + Globals.GSON.toJson(userProvider));
+        L.i(mtn + "request PD: " + Globals.GSON.toJson(request));
 
         // request token
-        apiSocialsLogin( request );
-
+        apiSocialsLogin(request);
 
     }
 
@@ -148,6 +149,7 @@ public class LoginActivity extends FragmentActivity implements
     /**
      * Feature methods
      */
+
     private void updateAppEntity(AppEntity appEntity) {
         App.instance(this).save(appEntity);
 
@@ -183,14 +185,14 @@ public class LoginActivity extends FragmentActivity implements
                 try {
 
                     // prepare usage variables
-                    UserObject user = Globals.GSON.fromJson( response.jsonString, UserObject.class);
+                    UserObject user = Globals.GSON.fromJson(response.jsonString, UserObject.class);
                     App app = App.instance(LoginActivity.this);
 
                     // save
-                    AppEntity appEntity = app.getAppEntity().setUser( user );
+                    AppEntity appEntity = app.getAppEntity().setUser(user);
 
                     // commit
-                    app.save( appEntity );
+                    app.save(appEntity);
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e);
@@ -218,26 +220,60 @@ public class LoginActivity extends FragmentActivity implements
             }
         }).doIt();
     }
-    private void apiSocialsLogin( rqSocialPd request ){
+
+    private void apiSocialsLogin(rqSocialPd request) {
         // prepare usage variables
-        final String mtn = ct +"apiSocialLogin() ";
+        final String mtn = ct + "apiSocialLogin() ";
 
         // fire
         new SocialsLoginPdService(this, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                L.i(mtn +"code: "+ response.responseCode);
-                L.i(mtn +"body: "+ response.jsonString);
+                L.i(mtn + "onSuccess: " + response.jsonString);
+
+                try {
+                    // prepare usage variables
+                    final String jsonString = response.jsonString;
+                    final AppEntity appEntity = App.instance(LoginActivity.this).getAppEntity();
+                    final TokenObject token = Globals.GSON.fromJson(jsonString, TokenObject.class);
+
+                    // update token
+                    appEntity.setToken(token);
+                    //--> confirm user has logged in
+                    appEntity.setLoggedIn(true);
+
+                    // commit
+                    updateAppEntity(appEntity);
+
+                    // call user profile
+                    apiGetProfile();
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e);
+
+                    // set activity result
+                    setResult(Activity.RESULT_CANCELED);
+
+                    // exit from this process
+                    finish();
+
+                }
+
+
             }
 
             @Override
             public void onFailure(xResponse response) {
-                L.e(mtn +"code: "+ response.responseCode);
-                L.e(mtn +"body: "+ response.jsonString);
+                L.e(mtn + "code: " + response.responseCode);
+                L.e(mtn + "body: " + response.jsonString);
+
+                // set activity result
+                setResult(Activity.RESULT_CANCELED);
 
             }
-        }).doIt( request );
+        }).doIt(request);
     }
+
     private void apiLogin(rqLogin request) {
         // prepare usage variables
         final String mtn = ct + "apiLogin() ";
@@ -295,28 +331,32 @@ public class LoginActivity extends FragmentActivity implements
 
     }
 
-    /** Getter */
-    private rqSocialPd getRqSocialPd(int platform, UserProvider userProvider){
+    /**
+     * Getter
+     */
+    private rqSocialPd getRqSocialPd(int platform, UserProvider userProvider) {
         // prepare usage variables
-        final String mtn = ct +"getRqSocialPd() ";
+        final String mtn = ct + "getRqSocialPd() ";
         final rqSocialPd rq = new rqSocialPd();
+
+        Toast.makeText(this, "fn: " + userProvider.getFirstName(), Toast.LENGTH_SHORT).show();
 
         rq.setAvartar(userProvider.getAvatar());
         rq.setEmail(userProvider.getEmail());
         rq.setFirst_name(userProvider.getFirstName());
         rq.setLast_name(userProvider.getLastName());
-        rq.setFullname(userProvider.getFirstName() +" "+ userProvider.getLastName());
+        rq.setFullname(userProvider.getFirstName() + " " + userProvider.getLastName());
         rq.setPf(Globals.PLATFORM);
-        rq.setProvider_id( userProvider.getId() );
+        rq.setProvider_id(userProvider.getId());
         rq.setVersions("versions");
 
-        if(SocialPlatform.Companion.platformText(platform).equalsIgnoreCase("Google")){
+        if (SocialPlatform.Companion.platformText(platform).equalsIgnoreCase("Google")) {
             rq.setProvider("GoogleID");
 
-        } else if(SocialPlatform.Companion.platformText(platform).equalsIgnoreCase("Facebook")){
+        } else if (SocialPlatform.Companion.platformText(platform).equalsIgnoreCase("Facebook")) {
             rq.setProvider(userProvider.getId());
 
-        } else L.e(mtn +"Patlform does not match.");
+        } else L.e(mtn + "Platform does not match.");
 
         return rq;
     }
