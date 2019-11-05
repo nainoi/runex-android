@@ -6,11 +6,16 @@ import java.util.List;
 public class NetworkProps {
     public String url;
     public List<String[][]> headers = new ArrayList<>();
-    public List<String[][]> multiParts = new ArrayList<>();
+    public List<Object[][]> multiParts = new ArrayList<>();
     public Object jsonAsObject;
 
     public NetworkProps addMultiParts(String name, String value){
-        String[][] s = { {name, value} };
+        addMultiParts(name, value, null);
+
+        return this;
+    }
+    public NetworkProps addMultiParts(String name, String value, Object any){
+        Object[][] s = { {name, value, any} };
         multiParts.add( s );
         return this;
     }

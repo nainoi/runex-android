@@ -12,6 +12,9 @@
     <color name="textColorSecondary">#666666</color>
     <color name="textColorHint">#999999</color>
 
+    <!-- Social colors -->
+    <color name="textLoginWithGoogle">@color/materialBlack</color>
+
     <color name="icon">#555555</color>
     <!-- Not have math color for iconOnLightSurface-->
     <color name="iconSurface">#00000000</color>
@@ -27,4 +30,5 @@
     <color name="orangeDark">#C03100</color>
     <color name="overlayDark">#77000000</color>
     <color name="softGray">#EFEFEF</color>
+    <color name="materialBlack">#46494B</color>
 </resources>

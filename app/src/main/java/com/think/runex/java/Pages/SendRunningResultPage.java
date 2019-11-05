@@ -17,6 +17,7 @@ import com.think.runex.java.Customize.xFragment;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
+import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
@@ -76,16 +77,12 @@ public class SendRunningResultPage extends xFragment
     /** API methods */
     private void apiSubmitRunningResult(){
         // prepare usage variables
-        final double distKm = 0.1;
-        final String submitDate = Globals.SDF.format( System.currentTimeMillis() ).toString();
-        NetworkProps props = new NetworkProps();
+        rqSubmitRunningResult request = new rqSubmitRunningResult();
 
         //--> update props
-        props.setUrl( APIs.SUBMIT_RUNNING_RESULT.VAL );
-        props.addMultiParts("distance", distKm +"");
-        props.addMultiParts("activity_date", submitDate);
-        props.addMultiParts("activity_type", "");
-        props.addMultiParts("event_id", Globals.EVENT_ID);
+        request.distance = 0.1;
+        request.event_id = Globals.EVENT_ID;
+        request.activity_date = System.currentTimeMillis();
 
         // submit running result
         new SubmitRunningResultService(activity, new onNetworkCallback() {
@@ -104,7 +101,7 @@ public class SendRunningResultPage extends xFragment
                 L.i(mtn +"json-string: "+ response.jsonString);
 
             }
-        }).doIt( props );
+        }).doIt( request );
     }
 
     /** View event listener */

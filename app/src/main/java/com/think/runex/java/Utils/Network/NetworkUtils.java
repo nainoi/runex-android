@@ -168,6 +168,9 @@ public class NetworkUtils {
                             .url(props.url)
                             .post(body);
 
+                    // add headers
+                    addHeaders(props, builder);
+
                     try (Response response = getHttpClient().newCall(builder.build()).execute()) {
                         onSuccess(response.code(), response.body().string(), callback);
 
