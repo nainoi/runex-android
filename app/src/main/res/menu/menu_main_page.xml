@@ -4,28 +4,28 @@
     <item
         android:id="@+id/menu_home"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_home"
         android:title="@string/events"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_my_events"
         android:enabled="true"
-        android:icon="@drawable/ic_landscape"
+        android:icon="@drawable/ic_my_event"
         android:title="@string/my_events"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_record"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_record"
         android:title="@string/record"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_profile"
         android:enabled="true"
-        android:icon="@drawable/ic_launcher_background"
+        android:icon="@drawable/ic_my_profile"
         android:title="@string/challenges"
         app:showAsAction="ifRoom" />
 

@@ -27,10 +27,13 @@ public class xSmallTextView extends AppCompatTextView {
     }
 
     private void init(){
-        point = DeviceUtils.instance( getContext() ).getDisplaySize();
-        final int size = (int)((point.x * 3.5) / 100);
+        if( Constant.SMALL_TEXT == -1 ) {
+            point = DeviceUtils.instance(getContext()).getDisplaySize();
+            Constant.SMALL_TEXT = (int)((point.x * 3.5) / 100);
 
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        }
+
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, Constant.SMALL_TEXT);
     }
 
 }

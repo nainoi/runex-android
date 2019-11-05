@@ -30,5 +30,6 @@
     <color name="orangeDark">#C03100</color>
     <color name="overlayDark">#77000000</color>
     <color name="softGray">#EFEFEF</color>
+    <color name="softGrayAlpha">#B2F0F0F0</color>
     <color name="materialBlack">#46494B</color>
 </resources>

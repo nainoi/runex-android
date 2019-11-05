@@ -116,13 +116,15 @@
                             android:id="@+id/input_distance"
                             android:hint="ระยะทาง"
                             android:paddingLeft="8dp"
-                            android:digits="01234567890"
                             android:paddingRight="8dp"
                             android:paddingTop="4dp"
                             android:paddingBottom="4dp"
                             android:background="@android:color/transparent"
                             android:layout_width="0dp"
+                            android:digits=".01234567890"
+                            android:text="0.00"
                             android:layout_weight="1.6"
+                            android:textSize="18dp"
                             android:maxLines="1"
                             android:layout_height="wrap_content"/>
 
@@ -156,11 +158,12 @@
 
                 <!-- Date -->
                 <LinearLayout
+                    android:id="@+id/frame_submit_date"
                     android:orientation="vertical"
                     android:layout_width="0dp"
                     android:layout_weight="1"
                     android:paddingLeft="4dp"
-                    android:layout_height="wrap_content">
+                    android:layout_height="match_parent">
 
                     <TextView
                         android:id="@+id/v_date"
@@ -169,17 +172,20 @@
                         android:text="Date"
                         android:textColor="@android:color/black" />
 
-                    <EditText
+                    <TextView
                         android:id="@+id/input_date"
-                        android:hint="วันที่"
                         android:paddingLeft="8dp"
                         android:paddingRight="8dp"
                         android:paddingTop="4dp"
+                        android:textSize="18dp"
+                        android:text="1991/11/05"
+                        android:gravity="center_vertical"
                         android:paddingBottom="4dp"
+                        android:textColor="@android:color/black"
                         android:background="@drawable/background_white_with_4_corners_gray_stroke"
                         android:layout_width="match_parent"
                         android:maxLines="1"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="match_parent"/>
 
                 </LinearLayout>
 

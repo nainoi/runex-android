@@ -27,10 +27,13 @@ public class xEventNameTextView extends AppCompatTextView {
     }
 
     private void init(){
-        point = DeviceUtils.instance( getContext() ).getDisplaySize();
-        final int size = (int)((point.x * 5.5) / 100);
+        if( Constant.EVENT_NAME == -1 ) {
+            point = DeviceUtils.instance(getContext()).getDisplaySize();
+            Constant.EVENT_NAME = (int) ((point.x * 5.5) / 100);
 
-        setTextSize(TypedValue.COMPLEX_UNIT_PX, size);
+        }
+
+        setTextSize(TypedValue.COMPLEX_UNIT_PX, Constant.EVENT_NAME);
     }
 
 }

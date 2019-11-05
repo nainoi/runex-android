@@ -79,6 +79,9 @@
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
+    <string name="start_recording">เริ่มจับเวลา</string>
+    <string name="pause_recording">พักจับเวลา</string>
+    <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
 
 
     <!-- Y -->

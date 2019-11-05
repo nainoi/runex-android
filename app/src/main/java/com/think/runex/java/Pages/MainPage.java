@@ -2,6 +2,8 @@ package com.think.runex.java.Pages;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.DisplayMetrics;
+import android.util.TypedValue;
 import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
@@ -11,6 +13,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Activities.RecordActivity;
@@ -42,10 +45,32 @@ public class MainPage extends xFragment {
         // view event listener
         viewEventListener();
 
+        // custom bottom navigation item
+        customBottomNavMenu();
+
         return v;
     }
 
     /** Feature methods */
+    private void customBottomNavMenu(){
+        // prepare usage variables
+        BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
+
+        for (int i = 0; i < menuView.getChildCount(); i++) {
+            // prepare usage variables
+            final View icon = menuView.getChildAt(i).findViewById(com.google.android.material.R.id.icon);
+            final ViewGroup.LayoutParams layoutParams = icon.getLayoutParams();
+            final DisplayMetrics displayMetrics = getResources().getDisplayMetrics();
+
+            // update layout params
+            layoutParams.height = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 24, displayMetrics);
+            layoutParams.width = (int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 48, displayMetrics);
+
+            // update layout params
+            icon.setLayoutParams(layoutParams);
+
+        }
+    }
     private void recordPage(){
         Intent i = new Intent(activity, RecordActivity.class);
         startActivityForResult(i, 0);

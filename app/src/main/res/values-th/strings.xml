@@ -76,6 +76,8 @@
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
+    <string name="start_recording">เริ่มจับเวลา</string>
+    <string name="pause_recording">พักจับเวลา</string>
 
     <!-- Y -->
 

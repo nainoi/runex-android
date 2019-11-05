@@ -5,13 +5,20 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Color;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.AttributeSet;
 import android.view.View;
+import android.view.ViewTreeObserver;
 import android.widget.Button;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
@@ -21,15 +28,15 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
 import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Constants.xDump;
-import com.think.runex.java.Customize.xFragment;
 import com.think.runex.java.Pages.SendRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
+import com.think.runex.java.Utils.Animation.AnimUtils;
+import com.think.runex.java.Utils.Animation.onAnimCallback;
+import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
@@ -40,7 +47,11 @@ import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
+import java.io.File;
 import java.text.DecimalFormat;
+
+import cl.jesualex.stooltip.Position;
+import cl.jesualex.stooltip.Tooltip;
 
 public class RecordActivity extends FragmentActivity implements OnMapReadyCallback
         , View.OnClickListener
@@ -117,13 +128,16 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     // explicit variables
     private boolean mZoomOnce = false;
+    private boolean mOnRecording = false;
     private final int CONTAINER_ID = R.id.display_fragment_frame;
 
     // views
+    private TextView lbRecordingState;
+    private ImageView icRecordState;
     private TextView lbTime;
     private TextView lbDistance;
-    private Button btnStart, btnPause;
-
+    private TextView btnStart;
+    private View btnStopAndSubmit;
 
     /**
      * Implement methods
@@ -139,20 +153,28 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
         switch (view.getId()) {
             case R.id.btn_start:
-                // start recording
-                mRecorderUtils.start();
 
-                // start service
-                startService();
+                // going to stop recording
+                if (mOnRecording) {
+                    // log
+                    L.i(mtn + "on recording. -> going to pause recording.");
+
+                    // paused
+                    paused();
+
+                    // exit from this process
+                    return;
+                }
+
+                // start
+                start();
 
                 break;
-            case R.id.btn_pause:
 
-                // stop service
-                stopService();
+            case R.id.frame_stop_and_submit:
 
-                // pause
-                mRecorderUtils.pause();
+                // paused
+                paused();
 
                 // to send running result page
                 toSendRunningResultPage();
@@ -285,16 +307,120 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         // init map
         initMap();
 
+        btnStopAndSubmit.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+
+                // hide
+                btnStopAndSubmit.setVisibility(View.GONE);
+
+                // remove listener
+                btnStopAndSubmit.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+            }
+        });
+
     }
 
     /**
      * Feature methods
      */
-    private void toSendRunningResultPage(){
+    private void animScaleOut() {
+        AnimUtils.instance()
+                .scaleOut(btnStopAndSubmit, new onAnimCallback() {
+                    @Override
+                    public void onEnd() {
+
+                    }
+
+                    @Override
+                    public void onStart() {
+                        btnStopAndSubmit.setVisibility(View.VISIBLE);
+
+                    }
+                });
+
+    }
+
+    private void anim(int drawerId) {
+        AnimUtils.instance().fadeOut(icRecordState, 100, 0, new onAnimCallback() {
+            @Override
+            public void onEnd() {
+                AnimUtils.instance().fadeIn(icRecordState, 150, 0, new onAnimCallback() {
+                    @Override
+                    public void onEnd() {
+                    }
+
+                    @Override
+                    public void onStart() {
+                        icRecordState.setImageDrawable(getDrawable(drawerId));
+
+                    }
+                });
+
+            }
+
+            @Override
+            public void onStart() {
+            }
+        });
+    }
+
+    private void start(){
+        // update flag
+        mOnRecording = true;
+
+        // start recording
+        startRecording();
+
+        // anim
+        anim(android.R.drawable.ic_media_pause);
+
+        // scale stop button
+        animScaleOut();
+
+        // recording state description
+        lbRecordingState.setText(getString(R.string.pause_recording));
+    }
+    private void paused(){
+        // hide stop button
+        btnStopAndSubmit.setVisibility(View.GONE);
+
+        // anim pause
+        anim(android.R.drawable.ic_media_play);
+
+        // pause recording
+        pauseRecording();
+
+        // clear flag
+        mOnRecording = false;
+
+        // recording state description
+        lbRecordingState.setText(getString(R.string.start_recording));
+    }
+
+    private void startRecording() {
+        // start recording
+        mRecorderUtils.start();
+
+        // start service
+        startService();
+    }
+
+    private void pauseRecording() {
+        // stop service
+        stopService();
+
+        // pause
+        mRecorderUtils.pause();
+    }
+
+    private void toSendRunningResultPage() {
         // prepare usage variables
         FragmentUtils fu = FragmentUtils.newInstance(this, CONTAINER_ID);
         fu.replaceFragmentWithAnim(new SendRunningResultPage());
     }
+
     private void beforeGPSRecording() {
         // prepare usage variables
         final String mtn = ct + "beforeGPSRecording() ";
@@ -320,7 +446,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
      */
     private void viewEventListener() {
         btnStart.setOnClickListener(this);
-        btnPause.setOnClickListener(this);
+        btnStopAndSubmit.setOnClickListener(this);
     }
 
     /**
@@ -329,8 +455,11 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     private void matchingViews() {
         lbDistance = findViewById(R.id.lb_distance);
         lbTime = findViewById(R.id.lb_time);
+        lbRecordingState = findViewById(R.id.lb_recording_state_description);
         btnStart = findViewById(R.id.btn_start);
-        btnPause = findViewById(R.id.btn_pause);
+        btnStopAndSubmit = findViewById(R.id.frame_stop_and_submit);
+        icRecordState = findViewById(R.id.ic_recording_state);
+
     }
 
     /**
@@ -390,5 +519,6 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
         // conditions
         beforeGPSRecording();
+
     }
 }
