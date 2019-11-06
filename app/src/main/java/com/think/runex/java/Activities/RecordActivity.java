@@ -26,10 +26,12 @@ import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Pages.ListOfRunningPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.Animation.AnimUtils;
 import com.think.runex.java.Utils.Animation.onAnimCallback;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
@@ -54,6 +56,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     // instance variables
     private DecimalFormat df = new DecimalFormat("#.##");
+    private FragmentUtils mFUtils;
     private LocationUtils mLocUtils;
     private PermissionUtils mPmUtils;
     private GoogleMapUtils mMapUtils;
@@ -94,6 +97,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     private TextView lbDistance;
     private TextView btnStart;
     private View btnStopAndSubmit;
+    private View frameRecording;
     //--> Running summary frame
     private View frameSummary;
     private TextView inputDistance, inputDisplayTime, inputStep, inputCalories;
@@ -101,7 +105,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onBackPressed() {
-        if (mOnDisplaySummary) {
+        if( mFUtils.getStackCount() > 0 ) getSupportFragmentManager().popBackStack();
+        else if (mOnDisplaySummary) {
             // clear flag
             mOnDisplaySummary = false;
 
@@ -129,24 +134,26 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
             case R.id.btn_submit_result:
                 Toast.makeText(this, "submit", Toast.LENGTH_SHORT).show();
 
-                // reset result
-                reset();
-
-                // refresh views
-                binding();
-
-                // hide stop button
-                btnStopAndSubmit.setVisibility(View.GONE);
-
-                // change start button
-                // description
-                lbRecordingState.setText(getString(R.string.start_recording));
-
-                // clear flag
-                mOnDisplaySummary = false;
-
-                // hide summary frame
-                hideSummaryFrame();
+                // to list of running page
+                toListOfRunningPage();
+//                // reset result
+//                reset();
+//
+//                // refresh views
+//                binding();
+//
+//                // hide stop button
+//                btnStopAndSubmit.setVisibility(View.GONE);
+//
+//                // change start button
+//                // description
+//                lbRecordingState.setText(getString(R.string.start_recording));
+//
+//                // clear flag
+//                mOnDisplaySummary = false;
+//
+//                // hide summary frame
+//                hideSummaryFrame();
 
                 break;
 
@@ -187,7 +194,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 mMapUtils.zoomToFit();
 
                 // display summary frame
-                displaySummaryFrame();
+                displaySummaryFrame( recorderObj );
 
                 break;
         }
@@ -267,6 +274,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         // Activity utils
         ActivityUtils actUtls = ActivityUtils.newInstance(this);
         actUtls.fullScreen();
+        //--> Fragment utils
+        mFUtils = FragmentUtils.newInstance(this, CONTAINER_ID);
 
         //--> Location utils
         mLocUtils = LocationUtils.newInstance(this);
@@ -291,6 +300,9 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     /**
      * Feature methods
      */
+    private void toListOfRunningPage(){
+        mFUtils.replaceFragment( new ListOfRunningPage());
+    }
     private void locationChanged(xLocation location) {
         // prepare usage variables
         final String mtn = ct + "locationChanged() ";
@@ -338,6 +350,13 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
+    private void bindingSummary(RecorderObject recorder ){
+        inputDisplayTime.setText( recorder.recordingDisplayTime );
+        inputDistance.setText( Globals.DCM.format(recorder.distanceKm) +"km");
+        inputStep.setText( recorder.step +"");
+        inputCalories.setText( recorder.calories +"");
+
+    }
     private void binding() {
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
         lbDistance.setText(df.format(mRecorderUtils.mRecordDistanceKm) + "km");
@@ -372,9 +391,14 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
             }
         });
+
     }
 
-    private void displaySummaryFrame() {
+    private void displaySummaryFrame(RecorderObject recorder ) {
+        // binding views summary
+        bindingSummary( recorder );
+
+        //--> animation
         AnimUtils.instance().translateUp(frameSummary, new onAnimCallback() {
             @Override
             public void onEnd() {
@@ -546,9 +570,14 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         btnStart = findViewById(R.id.btn_start);
         btnStopAndSubmit = findViewById(R.id.frame_stop_and_submit);
         icRecordState = findViewById(R.id.ic_recording_state);
+        frameRecording = findViewById(R.id.frame_recording);
 
         //--> Summary views
         frameSummary = findViewById(R.id.frame_summary);
+        inputDistance = frameSummary.findViewById(R.id.lb_distance);
+        inputDisplayTime = frameSummary.findViewById(R.id.lb_time);
+        inputStep = frameSummary.findViewById(R.id.lb_step);
+        inputCalories = frameSummary.findViewById(R.id.lb_calories);
         btnSubmit = frameSummary.findViewById(R.id.btn_submit_result);
     }
 

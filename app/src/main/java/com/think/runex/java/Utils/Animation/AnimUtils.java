@@ -29,6 +29,31 @@ public class AnimUtils {
 
     }
 
+    public void alittleTranslateUp(View v, onAnimCallback callback) {
+        ValueAnimator va = ValueAnimator.ofInt((v.getHeight() * 10) / 100, 0);
+        int mDuration = 1; //in millis
+        va.setDuration(mDuration);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v.setTranslationY( (int)animation.getAnimatedValue());
+            }
+        });
+        va.start();
+    }
+    public void alittleTranslateDown(View v, onAnimCallback callback) {
+        ValueAnimator va = ValueAnimator.ofInt(0, (v.getHeight() * 10) / 100);
+        int mDuration = 250; //in millis
+        va.setDuration(mDuration);
+        va.setStartDelay(200);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v.setTranslationY( (int)animation.getAnimatedValue());
+            }
+        });
+        va.start();
+    }
     public void translateDown(View v, onAnimCallback callback) {
         ValueAnimator va = ValueAnimator.ofInt(0, v.getHeight());
         int mDuration = 250; //in millis
