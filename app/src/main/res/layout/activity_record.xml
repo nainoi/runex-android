@@ -7,12 +7,6 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
-    <ImageView
-        android:id="@+id/test"
-        android:layout_width="200dp"
-        android:visibility="gone"
-        android:layout_height="200dp"/>
-
     <FrameLayout
         android:id="@+id/frame_map"
         android:layout_width="match_parent"
@@ -27,12 +21,12 @@
 
     </FrameLayout>
 
-    <!--  Recording & Information sections  -->
+    <!-- Record -->
     <LinearLayout
+        android:layout_alignParentBottom="true"
         android:id="@+id/frame_recording"
         android:orientation="vertical"
         android:padding="8dp"
-        android:layout_alignParentBottom="true"
         android:background="@android:color/white"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
@@ -46,22 +40,23 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <!-- Time -->
+            <!-- Distance -->
             <TextView
-                android:id="@+id/v_time"
+                android:id="@+id/v_distance"
                 android:textSize="16dp"
-                android:text="ระยะเวลา"
+                android:text="@string/distance"
                 android:gravity="center"
                 android:textColor="@android:color/black"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"/>
 
             <TextView
-                android:id="@+id/lb_time"
+                android:id="@+id/lb_distance"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
+                android:text="0km"
+                android:maxLines="1"
                 android:gravity="center"
-                android:text="00:00:00"
                 android:textColor="@android:color/black"
                 android:textSize="56dp"
                 android:textStyle="bold" />
@@ -86,20 +81,21 @@
                     android:paddingBottom="12dp">
 
                     <TextView
-                        android:id="@+id/v_distance"
+                        android:id="@+id/v_time"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ระยะทาง"
+                        android:text="@string/time"
                         android:textColor="@android:color/black" />
 
                     <TextView
-                        android:id="@+id/lb_distance"
-                        android:layout_width="wrap_content"
+                        android:id="@+id/lb_time"
+                        android:layout_width="match_parent"
                         android:layout_height="wrap_content"
-                        android:text="0km"
-                        android:maxLines="1"
+                        android:gravity="center"
+                        android:text="00:00:00"
                         android:textColor="@color/orange"
                         android:textSize="18dp" />
+
 
                 </LinearLayout>
 
@@ -168,6 +164,7 @@
             android:layout_width="match_parent"
             android:orientation="horizontal"
             android:layout_alignParentBottom="true"
+            android:layout_marginBottom="8dp"
             android:gravity="center"
             android:layout_height="wrap_content">
 
@@ -187,8 +184,8 @@
 
                     <TextView
                         android:id="@+id/btn_start"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@android:color/white"
@@ -212,7 +209,6 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="2dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="18dp"
                     android:background="@drawable/background_recording_state_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -236,8 +232,8 @@
 
                     <TextView
                         android:id="@+id/btn_pause"
-                        android:layout_width="85dp"
-                        android:layout_height="85dp"
+                        android:layout_width="75dp"
+                        android:layout_height="75dp"
                         android:gravity="center"
                         android:text=""
                         android:textColor="@android:color/white"
@@ -260,7 +256,6 @@
                     android:paddingHorizontal="8dp"
                     android:paddingVertical="2dp"
                     android:layout_marginTop="8dp"
-                    android:layout_marginBottom="18dp"
                     android:background="@drawable/background_recording_state_description"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
@@ -272,6 +267,13 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <include
+        android:id="@+id/frame_summary"
+        android:layout_alignParentBottom="true"
+        layout="@layout/frame_record_summary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"/>
 
     <FrameLayout
         android:id="@+id/display_fragment_frame"

@@ -1,10 +1,14 @@
 package com.think.runex.java.Utils.Animation;
 
 import android.animation.Animator;
+import android.animation.ValueAnimator;
 import android.view.View;
+import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
 import android.view.animation.Animation;
 import android.view.animation.AnimationSet;
+import android.view.animation.DecelerateInterpolator;
+import android.view.animation.Interpolator;
 import android.view.animation.ScaleAnimation;
 import android.view.animation.TranslateAnimation;
 
@@ -25,32 +29,57 @@ public class AnimUtils {
 
     }
 
+    public void translateDown(View v, onAnimCallback callback) {
+        ValueAnimator va = ValueAnimator.ofInt(0, v.getHeight());
+        int mDuration = 250; //in millis
+        va.setDuration(mDuration);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v.setTranslationY( (int)animation.getAnimatedValue());
+            }
+        });
+        va.start();
+    }
+    public void translateUp(View v, onAnimCallback callback) {
+        ValueAnimator va = ValueAnimator.ofInt(v.getHeight(), 0);
+        int mDuration = 500; //in millis
+        va.setDuration(mDuration);
+        va.setInterpolator(new DecelerateInterpolator());
+        va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
+            public void onAnimationUpdate(ValueAnimator animation) {
+                v.setTranslationY( (int)animation.getAnimatedValue());
+            }
+        });
+        va.start();
+    }
+
     public void scaleOut(View v, onAnimCallback callback) {
         float x = v.getX();
         int w = v.getWidth();
 
         Animation translateAnim = new TranslateAnimation(x - (w * 2), 1f,
-                1f, 1f );
+                1f, 1f);
         translateAnim.setFillAfter(true); // Needed to keep the result of the animation
         translateAnim.setDuration(250);
 
         Animation alphaAnim = new AlphaAnimation(0f, 1f);
-        alphaAnim.setFillAfter( true );
+        alphaAnim.setFillAfter(true);
         alphaAnim.setDuration(150);
 
-        AnimationSet set = new AnimationSet( true );
+        AnimationSet set = new AnimationSet(true);
         set.setDuration(250);
-        set.addAnimation( translateAnim );
-        set.addAnimation( alphaAnim );
+        set.addAnimation(translateAnim);
+        set.addAnimation(alphaAnim);
         set.setAnimationListener(new Animation.AnimationListener() {
             @Override
             public void onAnimationStart(Animation animation) {
-                if( callback != null ) callback.onStart();
+                if (callback != null) callback.onStart();
             }
 
             @Override
             public void onAnimationEnd(Animation animation) {
-                if( callback != null ) callback.onEnd();
+                if (callback != null) callback.onEnd();
 
             }
 
@@ -60,7 +89,7 @@ public class AnimUtils {
             }
         });
 
-        v.startAnimation( set );
+        v.startAnimation(set);
     }
 
     public void fadeOut(View v, long duration, long delay, onAnimCallback callback) {

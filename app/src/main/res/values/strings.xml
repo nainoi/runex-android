@@ -84,6 +84,10 @@
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="finish_recording">จบการจับเวลา</string>
+    <string name="distance">ระยะทาง</string>
+    <string name="time">เวลา</string>
+    <string name="running_summary">สรุปผล</string>
+    <string name="submit_result">ส่งผล</string>
 
 
     <!-- Y -->

@@ -3,8 +3,10 @@ package com.think.runex.java.Utils.GoogleMap;
 import android.app.Activity;
 import android.graphics.Color;
 
+import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
 import com.think.runex.java.App.Configs;
@@ -21,7 +23,7 @@ public class GoogleMapUtils {
     private final String ct = "GoogleMapUtils->";
 
     // instance variables
-    private List<LatLng> points = new ArrayList<>();
+    public List<LatLng> points = new ArrayList<>();
     private Activity mActivity;
     private GoogleMap mMap;
     private Polyline mLastPolyline;
@@ -39,6 +41,29 @@ public class GoogleMapUtils {
     /**
      * Feature methods
      */
+    public void zoomToFit() {
+        // exit from this process
+        // when points are not ready
+        // to do the fit
+        if (points.size() <= 1) return;
+
+        // prepare usage variables
+        LatLng ll1 = points.get(0);
+        LatLng ll2 = points.get(points.size() - 1);
+        LatLngBounds.Builder builder = new LatLngBounds.Builder();
+
+        // scope
+        builder.include(ll1);
+        builder.include(ll2);
+        builder.include(new LatLng(ll1.latitude - 0.006, ll1.longitude - 0.006));
+        builder.include(new LatLng(ll2.latitude + 0.006, ll2.longitude + 0.006));
+        LatLngBounds bounds = builder.build();
+
+        // move camera
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+
+    }
+
     public void print10Location() {
         final String mtn = ct + "print10Location() ";
         List<LatLng> temps = new ArrayList<>();
@@ -57,16 +82,17 @@ public class GoogleMapUtils {
 
     }
 
-    public void clearAll(){
+    public void clearAll() {
         clearDistance();
         clearPolyline();
     }
-    public void clearDistance(){
+
+    public void clearDistance() {
         distance = 0.0;
     }
 
-    public void clearPolyline(){
-        if( mLastPolyline != null ) mLastPolyline.remove();
+    public void clearPolyline() {
+        if (mLastPolyline != null) mLastPolyline.remove();
 
     }
 
@@ -86,13 +112,15 @@ public class GoogleMapUtils {
         polyline.setColor(color);
     }
 
-    public void addDistance(xLocation from, xLocation to){
+    public void addDistance(xLocation from, xLocation to) {
         distance += difDistance(from, to);
     }
-    public double difDistance(xLocation from, xLocation to){
+
+    public double difDistance(xLocation from, xLocation to) {
         // calculate kilometers
         return calculateTwoCoordinates(from, to);
     }
+
     public void addPolyline(xLocation from, xLocation to) {
         // start point
         if (points.size() <= 0) points.add(new LatLng(from.latitude, from.longitude));
@@ -135,7 +163,7 @@ public class GoogleMapUtils {
                 * 180 / Math.PI) * 60 * 1.1515) * 1.609344);
 
         // is NaN
-        if(Double.isNaN(distance)) return 0;
+        if (Double.isNaN(distance)) return 0;
 
         // return
         return distance;
