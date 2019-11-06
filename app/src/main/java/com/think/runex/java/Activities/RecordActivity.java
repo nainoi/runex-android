@@ -185,6 +185,9 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 RecorderObject recorderObj = new RecorderObject();
                 recorderObj.setDistanceKm( mRecorderUtils.mRecordDistanceKm );
                 recorderObj.setRecordingTime( mRecorderUtils.mRecordTime );
+                recorderObj.setRecordingDisplayTime( mRecorderUtils.mRecordDisplayTime );
+                recorderObj.setCalories(7);
+                recorderObj.setStep(19);
 
                 // reset result
                 reset();

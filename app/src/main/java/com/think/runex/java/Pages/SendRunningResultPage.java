@@ -4,6 +4,8 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -12,6 +14,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -53,6 +56,7 @@ public class SendRunningResultPage extends xFragment
     private long mSubmitTimestamp = System.currentTimeMillis();
 
     // views
+    private ImageView previewImage;
     private View btnExit, btnChangeBGImage;
     private View btnSubmit, btnCancel, btnSelectDate;
     private TextView inputDate;
@@ -286,6 +290,7 @@ public class SendRunningResultPage extends xFragment
      * View matching
      */
     private void viewMatching(View v) {
+        previewImage = v.findViewById(R.id.preview_image);
         btnChangeBGImage = v.findViewById(R.id.frame_change_background_image);
         btnExit = v.findViewById(R.id.btn_exit);
         btnSelectDate = v.findViewById(R.id.frame_submit_date);
@@ -307,6 +312,9 @@ public class SendRunningResultPage extends xFragment
         if( requestCode == Globals.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK ){
             try {
                 InputStream inputStream = activity.getContentResolver().openInputStream(data.getData());
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+                previewImage.setImageBitmap( bitmap );
 
             } catch ( Exception e ){
                 L.e(mtn +"Err: "+ e.getMessage());
