@@ -8,7 +8,7 @@ import androidx.fragment.app.FragmentActivity;
 
 public class ActivityUtils {
 
-    public FragmentActivity activity;
+    private FragmentActivity activity;
 
     private ActivityUtils(FragmentActivity activity){
         this.activity = activity;

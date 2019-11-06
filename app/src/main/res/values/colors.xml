@@ -32,4 +32,5 @@
     <color name="softGray">#EFEFEF</color>
     <color name="softGrayAlpha">#B2F0F0F0</color>
     <color name="materialBlack">#46494B</color>
+    <color name="blackAlpha">#9E000000</color>
 </resources>

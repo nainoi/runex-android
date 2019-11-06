@@ -7,6 +7,7 @@ import com.google.gson.Gson;
 import com.google.gson.GsonBuilder;
 import com.think.runex.java.App.Configs;
 
+import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 
 public class Globals {
@@ -14,6 +15,7 @@ public class Globals {
     public static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzI0NTI2MTIsImlkIjoiNWRiNWJiZDE4NzRhNjkzYTcyZWY2MDkxIiwib3JpZ19pYXQiOjE1NzIxOTM0MTIsInBmIjoid2ViIiwicm9sZSI6Ik1FTUJFUiJ9.D1vXzTpIHiqeWIdUrwFgJxLJ_AuAJg2XCnKmtshWaqY";
     public static final String EVENT_ID = "5db5bda6874a693a72ef6093";
     public static Gson GSON = new Gson();
+    public static DecimalFormat DCM = new DecimalFormat("#.##");
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
 
@@ -40,6 +42,9 @@ public class Globals {
 
     //--> Permission request code
     public static final int RC_PERMISSION = 3101;
+
+    //--> Inetnt actions
+    public static final int RC_PICK_IMAGE = 4100;
 
     //--> Broadcast
     public static final String BROADCAST_LOCATION = "BROADCAST";

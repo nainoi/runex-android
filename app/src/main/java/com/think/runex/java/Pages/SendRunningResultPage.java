@@ -1,7 +1,9 @@
 package com.think.runex.java.Pages;
 
+import android.app.Activity;
 import android.app.AlertDialog;
 import android.app.DatePickerDialog;
+import android.content.Intent;
 import android.os.Bundle;
 import android.text.Editable;
 import android.text.TextWatcher;
@@ -21,6 +23,7 @@ import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
@@ -28,6 +31,7 @@ import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
@@ -42,11 +46,14 @@ public class SendRunningResultPage extends xFragment
      */
     private final String ct = "SendRunningResultPage->";
 
+    // instance variables
+    private RecorderObject mRecorderObject = null;
     // explicit variables
     private Calendar mCalendar = Calendar.getInstance();
     private long mSubmitTimestamp = System.currentTimeMillis();
 
     // views
+    private View btnExit, btnChangeBGImage;
     private View btnSubmit, btnCancel, btnSelectDate;
     private TextView inputDate;
     private EditText inputDist;
@@ -64,6 +71,12 @@ public class SendRunningResultPage extends xFragment
                 break;
             case R.id.frame_submit_date:
                 displayDatePicker();
+                break;
+            case R.id.btn_exit:
+                activity.getSupportFragmentManager().popBackStack();
+                break;
+            case R.id.frame_change_background_image:
+                openImagePicker();
                 break;
         }
     }
@@ -110,6 +123,12 @@ public class SendRunningResultPage extends xFragment
     /**
      * Feature methods
      */
+    private void openImagePicker(){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(intent, "Select Picture"), Globals.RC_PICK_IMAGE);
+    }
     private void displayDatePicker() {
         // prepare usage variables
         Calendar cal = mCalendar;
@@ -138,6 +157,7 @@ public class SendRunningResultPage extends xFragment
 
     private void binding() {
         inputDate.setText(Globals.SDF_ONLY_DATE.format(mSubmitTimestamp));
+        inputDist.setText(Globals.DCM.format(mRecorderObject.distanceKm) + "");
     }
 
     /**
@@ -173,6 +193,14 @@ public class SendRunningResultPage extends xFragment
     }
 
     /**
+     * Setter
+     */
+    public SendRunningResultPage setRecorder(RecorderObject recorder) {
+        this.mRecorderObject = recorder;
+        return this;
+    }
+
+    /**
      * View event listener
      */
     private void viewEventListener() {
@@ -182,6 +210,8 @@ public class SendRunningResultPage extends xFragment
         btnSubmit.setOnClickListener(this);
         btnCancel.setOnClickListener(this);
         btnSelectDate.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
+        btnChangeBGImage.setOnClickListener( this );
         inputDist.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -208,9 +238,9 @@ public class SendRunningResultPage extends xFragment
                     String msg = editable.toString();
 
                     // condition
-                    if(msg.isEmpty()) {
+                    if (msg.isEmpty()) {
 
-                    }  else {
+                    } else {
                         // prepare usage variables
                         Matcher matcher = pattern.matcher(msg);
 
@@ -228,7 +258,7 @@ public class SendRunningResultPage extends xFragment
                         } else {
 
                             editable.clear();
-                            editable.append( ( count > 0 && (msg +"").split("\\.").length > 1)
+                            editable.append((count > 0 && (msg + "").split("\\.").length > 1)
                                     ? dcf.format(Double.parseDouble(msg))
                                     : msg);
 
@@ -256,11 +286,31 @@ public class SendRunningResultPage extends xFragment
      * View matching
      */
     private void viewMatching(View v) {
+        btnChangeBGImage = v.findViewById(R.id.frame_change_background_image);
+        btnExit = v.findViewById(R.id.btn_exit);
         btnSelectDate = v.findViewById(R.id.frame_submit_date);
         inputDate = v.findViewById(R.id.input_date);
         inputDist = v.findViewById(R.id.input_distance);
         btnSubmit = v.findViewById(R.id.btn_submit);
         btnCancel = v.findViewById(R.id.btn_cancel);
 
+    }
+
+    /** Life cycle */
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        // prepare usage variables
+        final String mtn = ct +"onActivityResult() ";
+
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if( requestCode == Globals.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK ){
+            try {
+                InputStream inputStream = activity.getContentResolver().openInputStream(data.getData());
+
+            } catch ( Exception e ){
+                L.e(mtn +"Err: "+ e.getMessage());
+            }
+        }
     }
 }

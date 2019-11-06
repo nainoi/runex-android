@@ -46,6 +46,10 @@
     <dimen name="space_112dp">112dp</dimen>
     <dimen name="space_128dp">128dp</dimen>
 
+    <!--  Login  -->
+    <dimen name="login_title_size">20dp</dimen>
+    <dimen name="login_social_button_description_size">14dp</dimen>
+
     <!-- Event -->
     <dimen name="event_image_width">96dp</dimen>
     <dimen name="event_image_height">128dp</dimen>

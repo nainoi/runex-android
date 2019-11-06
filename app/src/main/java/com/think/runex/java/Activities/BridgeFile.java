@@ -42,11 +42,10 @@ public class BridgeFile extends FragmentActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ActivityUtils uts = ActivityUtils.newInstance( this );
-        uts.activity = this;
         setContentView(R.layout.activity_bridge_file);
 
         // fullscreen
+        ActivityUtils uts = ActivityUtils.newInstance( this );
         uts.fullScreen();
 
         // view matching

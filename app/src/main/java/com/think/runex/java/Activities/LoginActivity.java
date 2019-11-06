@@ -57,6 +57,7 @@ public class LoginActivity extends FragmentActivity implements
     private View btnLogin;
     private View btnLoginWithFacebook;
     private View btnLoginWithGoogle;
+    private View btnExit;
     //--> Input fields
     private EditText inputEmail;
     private EditText inputPassword;
@@ -82,6 +83,7 @@ public class LoginActivity extends FragmentActivity implements
             case R.id.btn_login_with_facebook:
                 socialLoginManger.loginWithFacebook(this, permissions);
                 break;
+            case R.id.btn_cross: finish();  break;
         }
 
     }
@@ -120,14 +122,8 @@ public class LoginActivity extends FragmentActivity implements
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_login);
 
-        // Activity utils
-        ActivityUtils actUtls = ActivityUtils.newInstance(this);
-        actUtls.activity = this;
-        actUtls.fullScreen();
-
         // activity manager
         activityUtils = ActivityUtils.newInstance(this);
-        activityUtils.activity = this;
         activityUtils.fullScreen();
 
         //Initial social login manage.
@@ -368,6 +364,7 @@ public class LoginActivity extends FragmentActivity implements
         btnLogin.setOnClickListener(this);
         btnLoginWithFacebook.setOnClickListener(this);
         btnLoginWithGoogle.setOnClickListener(this);
+        btnExit.setOnClickListener(this);
 
     }
 
@@ -375,6 +372,7 @@ public class LoginActivity extends FragmentActivity implements
      * Matching views
      */
     private void matchingViews() {
+        btnExit = findViewById(R.id.btn_cross);
         btnLogin = findViewById(R.id.btn_login);
         btnLoginWithFacebook = findViewById(R.id.btn_login_with_facebook);
         btnLoginWithGoogle = findViewById(R.id.btn_login_with_google);

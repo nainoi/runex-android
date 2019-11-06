@@ -31,6 +31,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.SendRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
@@ -105,9 +106,11 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
                 // test add polyline
                 mMapUtils.addPolyline(xFrom, xTo);
+                mMapUtils.addDistance(xFrom, xTo);
+                mRecorderUtils.addDistance(mMapUtils.difDistance(xFrom, xTo));
 
                 // update view
-                lbDistance.setText(df.format(mMapUtils.distance) + " KM");
+                binding();
 
                 // update props
                 mLastLocation = xTo;
@@ -129,6 +132,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     // explicit variables
     private boolean mZoomOnce = false;
     private boolean mOnRecording = false;
+    private boolean mInitMap = false;
     private final int CONTAINER_ID = R.id.display_fragment_frame;
 
     // views
@@ -144,7 +148,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
      */
     @Override
     public void onRecordTimeChanged(String time) {
-        lbTime.setText(time);
+        binding();
+
     }
 
     @Override
@@ -176,8 +181,25 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 // paused
                 paused();
 
-                // to send running result page
-                toSendRunningResultPage();
+                // prepare recording object
+                RecorderObject recorderObj = new RecorderObject();
+                recorderObj.setDistanceKm( mRecorderUtils.mRecordDistanceKm );
+                recorderObj.setRecordingTime( mRecorderUtils.mRecordTime );
+
+                // reset result
+                reset();
+
+                // refresh views
+                binding();
+
+                toSendRunningResultPage( recorderObj );
+
+                // hide stop button
+                btnStopAndSubmit.setVisibility(View.GONE);
+
+                // change start button
+                // description
+                lbRecordingState.setText(getString(R.string.start_recording));
 
                 break;
         }
@@ -253,59 +275,12 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
         // Activity utils
         ActivityUtils actUtls = ActivityUtils.newInstance(this);
-        actUtls.activity = this;
         actUtls.fullScreen();
+
         //--> Location utils
         mLocUtils = LocationUtils.newInstance(this);
-        mLocUtils.addLocationListener(new LocationTrackingCallback() {
-            // prepare usage variables
-            final String mtn = ct + "addLocationListener() ";
-
-            @Override
-            public void onLocationChanged(Location location) {
-                if (mLastLocation == null) {
-                    // keep last location
-                    mLastLocation = new xLocation(location.getLatitude(), location.getLongitude());
-
-                    // exit from this process
-                    return;
-
-                }
-                if (mMap == null) {
-                    // log
-                    L.i(mtn + "mMap[" + mMap + "] is not ready.");
-
-                    // exit from this process
-                    return;
-                }
-
-                L.i(mtn + "Latitude: " + location.getLatitude() + ", " + location.getLongitude());
-
-                // prepare usage variables
-                LatLng ll = new LatLng(location.getLatitude(), location.getLongitude());
-                xLocation xFrom = mLastLocation;
-                xLocation xTo = new xLocation(location.getLatitude(), location.getLongitude());
-
-                // test add polyline
-                mMapUtils.addPolyline(xFrom, xTo);
-
-                // update props
-                mLastLocation = xTo;
-
-                if (!mZoomOnce) {
-                    // update flag
-                    mZoomOnce = true;
-
-                    // move map camera
-                    mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Configs.GoogleMap.INITIAL_ZOOM));
-                }
-            }
-        });
         //--> Permission utils
         mPmUtils = PermissionUtils.newInstance(this);
-
-        // init map
-        initMap();
 
         btnStopAndSubmit.getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
@@ -325,6 +300,11 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     /**
      * Feature methods
      */
+    private void binding(){
+        lbTime.setText(mRecorderUtils.mRecordDisplayTime);
+        lbDistance.setText(df.format(mRecorderUtils.mRecordDistanceKm) + "km");
+
+    }
     private void animScaleOut() {
         AnimUtils.instance()
                 .scaleOut(btnStopAndSubmit, new onAnimCallback() {
@@ -376,16 +356,14 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         // anim
         anim(android.R.drawable.ic_media_pause);
 
-        // scale stop button
-        animScaleOut();
-
         // recording state description
         lbRecordingState.setText(getString(R.string.pause_recording));
     }
+    private void reset(){
+        mRecorderUtils.reset();
+        mMapUtils.clearAll();
+    }
     private void paused(){
-        // hide stop button
-        btnStopAndSubmit.setVisibility(View.GONE);
-
         // anim pause
         anim(android.R.drawable.ic_media_play);
 
@@ -395,8 +373,16 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         // clear flag
         mOnRecording = false;
 
+        // scale out animation
+        // condition
+        if( btnStopAndSubmit.getVisibility() != View.VISIBLE ) {
+            // scale stop button
+            animScaleOut();
+
+        }
+
         // recording state description
-        lbRecordingState.setText(getString(R.string.start_recording));
+        lbRecordingState.setText(getString(R.string.resume_recording));
     }
 
     private void startRecording() {
@@ -415,10 +401,10 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         mRecorderUtils.pause();
     }
 
-    private void toSendRunningResultPage() {
+    private void toSendRunningResultPage(RecorderObject recorder) {
         // prepare usage variables
         FragmentUtils fu = FragmentUtils.newInstance(this, CONTAINER_ID);
-        fu.replaceFragmentWithAnim(new SendRunningResultPage());
+        fu.replaceFragmentWithAnim(new SendRunningResultPage().setRecorder(recorder));
     }
 
     private void beforeGPSRecording() {
@@ -430,8 +416,14 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
             if (isGpsAvailable = mLocUtils.isGPSAvailable()) {
                 L.i(mtn + "Ready to record GPS.");
 
-                // start location
-//                mLocUtils.start();
+                // condition
+                if( mInitMap ) return;
+
+                // update flag
+                mInitMap = true;
+
+                // init map
+                initMap();
 
             }
 

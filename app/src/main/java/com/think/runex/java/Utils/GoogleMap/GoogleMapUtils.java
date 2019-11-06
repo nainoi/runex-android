@@ -57,6 +57,19 @@ public class GoogleMapUtils {
 
     }
 
+    public void clearAll(){
+        clearDistance();
+        clearPolyline();
+    }
+    public void clearDistance(){
+        distance = 0.0;
+    }
+
+    public void clearPolyline(){
+        if( mLastPolyline != null ) mLastPolyline.remove();
+
+    }
+
     public void addOnce() {
         // prepare usage variables
         final LatLng[] latlngs = new LatLng[points.size()];
@@ -73,6 +86,13 @@ public class GoogleMapUtils {
         polyline.setColor(color);
     }
 
+    public void addDistance(xLocation from, xLocation to){
+        distance += difDistance(from, to);
+    }
+    public double difDistance(xLocation from, xLocation to){
+        // calculate kilometers
+        return calculateTwoCoordinates(from, to);
+    }
     public void addPolyline(xLocation from, xLocation to) {
         // start point
         if (points.size() <= 0) points.add(new LatLng(from.latitude, from.longitude));
@@ -98,9 +118,6 @@ public class GoogleMapUtils {
 
         // keep last polyline
         mLastPolyline = polyline;
-
-        // calculate kilometers
-        distance += calculateTwoCoordinates(from, to);
 
     }
 

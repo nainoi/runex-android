@@ -14,12 +14,14 @@ public class RecorderUtils {
     private final String ct = "RecorderUtils->";
 
     // instance variables
-    private long mRecordTime = 0L;
     private Handler mRecursiveHandler;
     private Runnable mRecursiveRunner;
     private onRecorderCallback mRecorderCallback;
 
     // explicit variables
+    public long mRecordTime = 0L;
+    public double mRecordDistanceKm = 0.0;
+    public String mRecordDisplayTime = "00:00:00";
     private boolean START = false;
     private final int RECURSIVE_TIME = 1000;
     private final int INCREATE_TIME = 1000;
@@ -36,8 +38,11 @@ public class RecorderUtils {
                 // update recording time
                 mRecordTime += INCREATE_TIME;
 
+                // display time
+                mRecordDisplayTime = DateTimeUtils.instance().toTimeFormat( mRecordTime );
+
                 // callback
-                mRecorderCallback.onRecordTimeChanged(DateTimeUtils.instance().toTimeFormat( mRecordTime ));
+                mRecorderCallback.onRecordTimeChanged( mRecordDisplayTime );
 
                 // recursive
                 recursive();
@@ -58,8 +63,32 @@ public class RecorderUtils {
     }
 
     /** Feature methods */
+    public void addDistance( double distance){
+        mRecordDistanceKm += distance;
+    }
     public void setRecorderCallback( onRecorderCallback callback){
         this.mRecorderCallback = callback;
+    }
+    public void reset(){
+        // stop recursive
+        mRecursiveHandler.removeCallbacksAndMessages(null);
+
+        // clear flag
+        START = false;
+
+        // clear result
+        mRecordTime = 0L;
+        mRecordDisplayTime = "00:00:00";
+        mRecordDistanceKm = 0.0;
+
+    }
+    public void finish(){
+        // stop recursive
+        mRecursiveHandler.removeCallbacksAndMessages(null);
+
+        // clear flag
+        START = false;
+
     }
     public void start() {
         // prepare usage variables

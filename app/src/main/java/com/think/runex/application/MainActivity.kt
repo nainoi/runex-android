@@ -1,5 +1,6 @@
 package com.think.runex.application
 
+import android.content.Intent
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
@@ -16,6 +17,10 @@ import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.common.fadeIn
 import com.think.runex.common.getCurrentNightMode
+import com.think.runex.java.Activities.BridgeFile
+import com.think.runex.java.Activities.LoginActivity
+import com.think.runex.java.App.App
+import com.think.runex.java.Utils.ActivityUtils
 import com.think.runex.ui.MainScreen
 import com.think.runex.ui.SplashScreen
 import com.think.runex.utility.LocalManager
@@ -46,7 +51,22 @@ class MainActivity : AppCompatActivity() {
         setContentView(R.layout.activity_main)
         FragmentContainer.id = R.id.main_fragment_container
 
-        replaceFragment(SplashScreen(), fadeIn(), clearStack = true, addToBackStack = false)
+        // fullscreen display
+        ActivityUtils.newInstance(this).fullScreen();
+
+        if(App.instance(this).appEntity.token.isAlive){
+            // go to bridge file
+            val intent = Intent(this, BridgeFile::class.java);
+
+            // new page
+            startActivity(intent);
+
+            // exit from this page
+            finish()
+
+        } else replaceFragment(SplashScreen(), fadeIn(), clearStack = true, addToBackStack = false)
+
+
     }
 
     override fun onBackPressed() {

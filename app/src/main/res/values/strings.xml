@@ -81,7 +81,9 @@
     <string name="my_events_list">รายการวิ่งของฉัน</string>
     <string name="start_recording">เริ่มจับเวลา</string>
     <string name="pause_recording">พักจับเวลา</string>
+    <string name="resume_recording">จับเวลาต่อ</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
+    <string name="finish_recording">จบการจับเวลา</string>
 
 
     <!-- Y -->

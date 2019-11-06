@@ -2,11 +2,13 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:gravity="center_horizontal"
     android:orientation="vertical"
     xmlns:tools="http://schemas.android.com/tools"
     tools:context=".ui.SplashScreen">
 
 
+    <!--  Banner  -->
     <LinearLayout
         android:id="@+id/frame_banner"
         android:layout_width="match_parent"
@@ -25,11 +27,35 @@
 
     </LinearLayout>
 
+    <!--  Preview image  -->
+    <com.think.runex.java.Customize.xBrannerImage
+        android:id="@+id/imv_preview"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:adjustViewBounds="true"
+        android:layout_marginTop="18dp"
+        android:scaleType="centerCrop"
+        android:src="@mipmap/im_welcome_runex" />
+
+    <!--  Paragraph 1  -->
+    <TextView
+        android:id="@+id/v_paragraph_1"
+        android:text="บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
+    <!--  Paragraph 2  -->
+    <TextView
+        android:id="@+id/v_paragraph_2"
+        android:text="แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"/>
+
     <Button
-        android:id="@+id/btn_start"
+        android:id="@+id/btn_get_started"
         android:text="เริ่มใช้งาน"
         android:minHeight="0dp"
-        android:background="@drawable/state_active_with_rounded_4corners_button"
+        android:background="@drawable/button_get_started_background"
         android:paddingVertical="8dp"
         android:paddingHorizontal="12dp"
         android:layout_width="wrap_content"
