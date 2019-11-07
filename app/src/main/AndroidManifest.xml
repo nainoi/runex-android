@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.think.runex">
 
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE"/>
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE"/>
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION"/>
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE"/>
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
 
     <application
         android:allowBackup="true"
@@ -25,7 +25,7 @@
         <service
             android:name=".java.Services.BackgroundService"
             android:icon="@drawable/com_facebook_button_icon"
-            android:label="@string/background_service"/>
+            android:label="@string/background_service" />
 
         <activity
             android:name="com.think.runex.application.MainActivity"
@@ -62,9 +62,10 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name="com.think.runex.java.Activities.LoginActivity"
+            android:name=".java.Activities.LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name" />
+            android:label="@string/app_name"
+            android:theme="@style/AppTheme.LoginActivity" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -90,7 +91,7 @@
 
         <meta-data
             android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAb-C-jWRRLpSGFUnI4E-XxurvEymJdeo0"/>
+            android:value="AIzaSyAb-C-jWRRLpSGFUnI4E-XxurvEymJdeo0" />
 
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"

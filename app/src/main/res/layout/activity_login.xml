@@ -81,7 +81,7 @@
             <TextView
                 android:id="@+id/v_login_with_google"
                 android:text="   เข้าสู่ระบบด้วยบัญชี gmail    "
-                android:textColor="@color/textLoginWithGoogle"
+                android:textColor="@color/materialBlack"
                 android:textSize="@dimen/login_social_button_description_size"
                 android:gravity="center"
                 android:layout_marginLeft="8dp"

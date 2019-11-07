@@ -1,13 +1,13 @@
 package com.think.runex.java.Models;
 
+import com.google.gson.annotations.SerializedName;
 import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DateTime.DisplayDateTimeObject;
 import com.think.runex.java.Utils.L;
 
-import java.util.Calendar;
-import java.util.Date;
+import java.net.HttpURLConnection;
 
-public class TokenObject {
+public class TokenObject{
     // prepare usage variables
     private final String ct = "TokenObject->";
     /**
@@ -16,39 +16,39 @@ public class TokenObject {
      * token : eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzI0NTI2MTIsImlkIjoiNWRiNWJiZDE4NzRhNjkzYTcyZWY2MDkxIiwib3JpZ19pYXQiOjE1NzIxOTM0MTIsInBmIjoid2ViIiwicm9sZSI6Ik1FTUJFUiJ9.D1vXzTpIHiqeWIdUrwFgJxLJ_AuAJg2XCnKmtshWaqY
      */
 
+    @SerializedName("code")
     private int code;
+    @SerializedName("msg")
+    private String message;
+    @SerializedName("expire")
     private String expire;
+    @SerializedName("token")
     private String token;
-    private long expiredLong;
 
-
-    /** Feature methods */
-    public void init(){
-        DisplayDateTimeObject displayDate = DateTimeUtils.instance().stringToDate( expire );
-        expiredLong =  displayDate.timestamp;
-    }
-    public boolean isAlive(){
+    public boolean isAlive() {
         // prepare usage variables
-        final String mtn = ct +"isAlive() ";
+        final String mtn = ct + "isAlive() ";
         final long current = System.currentTimeMillis() / 1000;
+        final long expired = getExpiredLong();
 
-        L.i(mtn +"//---> Is Token Alive");
-        L.i(mtn +"expire-timestamp: "+ expiredLong);
-        L.i(mtn +"current-timestamp: "+ current);
-        L.i(mtn +"remaining as second: "+ ((expiredLong - current) / 1000));
-        L.i(mtn +"");
+        L.i(mtn + "//---> Is Token Alive");
+        L.i(mtn + "expire-timestamp: " + expired);
+        L.i(mtn + "current-timestamp: " + current);
+        L.i(mtn + "remaining as second: " + ((expired - current) / 1000));
+        L.i(mtn + "");
 
-        return current <= expiredLong;
+        return current <= expired;
     }
-    public void printInfo(){
+
+    public void printInfo() {
         // prepare usage variables
-        final String mtn = ct +"printInfo() ";
+        final String mtn = ct + "printInfo() ";
 
         L.i("");
-        L.i(mtn +"* * * Token * * *");
-        L.i(mtn +"expire: "+ expire);
-        L.i(mtn +"expire-long: "+ expiredLong);
-        L.i(mtn +"token: "+ token);
+        L.i(mtn + "* * * Token * * *");
+        L.i(mtn + "expire: " + expire);
+        L.i(mtn + "expire-long: " + getExpiredLong());
+        L.i(mtn + "token: " + token);
 
         // validate token
         isAlive();
@@ -58,12 +58,13 @@ public class TokenObject {
     }
 
     public long getExpiredLong() {
-        return expiredLong;
+        if (expire == null || expire.length() == 0) {
+            return 0;
+        }
+        DisplayDateTimeObject displayDate = DateTimeUtils.instance().stringToDate(expire);
+        return displayDate.timestamp;
     }
 
-    public void setExpiredLong(long expiredLong) {
-        this.expiredLong = expiredLong;
-    }
 
     public int getCode() {
         return code;
@@ -71,6 +72,14 @@ public class TokenObject {
 
     public void setCode(int code) {
         this.code = code;
+    }
+
+    public String getMessage() {
+        return message;
+    }
+
+    public void setMessage(String message) {
+        this.message = message;
     }
 
     public String getExpire() {
@@ -87,5 +96,9 @@ public class TokenObject {
 
     public void setToken(String token) {
         this.token = token;
+    }
+
+    public boolean isSuccessFul() {
+        return code == HttpURLConnection.HTTP_OK;
     }
 }

@@ -17,7 +17,6 @@ public class AppEntity {
     }
 
     public AppEntity setToken( TokenObject token ){
-        token.init();
         this.token = token;
         return this;
     }
