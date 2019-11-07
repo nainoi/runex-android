@@ -1,223 +1,290 @@
 <?xml version="1.0" encoding="utf-8"?>
-<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:fillViewport="true"
+<androidx.core.widget.NestedScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_width="match_parent">
+    android:fillViewport="true"
+    tools:context=".java.Activities.LoginActivity">
 
-    <LinearLayout
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical"
-        android:layout_margin="@dimen/space_32dp">
+        android:orientation="vertical">
 
-        <ImageView
-            android:id="@+id/btn_cross"
-            android:layout_width="?attr/actionBarSize"
-            android:layout_height="?attr/actionBarSize"
-            android:paddingRight="36dp"
-            android:paddingBottom="36dp"
-            android:src="@drawable/ic_close" />
+        <FrameLayout
+            android:id="@+id/appbar"
+            android:layout_width="match_parent"
+            android:layout_height="?actionBarSize"
+            android:paddingStart="@dimen/space_16dp"
+            android:paddingEnd="@dimen/space_16dp">
 
-        <TextView
-            android:id="@+id/v_title"
-            android:text="ลงชื่อเข้าใช้งาน\nเพื่อบันทึกและส่งระยะวิ่ง"
-            android:textStyle="bold"
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_close"
+                android:layout_width="@dimen/action_bar_icon_size"
+                android:layout_height="@dimen/action_bar_icon_size"
+                android:layout_gravity="center_vertical"
+                android:background="@drawable/bg_btn_circle"
+                android:padding="@dimen/space_8dp"
+                android:scaleType="centerCrop"
+                android:src="@drawable/ic_close" />
+        </FrameLayout>
+
+
+        <RelativeLayout
+            android:id="@+id/login_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/login_title_size"
-            android:gravity="center"
-            android:layout_marginBottom="28dp"/>
+            android:layout_below="@+id/appbar">
+
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_login_info_message"
+                style="@style/TextHeadLine.Primary.center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:text="@string/login_info_message" />
+
+            <FrameLayout
+                android:id="@+id/btn_login_with_facebook"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_login_info_message"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_44dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:background="@drawable/bg_btn_fb_login"
+                android:clickable="true"
+                android:minHeight="@dimen/login_button_height">
 
 
-        <!-- Facebook button -->
-        <LinearLayout
-            android:id="@+id/btn_login_with_facebook"
-            android:background="@drawable/button_login_with_facebook"
-            android:paddingHorizontal="22dp"
-            android:paddingVertical="@dimen/social_button_space_vertical"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_login_facebook"
+                    style="@style/TextBody2.White"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableStart="@drawable/ic_facebook_band"
+                    android:drawablePadding="@dimen/space_16dp"
+                    android:text="@string/login_with_facebook" />
+            </FrameLayout>
 
-            <ImageView
-                android:id="@+id/ic_login_with_facebook"
-                android:src="@drawable/ic_my_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
+            <FrameLayout
+                android:id="@+id/btn_login_with_google"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login_with_facebook"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:background="@drawable/bg_btn_google_login"
+                android:clickable="true"
+                android:minHeight="@dimen/login_button_height">
 
-            <TextView
-                android:id="@+id/v_login_with_facebook"
-                android:text="เข้าสู่ระบบด้วยบัญชี facebook"
-                android:textColor="@android:color/white"
-                android:layout_marginLeft="8dp"
-                android:textSize="@dimen/login_social_button_description_size"
-                android:gravity="center"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-        </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_login_google"
+                    style="@style/TextBody2.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawableStart="@drawable/ic_google_band"
+                    android:drawablePadding="@dimen/space_16dp"
+                    android:text="@string/login_with_google" />
+            </FrameLayout>
 
-        <!-- Google button -->
-        <LinearLayout
-            android:id="@+id/btn_login_with_google"
-            android:background="@drawable/button_login_with_google"
-            android:layout_marginTop="18dp"
-            android:paddingHorizontal="22dp"
-            android:paddingVertical="@dimen/social_button_space_vertical"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <FrameLayout
+                android:id="@+id/separate_1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login_with_google"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:layout_marginEnd="@dimen/space_28dp">
 
-            <ImageView
-                android:id="@+id/ic_login_with_google"
-                android:layout_width="wrap_content"
-                android:src="@drawable/ic_my_profile"
-                android:layout_height="match_parent"/>
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="1dp"
+                    android:layout_gravity="center_vertical"
+                    android:background="@color/lineSeparate" />
 
-            <TextView
-                android:id="@+id/v_login_with_google"
-                android:text="   เข้าสู่ระบบด้วยบัญชี gmail    "
-                android:textColor="@color/materialBlack"
-                android:textSize="@dimen/login_social_button_description_size"
-                android:gravity="center"
-                android:layout_marginLeft="8dp"
-                android:textStyle="bold"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_or"
+                    style="@style/TextBody.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center_horizontal"
+                    android:background="@color/background"
+                    android:paddingStart="@dimen/space_32dp"
+                    android:paddingEnd="@dimen/space_32dp"
+                    android:text="@string/or" />
 
-        </LinearLayout>
+            </FrameLayout>
 
-        <!-- Login separator -->
-        <LinearLayout
-            android:gravity="center"
-            android:layout_marginVertical="18dp"
-            android:weightSum="2"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <FrameLayout
+                android:id="@+id/btn_login_with_email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/separate_1"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:background="@drawable/bg_btn_accent"
+                android:clickable="true"
+                android:minHeight="@dimen/login_button_height">
+
+
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_login_email"
+                    style="@style/TextBody2.White"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:drawablePadding="@dimen/space_16dp"
+                    android:text="@string/login_with_email" />
+            </FrameLayout>
 
             <View
-                android:background="@android:color/darker_gray"
-                android:layout_weight="1"
-                android:layout_width="0dp"
-                android:layout_marginRight="12dp"
-                android:layout_height="1dp"/>
+                android:id="@+id/separate_2"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/btn_login_with_email"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:layout_marginBottom="@dimen/space_24dp"
+                android:background="@color/lineSeparate" />
 
-            <TextView
-                android:id="@+id/v_login_separator"
-                android:textColor="@color/materialBlack"
-                android:text="หรือ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
 
-            <View
-                android:background="@android:color/darker_gray"
-                android:layout_weight="1"
-                android:layout_marginLeft="12dp"
-                android:layout_width="0dp"
-                android:layout_height="1dp"/>
-
-        </LinearLayout>
-
-        <!--  Register with email  -->
-        <LinearLayout
-            android:id="@+id/btn_register_with_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:background="@drawable/button_login_with_email"
-            android:gravity="center"
-            android:paddingHorizontal="22dp"
-            android:paddingVertical="@dimen/social_button_space_vertical"
-            android:weightSum="2">
-
-            <ImageView
-                android:id="@+id/ic_register_with_email"
-                android:src="@drawable/ic_my_profile"
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"/>
-
-            <TextView
-                android:id="@+id/v_register_with_email"
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:gravity="center"
-                android:text="ลงชื่อใช้งานด้วยอีเมล"
-                android:layout_marginLeft="8dp"
-                android:textColor="@android:color/white"
-                android:textSize="@dimen/login_social_button_description_size"
-                android:textStyle="bold" />
+                android:layout_below="@+id/separate_2"
+                android:layout_centerHorizontal="true">
 
-        </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_not_a_member"
+                    style="@style/TextBody2.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/space_8dp"
+                    android:text="@string/not_a_member" />
 
-        <!--  Separator  -->
-        <View
-            android:background="@android:color/darker_gray"
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/btn_register"
+                    style="@style/TextBody2.Accent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_not_a_member"
+                    android:clickable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:text="@string/register" />
+
+            </RelativeLayout>
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/login_email_layout"
             android:layout_width="match_parent"
-            android:layout_marginVertical="18dp"
-            android:layout_height="1dp"/>
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/appbar"
+            android:visibility="gone">
 
-        <!-- Forgot password -->
-        <LinearLayout
-            android:id="@+id/frame_forgot_password"
-            android:orientation="horizontal"
-            android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            <com.google.android.material.textview.MaterialTextView
+                android:id="@+id/tv_login_email_info_message"
+                style="@style/TextHeadLine.Primary.center"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:text="@string/login_info_email_message" />
 
-            <TextView
-                android:id="@+id/v_forgot_password_description"
-                android:text="ยังไม่ได้เป็นสมาชิกในระบบ? "
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_email"
+                style="@style/TextField.Email"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/tv_login_email_info_message"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_44dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:hint="@string/email_address" />
 
-            <TextView
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/edt_password"
+                style="@style/TextField.Password.Done"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_email"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:hint="@string/password" />
+
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/btn_login_as_email"
+                style="@style/ButtonAccent"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/edt_password"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_28dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:text="@string/login" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/btn_forgot_password"
+                style="@style/ButtonBorderless"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/btn_login_as_email"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_28dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:text="@string/register" />
+
+
+            <View
+                android:id="@+id/separate_3"
+                android:layout_width="match_parent"
+                android:layout_height="1dp"
+                android:layout_below="@+id/btn_forgot_password"
+                android:layout_gravity="center_vertical"
+                android:layout_marginStart="@dimen/space_28dp"
+                android:layout_marginTop="@dimen/space_28dp"
+                android:layout_marginEnd="@dimen/space_28dp"
+                android:layout_marginBottom="@dimen/space_24dp"
+                android:background="@color/lineSeparate" />
+
+            <RelativeLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:textColor="@color/orange"
-                android:text="สมัครสมาชิก"
-                android:textAllCaps="false" />
+                android:layout_below="@+id/separate_3"
+                android:layout_centerHorizontal="true">
 
-        </LinearLayout>
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/tv_not_a_member_2"
+                    style="@style/TextBody2.Secondary"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginEnd="@dimen/space_8dp"
+                    android:text="@string/not_a_member" />
 
+                <com.google.android.material.textview.MaterialTextView
+                    android:id="@+id/btn_register_2"
+                    style="@style/TextBody2.Accent"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_toEndOf="@+id/tv_not_a_member_2"
+                    android:clickable="true"
+                    android:foreground="?selectableItemBackground"
+                    android:text="@string/register" />
 
-        <com.google.android.material.button.MaterialButton
-            android:id="@+id/btn_login"
-            android:visibility="gone"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@+id/btn_forgot_password"
-            android:layout_marginTop="@dimen/space_32dp"
-            android:text="@string/login"
-            android:textAllCaps="false" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_email"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_below="@+id/tv_app_name"
-            android:layout_marginTop="@dimen/space_84dp"
-            android:hint="@string/email"
-            android:imeOptions="actionNext"
-            android:inputType="textEmailAddress" />
-
-        <com.google.android.material.textfield.TextInputEditText
-            android:id="@+id/edt_password"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:visibility="gone"
-            android:layout_below="@+id/edt_email"
-            android:layout_centerVertical="true"
-            android:layout_marginTop="@dimen/space_8dp"
-            android:hint="@string/password"
-            android:imeOptions="actionDone"
-            android:inputType="textPassword" />
-
-
-    </LinearLayout>
-
-</ScrollView>
+            </RelativeLayout>
+        </RelativeLayout>
+    </RelativeLayout>
+</androidx.core.widget.NestedScrollView>
