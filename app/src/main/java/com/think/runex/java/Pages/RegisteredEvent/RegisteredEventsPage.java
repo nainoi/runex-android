@@ -1,6 +1,5 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -10,7 +9,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
@@ -18,16 +16,12 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.java.Constants.APIs;
-import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
 import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DateTime.DisplayDateTimeObject;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Network.NetworkProps;
-import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetRegisteredEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;

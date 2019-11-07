@@ -8,7 +8,6 @@ import android.widget.EditText;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.internal.CallbackManagerImpl;
@@ -37,7 +36,6 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 import org.jetbrains.annotations.NotNull;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import static com.think.runex.feature.social.SocialLoginManger.RC_GOOGLE_LOGIN;
 
@@ -53,38 +51,81 @@ public class LoginActivity extends FragmentActivity implements
     private SocialLoginManger socialLoginManger;
     private ActivityUtils activityUtils;
 
+    // explicit variables
+    private boolean ON_LOGGING_IN = false;
+
     // views
-    private View btnLogin;
+    private View btnToLoginWithEmail;
+    private View btnLoginWithEmail;
     private View btnLoginWithFacebook;
     private View btnLoginWithGoogle;
     private View btnExit;
     //--> Input fields
     private EditText inputEmail;
     private EditText inputPassword;
+    //--> Frame socials login
+    private View frameSocialsLogin;
+    private View frameLoginWithEmail;
+
+    @Override
+    public void onBackPressed() {
+        if (frameLoginWithEmail.getVisibility() == View.VISIBLE) {
+            frameLoginWithEmail.setVisibility(View.GONE);
+            frameSocialsLogin.setVisibility(View.VISIBLE);
+
+        } else super.onBackPressed();
+    }
 
     /**
      * View on click
      */
     @Override
     public void onClick(View view) {
-        // prepare usage variables
-        final List<String> permissions = new ArrayList<>();
+        // on logging in
+        if (ON_LOGGING_IN) return;
 
-        // update
-        permissions.add("email");
+        // update flag
+        ON_LOGGING_IN = true;
 
         switch (view.getId()) {
-            case R.id.btn_login:
+            //--> Login action
+            case R.id.btn_login_with_email:
+                Toast.makeText(this, "aaa", Toast.LENGTH_SHORT).show();
                 loginWithEmail();
                 break;
             case R.id.btn_login_with_google:
                 socialLoginManger.loginWithGoogle(this);
                 break;
             case R.id.btn_login_with_facebook:
-                socialLoginManger.loginWithFacebook(this, permissions);
+                socialLoginManger.loginWithFacebook(this, new ArrayList<String>() {{
+                    add("email");
+                }});
+
                 break;
-            case R.id.btn_cross: finish();  break;
+
+            //--> Feature action
+            case R.id.btn_to_login_with_email:
+                // update flag
+                ON_LOGGING_IN = false;
+
+                // display login with email frame
+                frameLoginWithEmail.setVisibility(View.VISIBLE);
+                frameSocialsLogin.setVisibility(View.GONE);
+
+                break;
+            case R.id.btn_cross:
+                // update flag
+                ON_LOGGING_IN = false;
+
+                if (frameLoginWithEmail.getVisibility() == View.VISIBLE) {
+                    frameLoginWithEmail.setVisibility(View.GONE);
+                    frameSocialsLogin.setVisibility(View.VISIBLE);
+
+                } else onBackPressed();
+
+                break;
         }
+
 
     }
 
@@ -132,7 +173,7 @@ public class LoginActivity extends FragmentActivity implements
         socialLoginManger.registerLoginCallback();
 
         // matching views
-        matchingViews();
+        viewsMatching();
 
         // view event listener
         viewEventListener();
@@ -213,6 +254,7 @@ public class LoginActivity extends FragmentActivity implements
                 // exit from this process
                 finish();
 
+
             }
         }).doIt();
     }
@@ -254,7 +296,6 @@ public class LoginActivity extends FragmentActivity implements
                     finish();
 
                 }
-
 
             }
 
@@ -322,6 +363,9 @@ public class LoginActivity extends FragmentActivity implements
 
                 // set activity result
                 setResult(Activity.RESULT_CANCELED);
+
+                // exit from this page
+                finish();
             }
         });
 
@@ -361,7 +405,8 @@ public class LoginActivity extends FragmentActivity implements
      * View event listener
      */
     private void viewEventListener() {
-        btnLogin.setOnClickListener(this);
+        btnToLoginWithEmail.setOnClickListener(this);
+        btnLoginWithEmail.setOnClickListener(this);
         btnLoginWithFacebook.setOnClickListener(this);
         btnLoginWithGoogle.setOnClickListener(this);
         btnExit.setOnClickListener(this);
@@ -371,15 +416,20 @@ public class LoginActivity extends FragmentActivity implements
     /**
      * Matching views
      */
-    private void matchingViews() {
+    private void viewsMatching() {
         btnExit = findViewById(R.id.btn_cross);
-        btnLogin = findViewById(R.id.btn_login);
+        btnToLoginWithEmail = findViewById(R.id.btn_to_login_with_email);
+        btnLoginWithEmail = findViewById(R.id.btn_login_with_email);
         btnLoginWithFacebook = findViewById(R.id.btn_login_with_facebook);
         btnLoginWithGoogle = findViewById(R.id.btn_login_with_google);
 
         //--> Edit text
         inputEmail = findViewById(R.id.edt_email);
         inputPassword = findViewById(R.id.edt_password);
+
+        //--> Frames
+        frameLoginWithEmail = findViewById(R.id.frame_login_with_email);
+        frameSocialsLogin = findViewById(R.id.frame_socials_login);
     }
 
     @Override

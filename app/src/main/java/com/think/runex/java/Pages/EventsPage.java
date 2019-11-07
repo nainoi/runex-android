@@ -11,14 +11,12 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.think.runex.R;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
-import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
 

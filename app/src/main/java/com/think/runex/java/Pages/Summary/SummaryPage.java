@@ -14,7 +14,7 @@ import androidx.viewpager.widget.ViewPager;
 
 import com.google.android.material.tabs.TabLayout;
 import com.think.runex.R;
-import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Pages.PendingEvidencePage;
 import com.think.runex.java.Pages.RegisteredEvent.RegisteredEventsPage;
 import com.think.runex.java.Pages.PendingPaymentPage;

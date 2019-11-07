@@ -20,12 +20,26 @@ public class FragmentUtils {
         this.activity = activity;
     }
 
+    private FragmentUtils(FragmentActivity activity) {
+        this.activity = activity;
+    }
+
     public static FragmentUtils newInstance(FragmentActivity activity, int containerId) {
         return new FragmentUtils(activity, containerId);
     }
 
+    public static FragmentUtils newInstance(FragmentActivity activity) {
+        return new FragmentUtils(activity);
+    }
+
     public int getStackCount() {
         return activity.getSupportFragmentManager().getBackStackEntryCount();
+    }
+
+    public void removeAllFragment(){
+        while (activity.getSupportFragmentManager().getBackStackEntryCount() > 0){
+            activity.getSupportFragmentManager().popBackStackImmediate();
+        }
     }
 
     public void replaceFragmentWithAnim(Fragment fragment) {

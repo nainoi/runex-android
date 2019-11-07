@@ -43,6 +43,10 @@
     <dimen name="space_112dp">112dp</dimen>
     <dimen name="space_128dp">128dp</dimen>
 
+    <!-- Buttons -->
+    <dimen name="buttonVerticalPadding">8dp</dimen>
+    <dimen name="buttonHorizontalPadding">38dp</dimen>
+
     <!--  Login  -->
     <dimen name="login_title_size">20dp</dimen>
     <dimen name="login_social_button_description_size">14dp</dimen>

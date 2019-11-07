@@ -16,7 +16,7 @@
         app:cardCornerRadius="8dp"
         app:cardElevation="4dp">
 
-        <com.think.runex.java.Customize.xSquareImage
+        <com.think.runex.java.Customize.Views.xSquareImage
             android:id="@+id/view_cover"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

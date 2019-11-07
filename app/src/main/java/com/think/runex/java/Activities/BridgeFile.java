@@ -11,12 +11,13 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Constants;
+import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Pages.MainPage;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 
-public class BridgeFile extends FragmentActivity {
+public class BridgeFile extends xActivity {
     /** Main variables */
     private final String ct = "BridgeFile->";
 

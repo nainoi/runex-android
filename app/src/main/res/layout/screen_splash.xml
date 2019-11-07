@@ -16,7 +16,7 @@
         android:gravity="center"
         android:layout_height="wrap_content">
 
-        <com.think.runex.java.Customize.xBrannerImage
+        <com.think.runex.java.Customize.Views.xBrannerImage
             android:id="@+id/imv_welcome_runex"
             android:layout_width="0dp"
             android:layout_weight="1"
@@ -28,7 +28,7 @@
     </LinearLayout>
 
     <!--  Preview image  -->
-    <com.think.runex.java.Customize.xBrannerImage
+    <com.think.runex.java.Customize.Views.xBrannerImage
         android:id="@+id/imv_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

@@ -1,7 +1,6 @@
 package com.think.runex.java.Pages;
 
 import android.app.Activity;
-import android.app.AlertDialog;
 import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.graphics.Bitmap;
@@ -16,19 +15,15 @@ import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.think.runex.R;
-import com.think.runex.java.App.Configs;
-import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
 import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Response.xResponse;
@@ -36,7 +31,6 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
-import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;

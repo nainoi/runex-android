@@ -25,8 +25,11 @@ import com.google.android.gms.maps.model.LatLng;
 import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Customize.Activity.xActivity;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ListOfRunningPage;
+import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.Animation.AnimUtils;
@@ -46,7 +49,7 @@ import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
 import java.text.DecimalFormat;
 
-public class RecordActivity extends FragmentActivity implements OnMapReadyCallback
+public class RecordActivity extends xActivity implements OnMapReadyCallback
         , View.OnClickListener
         , onRecorderCallback {
     /**
@@ -89,6 +92,8 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     private boolean mInitMap = false;
     private final int CONTAINER_ID = R.id.display_fragment_frame;
     private boolean mOnDisplaySummary = false;
+    //--> XRequest code
+    private final int XRC_REMOVE_ALL_FRAGMENT = 1001;
 
     // views
     private TextView lbRecordingState;
@@ -105,7 +110,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     @Override
     public void onBackPressed() {
-        if( mFUtils.getStackCount() > 0 ) getSupportFragmentManager().popBackStack();
+        if (mFUtils.getStackCount() > 0) getSupportFragmentManager().popBackStack();
         else if (mOnDisplaySummary) {
             // clear flag
             mOnDisplaySummary = false;
@@ -116,9 +121,40 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         } else super.onBackPressed();
     }
 
+
     /**
      * Implement methods
      */
+    @Override
+    public void onFragmentCallback(xTalk xTalk) {
+        // remove all fragment page
+        if (xTalk.requestCode == XRC_REMOVE_ALL_FRAGMENT) {
+
+            // remove all fragment pages
+            fragmentManager.removeAllFragment();
+
+            // reset result
+            reset();
+
+            // refresh views
+            binding();
+
+            // hide stop button
+            btnStopAndSubmit.setVisibility(View.GONE);
+
+            // change start button
+            // description
+            lbRecordingState.setText(getString(R.string.start_recording));
+
+            // clear flag
+            mOnDisplaySummary = false;
+
+            // hide summary frame
+            hideSummaryFrame();
+
+        }
+
+    }
 
     @Override
     public void onRecordTimeChanged(String time) {
@@ -138,26 +174,11 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 //                toListOfRunningPage();
 
                 // submit running result
-                apiSubmitRunningResult(new RecorderObject());
+                // apiSubmitRunningResult(new RecorderObject());
 
-//                // reset result
-//                reset();
-//
-//                // refresh views
-//                binding();
-//
-//                // hide stop button
-//                btnStopAndSubmit.setVisibility(View.GONE);
-//
-//                // change start button
-//                // description
-//                lbRecordingState.setText(getString(R.string.start_recording));
-//
-//                // clear flag
-//                mOnDisplaySummary = false;
-//
-//                // hide summary frame
-//                hideSummaryFrame();
+                // successfully submit result
+                toSuccessfullySubmitResult();
+
 
                 break;
 
@@ -198,7 +219,7 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 mMapUtils.zoomToFit();
 
                 // display summary frame
-                displaySummaryFrame( recorderObj );
+                displaySummaryFrame(recorderObj);
 
                 break;
         }
@@ -304,9 +325,20 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     /**
      * Feature methods
      */
-    private void toListOfRunningPage(){
-        mFUtils.replaceFragment( new ListOfRunningPage());
+    private void toSuccessfullySubmitResult() {
+        // prepare usage variables
+        xTalk x = new xTalk();
+        x.requestCode = XRC_REMOVE_ALL_FRAGMENT;
+
+        // display fragment
+        mFUtils.replaceFragment(new SuccessfullySubmitRunningResultPage().setRequestCode(x));
+
     }
+
+    private void toListOfRunningPage() {
+        mFUtils.replaceFragment(new ListOfRunningPage());
+    }
+
     private void locationChanged(xLocation location) {
         // prepare usage variables
         final String mtn = ct + "locationChanged() ";
@@ -354,13 +386,14 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
         }
     }
 
-    private void bindingSummary(RecorderObject recorder ){
-        inputDisplayTime.setText( recorder.recordingDisplayTime );
-        inputDistance.setText( Globals.DCM.format(recorder.distanceKm) +"km");
-        inputStep.setText( recorder.step +"");
-        inputCalories.setText( recorder.calories +"");
+    private void bindingSummary(RecorderObject recorder) {
+        inputDisplayTime.setText(recorder.recordingDisplayTime);
+        inputDistance.setText(Globals.DCM.format(recorder.distanceKm) + "km");
+        inputStep.setText(recorder.step + "");
+        inputCalories.setText(recorder.calories + "");
 
     }
+
     private void binding() {
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
         lbDistance.setText(df.format(mRecorderUtils.mRecordDistanceKm) + "km");
@@ -398,9 +431,9 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
 
     }
 
-    private void displaySummaryFrame(RecorderObject recorder ) {
+    private void displaySummaryFrame(RecorderObject recorder) {
         // binding views summary
-        bindingSummary( recorder );
+        bindingSummary(recorder);
 
         //--> animation
         AnimUtils.instance().translateUp(frameSummary, new onAnimCallback() {

@@ -7,7 +7,6 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.facebook.internal.CallbackManagerImpl
@@ -23,14 +22,11 @@ import com.think.runex.feature.social.SocialLoginListener
 import com.think.runex.feature.social.SocialLoginManger
 import com.think.runex.feature.social.SocialLoginManger.Companion.RC_GOOGLE_LOGIN
 import com.think.runex.feature.social.SocialPlatform
-import com.think.runex.feature.user.Profile
 import com.think.runex.feature.user.UserProvider
-import com.think.runex.java.Activities.BridgeFile
 import com.think.runex.java.App.Configs
 import com.think.runex.java.Constants.APIs
 import com.think.runex.java.Constants.Constants
 import com.think.runex.java.Constants.Globals
-import com.think.runex.java.Customize.xFragment
 import com.think.runex.java.Utils.Network.NetworkProps
 import com.think.runex.java.Utils.Network.NetworkUtils
 import com.think.runex.java.Utils.Network.Request.rqLogin
@@ -38,7 +34,6 @@ import com.think.runex.java.Utils.Network.Response.xResponse
 import com.think.runex.java.Utils.Network.onNetworkCallback
 import com.think.runex.utility.InjectorUtils
 import kotlinx.android.synthetic.main.screen_login.*
-import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.launch
 import java.lang.Exception
 

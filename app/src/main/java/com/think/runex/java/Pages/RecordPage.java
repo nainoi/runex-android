@@ -15,7 +15,7 @@ import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.MarkerOptions;
 import com.think.runex.R;
-import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragment;
 
 public class RecordPage extends xFragment implements OnMapReadyCallback {
 

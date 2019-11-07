@@ -18,6 +18,7 @@ public class Globals {
     public static DecimalFormat DCM = new DecimalFormat("#.##");
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
+    public static final int FIXED_SCREEN_WIDTH = 1024;
 
     //--> Platform
     public static final String PLATFORM = "android";

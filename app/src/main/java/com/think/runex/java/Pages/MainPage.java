@@ -11,13 +11,12 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Activities.RecordActivity;
-import com.think.runex.java.Customize.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Utils.StaticChildFragmentUtils;
 
 public class MainPage extends xFragment {
@@ -81,8 +80,8 @@ public class MainPage extends xFragment {
         boolean onSelected = true;
 
         switch( itemId ){
-            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
-            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new MyEventPage()); break;
+//            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
+//            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new MyEventPage()); break;
             case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
             case R.id.menu_profile: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new ProfilePage()); break;
             default: onSelected = false; break;
@@ -128,6 +127,9 @@ public class MainPage extends xFragment {
         if( bottomNavigationView.getSelectedItemId() == mCurrentItemId ) return;
 
         // update screen
-        updateScreen(bottomNavigationView.getSelectedItemId());
+//        updateScreen(R.id.menu_profile);
+
+        // perform select
+        bottomNavigationView.setSelectedItemId(R.id.menu_profile);
     }
 }

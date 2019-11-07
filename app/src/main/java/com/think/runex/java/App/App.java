@@ -58,17 +58,20 @@ public class App {
     }
 
 
-    public void clear(){
+    public App clear(){
         editor.clear().commit();
+        return this;
     }
-    public void serveLoginPage(Fragment fragment, int requestCode){
+    public App serveLoginPage(Fragment fragment, int requestCode){
         Intent i = new Intent(fragment.getActivity(), LoginActivity.class);
         fragment.startActivityForResult(i, requestCode);
+        return this;
     }
 
-    public void serveLoginPage(Activity activity, int requestCode){
+    public App serveLoginPage(Activity activity, int requestCode){
         Intent i = new Intent(activity, LoginActivity.class);
         activity.startActivityForResult(i, requestCode);
+        return this;
     }
 
 }
