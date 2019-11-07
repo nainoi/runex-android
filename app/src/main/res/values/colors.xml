@@ -8,12 +8,9 @@
     <color name="backgroundSecondary">#F5F7F9</color>
     <color name="backgroundSurface">#EDF1F5</color>
 
-    <color name="textColorPrimary">#333333</color>
-    <color name="textColorSecondary">#666666</color>
-    <color name="textColorHint">#999999</color>
-
-    <!-- Social colors -->
-    <color name="textLoginWithGoogle">@color/materialBlack</color>
+    <color name="textColorPrimary">#000000</color>
+    <color name="textColorSecondary">#55595C</color>
+    <color name="textColorHint">#66323B45</color>
 
     <color name="icon">#555555</color>
     <!-- Not have math color for iconOnLightSurface-->
@@ -23,9 +20,12 @@
 
     <color name="error">#CC2E2E</color>
     <color name="line">#EAEAEA</color>
+    <color name="lineSeparate">#B3A8B6C8</color>
+    <color name="border">#999999</color>
+    <color name="borderInput">#B3A8B6C8</color>
+    <color name="facebookColor">#3C67B8</color>
 
-    <!-- Color Moc up -->
-    <color name="orange">#FB6401</color>
+    <color name="orange">#FA6400</color>
     <color name="orange_light">#FFCAAD</color>
     <color name="orangeDark">#C03100</color>
     <color name="overlayDark">#77000000</color>

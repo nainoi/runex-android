@@ -12,9 +12,6 @@
     <dimen name="text_title">20sp</dimen>          <!-- (Title) -->
     <dimen name="text_headline">24sp</dimen>       <!-- (Headline) -->
 
-    <!--  Socials button  -->
-    <dimen name="social_button_space_vertical">16dp</dimen>
-
     <!-- Space Dimension -->
     <dimen name="space_1dp">1dp</dimen>
     <dimen name="space_2dp">2dp</dimen>
@@ -45,6 +42,16 @@
     <dimen name="space_100dp">100dp</dimen>
     <dimen name="space_112dp">112dp</dimen>
     <dimen name="space_128dp">128dp</dimen>
+
+    <!-- Icon -->
+    <dimen name="action_bar_icon_size">32dp</dimen>
+    <dimen name="text_view_icon_size">24dp</dimen>
+
+    <!-- Button -->
+    <dimen name="login_button_height">48dp</dimen>
+
+    <!--  Socials button  -->
+    <dimen name="social_button_space_vertical">16dp</dimen>
 
     <!-- Event -->
     <dimen name="event_image_width">96dp</dimen>

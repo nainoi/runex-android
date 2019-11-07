@@ -17,6 +17,7 @@
 
     <!-- E -->
     <string name="email">อีเมล</string>
+    <string name="email_address">ที่อยู่อีเมล</string>
     <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
     <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
     <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
@@ -39,8 +40,11 @@
     <!-- L -->
     <string name="latest">ล่าสุด</string>
     <string name="login">เข้าสู่ระบบ</string>
+    <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
+    <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
     <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
     <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
+    <string name="login_with_email">ลงชื่อใช้งานด้วยอีเมล</string>
     <string name="logout">ออกจากระบบ</string>
 
 
@@ -50,6 +54,7 @@
 
     <!-- N -->
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
+    <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
 
     <!-- O -->
     <string name="ok">ตกลง</string>
@@ -63,8 +68,12 @@
     <!-- R -->
     <string name="record">บันทึก</string>
     <string name="runex_sync">RUNEX Sync</string>
+    <string name="register">สมัครสมาชิก</string>
 
     <!-- S -->
+    <string name="background_service">background-service</string>
+    <string name="server_client_id">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
+    <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
 
     <!-- T -->
 
@@ -83,4 +92,6 @@
 
     <!-- Z -->
 
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
