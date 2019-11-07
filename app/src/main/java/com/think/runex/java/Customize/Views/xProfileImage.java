@@ -9,7 +9,9 @@ import androidx.appcompat.widget.AppCompatImageView;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.DeviceUtils;
 
-public class xProfileImage extends AppCompatImageView {
+import de.hdodenhof.circleimageview.CircleImageView;
+
+public class xProfileImage extends CircleImageView {
     public xProfileImage(Context context) {
         super(context);
     }
@@ -29,6 +31,6 @@ public class xProfileImage extends AppCompatImageView {
         Point point = DeviceUtils.instance(getContext()).getDisplaySize();
         final int w = (point.x == 0 ? Globals.FIXED_SCREEN_WIDTH  / 8  : getMeasuredHeight());
 
-        setMeasuredDimension(w, w);
+        setMeasuredDimension(getMeasuredHeight(), getMeasuredHeight());
     }
 }

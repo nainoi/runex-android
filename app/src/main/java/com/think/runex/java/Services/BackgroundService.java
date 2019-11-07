@@ -33,6 +33,7 @@ import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
 import com.think.runex.application.MainActivity;
 import com.think.runex.java.Activities.BridgeFile;
+import com.think.runex.java.Activities.RecordActivity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
@@ -137,7 +138,7 @@ public class BackgroundService extends Service {
     private static final String NOTIF_CHANNEL_ID = "Channel_Id";
     private void startForeground() {
         // prepare usage variables
-        Intent notificationIntent = new Intent(this, BridgeFile.class);
+        Intent notificationIntent = new Intent(this, RecordActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

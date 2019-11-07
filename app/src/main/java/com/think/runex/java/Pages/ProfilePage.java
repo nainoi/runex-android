@@ -73,6 +73,8 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
             lbFullname.setText(dbb.getFullname());
             lbEmail.setText(dbb.getEmail());
 
+            L.i(mtn +"avatar: "+ dbb.getAvatar());
+
             Picasso.get().load( dbb.getAvatar() ).into( profileImage );
 
         } catch (Exception e) {
@@ -87,6 +89,7 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
         refreshLayout = v.findViewById(R.id.refresh_layout);
         lbFullname = v.findViewById(R.id.lb_user_name);
         lbEmail = v.findViewById(R.id.lb_email);
+        profileImage = v.findViewById(R.id.profile_image);
     }
 
     /** Life cycle */

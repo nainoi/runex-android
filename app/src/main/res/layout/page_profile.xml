@@ -7,7 +7,7 @@
     android:layout_height="match_parent">
 
     <LinearLayout
-        android:padding="8dp"
+        android:padding="16dp"
         android:orientation="vertical"
         android:layout_width="match_parent"
         android:background="@android:color/white"
@@ -20,11 +20,13 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <com.think.runex.java.Customize.Views.xProfileImage
+            <de.hdodenhof.circleimageview.CircleImageView
                 android:id="@+id/profile_image"
-                android:layout_width="match_parent"
-                android:background="@android:color/holo_orange_dark"
-                android:layout_height="match_parent"/>
+                app:civ_border_width="1dp"
+                app:civ_border_color="@color/softGray"
+                android:src="@drawable/ic_my_profile"
+                android:layout_width="40dp"
+                android:layout_height="40dp"/>
 
             <LinearLayout
                 android:id="@+id/frame_profile_info"
@@ -38,14 +40,16 @@
                     android:text="Teerapat Thongbor"
                     android:textColor="@android:color/black"
                     android:textStyle="bold"
-                    android:layout_width="match_parent"
+                    android:textSize="16dp"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
                 <TextView
                     android:id="@+id/lb_email"
                     android:text="dev@gmail.com"
+                    android:textSize="14dp"
                     android:textColor="@android:color/darker_gray"
-                    android:layout_width="match_parent"
+                    android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
             </LinearLayout>
@@ -54,18 +58,19 @@
 
         <androidx.cardview.widget.CardView
             android:id="@+id/card_total_running_distance"
-            app:cardBackgroundColor="@color/orange"
             android:layout_margin="12dp"
             app:cardCornerRadius="8dp"
             android:orientation="vertical"
             android:layout_width="match_parent"
             android:layout_height="wrap_content">
 
-            <LinearLayout
+            <com.think.runex.java.Customize.Views.xStatFrame
                 android:paddingHorizontal="22dp"
-                android:paddingVertical="32dp"
+                android:background="@drawable/bg_stat"
+                android:paddingVertical="22dp"
+                android:gravity="center_vertical"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
+                android:layout_height="match_parent"
                 android:orientation="vertical">
 
                 <TextView
@@ -84,7 +89,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"/>
 
-            </LinearLayout>
+            </com.think.runex.java.Customize.Views.xStatFrame>
 
         </androidx.cardview.widget.CardView>
 

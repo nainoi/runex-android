@@ -90,7 +90,7 @@ public class LoginActivity extends FragmentActivity implements
         switch (view.getId()) {
             //--> Login action
             case R.id.btn_login_with_email:
-                Toast.makeText(this, "aaa", Toast.LENGTH_SHORT).show();
+                // login with email
                 loginWithEmail();
                 break;
             case R.id.btn_login_with_google:

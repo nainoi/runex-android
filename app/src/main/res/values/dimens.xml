@@ -43,6 +43,12 @@
     <dimen name="space_112dp">112dp</dimen>
     <dimen name="space_128dp">128dp</dimen>
 
+    <!-- Text paragraph -->
+    <dimen name="textParagraphH1">36dp</dimen>
+    <dimen name="textContent">18dp</dimen>
+    <dimen name="textSmall">14dp</dimen>
+    <dimen name="textButton">22dp</dimen>
+
     <!-- Buttons -->
     <dimen name="buttonVerticalPadding">8dp</dimen>
     <dimen name="buttonHorizontalPadding">38dp</dimen>

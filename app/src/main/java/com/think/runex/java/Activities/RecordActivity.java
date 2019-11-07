@@ -277,9 +277,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         }
 
-        locationChanged(new xLocation(13.845912, 100.597992));
-        locationChanged(new xLocation(13.845195, 100.596765));
-
     }
 
     @Override
