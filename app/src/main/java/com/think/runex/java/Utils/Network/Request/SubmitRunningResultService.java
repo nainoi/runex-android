@@ -4,11 +4,14 @@ import android.app.Activity;
 
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 public class SubmitRunningResultService extends xRequest {
+    private final String ct = "SubmitRunningResultService->";
+
     public SubmitRunningResultService(Activity activity, onNetworkCallback networkCallback) {
         super(activity, networkCallback);
     }
@@ -24,6 +27,7 @@ public class SubmitRunningResultService extends xRequest {
         }
 
         // prepare usage variables
+        final String mtn = ct +"doIt() ";
         NetworkUtils nu = NetworkUtils.newInstance( activity );
         String submitDate = Globals.SDF.format( request.activity_date ).toString();
         NetworkProps props = new NetworkProps();
@@ -36,6 +40,8 @@ public class SubmitRunningResultService extends xRequest {
         props.addMultiParts("event_id", request.event_id);
         //--> headers
         props.addHeader("Authorization", "Bearer "+ appEntity.token.getToken());
+
+        L.i(mtn +"Bearer "+ appEntity.token.getToken());
 
         // request 
         nu.postFormData( props, networkCallback );

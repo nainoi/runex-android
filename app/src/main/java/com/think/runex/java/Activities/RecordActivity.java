@@ -135,7 +135,11 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
                 Toast.makeText(this, "submit", Toast.LENGTH_SHORT).show();
 
                 // to list of running page
-                toListOfRunningPage();
+//                toListOfRunningPage();
+
+                // submit running result
+                apiSubmitRunningResult(new RecorderObject());
+
 //                // reset result
 //                reset();
 //
@@ -522,12 +526,12 @@ public class RecordActivity extends FragmentActivity implements OnMapReadyCallba
     /**
      * API methods
      */
-    private void apiSummitRunningResult() {
+    private void apiSubmitRunningResult(RecorderObject recorder) {
         // prepare usage variables
         rqSubmitRunningResult request = new rqSubmitRunningResult();
 
         //--> update props
-        request.distance = 0.1;
+        request.distance = 1.3;
         request.event_id = Globals.EVENT_ID;
         request.activity_date = System.currentTimeMillis();
 
