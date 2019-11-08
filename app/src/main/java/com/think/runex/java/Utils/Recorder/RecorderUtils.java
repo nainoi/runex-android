@@ -71,20 +71,20 @@ public class RecorderUtils {
 
         try {
             // calculate pace
-            final double millsec = (mRecordTime);
-            final double min = (millsec / 1000 / 60);
-            final double sec = millsec % 60;
+            final long millsec = (mRecordTime);
+            final double sec = millsec / 1000;
 
-            L.i(mtn +"min: "+ min);
-            if (!Double.isNaN(min) && !Double.isNaN(min / mRecordDistanceKm)) {
-                final double pace = Long.parseLong((long) (min / mRecordDistanceKm) + "");
+            if( mRecordDistanceKm <= 0 || sec <= 0 || Double.isNaN( sec )) return;
 
-                L.i(mtn +"pace: "+ pace);
+            if (!Double.isNaN( sec / mRecordDistanceKm)) {
+                final long pace = Long.parseLong((long) ( sec / mRecordDistanceKm) + "");
+
 
                 if (!Double.isNaN(pace)) {
                     mRecordPace = pace;
-                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat((long) ((pace * 60 * 1000) + (sec * 1000)));
+                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat( pace * 1000 );
                 }
+
             }
 
         } catch ( Exception e ){

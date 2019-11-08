@@ -309,9 +309,15 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         }
 
-        xLocation x1 = new xLocation(13.845689, 100.596905);
-        xLocation x2 = new xLocation(13.845585, 100.594587);
-        xLocation x2 = new xLocation(13.842551, 100.595622);
+//        xLocation x1 = new xLocation(13.845689, 100.596905);
+//        xLocation x2 = new xLocation(13.845585, 100.594587);
+//        xLocation x3 = new xLocation(13.842551, 100.595622);
+//        xLocation x4 = new xLocation(13.843457, 100.597479);
+//
+//        locationChanged(x1);
+//        locationChanged(x2);
+//        locationChanged(x3);
+//        locationChanged(x4);
 
     }
 
