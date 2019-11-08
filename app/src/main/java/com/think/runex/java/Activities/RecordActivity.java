@@ -17,7 +17,6 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
-import androidx.fragment.app.FragmentActivity;
 
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
@@ -37,12 +36,10 @@ import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.Animation.AnimUtils;
 import com.think.runex.java.Utils.Animation.onAnimCallback;
-import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
-import com.think.runex.java.Utils.ImageUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Location.LocationUtils;
 import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
@@ -121,7 +118,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private View frameChangeBgImage;
     //--> Running summary frame
     private View frameSummary;
-    private TextView inputDistance, inputDisplayTime, inputStep, inputCalories;
+    private TextView inputDistance, inputDisplayTime, inputPaceDisplayTime, inputCalories;
     private View btnSubmit;
 
     @Override
@@ -238,8 +235,8 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
                 recorderObj.setRecordingTime(mRecorderUtils.mRecordTime);
                 recorderObj.setRecordingDisplayTime(mRecorderUtils.mRecordDisplayTime);
-                recorderObj.setCalories(7);
-                recorderObj.setStep(19);
+                recorderObj.setCalories(0);
+                recorderObj.setRecordingPaceDisplayTime(mRecorderUtils.mRecordPaceDisplayTime);
 
                 // zoom to fit
                 mMapUtils.zoomToFit();
@@ -285,7 +282,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         //--> Map utils
         mMapUtils = GoogleMapUtils.newInstance(this, mMap);
         //--> Recorder utils
-        mRecorderUtils = RecorderUtils.newInstance();
+        mRecorderUtils = RecorderUtils.newInstance(this);
         mRecorderUtils.setRecorderCallback(this);
 
         UiSettings uiSettings = mMap.getUiSettings();
@@ -433,7 +430,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private void bindingSummary(RecorderObject recorder) {
         inputDisplayTime.setText(recorder.recordingDisplayTime);
         inputDistance.setText(Globals.DCM.format(recorder.distanceKm) + "km");
-        inputStep.setText(recorder.step + "");
+        inputPaceDisplayTime.setText(recorder.recordingPaceDisplayTime);
         inputCalories.setText(recorder.calories + "");
 
     }
@@ -530,6 +527,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         // recording state description
         lbRecordingState.setText(getString(R.string.pause_recording));
+
     }
 
     private void reset() {
@@ -608,8 +606,8 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         // prepare usage variables
         final String mtn = ct + "apiSaveRecord() ";
         final rqAddRunningHistory request = new rqAddRunningHistory();
-        final double recordTime = mRecorderUtils.mRecordTime / 1000 / 60;
-        final double recordPace = mRecorderUtils.mRecordPace;
+        final double recordTime = mRecorderUtils.recTimeAsMin();
+        final double recordPace = mRecorderUtils.paceAsMin();
 
         request.setActivity_type(Globals.ACTIVITY_RUN);
         request.setCalory(0);
@@ -617,22 +615,23 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         request.setCaption("");
         request.setImage_path("");
         request.setPace(recordPace);
-        request.setTime((Double.isNaN(recordTime) ? 0 : recordTime));
+        request.setTime(recordTime);
 
         L.i(mtn +"save record: "+ Globals.GSON.toJson( request ));
-
         new AddHistoryService(this, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "successfully");
+                L.i(mtn +"response: "+ response.jsonString);
             }
 
             @Override
             public void onFailure(xResponse response) {
                 L.i(mtn + "failure");
+                L.i(mtn +"response: "+ response.jsonString);
 
             }
-        }); //.doIt(request);
+        }).doIt(request);
     }
 
     private void apiSubmitRunningResult(RecorderObject recorder) {
@@ -703,7 +702,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         frameSummary = findViewById(R.id.frame_summary);
         inputDistance = frameSummary.findViewById(R.id.lb_distance);
         inputDisplayTime = frameSummary.findViewById(R.id.lb_time);
-        inputStep = frameSummary.findViewById(R.id.lb_step);
+        inputPaceDisplayTime = frameSummary.findViewById(R.id.lb_step);
         inputCalories = frameSummary.findViewById(R.id.lb_calories);
         btnSubmit = frameSummary.findViewById(R.id.btn_submit_result);
     }

@@ -35,11 +35,11 @@ public class AddHistoryService extends xRequest {
         final NetworkProps props = new NetworkProps();
 
         //--> props
-        props.setUrl( APIs.GET_USER_PROFILE.VAL);
+        props.setUrl( APIs.ADD_HISTORY.VAL);
         props.setJsonAsObject( request );
         props.addHeader(Globals.HEADER_AUTHORIZATION, Globals.TOKEN_TYPE +" "+ appEntity.token.getToken());
 
         //--> fire
-        nw.get(props, networkCallback);
+        nw.postJSON(props, networkCallback);
     }
 }

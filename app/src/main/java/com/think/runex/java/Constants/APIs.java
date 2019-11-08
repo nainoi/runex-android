@@ -4,7 +4,7 @@ public enum  APIs {
     DOMAIN("https://runex.co:3006"),
 
     //--> A
-    ADD_HISTORY(DOMAIN.VAL +"api/v1/runhistory/add"),
+    ADD_HISTORY(DOMAIN.VAL +"/api/v1/runhistory/add"),
 
     //--> G
     GET_REGISTERED_EVENT( DOMAIN.VAL +"/api/v1/register/myRegEvent"),
