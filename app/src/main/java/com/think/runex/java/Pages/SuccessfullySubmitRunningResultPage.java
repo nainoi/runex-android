@@ -34,5 +34,14 @@ public class SuccessfullySubmitRunningResultPage extends xFragment {
 
         return v;
     }
+
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
+        // callback
+        activity.onFragmentCallback(xTalk);
+    }
 }
 

@@ -19,14 +19,14 @@
         android:id="@+id/menu_record"
         android:enabled="true"
         android:icon="@drawable/ic_record"
-        android:title="@string/record"
+        android:title="จับเวลาวิ่ง"
         app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_profile"
         android:enabled="true"
         android:icon="@drawable/ic_my_profile"
-        android:title="@string/profile"
+        android:title="ข้อมูลส่วนตัว"
         app:showAsAction="ifRoom" />
 
 </menu>

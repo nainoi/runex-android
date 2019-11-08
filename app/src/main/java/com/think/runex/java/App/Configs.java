@@ -16,7 +16,7 @@ public class Configs {
 
         public static class Polyline {
             public static final String COLOR = "#FB6401";
-            public static final float WIDTH = 28f;
+            public static final float WIDTH = 35.0f;
 
         }
     }

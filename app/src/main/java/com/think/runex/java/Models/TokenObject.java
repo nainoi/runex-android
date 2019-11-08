@@ -61,7 +61,7 @@ public class TokenObject{
         if (expire == null || expire.length() == 0) {
             return 0;
         }
-        DisplayDateTimeObject displayDate = DateTimeUtils.instance().stringToDate(expire);
+        DisplayDateTimeObject displayDate = DateTimeUtils.stringToDate(expire);
         return displayDate.timestamp;
     }
 

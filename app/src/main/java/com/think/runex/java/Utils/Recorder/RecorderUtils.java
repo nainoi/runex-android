@@ -20,8 +20,10 @@ public class RecorderUtils {
 
     // explicit variables
     public long mRecordTime = 0L;
+    public double mRecordPace = 0L;
     public double mRecordDistanceKm = 0.0;
-    public String mRecordDisplayTime = "00:00:00";
+    public String mRecordDisplayTime = "00:00";
+    public String mRecordPaceDisplayTime = "00:00";
     private boolean START = false;
     private final int RECURSIVE_TIME = 1000;
     private final int INCREATE_TIME = 1000;
@@ -39,7 +41,7 @@ public class RecorderUtils {
                 mRecordTime += INCREATE_TIME;
 
                 // display time
-                mRecordDisplayTime = DateTimeUtils.instance().toTimeFormat( mRecordTime );
+                mRecordDisplayTime = DateTimeUtils.toTimeFormat( mRecordTime );
 
                 // callback
                 mRecorderCallback.onRecordTimeChanged( mRecordDisplayTime );
@@ -63,8 +65,39 @@ public class RecorderUtils {
     }
 
     /** Feature methods */
+    public void calculatePace(){
+        // prepare usage variables
+        final String mtn = ct +"calculatePace() ";
+
+        try {
+            // calculate pace
+            final double millsec = (mRecordTime);
+            final double min = (millsec / 1000 / 60);
+            final double sec = millsec % 60;
+
+            L.i(mtn +"min: "+ min);
+            if (!Double.isNaN(min) && !Double.isNaN(min / mRecordDistanceKm)) {
+                final double pace = Long.parseLong((long) (min / mRecordDistanceKm) + "");
+
+                L.i(mtn +"pace: "+ pace);
+
+                if (!Double.isNaN(pace)) {
+                    mRecordPace = pace;
+                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat((long) ((pace * 60 * 1000) + (sec * 1000)));
+                }
+            }
+
+        } catch ( Exception e ){
+            L.e(mtn +"Err: "+ e.getMessage());
+        }
+    }
     public void addDistance( double distance){
+        // prepare usage variables
+        final String mtn = ct +"addDistance() ";
         mRecordDistanceKm += distance;
+
+        // calculate pace
+        calculatePace();
     }
     public void setRecorderCallback( onRecorderCallback callback){
         this.mRecorderCallback = callback;
@@ -78,7 +111,9 @@ public class RecorderUtils {
 
         // clear result
         mRecordTime = 0L;
-        mRecordDisplayTime = "00:00:00";
+        mRecordPace = 0.0;
+        mRecordDisplayTime = "00:00";
+        mRecordPaceDisplayTime = "00:00";
         mRecordDistanceKm = 0.0;
 
     }

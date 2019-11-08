@@ -4,7 +4,7 @@ public enum  APIs {
     DOMAIN("https://runex.co:3006"),
 
     //--> A
-    SUBMIT_RUNNING_RESULT(DOMAIN.VAL +"/api/v1/activity/add"),
+    ADD_HISTORY(DOMAIN.VAL +"api/v1/runhistory/add"),
 
     //--> G
     GET_REGISTERED_EVENT( DOMAIN.VAL +"/api/v1/register/myRegEvent"),
@@ -15,6 +15,7 @@ public enum  APIs {
 
     //--> S
     SOCIALS_LOGIN(DOMAIN.VAL +"/api/v1/user/pd"),
+    SUBMIT_RUNNING_RESULT(DOMAIN.VAL +"/api/v1/activity/add"),
     ;
 
     public final String VAL;

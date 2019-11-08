@@ -11,6 +11,8 @@ import android.view.Display;
 import android.view.View;
 import android.view.WindowManager;
 
+import androidx.fragment.app.Fragment;
+
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 
@@ -49,6 +51,23 @@ public class DeviceUtils {
 
         // return
         return DISPLAY_SCREEN;
+    }
+
+
+    public void openImagePicker(Activity activity, int requestCode ) {
+        _openImagePicker(activity, requestCode);
+
+    }
+    public void openImagePicker(Fragment fragment, int requestCode ){
+        _openImagePicker(fragment, requestCode);
+    }
+    private void _openImagePicker(Object host, int requestCode){
+        Intent intent = new Intent();
+        intent.setType("image/*");
+        intent.setAction(Intent.ACTION_GET_CONTENT);
+
+        if( host instanceof Activity) (((Activity)host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
+        else if(host instanceof Fragment) (((Fragment)host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
     }
 
     public File takeScreenshot(Context context) {

@@ -1,10 +1,13 @@
 package com.think.runex.java.Activities;
 
 
+import android.app.Activity;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -34,19 +37,25 @@ import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.Animation.AnimUtils;
 import com.think.runex.java.Utils.Animation.onAnimCallback;
+import com.think.runex.java.Utils.DateTime.DateTimeUtils;
+import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
+import com.think.runex.java.Utils.ImageUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Location.LocationUtils;
 import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
+import com.think.runex.java.Utils.Network.Request.rqAddRunningHistory;
 import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.java.Utils.Network.Services.AddHistoryService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
+import java.io.InputStream;
 import java.text.DecimalFormat;
 
 public class RecordActivity extends xActivity implements OnMapReadyCallback
@@ -81,7 +90,8 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 locationChanged(location);
 
             } catch (Exception e) {
-                L.e(mtn + "Err: " + e);
+                e.printStackTrace();
+                L.e(mtn + "Err: " + e.getMessage());
             }
         }
     };
@@ -100,9 +110,15 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private ImageView icRecordState;
     private TextView lbTime;
     private TextView lbDistance;
+    private TextView lbPace;
     private TextView btnStart;
     private View btnStopAndSubmit;
-    private View frameRecording;
+    private ImageView previewImage;
+    //--> Toolbar
+    private View btnCancelSubmit;
+    private View btnShare;
+    //--> Change background image
+    private View frameChangeBgImage;
     //--> Running summary frame
     private View frameSummary;
     private TextView inputDistance, inputDisplayTime, inputStep, inputCalories;
@@ -117,6 +133,10 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
             // hide summary frame
             hideSummaryFrame();
+
+//        } else if(mRecorderUtils.mRecordTime > 0L ){
+//            // display discard recording
+//            dialogDiscardRecording();
 
         } else super.onBackPressed();
     }
@@ -182,6 +202,12 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
                 break;
 
+            case R.id.frame_change_background_image:
+                // open image gallery picker
+                DeviceUtils.instance(this).openImagePicker(this, Globals.RC_PICK_IMAGE);
+
+                break;
+
             case R.id.btn_start:
                 // going to stop recording
                 if (mOnRecording) {
@@ -220,6 +246,12 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
                 // display summary frame
                 displaySummaryFrame(recorderObj);
+
+                // save record
+                apiSaveRecord();
+
+                // display change background image
+//                frameChangeBgImage.setVisibility(View.VISIBLE);
 
                 break;
         }
@@ -277,6 +309,10 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         }
 
+        xLocation x1 = new xLocation(13.845689, 100.596905);
+        xLocation x2 = new xLocation(13.845585, 100.594587);
+        xLocation x2 = new xLocation(13.842551, 100.595622);
+
     }
 
     @Override
@@ -322,6 +358,11 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private void dialogDiscardRecording() {
+        // prepare usage variables
+
+    }
+
     private void toSuccessfullySubmitResult() {
         // prepare usage variables
         xTalk x = new xTalk();
@@ -394,6 +435,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private void binding() {
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
         lbDistance.setText(df.format(mRecorderUtils.mRecordDistanceKm) + "km");
+        lbPace.setText(mRecorderUtils.mRecordPaceDisplayTime);
 
     }
 
@@ -478,7 +520,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         startRecording();
 
         // anim
-        anim(android.R.drawable.ic_media_pause);
+        anim(R.drawable.ic_pause);
 
         // recording state description
         lbRecordingState.setText(getString(R.string.pause_recording));
@@ -491,7 +533,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
     private void paused() {
         // anim pause
-        anim(android.R.drawable.ic_media_play);
+        anim(R.drawable.ic_play);
 
         // pause recording
         pauseRecording();
@@ -556,6 +598,37 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * API methods
      */
+    private void apiSaveRecord() {
+        // prepare usage variables
+        final String mtn = ct + "apiSaveRecord() ";
+        final rqAddRunningHistory request = new rqAddRunningHistory();
+        final double recordTime = mRecorderUtils.mRecordTime / 1000 / 60;
+        final double recordPace = mRecorderUtils.mRecordPace;
+
+        request.setActivity_type(Globals.ACTIVITY_RUN);
+        request.setCalory(0);
+        request.setDistance(mRecorderUtils.mRecordDistanceKm);
+        request.setCaption("");
+        request.setImage_path("");
+        request.setPace(recordPace);
+        request.setTime((Double.isNaN(recordTime) ? 0 : recordTime));
+
+        L.i(mtn +"save record: "+ Globals.GSON.toJson( request ));
+
+        new AddHistoryService(this, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                L.i(mtn + "successfully");
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                L.i(mtn + "failure");
+
+            }
+        }); //.doIt(request);
+    }
+
     private void apiSubmitRunningResult(RecorderObject recorder) {
         // prepare usage variables
         rqSubmitRunningResult request = new rqSubmitRunningResult();
@@ -592,19 +665,33 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         btnStart.setOnClickListener(this);
         btnStopAndSubmit.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+        frameChangeBgImage.setOnClickListener(this);
+
+        //--> Toolbar
+        btnCancelSubmit.setOnClickListener(this);
+        btnShare.setOnClickListener(this);
     }
 
     /**
      * Matching views
      */
     private void viewMatching() {
+        lbPace = findViewById(R.id.lb_pace);
         lbDistance = findViewById(R.id.lb_distance);
         lbTime = findViewById(R.id.lb_time);
+
         lbRecordingState = findViewById(R.id.lb_recording_state_description);
         btnStart = findViewById(R.id.btn_start);
         btnStopAndSubmit = findViewById(R.id.frame_stop_and_submit);
         icRecordState = findViewById(R.id.ic_recording_state);
-        frameRecording = findViewById(R.id.frame_recording);
+
+        //--> Frame change background image
+        previewImage = findViewById(R.id.preview_image);
+        frameChangeBgImage = findViewById(R.id.frame_change_background_image);
+
+        //--> Toolbar
+        btnCancelSubmit = findViewById(R.id.btn_cancel_submit);
+        btnShare = findViewById(R.id.btn_share);
 
         //--> Summary views
         frameSummary = findViewById(R.id.frame_summary);
@@ -628,6 +715,31 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Life cycle
      */
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        // prepare usage variables
+        final String mtn = ct + "onActivityResult() ";
+
+        if (requestCode == Globals.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
+            try {
+                // prepare usage variables
+                InputStream inputStream = getContentResolver().openInputStream(data.getData());
+                Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
+
+//                String strUri = ImageUtils.getRealPathFromURI(this, data.getData());
+//                L.i(mtn +"strUri: "+ strUri);
+
+                // display preview image
+                previewImage.setImageBitmap(bitmap);
+
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
+            }
+        }
+    }
+
     @Override
     protected void onDestroy() {
         super.onDestroy();

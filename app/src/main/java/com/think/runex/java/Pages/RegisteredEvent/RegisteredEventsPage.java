@@ -131,8 +131,8 @@ public class RegisteredEventsPage extends xFragment implements
                 EventObject.DataBean evt = rsp.getData().get(a);
                 EventObject.DataBean.EventBean evtVal = evt.getEvent();
                 MultiObject ml = new MultiObject();
-                DisplayDateTimeObject start = DateTimeUtils.instance().stringToDate(evtVal.getStart_reg());
-                DisplayDateTimeObject end = DateTimeUtils.instance().stringToDate(evtVal.getEnd_reg());
+                DisplayDateTimeObject start = DateTimeUtils.stringToDate(evtVal.getStart_reg());
+                DisplayDateTimeObject end = DateTimeUtils.stringToDate(evtVal.getEnd_reg());
 
                 // update props
                 //--> evt val

@@ -7,6 +7,7 @@
     android:background="@android:color/white"
     android:orientation="vertical">
 
+
     <FrameLayout
         android:id="@+id/frame_map"
         android:layout_width="match_parent"
@@ -18,6 +19,64 @@
             android:name="com.google.android.gms.maps.SupportMapFragment"
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/preview_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+        <LinearLayout
+            android:id="@+id/frame_change_background_image"
+            android:visibility="gone"
+            android:layout_gravity="bottom|center_horizontal"
+            android:layout_width="wrap_content"
+            android:orientation="horizontal"
+            android:paddingVertical="2dp"
+            android:paddingHorizontal="8dp"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/background_change_background_image_button"
+            android:layout_height="wrap_content">
+
+            <ImageView
+                android:id="@+id/v_change_bgimage"
+                android:src="@android:drawable/ic_menu_camera"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+            <TextView
+                android:id="@+id/lb_change_bgimage"
+                android:gravity="center_vertical"
+                android:text="เปลี่ยนรูปพื้นหลัง"
+                android:textColor="@android:color/white"
+                android:layout_width="wrap_content"
+                android:layout_height="match_parent"/>
+
+        </LinearLayout>
+
+    </FrameLayout>
+
+    <FrameLayout
+        android:id="@+id/frame_toolbar"
+        android:visibility="gone"
+        android:layout_width="match_parent"
+        android:background="@android:color/white"
+        android:paddingHorizontal="12dp"
+        android:paddingVertical="16dp"
+        android:layout_height="?attr/actionBarSize">
+
+        <ImageView
+            android:id="@+id/btn_cancel_submit"
+            android:src="@drawable/ic_close"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"/>
+
+        <ImageView
+            android:id="@+id/btn_share"
+            android:src="@drawable/ic_share"
+            android:layout_gravity="right"
+            android:tint="@color/orange"
+            android:layout_width="?attr/actionBarSize"
+            android:layout_height="match_parent"/>
 
     </FrameLayout>
 
@@ -74,7 +133,7 @@
                     android:id="@+id/frame_distance"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.9"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="12dp"
@@ -92,7 +151,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:gravity="center"
-                        android:text="00:00:00"
+                        android:text="00:00"
                         android:textColor="@color/orange"
                         android:textSize="18dp" />
 
@@ -101,27 +160,27 @@
 
                 <!-- Calories-->
                 <LinearLayout
-                    android:id="@+id/frame_calories"
+                    android:id="@+id/frame_pace"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="1.2"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="12dp"
                     android:paddingBottom="12dp">
 
                     <TextView
-                        android:id="@+id/v_step"
+                        android:id="@+id/v_pace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="จำนวนก้าว"
+                        android:text="ฝีเท้า"
                         android:textColor="@android:color/black" />
 
                     <TextView
-                        android:id="@+id/lb_step"
+                        android:id="@+id/lb_pace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="0.0"
+                        android:text="00:00"
                         android:textColor="@color/orange"
                         android:textSize="18dp" />
 
@@ -129,10 +188,10 @@
 
                 <!-- Step -->
                 <LinearLayout
-                    android:id="@+id/frame_step"
+                    android:id="@+id/frame_calories"
                     android:layout_width="0dp"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
+                    android:layout_weight="0.9"
                     android:gravity="center"
                     android:orientation="vertical"
                     android:paddingTop="12dp"
@@ -195,8 +254,9 @@
 
                     <ImageView
                         android:id="@+id/ic_recording_state"
-                        android:src="@android:drawable/ic_media_play"
+                        android:src="@drawable/ic_play"
                         android:tint="@android:color/white"
+                        android:padding="4dp"
                         android:layout_width="35dp"
                         android:layout_gravity="center"
                         android:layout_height="35dp"/>
@@ -244,7 +304,8 @@
                     <ImageView
                         android:id="@+id/ic_stop_state"
                         android:layout_width="25dp"
-                        android:background="@drawable/view_square_white_rounded"
+                        android:padding="4dp"
+                        android:background="@drawable/ic_stop"
                         android:layout_gravity="center"
                         android:layout_height="25dp"/>
 

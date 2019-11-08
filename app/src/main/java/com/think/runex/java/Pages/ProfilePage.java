@@ -2,6 +2,8 @@ package com.think.runex.java.Pages;
 
 import android.app.Activity;
 import android.content.Intent;
+import android.icu.math.BigDecimal;
+import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +25,8 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
 
+import java.util.Locale;
+
 public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefreshListener{
     /**
      * Main variables
@@ -34,6 +38,7 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
     private SwipeRefreshLayout refreshLayout;
     private ImageView profileImage;
     private TextView lbFullname, lbEmail;
+    private TextView lbTotalDistance;
 
     /** Implement methods */
     @Override
@@ -72,6 +77,7 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
 
             lbFullname.setText(dbb.getFullname());
             lbEmail.setText(dbb.getEmail());
+            lbTotalDistance.setText(String.format("%,.2f", 0.00) +"");
 
             L.i(mtn +"avatar: "+ dbb.getAvatar());
 
@@ -89,6 +95,7 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
         refreshLayout = v.findViewById(R.id.refresh_layout);
         lbFullname = v.findViewById(R.id.lb_user_name);
         lbEmail = v.findViewById(R.id.lb_email);
+        lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         profileImage = v.findViewById(R.id.profile_image);
     }
 

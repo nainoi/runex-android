@@ -13,29 +13,23 @@ public class DateTimeUtils {
     /**
      * Main variables
      */
-    private final String ct = "DateTimeUtils->";
-    private static DateTimeUtils ins;
+    private static final String ct = "DateTimeUtils->";
 
-    private DateTimeUtils() {
-    }
-
-    public static DateTimeUtils instance() {
-        return (ins == null) ? ins = new DateTimeUtils() : ins;
-    }
-
-    public String toTimeFormat(long millisec) {
+    public static String toTimeFormat(long millisec) {
         // prepare usage variables
         final int allSec = (int) (millisec / 1000);
         final int sec = allSec % 60;
         final int min = (((allSec) / 60) % 60);
         final int hour = (allSec / 3600);
 
-        return (hour < 10 ? "0" + hour : hour + "") + ":" +
+        return ((hour <= 0)
+                ? "" : ((hour < 10 ? "0" + hour : hour + "")) + ":") +
+
                 (min < 10 ? "0" + min : min + "") + ":" +
                 (sec < 10 ? "0" + sec : sec);
     }
 
-    public DisplayDateTimeObject stringToDate(String strDate) {
+    public static DisplayDateTimeObject stringToDate(String strDate) {
         // prepare usage variables
         final String mtn = ct + "stringToDate() ";
 
