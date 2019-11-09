@@ -96,22 +96,6 @@ public class GoogleMapUtils {
 
     }
 
-    public void addOnce() {
-        // prepare usage variables
-        final LatLng[] latlngs = new LatLng[points.size()];
-        for (int a = 0; a < points.size(); a++) {
-            latlngs[a] = new LatLng(points.get(a).latitude, points.get(a).longitude);
-
-        }
-        final int color = Color.parseColor(Configs.GoogleMap.Polyline.COLOR);
-        Polyline polyline = mMap.addPolyline(new PolylineOptions()
-                .clickable(true)
-                .width(Configs.GoogleMap.Polyline.WIDTH)
-                .add(latlngs));
-
-        polyline.setColor(color);
-    }
-
     public void addDistance(xLocation from, xLocation to) {
         distance += difDistance(from, to);
     }

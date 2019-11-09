@@ -11,6 +11,7 @@
     <color name="textColorPrimary">#000000</color>
     <color name="textColorSecondary">#55595C</color>
     <color name="textColorHint">#66323B45</color>
+    <color name="textSignOut">#66323B45</color>
 
     <color name="icon">#555555</color>
     <!-- Not have math color for iconOnLightSurface-->

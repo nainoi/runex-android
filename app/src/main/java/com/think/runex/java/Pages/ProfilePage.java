@@ -2,8 +2,6 @@ package com.think.runex.java.Pages;
 
 import android.app.Activity;
 import android.content.Intent;
-import android.icu.math.BigDecimal;
-import android.icu.text.NumberFormat;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -13,21 +11,21 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.application.MainActivity;
+import com.think.runex.java.Activities.BridgeFile;
 import com.think.runex.java.App.App;
-import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
 
-import java.util.Locale;
-
-public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefreshListener{
+public class ProfilePage extends xFragment implements
+        View.OnClickListener,
+        SwipeRefreshLayout.OnRefreshListener {
     /**
      * Main variables
      */
@@ -39,13 +37,28 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
     private ImageView profileImage;
     private TextView lbFullname, lbEmail;
     private TextView lbTotalDistance;
+    private View btnSignOut;
 
-    /** Implement methods */
+    /**
+     * Implement methods
+     */
+    @Override
+    public void onClick(View view) {
+        switch (view.getId()) {
+            case R.id.frame_sign_out:
+                // sign out and sign in
+                App.instance(activity)
+                        .clear()
+                        .serveLoginPage(this, Globals.RC_NEED_LOGIN);
+
+                break;
+        }
+    }
+
     @Override
     public void onRefresh() {
-        refreshLayout.setRefreshing( false );
+        refreshLayout.setRefreshing(false);
 
-        App.instance(activity).clear().serveLoginPage(this, Globals.RC_NEED_LOGIN);
     }
 
     @Nullable
@@ -57,12 +70,18 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
         viewsMatching(v);
 
         // views event listener
-        refreshLayout.setOnRefreshListener( this );
+        viewEventListener();
 
         // view binding
         viewBinding(App.instance(activity).getAppEntity().user);
 
         return v;
+    }
+
+    /** Feature methods */
+    private void toMainActivity(){
+        Intent i = new Intent(activity, MainActivity.class);
+        startActivity( i );
     }
 
     /**
@@ -77,15 +96,23 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
 
             lbFullname.setText(dbb.getFullname());
             lbEmail.setText(dbb.getEmail());
-            lbTotalDistance.setText(String.format("%,.2f", 0.00) +"");
+            lbTotalDistance.setText(String.format("%,.2f", 0.00) + "");
 
-            L.i(mtn +"avatar: "+ dbb.getAvatar());
+            L.i(mtn + "avatar: " + dbb.getAvatar());
 
-            Picasso.get().load( dbb.getAvatar() ).into( profileImage );
+            Picasso.get().load(dbb.getAvatar()).into(profileImage);
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
         }
+    }
+
+    /**
+     * View event listener
+     */
+    private void viewEventListener() {
+        btnSignOut.setOnClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
     }
 
     /**
@@ -97,16 +124,32 @@ public class ProfilePage extends xFragment implements SwipeRefreshLayout.OnRefre
         lbEmail = v.findViewById(R.id.lb_email);
         lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         profileImage = v.findViewById(R.id.profile_image);
+
+        //--> Buttons
+        btnSignOut = v.findViewById(R.id.frame_sign_out);
     }
 
-    /** Life cycle */
+    /**
+     * Life cycle
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if( requestCode == Globals.RC_NEED_LOGIN && resultCode == Activity.RESULT_OK ){
-            // binding view
-            viewBinding( App.instance(activity).getAppEntity().user );
+        if (requestCode == Globals.RC_NEED_LOGIN) {
+            if (resultCode == Activity.RESULT_OK) {
+                // binding view
+                viewBinding(App.instance(activity).getAppEntity().user);
+
+            } else {
+
+                // go to boarding page
+                toMainActivity();
+
+                // exit from this page
+                activity.finish();
+
+            }
         }
     }
 }

@@ -73,16 +73,6 @@ public class RecorderUtils {
         final Runnable mainRunner = new Runnable() {
             @Override
             public void run() {
-
-                // update recording time
-                mRecordTime += INCREATE_TIME;
-
-                // calculate pace
-                calculatePace();
-
-                // display time
-                mRecordDisplayTime = DateTimeUtils.toTimeFormat(mRecordTime);
-
                 // callback
                 mRecorderCallback.onRecordTimeChanged(mRecordDisplayTime);
 
@@ -97,6 +87,13 @@ public class RecorderUtils {
             public void run() {
                 try {
                     while (START) {
+
+                        // update recording time
+                        mRecordTime += INCREATE_TIME;
+
+                        // display time
+                        mRecordDisplayTime = DateTimeUtils.toTimeFormat(mRecordTime);
+
                         // main runner
                         mActivity.runOnUiThread(mainRunner);
 
