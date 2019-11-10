@@ -102,7 +102,7 @@ public class ProfilePage extends xFragment implements
                     mRunningHist = rhis.getData().get(0);
 
                     // update total distance
-                    lbTotalDistance.setText( Globals.DCM.format(mRunningHist.getTotal_distance()));
+                    lbTotalDistance.setText( Globals.DCM.format(mRunningHist.getTotal_distance()) +" km");
 
                 } catch ( Exception e ){
                     L.e(mtn +"Err: "+ e.getMessage());

@@ -39,6 +39,15 @@
         </activity>
 
         <activity
+            android:name=".java.Pages.EventDetailPage"
+            android:theme="@style/AppTheme.NoActionBar">
+            <intent-filter>
+                <action android:name="android.intent.action.MAIN" />
+                <category android:name="android.intent.category.LAUNCHER" />
+            </intent-filter>
+        </activity>
+
+        <activity
             android:name="com.think.runex.application.SchemeActivity"
             android:launchMode="singleInstance">
             <intent-filter>

@@ -4,47 +4,67 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Models.EventDetailObject;
 import com.think.runex.java.Models.RunningHistoryObject;
+import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
-public class EventDetailPage extends xFragment {
+public class EventDetailPage extends xActivity {
     /** Main variables */
     private final String ct = "EventDetailPage->";
 
     // instance variables
 
     // explicit variables
+    private String mEventProfile = null;
+    private String mEventName = null;
     private String mEventId = null;
     private boolean ON_NETWORKING = false;
 
     // views
+    private TextView lbEventName;
+    private ImageView eventImage;
     private TextView lbTotalDistance;
 
-    @Nullable
     @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        // prepare usage variables
-        final View v = inflater.inflate(R.layout.page_event_detail, container, false);
-        return v;
-    }
+    protected void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        setContentView(R.layout.page_event_detail);
 
-    @Override
-    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        super.onViewCreated(view, savedInstanceState);
+        final String mtn = ct +"onCreate() ";
+
+        ActivityUtils.newInstance(this).fullScreen();
+
+        Bundle b = getIntent().getExtras();
+        mEventProfile = b.getString("EVENT_PROFILE");
+        mEventName = b.getString("EVENT_NAME");
+        mEventId = b.getString("EVENT_ID");
 
         // view matching
-        viewMatching( view );
+        viewMatching(  );
+
+        try {
+            // binding event name
+            lbEventName.setText(mEventName);
+            Picasso.get().load( mEventProfile ).into( eventImage );
+
+        } catch ( Exception e ){
+            L.e(mtn +"Err: "+ e.getMessage());
+        }
     }
 
     /** Feature methods */
@@ -52,15 +72,11 @@ public class EventDetailPage extends xFragment {
 //        lbTotalDistance.setText();
     }
 
-    /** Setter */
-    public xFragment setEventId(String eventId){
-        this.mEventId = eventId;
-        return this;
-    }
-
     // view matching
-    private void viewMatching(View v){
-        lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
+    private void viewMatching(){
+        eventImage = findViewById(R.id.event_image);
+        lbEventName = findViewById(R.id.lb_event_name);
+        lbTotalDistance = findViewById(R.id.lb_total_running_distance);
 
     }
 
@@ -70,18 +86,18 @@ public class EventDetailPage extends xFragment {
         final String mtn = ct +"apiGetEventDetail() ";
 
         // fire
-        new GetEventDetailService(activity, new onNetworkCallback() {
+        new GetEventDetailService(this, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn +"response: "+ response.jsonString);
 
                 try {
                     // convert to running history object
-                    RunningHistoryObject rhis = Globals.GSON.fromJson(response.jsonString, RunningHistoryObject.class);
-                    RunningHistoryObject.DataBean db = rhis.getData().get(0);
+                    EventDetailObject rhis = Globals.GSON.fromJson(response.jsonString, EventDetailObject.class);
+                    EventDetailObject.DataBean db = rhis.getData();
 
                     // update total distance
-                    lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()));
+                    lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) +" km");
 
                 } catch ( Exception e ){
                     L.e(mtn +"Err: "+ e.getMessage());

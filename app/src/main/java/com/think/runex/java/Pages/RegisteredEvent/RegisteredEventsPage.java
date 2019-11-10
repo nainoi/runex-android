@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -16,6 +17,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
@@ -218,15 +220,28 @@ public class RegisteredEventsPage extends xFragment implements
             @Override
             public void onItemClicked(int position) {
                 // prepare usage variables
-                ChildFragmentUtils fragment = new ChildFragmentUtils(RegisteredEventsPage.this);
-                EventDetailPage eventPage = new EventDetailPage();
-                EventObject.DataBean evt =  (EventObject.DataBean)events.get(position).getAttachedObject();
+                final String mtn = ct +"onItemClick() ";
 
-                // update props
-                eventPage.setEventId( evt.getEvent_id() );
+                try {
+                    // prepare usage variables
+                    EventObject.DataBean evt = (EventObject.DataBean) events.get(position).getAttachedObject();
+                    EventObject.DataBean.EventBean evtVal = evt.getEvent();
+                    Intent i = new Intent(activity, EventDetailPage.class);
+                    Bundle b = new Bundle();
 
-                // display event page
-                fragment.replaceChildFragment(R.id.frame_fragment, eventPage);
+                    //--> Bundle
+                    b.putString("EVENT_PROFILE", APIs.DOMAIN.VAL + evtVal.getCover());
+                    b.putString("EVENT_NAME", evtVal.getName());
+                    b.putString("EVENT_ID", evt.getEvent_id());
+                    // update props
+                    i.putExtras( b );
+
+                    // start activity for result
+                    startActivityForResult(i, 0);
+
+                } catch ( Exception e ){
+                    L.e(mtn +"Err: "+ e.getMessage());
+                }
 
             }
         });
