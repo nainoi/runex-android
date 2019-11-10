@@ -21,6 +21,25 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
+    <!-- Theme.MaterialComponents.Light.Dialog-->
+    <style name="FullScreenDialog" parent="ThemeOverlay.AppCompat.Dialog">
+
+        <!-- Must set windowBackground and windowIsFloating = false for the full screen dialog.-->
+        <item name="android:windowBackground">@color/background</item>
+        <item name="android:windowIsFloating">false</item>
+
+        <!-- Set this to true if you want Full Screen without status bar -->
+        <item name="android:windowFullscreen">true</item>
+
+        <!-- Set Status bar color -->
+        <!-- <item name="android:statusBarColor">@color/colorPrimary</item>-->
+
+        <!-- Optional -->
+        <!-- <item name="android:layout_width">match_parent</item>-->
+        <!-- <item name="android:layout_height">match_parent</item>-->
+        <!-- <item name="android:windowNoTitle">true</item>-->
+    </style>
+
     <style name="ButtonPrice" parent="Widget.MaterialComponents.Button.OutlinedButton">
         <item name="android:minWidth">@dimen/space_64dp</item>
         <item name="android:minHeight">@dimen/space_24dp</item>
