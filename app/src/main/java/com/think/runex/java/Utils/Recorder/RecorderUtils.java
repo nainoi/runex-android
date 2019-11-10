@@ -28,6 +28,7 @@ public class RecorderUtils {
     public long mRecordPace = 0L;
     public double mRecordCalories = 0L;
     public double mRecordDistanceKm = 0.0;
+    public double mLastRecordDistanceKm = 0.0;
     public String mRecordDisplayTime = "00:00";
     public String mRecordPaceDisplayTime = "00:00";
     private boolean START = false;
@@ -92,6 +93,12 @@ public class RecorderUtils {
                         // update recording time
                         mRecordTime += INCREATE_TIME;
 
+                        // calculate cal
+                        calculateCalories();
+
+                        // calculate pace
+                        calculatePace();
+
                         // display time
                         mRecordDisplayTime = DateTimeUtils.toTimeFormat(mRecordTime);
 
@@ -151,6 +158,36 @@ public class RecorderUtils {
         return 0;
     }
 
+    public void calculateCalories(){
+        // prepare usage variables
+        final String mtn = ct + "calculatePace() ";
+
+        try{
+
+            // distance does not changed
+            if(mLastRecordDistanceKm == mRecordDistanceKm || mLastRecordDistanceKm <= 0) return;
+
+            if( mRecordTime > 0 ){
+                // prepare usage variables
+                final long sec = mRecordTime / 1000;
+                final double burnRate = (8.3 * 59 * 3.5) / 200;
+                final double burnInMin = burnRate * sec;
+
+                // update props
+                mRecordCalories = burnInMin;
+
+            }
+
+            // update props
+            mLastRecordDistanceKm = mRecordDistanceKm;
+
+        }catch ( Exception e ){
+            L.e(mtn +"Err: "+ e.getMessage());
+
+        }
+
+    }
+
     public void calculatePace() {
         // prepare usage variables
         final String mtn = ct + "calculatePace() ";
@@ -185,8 +222,6 @@ public class RecorderUtils {
         final String mtn = ct + "addDistance() ";
         mRecordDistanceKm += distance;
 
-        // calculate pace
-        calculatePace();
     }
 
     public void setRecorderCallback(onRecorderCallback callback) {

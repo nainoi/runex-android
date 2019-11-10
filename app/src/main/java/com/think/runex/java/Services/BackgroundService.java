@@ -81,7 +81,9 @@ public class BackgroundService extends Service {
 
         mLocationRequest = LocationRequest.create();
         mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setInterval(3 * 1000);
+        mLocationRequest.setSmallestDisplacement(1);
+        mLocationRequest.setInterval(1 * 1000);
+        mLocationRequest.setFastestInterval(1 * 1000);
         mLocationCallback = new LocationCallback() {
             // prepare usage variables
             final String mtn = ct + "LocationCallback() ";
@@ -91,9 +93,12 @@ public class BackgroundService extends Service {
                 if (locationResult == null) {
                     return;
                 }
+
                 for (Location location : locationResult.getLocations()) {
+                    if( location.getAccuracy() > 10 ) return;
                     if (location != null) {
-                        xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude());
+                        xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
+                                , location.getAccuracy());
 
                         broadcast( Globals.GSON.toJson( xLoc ) );
 

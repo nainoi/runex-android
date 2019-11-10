@@ -71,7 +71,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private final String ct = "RecordActivity->";
 
     // instance variables
-    private DecimalFormat df = new DecimalFormat("#.##");
     private FragmentUtils mFUtils;
     private LocationUtils mLocUtils;
     private PermissionUtils mPmUtils;
@@ -115,8 +114,10 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private ImageView icRecordState;
     private TextView lbTime;
     private TextView lbDistance;
+    private TextView lbCalories;
     private TextView lbPace;
     private TextView btnStart;
+    private TextView btnSaveWithoutSubmitResult;
     private View btnStopAndSubmit;
     private ImageView previewImage;
     //--> Toolbar
@@ -195,6 +196,17 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         final String mtn = ct + "onClick() ";
 
         switch (view.getId()) {
+            case R.id.btn_save_without_submit_result:
+                if( onNetwork ) return;
+
+                // update flag
+                onNetwork = true;
+
+                // save record without submit
+                apiSaveRecord(false);
+
+                break;
+
             case R.id.btn_submit_result:
 
                 // condition
@@ -203,8 +215,8 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 // update flag
                 onNetwork = true;
 
-                // save record
-                apiSaveRecord();
+                // save record with submit
+                apiSaveRecord( true );
 
                 break;
 
@@ -460,20 +472,23 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
             // move map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Configs.GoogleMap.INITIAL_ZOOM));
         }
+
+        lbCalories.setText( location.accuracy +"");
     }
 
     private void bindingSummary(RecorderObject recorder) {
         inputDisplayTime.setText(recorder.recordingDisplayTime);
         inputDistance.setText(Globals.DCM.format(recorder.distanceKm) + "km");
         inputPaceDisplayTime.setText(recorder.recordingPaceDisplayTime);
-        inputCalories.setText(recorder.calories + "");
+        inputCalories.setText(Globals.DCM.format(recorder.calories )+ "");
 
     }
 
     private void binding() {
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
-        lbDistance.setText(df.format(mRecorderUtils.mRecordDistanceKm) + "km");
+        lbDistance.setText(Globals.DCM.format(mRecorderUtils.mRecordDistanceKm) + "km");
         lbPace.setText(mRecorderUtils.mRecordPaceDisplayTime);
+        lbCalories.setText( Globals.DCM.format(mRecorderUtils.mRecordCalories) );
 
     }
 
@@ -697,7 +712,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
     }
 
-    private void apiSaveRecord() {
+    private void apiSaveRecord(boolean withSubmit) {
         // prepare usage variables
         final String mtn = ct + "apiSaveRecord() ";
         final rqAddRunningHistory request = new rqAddRunningHistory();
@@ -723,7 +738,15 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 onNetwork = false;
 
                 // successfully submit result
-                toReviewEventPage();
+                if( withSubmit) toReviewEventPage();
+                else {
+
+                    // update activity result
+                    setResult(Activity.RESULT_OK);
+
+                    // exit from this activity
+                    finish();
+                }
             }
 
             @Override
@@ -755,6 +778,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         btnStart.setOnClickListener(this);
         btnStopAndSubmit.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
+        btnSaveWithoutSubmitResult.setOnClickListener(this);
         frameChangeBgImage.setOnClickListener(this);
 
         //--> Toolbar
@@ -769,10 +793,12 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         lbPace = findViewById(R.id.lb_pace);
         lbDistance = findViewById(R.id.lb_distance);
         lbTime = findViewById(R.id.lb_time);
+        lbCalories = findViewById(R.id.lb_calories);
 
         lbRecordingState = findViewById(R.id.lb_recording_state_description);
         btnStart = findViewById(R.id.btn_start);
         btnStopAndSubmit = findViewById(R.id.frame_stop_and_submit);
+        btnSaveWithoutSubmitResult = findViewById(R.id.btn_save_without_submit_result);
         icRecordState = findViewById(R.id.ic_recording_state);
 
         //--> Frame change background image

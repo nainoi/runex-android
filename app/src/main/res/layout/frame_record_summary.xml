@@ -99,13 +99,14 @@
                     android:id="@+id/v_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="Pace (min/hr);"
+                    android:text="Pace (min/hr)"
                     android:textColor="@android:color/black" />
 
                 <TextView
                     android:id="@+id/lb_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:text="0.0"
                     android:textColor="@color/orange"
                     android:textSize="18dp" />
@@ -134,6 +135,7 @@
                     android:id="@+id/lb_calories"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:maxLines="1"
                     android:text="0"
                     android:textColor="@color/orange"
                     android:textSize="18dp" />
@@ -158,10 +160,24 @@
         android:textSize="18sp"
         android:textStyle="bold" />
 
+    <TextView
+        android:id="@+id/btn_save_without_submit_result"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:minHeight="0dp"
+        android:paddingHorizontal="26dp"
+        android:paddingVertical="8dp"
+        android:layout_marginVertical="8dp"
+        android:text="บันทึกไม่ส่งผล"
+        android:textColor="@android:color/darker_gray"
+        android:textSize="18sp"
+        android:textStyle="bold" />
+
     <ImageView
         android:id="@+id/img_logo"
         android:layout_width="match_parent"
         android:layout_height="25dp"
-        android:layout_marginVertical="18dp"
+        android:layout_marginBottom="18dp"
         android:src="@drawable/ic_logo_small" />
 </LinearLayout>
