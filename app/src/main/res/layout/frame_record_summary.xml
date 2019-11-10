@@ -99,7 +99,7 @@
                     android:id="@+id/v_step"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="จำนวนก้าว"
+                    android:text="Pace (min/hr);"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -163,5 +163,5 @@
         android:layout_width="match_parent"
         android:layout_height="25dp"
         android:layout_marginVertical="18dp"
-        android:src="@mipmap/ic_launcher" />
+        android:src="@drawable/ic_logo_small" />
 </LinearLayout>

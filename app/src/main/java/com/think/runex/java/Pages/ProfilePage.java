@@ -16,12 +16,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.application.MainActivity;
-import com.think.runex.java.Activities.BridgeFile;
 import com.think.runex.java.App.App;
+import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Models.RunningHistoryObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
+import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
+import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,
@@ -57,7 +61,8 @@ public class ProfilePage extends xFragment implements
 
     @Override
     public void onRefresh() {
-        refreshLayout.setRefreshing(false);
+        // get running history
+        apiGetRunningHistory();
 
     }
 
@@ -75,10 +80,54 @@ public class ProfilePage extends xFragment implements
         // view binding
         viewBinding(App.instance(activity).getAppEntity().user);
 
+
         return v;
     }
 
+    /** API methods */
+    private void apiGetRunningHistory(){
+        // prepare usage variables
+        final String mtn = ct +"apiGetRunningHistory() ";
+
+        new GetRunningHistory(activity, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                L.i(mtn +"response: "+ response.jsonString);
+
+                try {
+
+                    // convert to running history object
+                    RunningHistoryObject rhis = Globals.GSON.fromJson(response.jsonString, RunningHistoryObject.class);
+                    RunningHistoryObject.DataBean db = rhis.getData().get(0);
+
+                    // update total distance
+                    lbTotalDistance.setText( Globals.DCM.format(db.getTotal_distance()));
+
+                } catch ( Exception e ){
+                    L.e(mtn +"Err: "+ e.getMessage());
+
+                }
+
+                // hide progress dialog
+                hideProgressDialog();
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                L.e(mtn +"err-response: "+ response.jsonString);
+
+                // hide progress dialog
+                hideProgressDialog();
+
+            }
+        }).doIt();
+    }
+
     /** Feature methods */
+    private void hideProgressDialog(){
+        if( refreshLayout.isRefreshing() ) refreshLayout.setRefreshing( false );
+
+    }
     private void toMainActivity(){
         Intent i = new Intent(activity, MainActivity.class);
         startActivity( i );
@@ -129,9 +178,17 @@ public class ProfilePage extends xFragment implements
         btnSignOut = v.findViewById(R.id.frame_sign_out);
     }
 
+
     /**
      * Life cycle
      */
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // get my profile
+        apiGetRunningHistory();
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);

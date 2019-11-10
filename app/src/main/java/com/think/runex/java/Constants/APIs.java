@@ -7,6 +7,7 @@ public enum APIs {
     ADD_HISTORY(DOMAIN.VAL +"/api/v1/runhistory/add"),
 
     //--> G
+    GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v1/activity/getByEvent2/%s"), //{event_id}
     GET_REGISTERED_EVENT(DOMAIN.VAL + "/api/v1/register/myRegEvent"),
     GET_USER_PROFILE(DOMAIN.VAL + "/api/v1/user"),
 
@@ -14,12 +15,12 @@ public enum APIs {
     LOGIN(DOMAIN.VAL + "/api/v1/user/login"),
 
     //--> M
-    MY_REGISTERED_EVENTS(DOMAIN.VAL + "/api/v1/register/myRegEvent"),
+    MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),
 
     //--> S
     SOCIALS_LOGIN(DOMAIN.VAL +"/api/v1/user/pd"),
+    SUBMIT_MULTI_EVENTS(DOMAIN.VAL + "/api/v1/activity/multiadd"),
     SUBMIT_RUNNING_RESULT(DOMAIN.VAL +"/api/v1/activity/add"),
-    SOCIALS_LOGIN(DOMAIN.VAL + "/api/v1/user/pd"),
     ;
 
     public final String VAL;

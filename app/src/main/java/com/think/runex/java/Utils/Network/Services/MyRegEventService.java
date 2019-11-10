@@ -1,4 +1,4 @@
-package com.think.runex.java.Utils.Network.Request;
+package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 import android.util.Log;
@@ -6,6 +6,7 @@ import android.util.Log;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
+import com.think.runex.java.Utils.Network.Request.xRequest;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 public class MyRegEventService extends xRequest {

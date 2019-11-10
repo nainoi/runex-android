@@ -48,19 +48,17 @@ public class GoogleMapUtils {
         if (points.size() <= 1) return;
 
         // prepare usage variables
-        LatLng ll1 = points.get(0);
-        LatLng ll2 = points.get(points.size() - 1);
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
 
-        // scope
-        builder.include(ll1);
-        builder.include(ll2);
-        builder.include(new LatLng(ll1.latitude - 0.006, ll1.longitude - 0.006));
-        builder.include(new LatLng(ll2.latitude + 0.006, ll2.longitude + 0.006));
+        for(LatLng ll : points) {
+            // scope
+            builder.include(ll);
+        }
+        //--> ll bounds
         LatLngBounds bounds = builder.build();
 
         // move camera
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 20));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds( bounds, 36 ));
 
     }
 

@@ -173,7 +173,7 @@
                         android:id="@+id/v_pace"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="ฝีเท้า"
+                        android:text="Pace (min/hr);"
                         android:textColor="@android:color/black" />
 
                     <TextView
@@ -208,7 +208,7 @@
                         android:id="@+id/lb_calories"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="10"
+                        android:text="0"
                         android:textColor="@color/orange"
                         android:textSize="18dp" />
 

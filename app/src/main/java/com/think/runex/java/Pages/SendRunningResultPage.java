@@ -24,7 +24,7 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
+import com.think.runex.java.Utils.Network.Services.SubmitRunningResultService;
 import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;

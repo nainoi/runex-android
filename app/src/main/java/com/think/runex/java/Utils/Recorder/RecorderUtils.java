@@ -26,6 +26,7 @@ public class RecorderUtils {
     // explicit variables
     public long mRecordTime = 0L;
     public long mRecordPace = 0L;
+    public double mRecordCalories = 0L;
     public double mRecordDistanceKm = 0.0;
     public String mRecordDisplayTime = "00:00";
     public String mRecordPaceDisplayTime = "00:00";

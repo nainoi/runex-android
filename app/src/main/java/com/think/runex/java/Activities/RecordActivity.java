@@ -5,13 +5,13 @@ import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -32,7 +32,6 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
-import com.think.runex.java.Pages.ListOfRunningPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
 import com.think.runex.java.Pages.ReviewEvent.ReviewEventPage;
 import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
@@ -46,7 +45,9 @@ import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Location.LocationUtils;
-import com.think.runex.java.Utils.Network.Request.SubmitRunningResultService;
+import com.think.runex.java.Utils.Network.Request.rqSubmitMultiEvents;
+import com.think.runex.java.Utils.Network.Services.SubmitMultiEventsService;
+import com.think.runex.java.Utils.Network.Services.SubmitRunningResultService;
 import com.think.runex.java.Utils.Network.Request.rqAddRunningHistory;
 import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Response.xResponse;
@@ -57,6 +58,7 @@ import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
 import java.io.InputStream;
+import java.net.HttpURLConnection;
 import java.text.DecimalFormat;
 
 public class RecordActivity extends xActivity implements OnMapReadyCallback
@@ -99,6 +101,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     };
 
     // explicit variables
+    private boolean onNetwork = false;
     private boolean mZoomOnce = false;
     private boolean mOnRecording = false;
     private boolean mInitMap = false;
@@ -152,27 +155,30 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         // remove all fragment page
         if (xTalk.requestCode == XRC_REMOVE_ALL_FRAGMENT) {
 
-            // remove all fragment pages
-            fragmentManager.removeAllFragment();
+            // exit from this activity
+            finish();
 
-            // reset result
-            reset();
-
-            // refresh views
-            binding();
-
-            // hide stop button
-            btnStopAndSubmit.setVisibility(View.GONE);
-
-            // change start button
-            // description
-            lbRecordingState.setText(getString(R.string.start_recording));
-
-            // clear flag
-            mOnDisplaySummary = false;
-
-            // hide summary frame
-            hideSummaryFrame();
+//            // remove all fragment pages
+//            fragmentManager.removeAllFragment();
+//
+//            // reset result
+//            reset();
+//
+//            // refresh views
+//            binding();
+//
+//            // hide stop button
+//            btnStopAndSubmit.setVisibility(View.GONE);
+//
+//            // change start button
+//            // description
+//            lbRecordingState.setText(getString(R.string.start_recording));
+//
+//            // clear flag
+//            mOnDisplaySummary = false;
+//
+//            // hide summary frame
+//            hideSummaryFrame();
 
         }
 
@@ -190,16 +196,15 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         switch (view.getId()) {
             case R.id.btn_submit_result:
-                Toast.makeText(this, "submit", Toast.LENGTH_SHORT).show();
 
-                // to list of running page
-//                toListOfRunningPage();
+                // condition
+                if (onNetwork) return;
 
-                // submit running result
-                // apiSubmitRunningResult(new RecorderObject());
+                // update flag
+                onNetwork = true;
 
-                // successfully submit result
-                toReviewEventPage();
+                // save record
+                apiSaveRecord();
 
                 break;
 
@@ -239,17 +244,28 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
                 recorderObj.setRecordingTime(mRecorderUtils.mRecordTime);
                 recorderObj.setRecordingDisplayTime(mRecorderUtils.mRecordDisplayTime);
-                recorderObj.setCalories(0);
+                recorderObj.setCalories(mRecorderUtils.mRecordCalories);
                 recorderObj.setRecordingPaceDisplayTime(mRecorderUtils.mRecordPaceDisplayTime);
 
-                // zoom to fit
-                mMapUtils.zoomToFit();
+                // display confirm stop recording
+                dialogDiscardRecording("ยืนยัน", "คุณยืนยันที่จะสิ้นสุดการวิ่ง", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
 
-                // display summary frame
-                displaySummaryFrame(recorderObj);
+                        // conditions
+                        if (DialogInterface.BUTTON_POSITIVE == i) {
+                            // zoom to fit
+                            mMapUtils.zoomToFit();
 
-                // save record
-                apiSaveRecord();
+                            // display summary frame
+                            displaySummaryFrame(recorderObj);
+
+                            // dismiss
+                        } else dialogInterface.dismiss();
+
+                    }
+                }).show();
+
 
                 // display change background image
 //                frameChangeBgImage.setVisibility(View.VISIBLE);
@@ -309,7 +325,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Configs.GoogleMap.INITIAL_ZOOM));
 
         }
-
+//
 //        xLocation x1 = new xLocation(13.845689, 100.596905);
 //        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
@@ -365,19 +381,31 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    private void dialogDiscardRecording(String title, String desc) {
+    private AlertDialog dialogDiscardRecording(String title, String desc, DialogInterface.OnClickListener listener) {
         // prepare usage variables
-//        AlertDialog.Builder
+        AlertDialog.Builder builder = new AlertDialog.Builder(this);
 
-    }
+        // update props
+        builder.setTitle(title);
+        builder.setMessage(desc);
+        builder.setPositiveButton("ยืนยัน", listener);
+        builder.setNegativeButton("ยกเลิก", listener);
 
-    private void toReviewEventPage() {
-        new ReviewEventPage().show(getSupportFragmentManager(), "ReviewEvent");
+        // show
+        return builder.create();
+
     }
 
     /**
      * Feature methods
      */
+    ReviewEventPage mReviewEventPageDialog;
+
+    private void toReviewEventPage() {
+        mReviewEventPageDialog = new ReviewEventPage();
+        mReviewEventPageDialog.show(getSupportFragmentManager(), "ReviewEvent");
+    }
+
     private void toSuccessfullySubmitResult() {
         // prepare usage variables
         xTalk x = new xTalk();
@@ -385,10 +413,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         // display fragment
         mFUtils.replaceFragment(new SuccessfullySubmitRunningResultPage().setRequestCode(x));
-    }
-
-    private void toListOfRunningPage() {
-        mFUtils.replaceFragment(new ListOfRunningPage());
     }
 
     private void locationChanged(xLocation location) {
@@ -613,6 +637,66 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * API methods
      */
+    private void apiSubmitMultiEvents(String[] eventIds) {
+        // prepare usage variables
+        final String mtn = ct + "apiSubmitMultiEvents() ";
+        final rqSubmitMultiEvents request = new rqSubmitMultiEvents();
+        final double recordTime = mRecorderUtils.recTimeAsMin();
+
+        // update props
+        request.setCalory(mRecorderUtils.mRecordCalories);
+        request.setDistance(mRecorderUtils.mRecordDistanceKm);
+        request.setTime(recordTime);
+        request.setCaption("");
+        request.setEvent_id(eventIds);
+
+        // fire
+        new SubmitMultiEventsService(this, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                L.i(mtn + "response: " + response.jsonString);
+
+                if (response.responseCode == HttpURLConnection.HTTP_OK) {
+
+                    // remove fragment dialog
+                    mReviewEventPageDialog.dismissAllowingStateLoss();
+
+                    // reset result
+                    reset();
+
+                    // refresh views
+                    binding();
+
+                    // hide stop button
+                    btnStopAndSubmit.setVisibility(View.GONE);
+
+                    // change start button
+                    // description
+                    lbRecordingState.setText(getString(R.string.start_recording));
+
+                    // clear flag
+                    mOnDisplaySummary = false;
+
+                    // hide summary frame
+                    hideSummaryFrame();
+
+                    // to success page
+                    toSuccessfullySubmitResult();
+                }
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                L.e(mtn + "err-response: " + response.jsonString);
+
+                // remove fragemnt dialog
+                mReviewEventPageDialog.dismissAllowingStateLoss();
+
+            }
+        }).doIt(request);
+
+    }
+
     private void apiSaveRecord() {
         // prepare usage variables
         final String mtn = ct + "apiSaveRecord() ";
@@ -628,48 +712,27 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         request.setPace(recordPace);
         request.setTime(recordTime);
 
-        L.i(mtn +"save record: "+ Globals.GSON.toJson( request ));
+        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
         new AddHistoryService(this, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "successfully");
-                L.i(mtn +"response: "+ response.jsonString);
+                L.i(mtn + "response: " + response.jsonString);
+
+                // clear flag
+                onNetwork = false;
+
+                // successfully submit result
+                toReviewEventPage();
             }
 
             @Override
             public void onFailure(xResponse response) {
                 L.i(mtn + "failure");
-                L.i(mtn +"response: "+ response.jsonString);
+                L.i(mtn + "response: " + response.jsonString);
 
-            }
-        }).doIt(request);
-    }
-
-    private void apiSubmitRunningResult(RecorderObject recorder) {
-        // prepare usage variables
-        rqSubmitRunningResult request = new rqSubmitRunningResult();
-
-        //--> update props
-        request.distance = 1.3;
-        request.event_id = Globals.EVENT_ID;
-        request.activity_date = System.currentTimeMillis();
-
-        // submit running result
-        new SubmitRunningResultService(this, new onNetworkCallback() {
-            @Override
-            public void onSuccess(xResponse response) {
-                // prepare usage variables
-                final String mtn = ct + "onSuccess() ";
-
-                L.i(mtn + "json-string: " + response.jsonString);
-            }
-
-            @Override
-            public void onFailure(xResponse response) {
-                // prepare usage variables
-                final String mtn = ct + "onFailure() ";
-                L.i(mtn + "json-string: " + response.jsonString);
-
+                // clear flag
+                onNetwork = false;
             }
         }).doIt(request);
     }
@@ -677,6 +740,12 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     @Override
     public void onConfirmEvents(String[] selectedEvents) {
         //TODO("Send distance from event id")
+        if (selectedEvents != null) {
+
+            // update multiple event
+            apiSubmitMultiEvents(selectedEvents);
+
+        }
     }
 
     /**

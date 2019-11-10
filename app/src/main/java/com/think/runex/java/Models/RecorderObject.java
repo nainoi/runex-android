@@ -5,7 +5,7 @@ public class RecorderObject {
     public long recordingTime = 0L;
     public String recordingDisplayTime = "00:00";
     public String recordingPaceDisplayTime = "00:00";
-    public int calories = 0;
+    public double calories = 0;
 
     public void setRecordingPaceDisplayTime(String recordingPaceDisplayTime) {
         this.recordingPaceDisplayTime = recordingPaceDisplayTime;
@@ -15,7 +15,7 @@ public class RecorderObject {
         this.recordingDisplayTime = recordingDisplayTime;
     }
 
-    public void setCalories(int calories) {
+    public void setCalories(double calories) {
         this.calories = calories;
     }
 

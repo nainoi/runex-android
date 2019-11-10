@@ -11,17 +11,19 @@ import androidx.annotation.Nullable;
 import com.think.runex.R;
 import com.think.runex.java.Customize.Fragment.xFragment;
 
-public class ListOfRunningPage extends xFragment {
+public class EventDetailPage extends xFragment {
     /** Main variables */
-    private final String ct = "ListOfRunningPage->";
-
-    // views
-
+    private final String ct = "EventDetailPage->";
 
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.page_list_of_running, container, false);
+        // prepare usage variables
+        final View v = inflater.inflate(R.layout.page_event_detail, container, false);
+
+
+        
+
 
         return v;
     }

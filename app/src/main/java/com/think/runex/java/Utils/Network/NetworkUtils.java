@@ -112,6 +112,9 @@ public class NetworkUtils {
                     Response response = getHttpClient().newCall(request).execute();
                     final String strResult = response.body().string();
 
+                    L.i(mtn +"url: "+ props.url);
+                    L.i(mtn +"headers: "+ Globals.GSON.toJson(props.headers));
+
                     try {
                         onSuccess(response.code(), strResult, callback);
 
@@ -146,6 +149,9 @@ public class NetworkUtils {
                     // prepare usage variables
                     MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM);
+
+                    L.i(mtn +"url: "+ props.url);
+                    L.i(mtn +"headers: "+ Globals.GSON.toJson(props.headers));
 
                     // add parts
                     for (int a = 0; a < props.multiParts.size(); a++) {
@@ -208,6 +214,9 @@ public class NetworkUtils {
 
                 // build request
                 Request request = builder.build();
+
+                L.i(mtn +"url: "+ props.url);
+                L.i(mtn +"headers: "+ Globals.GSON.toJson(props.headers));
 
                 try (Response response = getHttpClient().newCall(request).execute()) {
 

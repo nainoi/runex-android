@@ -17,11 +17,9 @@ import android.widget.Toast;
 
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.RegEventsObject;
-import com.think.runex.java.Models.TokenObject;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Network.Request.MyRegEventService;
+import com.think.runex.java.Utils.Network.Services.MyRegEventService;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
@@ -61,6 +59,24 @@ public class ReviewEventPage extends DialogFragment implements View.OnClickListe
         eventList.setLayoutManager(new LinearLayoutManager(getContext()));
         eventList.setAdapter(adapter);
 
+        v.findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Fragment fragment = ReviewEventPage.this;
+
+                // event callback
+                if (getConfirmEventsListener() != null) {
+                    getConfirmEventsListener().onConfirmEvents(null);
+                    dismissAllowingStateLoss();
+                }
+
+                // exit frmo this page
+                fragment.getFragmentManager().beginTransaction()
+                        .remove( fragment )
+                        .commit();
+            }
+        });
+
 
         apiGetMyRegEvent();
 
@@ -98,7 +114,7 @@ public class ReviewEventPage extends DialogFragment implements View.OnClickListe
             if (selectedEvent.length > 0) {
                 if (getConfirmEventsListener() != null) {
                     getConfirmEventsListener().onConfirmEvents(selectedEvent);
-                    dismissAllowingStateLoss();
+//                    dismissAllowingStateLoss();
                 }
             } else {
                 Toast.makeText(getContext(), "กรุณาเลือกรายการอีเวนท์มี่จะส่งระยะ", Toast.LENGTH_SHORT).show();
