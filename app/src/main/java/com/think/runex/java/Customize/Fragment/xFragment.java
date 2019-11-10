@@ -24,20 +24,29 @@ public class xFragment extends Fragment implements xFragmentHandler {
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
-        activity = (xActivity)getActivity();
+        activity = (xActivity) getActivity();
         super.onCreate(savedInstanceState);
     }
 
-    public xFragment setOnTabChangedListener(onTabChangedListener listener ){
+    public xFragment setOnTabChangedListener(onTabChangedListener listener) {
         this.tabChangedListener = listener;
         return this;
     }
-    public xFragment setPosition(int position ){
+
+    public xFragment setPosition(int position) {
         this.position = position;
         return this;
     }
-    public xFragment setTitle( String title){
+
+    public xFragment setTitle(String title) {
         this.title = title;
         return this;
+    }
+
+    public void removeAllChildFragment() {
+        while (getChildFragmentManager().getBackStackEntryCount() > 0) {
+            getChildFragmentManager().popBackStackImmediate();
+
+        }
     }
 }

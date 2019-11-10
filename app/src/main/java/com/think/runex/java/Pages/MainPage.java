@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.DisplayMetrics;
@@ -16,12 +17,18 @@ import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Activities.RecordActivity;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.StaticChildFragmentUtils;
 
 public class MainPage extends xFragment {
     /** Main variables */
     private final String ct = "MainPage->";
+
+    // instance variables
+    private MyEventPage mMyEvent;
+    private ProfilePage mProfilePage;
 
     // explicit variables
     private final int CHILD_CONTAINER_ID = R.id.navigation_frame;
@@ -34,6 +41,9 @@ public class MainPage extends xFragment {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.page_main, container, false);
+
+        mMyEvent= new MyEventPage();
+        mProfilePage = new ProfilePage();
 
         // init child fragment
         StaticChildFragmentUtils.childFragmentManager = getChildFragmentManager();
@@ -72,7 +82,7 @@ public class MainPage extends xFragment {
     }
     private void recordPage(){
         Intent i = new Intent(activity, RecordActivity.class);
-        startActivityForResult(i, 0);
+        startActivityForResult(i, Globals.RC_RECORDER);
 
     }
     private boolean updateScreen(int itemId){
@@ -81,9 +91,9 @@ public class MainPage extends xFragment {
 
         switch( itemId ){
 //            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
-//            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new MyEventPage()); break;
+            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, mMyEvent); break;
             case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
-            case R.id.menu_profile: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new ProfilePage()); break;
+            case R.id.menu_profile: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, mProfilePage); break;
             default: onSelected = false; break;
 
         }
@@ -127,9 +137,18 @@ public class MainPage extends xFragment {
         if( bottomNavigationView.getSelectedItemId() == mCurrentItemId ) return;
 
         // update screen
-//        updateScreen(R.id.menu_profile);
+        updateScreen(bottomNavigationView.getSelectedItemId());
+//
+//        // perform select
+//        bottomNavigationView.setSelectedItemId(R.id.menu_profile);
+    }
+    @Override
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
 
-        // perform select
-        bottomNavigationView.setSelectedItemId(R.id.menu_profile);
+        if( requestCode == Globals.RC_RECORDER && resultCode == Activity.RESULT_OK ){
+            bottomNavigationView.setSelectedItemId(R.id.menu_profile);
+
+        }
     }
 }

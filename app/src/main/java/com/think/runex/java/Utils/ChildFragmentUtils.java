@@ -25,7 +25,11 @@ public class ChildFragmentUtils extends Fragment {
         t.add(childContainerId, fragment);
         t.commit();
 
-
+    }
+    public void removeAllFragment(){
+        while (childFragmentManager.getBackStackEntryCount() > 0){
+            childFragmentManager.popBackStackImmediate();
+        }
     }
 
     public void replaceChildFragment(int childContainerId, Fragment fragment) {

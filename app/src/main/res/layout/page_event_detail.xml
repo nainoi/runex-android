@@ -3,6 +3,7 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:padding="16dp"
     android:layout_height="match_parent">
 
@@ -64,7 +65,7 @@
 
             <TextView
                 android:id="@+id/lb_total_running_distance"
-                android:text="12000 km"
+                android:text="0.0 km"
                 android:textSize="42dp"
                 android:textColor="@android:color/white"
                 android:layout_width="wrap_content"

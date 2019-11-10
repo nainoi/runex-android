@@ -17,6 +17,8 @@ import com.think.runex.java.App.App;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Pages.RegisteredEvent.RegisteredEventsPage;
 import com.think.runex.java.Pages.Summary.SummaryPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
@@ -27,7 +29,7 @@ import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.LoginScreen;
 
-public class MyEventPage extends Fragment implements onNetworkCallback, View.OnClickListener {
+public class MyEventPage extends xFragment implements onNetworkCallback, View.OnClickListener {
 
     /** Main variables */
     private final String ct = "MyEventPage->";
@@ -102,7 +104,7 @@ public class MyEventPage extends Fragment implements onNetworkCallback, View.OnC
 
     /** Feature methods */
     private void summaryPage(){
-        mChildFragmentUtils.replaceChildFragment(SUMMARY_PAGE_CONTAINER_ID, new SummaryPage());
+        mChildFragmentUtils.replaceChildFragment(SUMMARY_PAGE_CONTAINER_ID, new RegisteredEventsPage());
 
     }
 

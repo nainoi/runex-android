@@ -8,12 +8,12 @@
 <!--        android:title="@string/events"-->
 <!--        app:showAsAction="ifRoom" />-->
 
-<!--    <item-->
-<!--        android:id="@+id/menu_my_events"-->
-<!--        android:enabled="true"-->
-<!--        android:icon="@drawable/ic_my_event"-->
-<!--        android:title="@string/my_events"-->
-<!--        app:showAsAction="ifRoom" />-->
+    <item
+        android:id="@+id/menu_my_events"
+        android:enabled="true"
+        android:icon="@drawable/ic_my_event"
+        android:title="@string/my_events"
+        app:showAsAction="ifRoom" />
 
     <item
         android:id="@+id/menu_record"

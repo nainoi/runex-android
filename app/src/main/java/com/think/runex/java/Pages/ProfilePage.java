@@ -17,7 +17,6 @@ import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.application.MainActivity;
 import com.think.runex.java.App.App;
-import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.RunningHistoryObject;
@@ -36,6 +35,8 @@ public class ProfilePage extends xFragment implements
     private final String ct = "ProfilePage->";
 
     // instance variables
+    private RunningHistoryObject.DataBean mRunningHist;
+
     // views
     private SwipeRefreshLayout refreshLayout;
     private ImageView profileImage;
@@ -98,10 +99,10 @@ public class ProfilePage extends xFragment implements
 
                     // convert to running history object
                     RunningHistoryObject rhis = Globals.GSON.fromJson(response.jsonString, RunningHistoryObject.class);
-                    RunningHistoryObject.DataBean db = rhis.getData().get(0);
+                    mRunningHist = rhis.getData().get(0);
 
                     // update total distance
-                    lbTotalDistance.setText( Globals.DCM.format(db.getTotal_distance()));
+                    lbTotalDistance.setText( Globals.DCM.format(mRunningHist.getTotal_distance()));
 
                 } catch ( Exception e ){
                     L.e(mtn +"Err: "+ e.getMessage());
@@ -145,7 +146,7 @@ public class ProfilePage extends xFragment implements
 
             lbFullname.setText(dbb.getFullname());
             lbEmail.setText(dbb.getEmail());
-            lbTotalDistance.setText(String.format("%,.2f", 0.00) + "");
+//            lbTotalDistance.setText(String.format("%,.2f", 0.00) + "");
 
             L.i(mtn + "avatar: " + dbb.getAvatar());
 
@@ -185,9 +186,23 @@ public class ProfilePage extends xFragment implements
     @Override
     public void onResume() {
         super.onResume();
+        // prepare usage variables
+        final String mtn = ct +"onResume() ";
 
-        // get my profile
-        apiGetRunningHistory();
+        if( mRunningHist == null ) {
+            // get my profile
+            apiGetRunningHistory();
+
+        } else {
+            try {
+                // total distance
+                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()));
+
+            } catch ( Exception e ){
+                L.e(mtn +"Err: "+ e.getMessage());
+            }
+
+        }
     }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

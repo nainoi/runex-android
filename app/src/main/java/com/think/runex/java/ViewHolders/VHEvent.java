@@ -3,6 +3,7 @@ package com.think.runex.java.ViewHolders;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -12,6 +13,7 @@ import com.think.runex.R;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
+import com.think.runex.java.Pages.onItemClick;
 
 public class VHEvent extends RecyclerView.ViewHolder {
     // views
@@ -31,7 +33,7 @@ public class VHEvent extends RecyclerView.ViewHolder {
         imgCover = v.findViewById(R.id.view_cover);
     }
 
-    public void bind(MultiObject ml){
+    public void bind(MultiObject ml, onItemClick listener){
         // prepare usage variables
         EventObject.DataBean evt = (EventObject.DataBean)ml.getAttachedObject();
         EventObject.DataBean.EventBean evtVal = evt.getEvent();
@@ -41,5 +43,13 @@ public class VHEvent extends RecyclerView.ViewHolder {
         lbEventType.setText( (evtVal.getCategory().getName() +"").toUpperCase() );
         lbStartReg.setText(evtVal.getCustomRegDuration());
         Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover() ).into( imgCover );
+        
+        itemView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                listener.onItemClicked( getAdapterPosition() );
+
+            }
+        });
     }
 }

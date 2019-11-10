@@ -62,109 +62,110 @@
             android:id="@+id/frame_event_detail"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:weightSum="2"
             android:layout_marginTop="3dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone"
+            android:weightSum="2">
 
             <LinearLayout
                 android:id="@+id/frame_begin_registration"
                 android:layout_width="0dp"
                 android:layout_height="match_parent"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:gravity="center_vertical"
                 android:layout_weight="1.20"
                 android:background="@drawable/view_4rounded_corner_with_softgray_background"
-                android:orientation="vertical">
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
 
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content">
 
                     <ImageView
-                        android:background="@android:color/darker_gray"
                         android:layout_width="14dp"
-                        android:layout_height="14dp"/>
+                        android:layout_height="14dp"
+                        android:background="@android:color/darker_gray" />
 
                     <TextView
-                        android:layout_marginLeft="22dp"
                         android:id="@+id/v_begin_registration"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:textSize="12dp"
+                        android:layout_marginLeft="22dp"
                         android:gravity="center_vertical"
                         android:includeFontPadding="false"
                         android:text="วันเปิดรับสมัคร"
-                        android:textColor="#6B6B6B"/>
+                        android:textColor="#6B6B6B"
+                        android:textSize="12dp" />
 
                 </FrameLayout>
 
-<!--                <com.think.runex.java.Customize.EventListItem.xSmallTextView-->
+                <!--                <com.think.runex.java.Customize.EventListItem.xSmallTextView-->
                 <TextView
-                    android:layout_marginTop="1dp"
                     android:id="@+id/lb_begin_registration"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:textSize="12dp"
+                    android:layout_marginTop="1dp"
                     android:includeFontPadding="false"
                     android:text="1 ต.ค - 30 พ.ย 2562"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
+                    android:textColor="@android:color/black"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:id="@+id/frame_distance"
+                android:layout_width="0dp"
+                android:layout_height="match_parent"
+                android:layout_weight="0.70"
+                android:background="@drawable/view_4rounded_corner_with_softgray_background"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingLeft="8dp"
+                android:paddingRight="8dp">
+
+                <FrameLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content">
+
+                    <ImageView
+                        android:layout_width="14dp"
+                        android:layout_height="14dp"
+                        android:background="@android:color/darker_gray" />
+
+                    <TextView
+                        android:id="@+id/v_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="22dp"
+                        android:gravity="center_vertical"
+                        android:includeFontPadding="false"
+                        android:text="ระยะวิ่ง"
+                        android:textColor="#6B6B6B"
+                        android:textSize="12dp" />
+
+                </FrameLayout>
+
+                <!--                <com.think.runex.java.Customize.EventListItem.xSmallTextView-->
+                <TextView
+                    android:id="@+id/lb_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="1dp"
+                    android:includeFontPadding="false"
+                    android:text="12 KM"
+                    android:textColor="@android:color/black"
+                    android:textSize="12dp"
+                    android:textStyle="bold" />
 
             </LinearLayout>
 
             <View
-                android:layout_weight=".10"
                 android:layout_width="0dp"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent"
+                android:layout_weight=".10" />
 
-            <LinearLayout
-                android:id="@+id/frame_distance"
-                android:orientation="vertical"
-                android:background="@drawable/view_4rounded_corner_with_softgray_background"
-                android:layout_weight="0.70"
-                android:layout_width="0dp"
-                android:paddingLeft="8dp"
-                android:paddingRight="8dp"
-                android:gravity="center_vertical"
-                android:layout_height="match_parent">
-
-                <FrameLayout
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
-
-                    <ImageView
-                        android:background="@android:color/darker_gray"
-                        android:layout_width="14dp"
-                        android:layout_height="14dp"/>
-
-                    <TextView
-                        android:layout_marginLeft="22dp"
-                        android:id="@+id/v_distance"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:textSize="12dp"
-                        android:gravity="center_vertical"
-                        android:includeFontPadding="false"
-                        android:text="ระยะวิ่ง"
-                        android:textColor="#6B6B6B"/>
-
-                </FrameLayout>
-
-<!--                <com.think.runex.java.Customize.EventListItem.xSmallTextView-->
-                <TextView
-                    android:layout_marginTop="1dp"
-                    android:id="@+id/lb_distance"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:textSize="12dp"
-                    android:includeFontPadding="false"
-                    android:text="12 KM"
-                    android:textStyle="bold"
-                    android:textColor="@android:color/black"/>
-
-            </LinearLayout>
-            
 
         </LinearLayout>
 

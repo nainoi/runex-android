@@ -17,7 +17,7 @@
         <TextView
             android:id="@+id/v_my_event"
             android:text="@string/my_events_list"
-            android:layout_gravity="center_vertical"
+            android:layout_gravity="center"
             android:textColor="@android:color/black"
             android:layout_width="wrap_content"
             android:textStyle="bold"
@@ -25,6 +25,7 @@
             android:layout_height="wrap_content"/>
 
         <LinearLayout
+            android:visibility="gone"
             android:id="@+id/submit_result_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -51,6 +52,11 @@
         </LinearLayout>
 
     </FrameLayout>
+
+    <include
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        layout="@layout/list_item_event_divider"/>
 
     <FrameLayout
         android:id="@+id/summary_page_container"

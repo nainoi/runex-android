@@ -19,8 +19,12 @@ import com.think.runex.R;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
+import com.think.runex.java.Pages.EventDetailPage;
+import com.think.runex.java.Pages.onItemClick;
+import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DateTime.DisplayDateTimeObject;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetRegisteredEventService;
@@ -75,6 +79,7 @@ public class RegisteredEventsPage extends xFragment implements
     private SwipeRefreshLayout refreshLayout;
     private View frameNeedAuth;
     private ImageView imgNeedAuth;
+
 
     /**
      * Implement methods
@@ -191,7 +196,6 @@ public class RegisteredEventsPage extends xFragment implements
         // hide progress
         refreshLayout.setRefreshing( false );
 
-
     }
 
     @Override
@@ -210,7 +214,22 @@ public class RegisteredEventsPage extends xFragment implements
         final View v = inflater.inflate(R.layout.page_registered_events, container, false);
 
         // init
-        eventAdapter = new EventAdapter(events);
+        eventAdapter = new EventAdapter(events, new onItemClick() {
+            @Override
+            public void onItemClicked(int position) {
+                // prepare usage variables
+                ChildFragmentUtils fragment = new ChildFragmentUtils(RegisteredEventsPage.this);
+                EventDetailPage eventPage = new EventDetailPage();
+                EventObject.DataBean evt =  (EventObject.DataBean)events.get(position).getAttachedObject();
+
+                // update props
+                eventPage.setEventId( evt.getEvent_id() );
+
+                // display event page
+                fragment.replaceChildFragment(R.id.frame_fragment, eventPage);
+
+            }
+        });
 
         // matching view
         recyclerView = v.findViewById(R.id.recycler_view);
@@ -270,4 +289,11 @@ public class RegisteredEventsPage extends xFragment implements
         recyclerView.setAdapter(eventAdapter);
     }
 
+    /** Life cycle */
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+
+
+    }
 }

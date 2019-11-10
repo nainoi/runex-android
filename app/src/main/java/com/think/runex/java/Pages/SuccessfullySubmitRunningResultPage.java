@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.app.Activity;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,6 +24,10 @@ public class SuccessfullySubmitRunningResultPage extends xFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.page_successfully_submit_running_result, container, false);
 
+        // update activity result
+        activity.setResult(Activity.RESULT_OK);
+
+        // view binding
         btnFinish = v.findViewById(R.id.btn_finish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
