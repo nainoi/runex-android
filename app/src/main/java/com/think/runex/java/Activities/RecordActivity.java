@@ -7,6 +7,7 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.location.Location;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
@@ -29,6 +30,8 @@ import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ListOfRunningPage;
+import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
+import com.think.runex.java.Pages.ReviewEvent.ReviewEventPage;
 import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
@@ -51,7 +54,8 @@ import java.text.DecimalFormat;
 
 public class RecordActivity extends xActivity implements OnMapReadyCallback
         , View.OnClickListener
-        , onRecorderCallback {
+        , onRecorderCallback
+        , OnConfirmEventsListener {
     /**
      * Main variables
      */
@@ -177,8 +181,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 // apiSubmitRunningResult(new RecorderObject());
 
                 // successfully submit result
-                toSuccessfullySubmitResult();
-
+                toReviewEventPage();
 
                 break;
 
@@ -322,6 +325,13 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private void toReviewEventPage() {
+        new ReviewEventPage().show(getSupportFragmentManager(), "ReviewEvent");
+    }
+
+    /**
+     * Feature methods
+     */
     private void toSuccessfullySubmitResult() {
         // prepare usage variables
         xTalk x = new xTalk();
@@ -329,7 +339,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         // display fragment
         mFUtils.replaceFragment(new SuccessfullySubmitRunningResultPage().setRequestCode(x));
-
     }
 
     private void toListOfRunningPage() {
@@ -585,6 +594,11 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         }).doIt(request);
     }
 
+    @Override
+    public void onConfirmEvents(String[] selectedEvents) {
+        //TODO("Send distance from event id")
+    }
+
     /**
      * View event listener
      */
@@ -624,6 +638,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         mapFragment.getMapAsync(this);
 
     }
+
 
     /**
      * Life cycle
@@ -674,4 +689,5 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         beforeGPSRecording();
 
     }
+
 }
