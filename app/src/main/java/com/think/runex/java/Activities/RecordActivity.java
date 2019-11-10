@@ -2,6 +2,7 @@ package com.think.runex.java.Activities;
 
 
 import android.app.Activity;
+import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -131,7 +132,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
             // hide summary frame
             hideSummaryFrame();
 
-//        } else if(mRecorderUtils.mRecordTime > 0L ){
+//        } else if(mRecorderUtils.mRecordDistanceKm > 0L ){
 //            // display discard recording
 //            dialogDiscardRecording();
 
@@ -361,8 +362,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    private void dialogDiscardRecording() {
+    private void dialogDiscardRecording(String title, String desc) {
         // prepare usage variables
+//        AlertDialog.Builder
 
     }
 
