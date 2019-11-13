@@ -298,9 +298,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 break;
 
             case R.id.frame_stop_and_submit:
-                // update flag
-                mOnDisplaySummary = true;
-
                 // paused
                 paused();
 
@@ -319,6 +316,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
                         // conditions
                         if (DialogInterface.BUTTON_POSITIVE == i) {
+                            // update flag
+                            mOnDisplaySummary = true;
+
                             // zoom to fit
                             mMapUtils.zoomToFit();
 
@@ -391,15 +391,15 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
         }
 //
-//        xLocation x1 = new xLocation(13.845689, 100.596905);
-//        xLocation x2 = new xLocation(13.845585, 100.594587);
-//        xLocation x3 = new xLocation(13.842551, 100.595622);
-//        xLocation x4 = new xLocation(13.843457, 100.597479);
-//
-//        locationChanged(x1);
-//        locationChanged(x2);
-//        locationChanged(x3);
-//        locationChanged(x4);
+        xLocation x1 = new xLocation(13.845689, 100.596905);
+        xLocation x2 = new xLocation(13.845585, 100.594587);
+        xLocation x3 = new xLocation(13.842551, 100.595622);
+        xLocation x4 = new xLocation(13.843457, 100.597479);
+
+        locationChanged(x1);
+        locationChanged(x2);
+        locationChanged(x3);
+        locationChanged(x4);
 
         new Thread(new Runnable() {
 
@@ -649,23 +649,26 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     }
 
     private void hideSummaryFrame() {
+        // display recording frame
+        frameRecording.setVisibility(View.VISIBLE);
+
         AnimUtils.instance().translateDown(frameSummary, new onAnimCallback() {
             @Override
             public void onEnd() {
-                // hide preview image
-                previewImage.setImageResource( 0 );
-                frameShare.setVisibility(View.INVISIBLE);
-                frameLogo.setVisibility(View.INVISIBLE);
+                // change layout above
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
+                params.addRule(RelativeLayout.ABOVE, frameRecording.getId());
 
             }
 
             @Override
             public void onStart() {
-                frameRecording.setVisibility(View.VISIBLE);
+                // hide preview image
+                previewImage.setImageResource( 0 );
 
-                // change layout above
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
-                params.addRule(RelativeLayout.ABOVE, frameRecording.getId());
+                // hide usability features
+                frameShare.setVisibility(View.INVISIBLE);
+                frameLogo.setVisibility(View.INVISIBLE);
 
             }
         });
@@ -680,17 +683,22 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         AnimUtils.instance().translateUp(frameSummary, new onAnimCallback() {
             @Override
             public void onEnd() {
-
                 // change layout above
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, frameSummary.getId());
 
-                frameRecording.setVisibility(View.GONE);
-                frameShare.setVisibility(View.VISIBLE);
-                frameLogo.setVisibility(View.VISIBLE);
+                // hide recording frame
+                frameRecording.setVisibility(View.INVISIBLE);
+
             }
             @Override
-            public void onStart() { }
+            public void onStart() {
+
+                // display usage frame
+                frameShare.setVisibility(View.VISIBLE);
+                frameLogo.setVisibility(View.VISIBLE);
+
+            }
         });
 
     }

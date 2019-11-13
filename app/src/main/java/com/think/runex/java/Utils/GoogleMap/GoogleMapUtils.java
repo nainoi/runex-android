@@ -2,7 +2,9 @@ package com.think.runex.java.Utils.GoogleMap;
 
 import android.app.Activity;
 import android.graphics.Color;
+import android.os.Handler;
 
+import com.google.android.gms.maps.CameraUpdate;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.model.LatLng;
@@ -49,7 +51,6 @@ public class GoogleMapUtils {
 
         // prepare usage variables
         LatLngBounds.Builder builder = new LatLngBounds.Builder();
-
         for(LatLng ll : points) {
             // scope
             builder.include(ll);
@@ -57,8 +58,14 @@ public class GoogleMapUtils {
         //--> ll bounds
         LatLngBounds bounds = builder.build();
 
+        // camera update
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds( bounds, 36 );
+
         // move camera
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds( bounds, 160 ));
+//        mMap.animateCamera(cameraUpdate);
+
+        // zoom out anim
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 15f));
 
     }
 

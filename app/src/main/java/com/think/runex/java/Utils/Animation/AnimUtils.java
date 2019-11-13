@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Animation;
 
 import android.animation.Animator;
 import android.animation.ValueAnimator;
+import android.os.Handler;
 import android.view.View;
 import android.view.animation.AccelerateInterpolator;
 import android.view.animation.AlphaAnimation;
@@ -87,13 +88,13 @@ public class AnimUtils {
                 int val = (int)animation.getAnimatedValue();
 
                 // callback
-                if( val == 0 ) callback.onStart();
+                if( val == v.getHeight() ) callback.onStart();
 
                 // update translation y
                 v.setTranslationY( val );
 
                 // callback
-                if( val >= v.getHeight() ) callback.onEnd();
+                if( val <= 0 ) callback.onEnd();
             }
         });
         va.start();
