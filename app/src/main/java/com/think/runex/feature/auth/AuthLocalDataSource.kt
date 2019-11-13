@@ -8,7 +8,7 @@ class AuthLocalDataSource(private val preferences: SharedPreferences) {
 
     fun getAccessToken() = preferences.getAccessToken()
 
-    fun setAccessToken(accessToken: AccessToken) {
+    fun setAccessToken(accessToken: Token) {
         preferences.setAccessToken(accessToken)
     }
 }

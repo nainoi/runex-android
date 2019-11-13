@@ -1,9 +1,11 @@
 package com.think.runex.feature.auth
 
+import com.github.kittinunf.fuel.core.ResponseDeserializable
+import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.think.runex.common.toTimeStamp
+import com.jozzee.android.core.convertor.toTimeMillis
 
-data class AccessToken(
+data class Token(
         @SerializedName("token") var token: String = "",
         @SerializedName("expire") var expire: String = "",
         @SerializedName("tokenType") var tokenType: String = "Bearer") {
@@ -11,7 +13,11 @@ data class AccessToken(
     private var serverDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 
     fun getExpiresIn(): Long = when (expire.isNotBlank()) {
-        true -> expire.toTimeStamp(serverDateTimeFormat)
+        true -> expire.toTimeMillis(serverDateTimeFormat)
         false -> 0
+    }
+
+    class Deserializer : ResponseDeserializable<Token> {
+        override fun deserialize(content: String): Token = Gson().fromJson(content, Token::class.java)
     }
 }

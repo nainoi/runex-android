@@ -49,8 +49,8 @@ class SocialLoginManger {
         override fun onSuccess(result: LoginResult?) {
             val accessToken = AccessToken.getCurrentAccessToken()
             if (accessToken != null && accessToken.isExpired.not()) {
-                Logger.debug(simpleName(), "Login with Facebook as AccessToken: ${accessToken.token}")
-                Logger.info(Constants.TAG.VAL, "Login with Facebook as AccessToken: ${accessToken.token}")
+                Logger.debug(simpleName(), "Login with Facebook as Token: ${accessToken.token}")
+                Logger.info(Constants.TAG.VAL, "Login with Facebook as Token: ${accessToken.token}")
                 onFacebookLoginResult(accessToken)
             }
         }

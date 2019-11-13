@@ -13,8 +13,6 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel : ViewModel() {
 
-    //private var job: Job? = null
-
     private var handleError: ((statusCode: Int, message: String) -> Unit)? = null
 
     fun setOnHandleError(block: (statusCode: Int, message: String) -> Unit) {
@@ -28,18 +26,6 @@ open class BaseViewModel : ViewModel() {
             }
         }
     }
-//
-//    suspend fun <T> launchJob(block: suspend () -> T) {
-//        job = CoroutineScope(IO).launch {
-//            block()
-//        }
-//        job?.join()
-//    }
-
-//    fun cancelJob() {
-//        job?.cancel()
-//        job = null
-//    }
 
     fun cancelJob() {
         viewModelScope.coroutineContext.cancelChildren()

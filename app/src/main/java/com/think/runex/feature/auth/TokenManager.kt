@@ -8,7 +8,7 @@ class TokenManager {
 
         fun isAlive(): Boolean =  (System.currentTimeMillis() / 1000 < expiresIn) && token != "" && tokenType != ""
 
-        fun accessToken(): String = "$tokenType $token"
+        fun bearerToken(): String = "$tokenType $token"
 
         fun updateToken(token: String, tokenType: String, expiresIn: Long) {
             this.token = token
