@@ -2,11 +2,34 @@
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@android:color/white"
     android:clickable="true"
     android:orientation="vertical">
 
-    <TextView
+    <LinearLayout
+        android:id="@+id/frame_logo"
+        android:weightSum="1"
+        android:gravity="center_horizontal"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="0dp"
+            android:layout_weight="0.3"
+            android:layout_marginBottom="16dp"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_logo_large"/>
+
+    </LinearLayout>
+
+    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@android:color/white"
+        android:clickable="true"
+        android:orientation="vertical">
+
+        <TextView
         android:id="@+id/v_summary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
@@ -16,168 +39,164 @@
         android:textSize="20sp"
         android:textStyle="bold" />
 
-    <LinearLayout
-        android:id="@+id/frame_recording_info"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@android:color/white"
-        android:orientation="vertical"
-        android:paddingHorizontal="8dp"
-        android:paddingBottom="8dp">
-
-        <!-- Distance -->
-        <TextView
-            android:id="@+id/v_distance"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:text="@string/distance"
-            android:textColor="@android:color/black"
-            android:textSize="16dp" />
-
-        <TextView
-            android:id="@+id/lb_distance"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:gravity="center"
-            android:maxLines="1"
-            android:text="0km"
-            android:textColor="@android:color/black"
-            android:textSize="56dp"
-            android:textStyle="bold" />
-
-        <!-- running detail -->
         <LinearLayout
-            android:id="@+id/frame_running_detail"
+            android:id="@+id/frame_recording_info"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:orientation="horizontal"
-            android:weightSum="3">
+            android:background="@android:color/white"
+            android:orientation="vertical"
+            android:paddingHorizontal="8dp"
+            android:paddingBottom="8dp">
 
             <!-- Distance -->
-            <LinearLayout
-                android:id="@+id/frame_distance"
-                android:layout_width="0dp"
+            <TextView
+                android:id="@+id/v_distance"
+                android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
+                android:text="@string/distance"
+                android:textColor="@android:color/darker_gray"
+                android:textSize="16dp" />
 
-                <TextView
-                    android:id="@+id/v_time"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="@string/time"
-                    android:textColor="@android:color/black" />
+            <TextView
+                android:id="@+id/lb_distance"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:gravity="center"
+                android:maxLines="1"
+                android:text="0km"
+                android:textColor="@android:color/black"
+                android:textSize="56dp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/lb_time"
-                    android:layout_width="match_parent"
+            <!-- running detail -->
+            <LinearLayout
+                android:id="@+id/frame_running_detail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal"
+                android:weightSum="3">
+
+                <!-- Distance -->
+                <LinearLayout
+                    android:id="@+id/frame_distance"
+                    android:layout_width="0dp"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:gravity="center"
-                    android:text="00:00:00"
-                    android:textColor="@color/orange"
-                    android:textSize="18dp" />
+                    android:orientation="vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/v_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="@string/time"
+                        android:textColor="@android:color/darker_gray" />
+
+                    <TextView
+                        android:id="@+id/lb_time"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:text="00:00:00"
+                        android:textColor="@color/orange"
+                        android:textSize="18dp" />
 
 
+                </LinearLayout>
+
+                <!-- Calories-->
+                <LinearLayout
+                    android:id="@+id/frame_calories"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/v_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Pace (min/hr)"
+                        android:textColor="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/lb_step"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="0.0"
+                        android:textColor="@color/orange"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
+
+                <!-- Step -->
+                <LinearLayout
+                    android:id="@+id/frame_step"
+                    android:layout_width="0dp"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center"
+                    android:orientation="vertical"
+                    android:paddingTop="2dp"
+                    android:paddingBottom="12dp">
+
+                    <TextView
+                        android:id="@+id/v_calories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="แคลอรี่"
+                        android:textColor="@android:color/darker_gray"/>
+
+                    <TextView
+                        android:id="@+id/lb_calories"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:maxLines="1"
+                        android:text="0"
+                        android:textColor="@color/orange"
+                        android:textSize="18dp" />
+
+                </LinearLayout>
             </LinearLayout>
 
-            <!-- Calories-->
-            <LinearLayout
-                android:id="@+id/frame_calories"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
-
-                <TextView
-                    android:id="@+id/v_step"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="Pace (min/hr)"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/lb_step"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text="0.0"
-                    android:textColor="@color/orange"
-                    android:textSize="18dp" />
-
-            </LinearLayout>
-
-            <!-- Step -->
-            <LinearLayout
-                android:id="@+id/frame_step"
-                android:layout_width="0dp"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center"
-                android:orientation="vertical"
-                android:paddingTop="12dp"
-                android:paddingBottom="12dp">
-
-                <TextView
-                    android:id="@+id/v_calories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:text="แคลอรี่"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:id="@+id/lb_calories"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:maxLines="1"
-                    android:text="0"
-                    android:textColor="@color/orange"
-                    android:textSize="18dp" />
-
-            </LinearLayout>
         </LinearLayout>
+
+        <!-- Record information -->
+        <TextView
+            android:id="@+id/btn_submit_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:background="@drawable/state_active_button"
+            android:minHeight="0dp"
+            android:paddingHorizontal="26dp"
+            android:paddingVertical="8dp"
+            android:text="@string/submit_result"
+            android:textColor="@android:color/white"
+            android:textSize="18sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/btn_save_without_submit_result"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:minHeight="0dp"
+            android:paddingHorizontal="26dp"
+            android:paddingTop="8dp"
+            android:paddingBottom="16dp"
+            android:layout_marginVertical="8dp"
+            android:text="บันทึกไม่ส่งผล"
+            android:textColor="@color/materialBlack"
+            android:textSize="@dimen/textSmall" />
 
     </LinearLayout>
 
-    <!-- Record information -->
-    <TextView
-        android:id="@+id/btn_submit_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:background="@drawable/state_active_button"
-        android:minHeight="0dp"
-        android:paddingHorizontal="26dp"
-        android:paddingVertical="8dp"
-        android:text="@string/submit_result"
-        android:textColor="@android:color/white"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <TextView
-        android:id="@+id/btn_save_without_submit_result"
-        android:layout_width="wrap_content"
-        android:layout_height="wrap_content"
-        android:layout_gravity="center"
-        android:minHeight="0dp"
-        android:paddingHorizontal="26dp"
-        android:paddingVertical="8dp"
-        android:layout_marginVertical="8dp"
-        android:text="บันทึกไม่ส่งผล"
-        android:textColor="@android:color/darker_gray"
-        android:textSize="18sp"
-        android:textStyle="bold" />
-
-    <ImageView
-        android:id="@+id/img_logo"
-        android:layout_width="match_parent"
-        android:layout_height="25dp"
-        android:layout_marginBottom="18dp"
-        android:src="@drawable/ic_logo_small" />
 </LinearLayout>

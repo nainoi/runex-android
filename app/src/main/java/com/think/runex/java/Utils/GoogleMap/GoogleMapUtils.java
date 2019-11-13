@@ -58,7 +58,7 @@ public class GoogleMapUtils {
         LatLngBounds bounds = builder.build();
 
         // move camera
-        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds( bounds, 36 ));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngBounds( bounds, 160 ));
 
     }
 

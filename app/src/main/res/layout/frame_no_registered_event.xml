@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/frame_no_registered_event"
+    android:padding="36dp"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:gravity="center"
+    android:orientation="vertical">
+
+    <LinearLayout
+        android:id="@+id/frame_icon"
+        android:orientation="horizontal"
+        android:weightSum="1"
+        android:gravity="center"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <ImageView
+            android:id="@+id/img_no_registered_event"
+            android:layout_width="0dp"
+            android:layout_weight="0.39"
+            android:layout_height="wrap_content"
+            android:src="@drawable/ic_events_empty" />
+
+
+    </LinearLayout>
+
+    <TextView
+        android:id="@+id/lb_no_registered_event"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/textVerticalPaddingNoRelate"
+        android:text="ยังไม่มีรายการ"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textParagraphH1" />
+
+    <TextView
+        android:id="@+id/lb_no_registered_event_desc"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="ดูเหมือนว่าคุณยังไม่ไ่ด้สมัครรายกายวิ่งเลย"
+        android:textColor="@android:color/black"
+        android:textSize="@dimen/textSmall" />
+
+    <Button
+        android:id="@+id/btn_see_all_events"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginTop="@dimen/buttonVerticalPaddingNoRelate"
+        android:background="@drawable/state_active_button"
+        android:minHeight="0dp"
+        android:paddingHorizontal="@dimen/buttonHorizontalPadding"
+        android:paddingVertical="@dimen/buttonVerticalPadding"
+        android:text="ดูรายการวิ่งทั้งหมด"
+        android:textColor="@android:color/white"
+        android:textSize="@dimen/textButton"
+        android:textStyle="bold" />
+
+</LinearLayout>

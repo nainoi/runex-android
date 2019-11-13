@@ -10,6 +10,8 @@ import android.content.Intent;
 import android.content.IntentFilter;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
@@ -116,6 +118,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private TextView lbDistance;
     private TextView lbCalories;
     private TextView lbPace;
+    //-->Labs
+    private TextView labAccuracy;
+
     private TextView btnStart;
     private TextView btnSaveWithoutSubmitResult;
     private View btnStopAndSubmit;
@@ -272,6 +277,15 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                             // display summary frame
                             displaySummaryFrame(recorderObj);
 
+                            // capture google map preview image
+                            mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                                @Override
+                                public void onSnapshotReady(Bitmap bitmap) {
+                                    // display map preview
+                                    previewImage.setImageBitmap( bitmap );
+                                }
+                            });
+
                             // dismiss
                         } else dialogInterface.dismiss();
 
@@ -347,6 +361,39 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 //        locationChanged(x2);
 //        locationChanged(x3);
 //        locationChanged(x4);
+
+        new Thread(new Runnable() {
+
+            double l1 = -0.00003;
+            double l2 = -0.00003;
+
+            @Override
+            public void run() {
+                while( true ){
+
+                    try{
+                        Thread.sleep(1200);
+
+                        RecordActivity.this.runOnUiThread(new Runnable() {
+                            @Override
+                            public void run() {
+
+
+                                l1 += 0.000003;
+                                l2 += 0.000003;
+                                xLocation x4 = new xLocation(13.843457 + l1 , 100.597479 + l2);
+                                locationChanged(x4);
+
+
+
+                            }
+                        });
+                    }catch ( Exception e ){
+                        L.e(mtn +"Err: "+ e.getMessage());
+                    }
+                }
+            }
+        });
 
     }
 
@@ -462,6 +509,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         // update view
         binding();
 
+        // lab views
+        labAccuracy.setText("accuracy: "+ location.accuracy);
+
         // update props
         mLastLocation = xTo;
 
@@ -472,8 +522,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
             // move map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Configs.GoogleMap.INITIAL_ZOOM));
         }
-
-        lbCalories.setText( location.accuracy +"");
     }
 
     private void bindingSummary(RecorderObject recorder) {
@@ -513,12 +561,12 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         AnimUtils.instance().translateDown(frameSummary, new onAnimCallback() {
             @Override
             public void onEnd() {
+                // hide preview image
+                previewImage.setImageResource( 0 );
             }
 
             @Override
-            public void onStart() {
-
-            }
+            public void onStart() { }
         });
 
     }
@@ -530,13 +578,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         //--> animation
         AnimUtils.instance().translateUp(frameSummary, new onAnimCallback() {
             @Override
-            public void onEnd() {
-            }
-
+            public void onEnd() { }
             @Override
-            public void onStart() {
-
-            }
+            public void onStart() { }
         });
 
     }
@@ -790,6 +834,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
      * Matching views
      */
     private void viewMatching() {
+        // lab
+        labAccuracy = findViewById(R.id.lab_accuracy);
+
         lbPace = findViewById(R.id.lb_pace);
         lbDistance = findViewById(R.id.lb_distance);
         lbTime = findViewById(R.id.lb_time);

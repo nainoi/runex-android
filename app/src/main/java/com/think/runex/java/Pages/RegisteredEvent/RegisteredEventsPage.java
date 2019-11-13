@@ -81,7 +81,9 @@ public class RegisteredEventsPage extends xFragment implements
     private SwipeRefreshLayout refreshLayout;
     private View frameNeedAuth;
     private ImageView imgNeedAuth;
-
+    //--> frame no registered event
+    private View btnSeeAllEvents;
+    private View frameNoRegisterEvent;
 
     /**
      * Implement methods
@@ -97,6 +99,20 @@ public class RegisteredEventsPage extends xFragment implements
 
             // exit from this process
             return;
+        }
+
+        switch( view.getId() ){
+            case R.id.btn_see_all_events:
+                // hide no registered event frame
+                frameNoRegisterEvent.setVisibility(View.INVISIBLE);
+
+                // display progress dialog
+                refreshLayout.setRefreshing( true );
+
+                // refresh
+                onRefresh();
+
+                break;
         }
 
 
@@ -185,6 +201,9 @@ public class RegisteredEventsPage extends xFragment implements
             // hide progress dialog
             refreshLayout.setRefreshing( false );
 
+            // display frame no register event
+            frameNoRegisterEvent.setVisibility(events.size() <= 0 ? View.VISIBLE : View.INVISIBLE);
+
         } catch (Exception e) {
             L.e(mtn + "Err: " + e);
 
@@ -230,7 +249,7 @@ public class RegisteredEventsPage extends xFragment implements
                     Bundle b = new Bundle();
 
                     //--> Bundle
-                    b.putString("EVENT_PROFILE", APIs.DOMAIN.VAL + evtVal.getCover());
+                    b.putString("EVENT_PROFILE", APIs.DOMAIN.VAL +  evtVal.getCover());
                     b.putString("EVENT_NAME", evtVal.getName());
                     b.putString("EVENT_ID", evt.getEvent_id());
                     // update props
@@ -252,6 +271,12 @@ public class RegisteredEventsPage extends xFragment implements
         refreshLayout.setOnRefreshListener(this);
         imgNeedAuth = v.findViewById(R.id.img_need_auth);
         frameNeedAuth = v.findViewById(R.id.frame_need_auth);
+        //--> frame no registered event
+        frameNoRegisterEvent = v.findViewById(R.id.frame_no_registered_event);
+        btnSeeAllEvents = frameNoRegisterEvent.findViewById(R.id.btn_see_all_events);
+
+        // view event listener
+        viewEventListener();
 
         // recycler view props
         recyclerViewProps();
@@ -294,6 +319,11 @@ public class RegisteredEventsPage extends xFragment implements
     private void apiGetEvents() {
         // prepare usage variables
         new GetRegisteredEventService(getActivity(), this).doIt();
+    }
+
+    /** View event listener */
+    private void viewEventListener(){
+        btnSeeAllEvents.setOnClickListener( this );
     }
 
     /**

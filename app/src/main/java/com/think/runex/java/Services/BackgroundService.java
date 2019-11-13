@@ -46,6 +46,7 @@ public class BackgroundService extends Service {
     FusedLocationProviderClient mFusedLocationClient;
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
+    final double FIXED_ACCURACY = 15;
 
     /** Feature methods */
     private void broadcast(String jsonString){
@@ -68,7 +69,7 @@ public class BackgroundService extends Service {
 
             @Override
             public void onSuccess(Location location) {
-                if (location != null) {
+                if (location != null && location.getAccuracy() <= FIXED_ACCURACY) {
                     xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude());
 
                     broadcast( Globals.GSON.toJson( xLoc ) );
@@ -95,7 +96,7 @@ public class BackgroundService extends Service {
                 }
 
                 for (Location location : locationResult.getLocations()) {
-                    if( location.getAccuracy() > 10 ) return;
+                    if( location.getAccuracy() > FIXED_ACCURACY ) return;
                     if (location != null) {
                         xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
                                 , location.getAccuracy());

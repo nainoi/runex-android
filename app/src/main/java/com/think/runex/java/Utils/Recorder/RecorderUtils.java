@@ -89,7 +89,6 @@ public class RecorderUtils {
             public void run() {
                 try {
                     while (START) {
-
                         // update recording time
                         mRecordTime += INCREATE_TIME;
 
@@ -158,31 +157,44 @@ public class RecorderUtils {
         return 0;
     }
 
-    public void calculateCalories(){
+    public void calculateCalories() {
         // prepare usage variables
         final String mtn = ct + "calculatePace() ";
 
-        try{
+        try {
 
             // distance does not changed
-            if(mLastRecordDistanceKm == mRecordDistanceKm || mLastRecordDistanceKm <= 0) return;
+            if (mLastRecordDistanceKm == mRecordDistanceKm || mRecordDistanceKm <= 0) return;
 
-            if( mRecordTime > 0 ){
+            if (mRecordTime > 0) {
                 // prepare usage variables
-                final long sec = mRecordTime / 1000;
-                final double burnRate = (8.3 * 59 * 3.5) / 200;
-                final double burnInMin = burnRate * sec;
+                final double prancerciseCaloriesPerHour = 450.00;
+                final double hours = (mRecordTime / 1000.00) / 60.00 / 60.00;
+                final double totalCalories = prancerciseCaloriesPerHour * hours;
 
                 // update props
-                mRecordCalories = burnInMin;
-
+                mRecordCalories = Double.isNaN(totalCalories) ? 0.00 : totalCalories;
             }
 
-            // update props
-            mLastRecordDistanceKm = mRecordDistanceKm;
+//            // distance does not changed
+//            if (mLastRecordDistanceKm == mRecordDistanceKm || mRecordDistanceKm <= 0) return;
+//
+//            if (mRecordTime > 0) {
+//                // prepare usage variables
+//                final long sec = mRecordTime / 1000;
+//                final double burnRate = (8.3 * 59 * 3.5) / 200;
+//                final double burnInMin = (burnRate * sec) / 60;
+//
+//                // update props
+//                mRecordCalories = Double.isNaN(burnInMin) ? 0 : burnInMin;
+//
+//            }
+//
+//            // update props
+//            mLastRecordDistanceKm = mRecordDistanceKm;
 
-        }catch ( Exception e ){
-            L.e(mtn +"Err: "+ e.getMessage());
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
 
         }
 
@@ -195,26 +207,65 @@ public class RecorderUtils {
         try {
             // calculate pace
             final long millsec = (mRecordTime);
-            final double sec = millsec / 1000;
 
-            if (mRecordDistanceKm <= 0 || sec <= 0 || Double.isNaN(sec)) return;
+            if (mRecordDistanceKm <= 0 || millsec <= 0 || Double.isNaN(millsec / 1000)) return;
 
-            if (!Double.isNaN(sec / mRecordDistanceKm)) {
-                final long pace = Long.parseLong((long) (sec / mRecordDistanceKm) + "");
+            final double paceDulation = mRecordTime / (mRecordDistanceKm);
+            final int min = Integer.parseInt(((mRecordPace / 1000) / 60) + "");
+            final double secDuration = min * 60;
+            final double sec = paceDulation - secDuration;
+            final double pace = Double.parseDouble(min + "") + (sec / 1000);
 
-                if (!Double.isNaN(pace)) {
-                    mRecordPace = (pace * 1000) > (20 * 3600 * 1000)
-                            ? (20 * 3600 * 1000)
-                            : pace * 1000;
-                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
-
-                }
+            if (!Double.isNaN(pace)) {
+                mRecordPace = (long)((pace * 1000) > (20 * 3600 * 1000)
+                        ? (20 * 3600 * 1000)
+                        : pace * 1000);
+                mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
 
             }
+
+//
+//            if (!Double.isNaN(sec / mRecordDistanceKm)) {
+//                final long pace = Long.parseLong((long) (sec / mRecordDistanceKm) + "");
+//
+//                if (!Double.isNaN(pace)) {
+//                    mRecordPace = (pace * 1000) > (20 * 3600 * 1000)
+//                            ? (20 * 3600 * 1000)
+//                            : pace * 1000;
+//                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
+//
+//                }
+//
+//            }
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
         }
+
+
+//        try {
+//            // calculate pace
+//            final long millsec = (mRecordTime);
+//            final double sec = millsec / 1000;
+//
+//            if (mRecordDistanceKm <= 0 || sec <= 0 || Double.isNaN(sec)) return;
+//
+//            if (!Double.isNaN(sec / mRecordDistanceKm)) {
+//                final long pace = Long.parseLong((long) (sec / mRecordDistanceKm) + "");
+//
+//                if (!Double.isNaN(pace)) {
+//                    mRecordPace = (pace * 1000) > (20 * 3600 * 1000)
+//                            ? (20 * 3600 * 1000)
+//                            : pace * 1000;
+//                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
+//
+//                }
+//
+//            }
+//
+//        } catch (Exception e) {
+//            L.e(mtn + "Err: " + e.getMessage());
+//        }
     }
 
     public void addDistance(double distance) {
