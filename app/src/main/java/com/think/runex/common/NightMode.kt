@@ -5,12 +5,14 @@ import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import com.think.runex.datasource.local.getAppPreference
 import com.think.runex.datasource.local.getNightMode
-import com.think.runex.utility.runOnMainThread
 import com.think.runex.datasource.local.setNightMode
 
 fun AppCompatActivity.setCurrentNightMode(nightMode: Int) {
     getAppPreference().setNightMode(nightMode)
-    runOnMainThread(150, ::recreate)
+    //AppCompatDelegate.setDefaultNightMode(nightMode)
+    //delegate.localNightMode = nightMode
+    //delegate.applyDayNight()
+    recreate()
 }
 
 fun AppCompatActivity.getCurrentNightMode(): Int = getAppPreference().getNightMode().let { mode ->

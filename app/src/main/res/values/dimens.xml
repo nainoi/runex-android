@@ -4,7 +4,7 @@
     <item name="wrap_content" type="dimen">-2</item>
 
     <!-- Default Font Style -->
-    <dimen name="text_caption_lest">10sp</dimen>
+    <dimen name="text_over_line">10sp</dimen>
     <dimen name="text_caption">12sp</dimen>        <!-- (Caption) -->
     <dimen name="text_body">14sp</dimen>           <!-- (Body1, Menu, Button) -->
     <dimen name="text_body_2">16sp</dimen>         <!-- (Subheading) -->

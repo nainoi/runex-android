@@ -6,14 +6,11 @@
     android:layout_height="match_parent"
     tools:context=".ui.RecordScreen">
 
-    <com.jozzee.android.curvelayout.CurveLayout
+    <RelativeLayout
         android:id="@+id/rac_view"
         android:layout_width="match_parent"
         android:layout_height="360dp"
         android:elevation="8dp"
-        app:curveFormat="convex"
-        app:curveHeight="@dimen/space_56dp"
-        app:curvesGravity="bottom"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
@@ -87,7 +84,7 @@
                 android:text="RUNEX"
                 android:textStyle="bold" />
         </RelativeLayout>
-    </com.jozzee.android.curvelayout.CurveLayout>
+    </RelativeLayout>
 
 
     <androidx.appcompat.widget.AppCompatImageButton

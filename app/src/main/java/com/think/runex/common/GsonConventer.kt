@@ -7,7 +7,7 @@ import com.google.gson.Gson
  */
 fun <T> String?.toObject(ofClass: Class<T>): T? {
     try {
-        if(this != null && this.isNotBlank()){
+        if (this != null && this.isNotBlank()) {
             return Gson().fromJson(this, ofClass)
         }
     } catch (e: Exception) {
@@ -27,11 +27,3 @@ fun <T> T.toJson(): String {
     }
     return ""
 }
-
-fun <T> T.isNotNull() = this != null
-
-//fun <T> T.isNotNull(block: () -> Unit) {
-//    if (this != null) {
-//        block()
-//    }
-//}

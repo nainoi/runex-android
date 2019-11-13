@@ -13,6 +13,7 @@
 
     <!-- D -->
     <string name="delete">Delete</string>
+    <string name="distance">Distance</string>
 
     <!-- E -->
     <string name="email">Email</string>
@@ -23,6 +24,7 @@
     <string name="events">Events</string>
 
     <!-- F -->
+    <string name="finish_recording">Finish recording</string>
     <string name="forgot_password">Forgot Password</string>
     <string name="free">Free</string>
 
@@ -65,14 +67,20 @@
 
     <!-- R -->
     <string name="record">Record</string>
-    <string name="runex_sync">RUNEX Sync</string>
     <string name="register">Register</string>
+    <string name="resume_recording">Resume recording</string>
+    <string name="runex_sync">RUNEX Sync</string>
+    <string name="running_summary">สรุปผล</string>
 
     <!-- S -->
-    <string name="background_service">background-service</string>
-    <string name="server_client_id">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
+    <string name="setting">Setting</string>
+    <string name="start_recording">Start recording</string>
+    <string name="stop_and_submit_running_result">Stop and Submit</string>
+    <string name="submit_result">Submit</string>
+
 
     <!-- T -->
+    <string name="time">Time</string>
 
     <!-- U -->
 
@@ -84,16 +92,9 @@
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="my_events_list">รายการวิ่งของฉัน</string>
-    <string name="start_recording">เริ่มจับเวลา</string>
-    <string name="pause_recording">พักจับเวลา</string>
-    <string name="resume_recording">จับเวลาต่อ</string>
-    <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
-    <string name="finish_recording">จบการจับเวลา</string>
-    <string name="distance">ระยะทาง</string>
-    <string name="time">เวลา</string>
-    <string name="running_summary">สรุปผล</string>
-    <string name="submit_result">ส่งผล</string>
+    <string name="my_events_list">My Events List</string>
+
+    <string name="pause_recording">Pause recording</string>
 
 
     <!-- Y -->

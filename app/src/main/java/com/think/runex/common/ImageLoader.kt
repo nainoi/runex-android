@@ -2,16 +2,15 @@ package com.think.runex.common
 
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import com.bumptech.glide.load.DecodeFormat
-import com.bumptech.glide.load.resource.bitmap.CenterCrop
-import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.jozzee.android.core.resource.getDimen
+import com.squareup.picasso.MemoryPolicy
+import com.squareup.picasso.Picasso
 import com.think.runex.R
-import com.think.runex.utility.GlideApp
+import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
 
 fun ImageView.loadEventImage(url: String,
                              @DrawableRes defaultImage: Int? = null,
-                             clearOnDetach: Boolean = true) {
+                             skipMemoryCache: Boolean = false) {
 
     if (url.isBlank()) {
         if (defaultImage != null) {
@@ -19,10 +18,8 @@ fun ImageView.loadEventImage(url: String,
         }
         return
     }
-    GlideApp.with(this)
+    Picasso.get()
             .load(url)
-            .format(DecodeFormat.PREFER_ARGB_8888)
-            .transform(CenterCrop(), RoundedCorners(getDimen(R.dimen.space_8dp)))
             .apply {
                 if (defaultImage != null) {
                     placeholder(defaultImage)
@@ -31,10 +28,11 @@ fun ImageView.loadEventImage(url: String,
                     error(defaultImage)
                 }
             }
-            .into(this)
-            .also {
-                if (clearOnDetach) {
-                    it.clearOnDetach()
+            .transform(RoundedCornersTransformation(getDimen(R.dimen.space_8dp), 0))
+            .apply {
+                if (skipMemoryCache) {
+                    memoryPolicy(MemoryPolicy.NO_CACHE)
                 }
             }
+            .into(this)
 }

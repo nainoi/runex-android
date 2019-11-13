@@ -14,6 +14,7 @@
 
     <!-- D -->
     <string name="delete">ลบ</string>
+    <string name="distance">ระยะทาง</string>
 
     <!-- E -->
     <string name="email">อีเมล</string>
@@ -24,6 +25,7 @@
     <string name="events">อีเว้นท์</string>
 
     <!-- F -->
+    <string name="finish_recording">จบการจับเวลา</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>
     <string name="free">ฟรี</string>
 
@@ -67,15 +69,19 @@
 
     <!-- R -->
     <string name="record">บันทึก</string>
-    <string name="runex_sync">RUNEX Sync</string>
     <string name="register">สมัครสมาชิก</string>
+    <string name="resume_recording">จับเวลาต่อ</string>
+    <string name="runex_sync">RUNEX Sync</string>
+    <string name="running_summary">สรุปผล</string>
 
     <!-- S -->
-    <string name="background_service">background-service</string>
-    <string name="server_client_id">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
+    <string name="setting">Setting</string>
+    <string name="start_recording">เริ่มจับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
+    <string name="submit_result">ส่งผล</string>
 
     <!-- T -->
+    <string name="time">เวลา</string>
 
     <!-- U -->
 
@@ -85,7 +91,6 @@
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
-    <string name="start_recording">เริ่มจับเวลา</string>
     <string name="pause_recording">พักจับเวลา</string>
 
     <!-- Y -->
