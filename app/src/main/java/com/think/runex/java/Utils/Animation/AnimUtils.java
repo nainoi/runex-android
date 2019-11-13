@@ -64,6 +64,9 @@ public class AnimUtils {
                 // prepare usage variables
                 int val = (int)animation.getAnimatedValue();
 
+                // callback
+                if( val == 0 ) callback.onStart();
+
                 // update translation y
                 v.setTranslationY( val );
 
@@ -80,7 +83,17 @@ public class AnimUtils {
         va.setInterpolator(new DecelerateInterpolator());
         va.addUpdateListener(new ValueAnimator.AnimatorUpdateListener() {
             public void onAnimationUpdate(ValueAnimator animation) {
-                v.setTranslationY( (int)animation.getAnimatedValue());
+                // prepare usage variables
+                int val = (int)animation.getAnimatedValue();
+
+                // callback
+                if( val == 0 ) callback.onStart();
+
+                // update translation y
+                v.setTranslationY( val );
+
+                // callback
+                if( val >= v.getHeight() ) callback.onEnd();
             }
         });
         va.start();

@@ -13,15 +13,26 @@ import android.graphics.BitmapFactory;
 import android.graphics.Color;
 import android.graphics.drawable.ColorDrawable;
 import android.location.Location;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.View;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 
+import com.facebook.CallbackManager;
+import com.facebook.FacebookCallback;
+import com.facebook.FacebookException;
+import com.facebook.FacebookSdk;
+import com.facebook.share.Sharer;
+import com.facebook.share.model.ShareLinkContent;
+import com.facebook.share.model.SharePhoto;
+import com.facebook.share.model.SharePhotoContent;
+import com.facebook.share.widget.ShareDialog;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -59,6 +70,7 @@ import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
+import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 import java.text.DecimalFormat;
@@ -73,6 +85,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private final String ct = "RecordActivity->";
 
     // instance variables
+    private CallbackManager callbackManager;
     private FragmentUtils mFUtils;
     private LocationUtils mLocUtils;
     private PermissionUtils mPmUtils;
@@ -118,8 +131,16 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private TextView lbDistance;
     private TextView lbCalories;
     private TextView lbPace;
+    private View frameLogo;
     //-->Labs
     private TextView labAccuracy;
+    //--> Frame map
+    private View frameMap;
+    //--> Frame share
+    private View frameShare;
+    private View btnSocialShare;
+    //--> Frame recording
+    private View frameRecording;
 
     private TextView btnStart;
     private TextView btnSaveWithoutSubmitResult;
@@ -127,7 +148,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private ImageView previewImage;
     //--> Toolbar
     private View btnCancelSubmit;
-    private View btnShare;
     //--> Change background image
     private View frameChangeBgImage;
     //--> Running summary frame
@@ -201,6 +221,34 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         final String mtn = ct + "onClick() ";
 
         switch (view.getId()) {
+            case R.id.btn_cancel_submit: onBackPressed(); break;
+            case R.id.btn_share:
+                // before share
+                beforeShare();
+
+                frameSummary.post(new Runnable() {
+                    @Override
+                    public void run() {
+
+                        // capture google map preview image
+                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                            @Override
+                            public void onSnapshotReady(Bitmap bitmap) {
+                                // display map preview
+                                previewImage.setImageBitmap( bitmap );
+
+                                // share with facebook
+                                shareWithFacebook();
+                            }
+                        });
+
+                    }
+                });
+
+                // after share
+//                afterShare();
+
+                break;
             case R.id.btn_save_without_submit_result:
                 if( onNetwork ) return;
 
@@ -276,15 +324,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
 
                             // display summary frame
                             displaySummaryFrame(recorderObj);
-
-                            // capture google map preview image
-                            mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                                @Override
-                                public void onSnapshotReady(Bitmap bitmap) {
-                                    // display map preview
-                                    previewImage.setImageBitmap( bitmap );
-                                }
-                            });
 
                             // dismiss
                         } else dialogInterface.dismiss();
@@ -402,6 +441,10 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_record);
 
+        // init facebook sdk
+        FacebookSdk.sdkInitialize(this);
+        callbackManager = CallbackManager.Factory.create();
+
         // prepare usage variables
         final String mtn = ct + "onCreate() ";
 
@@ -422,6 +465,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         //--> Permission utils
         mPmUtils = PermissionUtils.newInstance(this);
 
+        // view change listener
         getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
@@ -440,6 +484,54 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private void afterShare(){
+        btnSubmit.setVisibility(View.VISIBLE);
+        btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
+
+        // hide preview
+        previewImage.setImageResource( 0 );
+
+    }
+    private void beforeShare(){
+        btnSubmit.setVisibility(View.GONE);
+        btnSaveWithoutSubmitResult.setVisibility(View.GONE);
+
+    }
+    private void shareWithFacebook(){
+        // prepare usage variables
+        ShareDialog shareDialog = new ShareDialog(this);
+        File file = DeviceUtils.instance(this).takeScreenshot(this, R.id.full_view_display);
+        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
+        SharePhoto photo = new SharePhoto.Builder()
+                .setBitmap(bitmap)
+                .build();
+        SharePhotoContent content = new SharePhotoContent.Builder()
+                .addPhoto(photo)
+                .build();
+
+        // update props
+        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
+            @Override
+            public void onSuccess(Sharer.Result result) {
+                // after share
+                afterShare();
+            }
+
+            @Override
+            public void onCancel() {
+                afterShare();
+
+            }
+
+            @Override
+            public void onError(FacebookException error) {
+                afterShare();
+
+            }
+        });
+        // share to facebook
+        shareDialog.show(content);
+    }
     private AlertDialog dialogDiscardRecording(String title, String desc, DialogInterface.OnClickListener listener) {
         // prepare usage variables
         AlertDialog.Builder builder = new AlertDialog.Builder(this);
@@ -551,7 +643,6 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                     @Override
                     public void onStart() {
                         btnStopAndSubmit.setVisibility(View.VISIBLE);
-
                     }
                 });
 
@@ -563,10 +654,20 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
             public void onEnd() {
                 // hide preview image
                 previewImage.setImageResource( 0 );
+                frameShare.setVisibility(View.INVISIBLE);
+                frameLogo.setVisibility(View.INVISIBLE);
+
             }
 
             @Override
-            public void onStart() { }
+            public void onStart() {
+                frameRecording.setVisibility(View.VISIBLE);
+
+                // change layout above
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
+                params.addRule(RelativeLayout.ABOVE, frameRecording.getId());
+
+            }
         });
 
     }
@@ -578,7 +679,16 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         //--> animation
         AnimUtils.instance().translateUp(frameSummary, new onAnimCallback() {
             @Override
-            public void onEnd() { }
+            public void onEnd() {
+
+                // change layout above
+                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
+                params.addRule(RelativeLayout.ABOVE, frameSummary.getId());
+
+                frameRecording.setVisibility(View.GONE);
+                frameShare.setVisibility(View.VISIBLE);
+                frameLogo.setVisibility(View.VISIBLE);
+            }
             @Override
             public void onStart() { }
         });
@@ -825,9 +935,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         btnSaveWithoutSubmitResult.setOnClickListener(this);
         frameChangeBgImage.setOnClickListener(this);
 
-        //--> Toolbar
+        //--> Frame share
         btnCancelSubmit.setOnClickListener(this);
-        btnShare.setOnClickListener(this);
+        btnSocialShare.setOnClickListener(this);
     }
 
     /**
@@ -836,6 +946,7 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
     private void viewMatching() {
         // lab
         labAccuracy = findViewById(R.id.lab_accuracy);
+        frameLogo = findViewById(R.id.frame_logo);
 
         lbPace = findViewById(R.id.lb_pace);
         lbDistance = findViewById(R.id.lb_distance);
@@ -848,13 +959,20 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
         btnSaveWithoutSubmitResult = findViewById(R.id.btn_save_without_submit_result);
         icRecordState = findViewById(R.id.ic_recording_state);
 
+        //--> Frame map
+        frameMap = findViewById(R.id.frame_map);
+
+        //--> Frame share
+        frameShare = findViewById(R.id.frame_toolbar);
+        btnCancelSubmit = findViewById(R.id.btn_cancel_submit);
+        btnSocialShare = findViewById(R.id.btn_share);
+
+        //--> Frame recording
+        frameRecording = findViewById(R.id.frame_recording);
+
         //--> Frame change background image
         previewImage = findViewById(R.id.preview_image);
         frameChangeBgImage = findViewById(R.id.frame_change_background_image);
-
-        //--> Toolbar
-        btnCancelSubmit = findViewById(R.id.btn_cancel_submit);
-        btnShare = findViewById(R.id.btn_share);
 
         //--> Summary views
         frameSummary = findViewById(R.id.frame_summary);
@@ -902,6 +1020,9 @@ public class RecordActivity extends xActivity implements OnMapReadyCallback
                 L.e(mtn + "Err: " + e.getMessage());
             }
         }
+
+        callbackManager.onActivityResult(requestCode, resultCode, data);
+
     }
 
     @Override

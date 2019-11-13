@@ -70,7 +70,7 @@ public class DeviceUtils {
         else if(host instanceof Fragment) (((Fragment)host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
     }
 
-    public File takeScreenshot(Context context) {
+    public File takeScreenshot(Context context, int viewId) {
         // prepare usage variables
         final String mtn = ct +"takeScreenshot() ";
         final String fileName = System.currentTimeMillis() +"";
@@ -80,8 +80,9 @@ public class DeviceUtils {
             final String path = context.getExternalFilesDir(null).getAbsolutePath() +"/"+ fileName +".jpg";
 
             // create bitmap screen capture
-            View root = ((Activity) context).getWindow().getDecorView()
+            View frame = ((Activity) context).getWindow().getDecorView()
                     .getRootView();
+            View root = frame.findViewById(viewId);
             root.setDrawingCacheEnabled(true);
 
             // create bitmap
