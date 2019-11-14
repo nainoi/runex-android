@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,9 +10,11 @@ import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.java.Activities.RecordActivity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.Fragment.xFragment;
@@ -23,8 +26,10 @@ import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
-public class EventDetailPage extends xActivity {
-    /** Main variables */
+public class EventDetailPage extends xActivity implements View.OnClickListener {
+    /**
+     * Main variables
+     */
     private final String ct = "EventDetailPage->";
 
     // instance variables
@@ -39,13 +44,14 @@ public class EventDetailPage extends xActivity {
     private TextView lbEventName;
     private ImageView eventImage;
     private TextView lbTotalDistance;
+    private AppCompatImageButton btnAddActivity;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.page_event_detail);
 
-        final String mtn = ct +"onCreate() ";
+        final String mtn = ct + "onCreate() ";
 
         ActivityUtils.newInstance(this).fullScreen();
 
@@ -55,41 +61,54 @@ public class EventDetailPage extends xActivity {
         mEventId = b.getString("EVENT_ID");
 
         // view matching
-        viewMatching(  );
+        viewMatching();
+
+        // view event listener
+        viewEventListener();
 
         try {
             // binding event name
             lbEventName.setText(mEventName);
-            Picasso.get().load( mEventProfile ).into( eventImage );
+            Picasso.get().load(mEventProfile).into(eventImage);
 
-        } catch ( Exception e ){
-            L.e(mtn +"Err: "+ e.getMessage());
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
         }
     }
 
-    /** Feature methods */
-    private void binding(){
+    /**
+     * Feature methods
+     */
+    private void binding() {
 //        lbTotalDistance.setText();
     }
 
     // view matching
-    private void viewMatching(){
+    private void viewMatching() {
         eventImage = findViewById(R.id.event_image);
         lbEventName = findViewById(R.id.lb_event_name);
         lbTotalDistance = findViewById(R.id.lb_total_running_distance);
+        btnAddActivity = findViewById(R.id.btn_add_activity);
 
     }
 
-    /** API methods */
-    private void apiGetEventDetail(String eventId){
+    // view event listener
+    private void viewEventListener() {
+        btnAddActivity.setOnClickListener(this);
+    }
+
+    /**
+     * API methods
+     */
+    private void apiGetEventDetail(String eventId) {
         // prepare usage variables
-        final String mtn = ct +"apiGetEventDetail() ";
+        final String mtn = ct + "apiGetEventDetail() ";
 
         // fire
         new GetEventDetailService(this, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                L.i(mtn +"response: "+ response.jsonString);
+                L.i(mtn + "response: " + response.jsonString);
 
                 try {
                     // convert to running history object
@@ -97,10 +116,10 @@ public class EventDetailPage extends xActivity {
                     EventDetailObject.DataBean db = rhis.getData();
 
                     // update total distance
-                    lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) +" km");
+                    lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) + " km");
 
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e.getMessage());
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
 
                 }
 
@@ -108,22 +127,24 @@ public class EventDetailPage extends xActivity {
 
             @Override
             public void onFailure(xResponse response) {
-                L.e(mtn +"err-response: "+ response.jsonString);
+                L.e(mtn + "err-response: " + response.jsonString);
 
             }
-        }).doIt( eventId );
+        }).doIt(eventId);
     }
 
-    /** Life cycle */
+    /**
+     * Life cycle
+     */
     @Override
     public void onResume() {
         super.onResume();
         // prepare usage variables
-        final String mtn = ct +"onResume() ";
+        final String mtn = ct + "onResume() ";
 
-        if( ON_NETWORKING ) return;
-        if( mEventId == null ){
-            L.e(mtn +"event id["+ mEventId +"] is not ready.");
+        if (ON_NETWORKING) return;
+        if (mEventId == null) {
+            L.e(mtn + "event id[" + mEventId + "] is not ready.");
 
             // exit from this process
             return;
@@ -132,5 +153,17 @@ public class EventDetailPage extends xActivity {
         // get event detail
         apiGetEventDetail(mEventId);
 
+    }
+
+    @Override
+    public void onClick(View v) {
+        if (v.getId() == R.id.btn_add_activity) {
+            addEventActivityPage();
+        }
+    }
+
+    private void addEventActivityPage() {
+        Intent i = new Intent(this, AddEventActivityPage.class);
+        startActivity(i);
     }
 }
