@@ -247,7 +247,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:gravity="center"
-            android:orientation="horizontal">
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/v_forgot_password_description"
@@ -256,6 +256,8 @@
                 android:text="ยังไม่ได้เป็นสมาชิกในระบบ? " />
 
             <TextView
+                android:paddingVertical="8dp"
+                android:paddingHorizontal="12dp"
                 android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"

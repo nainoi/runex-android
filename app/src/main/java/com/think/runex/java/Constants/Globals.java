@@ -17,7 +17,7 @@ public class Globals {
     public static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzI0NTI2MTIsImlkIjoiNWRiNWJiZDE4NzRhNjkzYTcyZWY2MDkxIiwib3JpZ19pYXQiOjE1NzIxOTM0MTIsInBmIjoid2ViIiwicm9sZSI6Ik1FTUJFUiJ9.D1vXzTpIHiqeWIdUrwFgJxLJ_AuAJg2XCnKmtshWaqY";
     public static final String EVENT_ID = "5db5bda6874a693a72ef6093";
     public static Gson GSON = new Gson();
-    public static DecimalFormat DCM = new DecimalFormat("#.##");
+    public static DecimalFormat DCM = new DecimalFormat("0.0");
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
     public static final int FIXED_SCREEN_WIDTH = 1024;
@@ -53,6 +53,9 @@ public class Globals {
     //--> Broadcast
     public static final String BROADCAST_LOCATION = "BROADCAST";
     public static final String BROADCAST_LOCATION_VAL = "BROADCAST";
+
+    //--> URL
+    public static final String URL_RUNEX = "https://runex.co";
 
     public static String mapActivityResult( int activityResult ){
         if( activityResult == Activity.RESULT_OK ){

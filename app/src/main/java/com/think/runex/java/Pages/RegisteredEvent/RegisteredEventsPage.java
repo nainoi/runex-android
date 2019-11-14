@@ -1,6 +1,7 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
 import android.content.Intent;
+import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -18,6 +19,7 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.APIs;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
@@ -106,11 +108,14 @@ public class RegisteredEventsPage extends xFragment implements
                 // hide no registered event frame
                 frameNoRegisterEvent.setVisibility(View.INVISIBLE);
 
-                // display progress dialog
-                refreshLayout.setRefreshing( true );
+                // to runex.co website
+                toRUNEXWebSite();
 
-                // refresh
-                onRefresh();
+                // display progress dialog
+//                refreshLayout.setRefreshing( true );
+//
+//                // refresh
+//                onRefresh();
 
                 break;
         }
@@ -284,13 +289,20 @@ public class RegisteredEventsPage extends xFragment implements
         // display progress dialog
         refreshLayout.setRefreshing( true );
 
-        // call api
-        apiGetEvents();
-
         return v;
     }
 
     /** Feature methods */
+    private void toRUNEXWebSite(){
+        // prepare usage variables
+        Intent i = new Intent(Intent.ACTION_VIEW);
+
+        // update props
+        i.setData(Uri.parse(Globals.URL_RUNEX));
+
+        // go to web browser
+        startActivityForResult(i, 0);
+    }
     private void hideNeedAuth(){
         frameNeedAuth.setVisibility(View.INVISIBLE);
 
@@ -335,6 +347,21 @@ public class RegisteredEventsPage extends xFragment implements
     }
 
     /** Life cycle */
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        Toast.makeText(activity, "EVENTS: "+ events.size(), Toast.LENGTH_SHORT).show();
+
+        // when no event
+        if( events.size() <= 0 ){
+            // call api
+            apiGetEvents();
+
+            // just refresh
+        } // else onRefresh();
+
+    }
     @Override
     public void onDestroy() {
         super.onDestroy();

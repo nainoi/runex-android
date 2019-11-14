@@ -1,5 +1,6 @@
 package com.think.runex.java.Models;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RunningHistoryObject {
@@ -31,7 +32,7 @@ public class RunningHistoryObject {
     }
 
     public List<DataBean> getData() {
-        return data;
+        return (data == null) ? data = new ArrayList<>() : data;
     }
 
     public void setData(List<DataBean> data) {

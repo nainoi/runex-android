@@ -13,6 +13,7 @@ public enum APIs {
 
     //--> L
     LOGIN(DOMAIN.VAL + "/api/v1/user/login"),
+    LOGOUT(DOMAIN.VAL + "/api/v1/user/logout"),
 
     //--> M
     MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),

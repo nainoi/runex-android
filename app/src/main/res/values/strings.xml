@@ -1,32 +1,33 @@
 <resources>
     <!-- A -->
     <string name="app_name">Runex</string>
-    <string name="activity">Activity</string>
+
+    <string name="activity">กิจกรรม</string>
 
     <!-- B -->
-    <string name="back">Back</string>
+    <string name="back">ย้อนกลับ</string>
 
     <!-- c -->
-    <string name="cancel">Cancel</string>
-    <string name="close">Close</string>
-    <string name="challenges">Challenges</string>
+    <string name="cancel">ยกเลิก</string>
+    <string name="close">ปิด</string>
+    <string name="challenges">ชาเลนจ์</string>
 
     <!-- D -->
-    <string name="delete">Delete</string>
-    <string name="distance">Distance</string>
+    <string name="delete">ลบ</string>
+    <string name="distance">ระยะทาง</string>
 
     <!-- E -->
-    <string name="email">Email</string>
-    <string name="email_address">Email Address</string>
-    <string name="email_required">The email field is required.</string>
-    <string name="email_not_valid">The Email field must be a valid email.</string>
-    <string name="email_password_is_invalid">email or password is invalid.</string>
-    <string name="events">Events</string>
+    <string name="email">อีเมล</string>
+    <string name="email_address">ที่อยู่อีเมล</string>
+    <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
+    <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
+    <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
+    <string name="events">อีเว้นท์</string>
 
     <!-- F -->
-    <string name="finish_recording">Finish recording</string>
-    <string name="forgot_password">Forgot Password</string>
-    <string name="free">Free</string>
+    <string name="finish_recording">จบการจับเวลา</string>
+    <string name="forgot_password">ลืมรหัสผ่าน</string>
+    <string name="free">ฟรี</string>
 
     <!-- G -->
 
@@ -39,65 +40,168 @@
     <!-- K -->
 
     <!-- L -->
-    <string name="latest">Latest</string>
-    <string name="login">Log In</string>
+    <string name="latest">ล่าสุด</string>
+    <string name="login">เข้าสู่ระบบ</string>
     <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
     <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
-    <string name="login_with_facebook">Log In with Facebook</string>
-    <string name="login_with_google">Log In with Google</string>
-    <string name="login_with_email">Log In with Email</string>
-    <string name="logout">Logout</string>
+    <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
+    <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
+    <string name="login_with_email">ลงชื่อใช้งานด้วยอีเมล</string>
+    <string name="logout">ออกจากระบบ</string>
+
 
     <!-- M -->
-    <string name="menu">Menu</string>
-    <string name="my_events">My Events</string>
+    <string name="menu">เมนู</string>
+    <string name="my_events">อีเว้นท์ของฉัน</string>
 
     <!-- N -->
-    <string name="no_internet_connection">No Internet Connection</string>
+    <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
 
     <!-- O -->
-    <string name="ok">OK</string>
-    <string name="or">Or</string>
+    <string name="ok">ตกลง</string>
+    <string name="or">หรือ</string>
 
     <!-- P -->
-    <string name="password">Password</string>
-    <string name="password_required">The password field is required.</string>
-    <string name="profile">Profile</string>
+    <string name="password">รหัสผ่าน</string>
+    <string name="password_required">กรุณาระบุรหัสผ่าน</string>
+    <string name="profile">ข้อมูลส่วนตัว</string>
 
     <!-- R -->
-    <string name="record">Record</string>
-    <string name="register">Register</string>
-    <string name="resume_recording">Resume recording</string>
+    <string name="record">บันทึก</string>
+    <string name="register">สมัครสมาชิก</string>
+    <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>
 
     <!-- S -->
     <string name="setting">Setting</string>
-    <string name="start_recording">Start recording</string>
-    <string name="stop_and_submit_running_result">Stop and Submit</string>
-    <string name="submit_result">Submit</string>
-
+    <string name="start_recording">เริ่มจับเวลา</string>
+    <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
+    <string name="submit_result">ส่งผล</string>
 
     <!-- T -->
-    <string name="time">Time</string>
+    <string name="time">เวลา</string>
 
     <!-- U -->
 
     <!-- V -->
-    <string name="version">Version</string>
+    <string name="version">เวอร์ชัน</string>
 
     <!-- W -->
-    <string name="warning">Warning</string>
-
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
-    <string name="my_events_list">My Events List</string>
-
-    <string name="pause_recording">Pause recording</string>
-
+    <string name="warning">แจ้งเตือน</string>
+    <string name="my_events_list">รายการวิ่งของฉัน</string>
+    <string name="pause_recording">พักจับเวลา</string>
 
     <!-- Y -->
 
     <!-- Z -->
+
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>
+
+
+    <!--<resources>-->
+<!--    &lt;!&ndash; A &ndash;&gt;-->
+<!--    <string name="app_name">Runex</string>-->
+<!--    <string name="activity">Activity</string>-->
+
+<!--    &lt;!&ndash; B &ndash;&gt;-->
+<!--    <string name="back">Back</string>-->
+
+<!--    &lt;!&ndash; c &ndash;&gt;-->
+<!--    <string name="cancel">Cancel</string>-->
+<!--    <string name="close">Close</string>-->
+<!--    <string name="challenges">Challenges</string>-->
+
+<!--    &lt;!&ndash; D &ndash;&gt;-->
+<!--    <string name="delete">Delete</string>-->
+<!--    <string name="distance">Distance</string>-->
+
+<!--    &lt;!&ndash; E &ndash;&gt;-->
+<!--    <string name="email">Email</string>-->
+<!--    <string name="email_address">Email Address</string>-->
+<!--    <string name="email_required">The email field is required.</string>-->
+<!--    <string name="email_not_valid">The Email field must be a valid email.</string>-->
+<!--    <string name="email_password_is_invalid">email or password is invalid.</string>-->
+<!--    <string name="events">Events</string>-->
+
+<!--    &lt;!&ndash; F &ndash;&gt;-->
+<!--    <string name="finish_recording">Finish recording</string>-->
+<!--    <string name="forgot_password">Forgot Password</string>-->
+<!--    <string name="free">Free</string>-->
+
+<!--    &lt;!&ndash; G &ndash;&gt;-->
+
+<!--    &lt;!&ndash; H &ndash;&gt;-->
+
+<!--    &lt;!&ndash; I &ndash;&gt;-->
+
+<!--    &lt;!&ndash; J &ndash;&gt;-->
+
+<!--    &lt;!&ndash; K &ndash;&gt;-->
+
+<!--    &lt;!&ndash; L &ndash;&gt;-->
+<!--    <string name="latest">Latest</string>-->
+<!--    <string name="login">Log In</string>-->
+<!--    <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>-->
+<!--    <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>-->
+<!--    <string name="login_with_facebook">Log In with Facebook</string>-->
+<!--    <string name="login_with_google">Log In with Google</string>-->
+<!--    <string name="login_with_email">Log In with Email</string>-->
+<!--    <string name="logout">Logout</string>-->
+
+<!--    &lt;!&ndash; M &ndash;&gt;-->
+<!--    <string name="menu">Menu</string>-->
+<!--    <string name="my_events">My Events</string>-->
+
+<!--    &lt;!&ndash; N &ndash;&gt;-->
+<!--    <string name="no_internet_connection">No Internet Connection</string>-->
+<!--    <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>-->
+
+<!--    &lt;!&ndash; O &ndash;&gt;-->
+<!--    <string name="ok">OK</string>-->
+<!--    <string name="or">Or</string>-->
+
+<!--    &lt;!&ndash; P &ndash;&gt;-->
+<!--    <string name="password">Password</string>-->
+<!--    <string name="password_required">The password field is required.</string>-->
+<!--    <string name="profile">Profile</string>-->
+
+<!--    &lt;!&ndash; R &ndash;&gt;-->
+<!--    <string name="record">Record</string>-->
+<!--    <string name="register">Register</string>-->
+<!--    <string name="resume_recording">Resume recording</string>-->
+<!--    <string name="runex_sync">RUNEX Sync</string>-->
+<!--    <string name="running_summary">สรุปผล</string>-->
+
+<!--    &lt;!&ndash; S &ndash;&gt;-->
+<!--    <string name="setting">Setting</string>-->
+<!--    <string name="start_recording">Start recording</string>-->
+<!--    <string name="stop_and_submit_running_result">Stop and Submit</string>-->
+<!--    <string name="submit_result">Submit</string>-->
+
+
+<!--    &lt;!&ndash; T &ndash;&gt;-->
+<!--    <string name="time">Time</string>-->
+
+<!--    &lt;!&ndash; U &ndash;&gt;-->
+
+<!--    &lt;!&ndash; V &ndash;&gt;-->
+<!--    <string name="version">Version</string>-->
+
+<!--    &lt;!&ndash; W &ndash;&gt;-->
+<!--    <string name="warning">Warning</string>-->
+
+<!--    &lt;!&ndash; TODO: Remove or change this placeholder text &ndash;&gt;-->
+<!--    <string name="hello_blank_fragment">Hello blank fragment</string>-->
+<!--    <string name="my_events_list">My Events List</string>-->
+
+<!--    <string name="pause_recording">Pause recording</string>-->
+
+
+<!--    &lt;!&ndash; Y &ndash;&gt;-->
+
+<!--    &lt;!&ndash; Z &ndash;&gt;-->
+<!--</resources>-->

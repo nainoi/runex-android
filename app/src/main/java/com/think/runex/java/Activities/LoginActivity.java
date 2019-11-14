@@ -1,16 +1,24 @@
 package com.think.runex.java.Activities;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
+import android.graphics.Color;
+import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.internal.CallbackManagerImpl;
+import com.google.android.material.bottomsheet.BottomSheetBehavior;
+import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.think.runex.R;
 import com.think.runex.feature.social.SocialLoginListener;
 import com.think.runex.feature.social.SocialLoginManger;
@@ -20,6 +28,7 @@ import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Customize.Views.xRegistrationBottomSheet;
 import com.think.runex.java.Models.TokenObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.ActivityUtils;
@@ -60,12 +69,16 @@ public class LoginActivity extends FragmentActivity implements
     private View btnLoginWithFacebook;
     private View btnLoginWithGoogle;
     private View btnExit;
+    private View btnRegister;
+    private View bottomSheetView;
     //--> Input fields
     private EditText inputEmail;
     private EditText inputPassword;
     //--> Frame socials login
     private View frameSocialsLogin;
     private View frameLoginWithEmail;
+    //--> xRegister bottom sheet
+    private xRegistrationBottomSheet bottomSheetRegistration;
 
     @Override
     public void onBackPressed() {
@@ -104,6 +117,15 @@ public class LoginActivity extends FragmentActivity implements
                 break;
 
             //--> Feature action
+            //--> Register
+            case R.id.btn_register:
+                // clear flag
+                ON_LOGGING_IN = false;
+
+                // display register dialog
+                bottomSheetRegistration.show();
+
+                break;
             case R.id.btn_to_login_with_email:
                 // update flag
                 ON_LOGGING_IN = false;
@@ -171,6 +193,9 @@ public class LoginActivity extends FragmentActivity implements
         socialLoginManger = new SocialLoginManger();
         socialLoginManger.setSocialLoginListener(this);
         socialLoginManger.registerLoginCallback();
+
+        // register bottom sheet
+        bottomSheetRegistration = new xRegistrationBottomSheet(this, R.layout.bottomsheet_registration);
 
         // matching views
         viewsMatching();
@@ -410,6 +435,7 @@ public class LoginActivity extends FragmentActivity implements
         btnLoginWithFacebook.setOnClickListener(this);
         btnLoginWithGoogle.setOnClickListener(this);
         btnExit.setOnClickListener(this);
+        btnRegister.setOnClickListener(this);
 
     }
 
@@ -417,6 +443,7 @@ public class LoginActivity extends FragmentActivity implements
      * Matching views
      */
     private void viewsMatching() {
+        btnRegister = findViewById(R.id.btn_register);
         btnExit = findViewById(R.id.btn_cross);
         btnToLoginWithEmail = findViewById(R.id.btn_to_login_with_email);
         btnLoginWithEmail = findViewById(R.id.btn_login_with_email);
@@ -430,6 +457,10 @@ public class LoginActivity extends FragmentActivity implements
         //--> Frames
         frameLoginWithEmail = findViewById(R.id.frame_login_with_email);
         frameSocialsLogin = findViewById(R.id.frame_socials_login);
+
+        //--> Bottom sheet
+
+
     }
 
     @Override

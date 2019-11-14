@@ -46,13 +46,20 @@
     <!-- Text paragraph -->
     <dimen name="textVerticalPaddingNoRelate">28dp</dimen>
     <dimen name="textParagraphH1">36dp</dimen>
+    <dimen name="textParagraphH2">28dp</dimen>
+    <dimen name="textParagraphH3">22dp</dimen>
     <dimen name="textContent">18dp</dimen>
     <dimen name="textSmall">14dp</dimen>
+    <dimen name="textSmallInput">12dp</dimen>
     <dimen name="textButton">22dp</dimen>
 
     <!-- Buttons -->
+    <dimen name="verticalPaddingNoRelate">24dp</dimen>
+    <dimen name="horizontalPaddingNoRelate">32dp</dimen>
     <dimen name="buttonVerticalPaddingNoRelate">32dp</dimen>
     <dimen name="buttonVerticalPadding">8dp</dimen>
+    <dimen name="textVerticalPadding">12dp</dimen>
+    <dimen name="textHorizontalPadding">12dp</dimen>
     <dimen name="buttonHorizontalPadding">38dp</dimen>
 
     <!--  Login  -->

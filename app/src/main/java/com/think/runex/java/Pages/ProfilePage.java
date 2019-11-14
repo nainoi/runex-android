@@ -1,6 +1,7 @@
 package com.think.runex.java.Pages;
 
 import android.app.Activity;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -8,9 +9,11 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AlertDialog;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
@@ -24,7 +27,10 @@ import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
+import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
+
+import java.net.HttpURLConnection;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,
@@ -35,7 +41,12 @@ public class ProfilePage extends xFragment implements
     private final String ct = "ProfilePage->";
 
     // instance variables
+    private AlertDialog mDialog;
     private RunningHistoryObject.DataBean mRunningHist;
+
+    // explicit variables
+    private boolean mOnLoginHasChanged = false;
+    private boolean ON_NETWORKING = false;
 
     // views
     private SwipeRefreshLayout refreshLayout;
@@ -51,10 +62,24 @@ public class ProfilePage extends xFragment implements
     public void onClick(View view) {
         switch (view.getId()) {
             case R.id.frame_sign_out:
-                // sign out and sign in
-                App.instance(activity)
-                        .clear()
-                        .serveLoginPage(this, Globals.RC_NEED_LOGIN);
+
+                mDialog = dialog("ยืนยัน", "ยืนยันการออกจากระบบ", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+                        // condition
+                        if (i == AlertDialog.BUTTON_POSITIVE) {
+                            // update flag
+                            ON_NETWORKING = true;
+
+                            // api logout
+                            apiLogout();
+
+                        } else mDialog.dismiss();
+                    }
+                });
+
+                // display
+                mDialog.show();
 
                 break;
         }
@@ -81,31 +106,37 @@ public class ProfilePage extends xFragment implements
         // view binding
         viewBinding(App.instance(activity).getAppEntity().user);
 
-
         return v;
     }
 
-    /** API methods */
-    private void apiGetRunningHistory(){
+    /**
+     * API methods
+     */
+    private void apiGetRunningHistory() {
         // prepare usage variables
-        final String mtn = ct +"apiGetRunningHistory() ";
+        final String mtn = ct + "apiGetRunningHistory() ";
 
         new GetRunningHistory(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                L.i(mtn +"response: "+ response.jsonString);
+                L.i(mtn + "response: " + response.jsonString);
 
                 try {
-
                     // convert to running history object
                     RunningHistoryObject rhis = Globals.GSON.fromJson(response.jsonString, RunningHistoryObject.class);
-                    mRunningHist = rhis.getData().get(0);
+
+                    // prepare usage variables
+                    double totalDistance = 0.0;
+
+                    // condition
+                    if (rhis.getData().size() > 0) totalDistance = (mRunningHist = rhis.getData().get(0)).getTotal_distance();
+                    else mRunningHist = null;
 
                     // update total distance
-                    lbTotalDistance.setText( Globals.DCM.format(mRunningHist.getTotal_distance()) +" km");
+                    lbTotalDistance.setText(Globals.DCM.format(totalDistance) + " km");
 
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e.getMessage());
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
 
                 }
 
@@ -115,7 +146,7 @@ public class ProfilePage extends xFragment implements
 
             @Override
             public void onFailure(xResponse response) {
-                L.e(mtn +"err-response: "+ response.jsonString);
+                L.e(mtn + "err-response: " + response.jsonString);
 
                 // hide progress dialog
                 hideProgressDialog();
@@ -124,14 +155,71 @@ public class ProfilePage extends xFragment implements
         }).doIt();
     }
 
-    /** Feature methods */
-    private void hideProgressDialog(){
-        if( refreshLayout.isRefreshing() ) refreshLayout.setRefreshing( false );
+    /**
+     * API methods
+     */
+    private void apiLogout() {
+        new LogoutService(getActivity(), new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                if (response.responseCode == HttpURLConnection.HTTP_OK) {
+
+                    // update flag
+                    ON_NETWORKING = false;
+
+                    // dismiss dialog
+                    mDialog.dismiss();
+
+                    // sign out and sign in
+                    App.instance(activity)
+                            .clear()
+                            .serveLoginPage(ProfilePage.this, Globals.RC_NEED_LOGIN);
+
+
+                }
+
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                // dismiss dialog
+                mDialog.dismiss();
+
+                // update flag
+                ON_NETWORKING = false;
+
+            }
+
+        }).doIt();
+    }
+
+    /**
+     * Feature methods
+     */
+    private AlertDialog dialog(String title, String desc, DialogInterface.OnClickListener listener) {
+        // prepare usage variables
+        AlertDialog.Builder builder = new AlertDialog.Builder(getActivity());
+
+        // update props
+        builder.setCancelable(false);
+        builder.setTitle(title);
+        builder.setMessage(desc);
+        builder.setPositiveButton("ยืนยัน", listener);
+        builder.setNegativeButton("ยกเลิก", listener);
+
+        // show
+        return builder.create();
 
     }
-    private void toMainActivity(){
+
+    private void hideProgressDialog() {
+        if (refreshLayout.isRefreshing()) refreshLayout.setRefreshing(false);
+
+    }
+
+    private void toMainActivity() {
         Intent i = new Intent(activity, MainActivity.class);
-        startActivity( i );
+        startActivity(i);
     }
 
     /**
@@ -187,29 +275,36 @@ public class ProfilePage extends xFragment implements
     public void onResume() {
         super.onResume();
         // prepare usage variables
-        final String mtn = ct +"onResume() ";
+        final String mtn = ct + "onResume() ";
 
-        if( mRunningHist == null ) {
+        if (mOnLoginHasChanged) {
+            // clear flag
+            mOnLoginHasChanged = false;
+
             // get my profile
             apiGetRunningHistory();
 
         } else {
             try {
                 // total distance
-                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()));
+                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) +" km");
 
-            } catch ( Exception e ){
-                L.e(mtn +"Err: "+ e.getMessage());
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
             }
 
         }
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
         if (requestCode == Globals.RC_NEED_LOGIN) {
             if (resultCode == Activity.RESULT_OK) {
+                // update flag
+                mOnLoginHasChanged = true;
+
                 // binding view
                 viewBinding(App.instance(activity).getAppEntity().user);
 
