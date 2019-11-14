@@ -1,24 +1,16 @@
 package com.think.runex.java.Activities;
 
 import android.app.Activity;
-import android.content.DialogInterface;
 import android.content.Intent;
-import android.graphics.Color;
-import android.graphics.drawable.ColorDrawable;
 import android.os.Bundle;
 import android.view.View;
 import android.widget.EditText;
-import android.widget.FrameLayout;
-import android.widget.TextView;
 import android.widget.Toast;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentActivity;
 
 import com.facebook.internal.CallbackManagerImpl;
-import com.google.android.material.bottomsheet.BottomSheetBehavior;
-import com.google.android.material.bottomsheet.BottomSheetDialog;
 import com.think.runex.R;
 import com.think.runex.feature.social.SocialLoginListener;
 import com.think.runex.feature.social.SocialLoginManger;
@@ -28,7 +20,9 @@ import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.Views.xRegistrationBottomSheet;
+import com.think.runex.java.Customize.Views.BottomSheet.BottomSheetCallback;
+import com.think.runex.java.Customize.Views.BottomSheet.xRegistrationBottomSheet;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.TokenObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.ActivityUtils;
@@ -36,6 +30,7 @@ import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.rqLogin;
+import com.think.runex.java.Utils.Network.Request.rqRegisterUser;
 import com.think.runex.java.Utils.Network.Request.rqSocialPd;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetProfileService;
@@ -123,7 +118,30 @@ public class LoginActivity extends FragmentActivity implements
                 ON_LOGGING_IN = false;
 
                 // display register dialog
-                bottomSheetRegistration.show();
+                bottomSheetRegistration.show(Globals.RC_REGISTER_USER, new BottomSheetCallback() {
+                    @Override
+                    public void xBottomSheetCallback(xTalk xTalk) {
+                        // dismiss dialog
+                        bottomSheetRegistration.dismiss();
+
+                        // prepare usage variables
+                        View fakeView = new View(LoginActivity.this);
+                        rqRegisterUser register = (rqRegisterUser) xTalk.attachObject;
+
+                        // update props
+                        fakeView.setId( R.id.btn_to_login_with_email );
+
+                        // update login with email props
+                        inputEmail.setText( register.getEmail() );
+                        inputPassword.setText( register.getPassword() );
+
+                        // perform on-click
+                        onClick( fakeView );
+
+                        // auto login with email
+                        loginWithEmail();
+                    }
+                });
 
                 break;
             case R.id.btn_to_login_with_email:

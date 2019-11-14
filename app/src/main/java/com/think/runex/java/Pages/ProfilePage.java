@@ -277,7 +277,7 @@ public class ProfilePage extends xFragment implements
         // prepare usage variables
         final String mtn = ct + "onResume() ";
 
-        if (mOnLoginHasChanged) {
+        if (mRunningHist == null || mOnLoginHasChanged) {
             // clear flag
             mOnLoginHasChanged = false;
 
@@ -285,6 +285,7 @@ public class ProfilePage extends xFragment implements
             apiGetRunningHistory();
 
         } else {
+
             try {
                 // total distance
                 lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) +" km");

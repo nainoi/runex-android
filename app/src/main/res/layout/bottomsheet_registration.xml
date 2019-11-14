@@ -49,8 +49,10 @@
                 android:layout_marginTop="@dimen/verticalPaddingNoRelate"
                 android:background="@drawable/background_input_field_slim"
                 android:hint="ที่อยู่อีเมล"
+                android:maxLength="80"
                 android:paddingHorizontal="@dimen/textHorizontalPadding"
                 android:paddingVertical="@dimen/textVerticalPadding"
+                android:singleLine="true"
                 android:textSize="@dimen/textSmallInput" />
 
             <EditText
@@ -60,8 +62,10 @@
                 android:layout_marginTop="@dimen/verticalPaddingNoRelate"
                 android:background="@drawable/background_input_field_slim"
                 android:hint="รหัสผ่าน"
+                android:maxLength="30"
                 android:paddingHorizontal="@dimen/textHorizontalPadding"
                 android:paddingVertical="@dimen/textVerticalPadding"
+                android:singleLine="true"
                 android:textSize="@dimen/textSmallInput" />
 
 
@@ -72,8 +76,10 @@
                 android:layout_marginTop="@dimen/verticalPaddingNoRelate"
                 android:background="@drawable/background_input_field_slim"
                 android:hint="ยืนยันรหัสผ่าน"
+                android:maxLength="30"
                 android:paddingHorizontal="@dimen/textHorizontalPadding"
                 android:paddingVertical="@dimen/textVerticalPadding"
+                android:singleLine="true"
                 android:textSize="@dimen/textSmallInput" />
 
 
@@ -84,8 +90,10 @@
                 android:layout_marginTop="@dimen/verticalPaddingNoRelate"
                 android:background="@drawable/background_input_field_slim"
                 android:hint="ชื่อ"
+                android:maxLength="50"
                 android:paddingHorizontal="@dimen/textHorizontalPadding"
                 android:paddingVertical="@dimen/textVerticalPadding"
+                android:singleLine="true"
                 android:textSize="@dimen/textSmallInput" />
 
 
@@ -96,8 +104,10 @@
                 android:layout_marginTop="@dimen/verticalPaddingNoRelate"
                 android:background="@drawable/background_input_field_slim"
                 android:hint="นามสกุล"
+                android:maxLength="50"
                 android:paddingHorizontal="@dimen/textHorizontalPadding"
                 android:paddingVertical="@dimen/textVerticalPadding"
+                android:singleLine="true"
                 android:textSize="@dimen/textSmallInput" />
 
             <Button

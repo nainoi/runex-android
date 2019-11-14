@@ -18,6 +18,9 @@ public enum APIs {
     //--> M
     MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),
 
+    //--> R
+    REGISTER_USER( DOMAIN.VAL+ "/api/v1/user/ep"),
+
     //--> S
     SOCIALS_LOGIN(DOMAIN.VAL +"/api/v1/user/pd"),
     SUBMIT_MULTI_EVENTS(DOMAIN.VAL + "/api/v1/activity/multiadd"),
