@@ -5,7 +5,6 @@ import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
 import androidx.lifecycle.ViewModelProviders
-import com.bumptech.glide.Glide
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jozzee.android.core.ui.hideKeyboard
 import com.jozzee.android.core.ui.setScreenTouchable
@@ -56,9 +55,6 @@ open class ScreenFragment : Fragment() {
     override fun onDestroyView() {
         view?.hideKeyboard()
         super.onDestroyView()
-
-        Glide.get(context!!).bitmapPool.clearMemory()
-        Glide.get(context!!).clearMemory()
     }
 
     /**

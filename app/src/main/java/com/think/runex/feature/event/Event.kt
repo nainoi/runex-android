@@ -27,5 +27,5 @@ data class Event(
         @SerializedName("created_time") var createdAt: String = "",
         @SerializedName("updated_time") var updatedAt: String = "") {
 
-    fun coverImage(): String = if (coverImage.isNotBlank()) "${ApiUrl.getUpLoadUrl()}$coverImage" else ""
+    fun coverImage(): String = if (coverImage.isNotBlank()) "${ApiUrl.getBaseUrl()}$coverImage" else ""
 }

@@ -40,7 +40,7 @@ class HomeScreen : Fragment() {
         setupComponents()
         subscribeUi()
 
-        eventViewModel.getEvents()
+        eventViewModel.getAllEvents()
     }
 
     private fun onClick(){
@@ -62,7 +62,7 @@ class HomeScreen : Fragment() {
     private fun subscribeUi() {
         eventsAdapter.setOnItemClick { position, eventId -> onClick() }
 
-        eventViewModel.events.observe(viewLifecycleOwner, Observer { eventList ->
+        eventViewModel.allEvents.observe(viewLifecycleOwner, Observer { eventList ->
             if (view == null) {
                 return@Observer
             }
@@ -76,7 +76,7 @@ class HomeScreen : Fragment() {
     }
 
     override fun onDestroyView() {
-        eventViewModel.events.removeObservers(viewLifecycleOwner)
+        eventViewModel.allEvents.removeObservers(viewLifecycleOwner)
         super.onDestroyView()
     }
 

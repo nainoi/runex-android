@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Facebook Keys -->
+    <string name="facebook_app_id" translatable="false">657116381441095</string>
+    <string name="fb_login_protocol_scheme" translatable="false">fb657116381441095</string>
+
+    <!-- Server Id -->
+    <string name="server_client_id" translatable="false">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
+    <string name="background_service" translatable="false">background-service</string>
+</resources>

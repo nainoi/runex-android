@@ -7,9 +7,7 @@ import com.think.runex.datasource.BaseViewModel
 import com.think.runex.datasource.Result
 import com.think.runex.feature.user.Profile
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
-import kotlinx.coroutines.withContext
 
 class AuthViewModel(private val authRepo: AuthRepository) : BaseViewModel() {
 
@@ -67,7 +65,7 @@ class AuthViewModel(private val authRepo: AuthRepository) : BaseViewModel() {
         return profileResult.data
     }
 
-    private fun updateAccessToken(accessToken: AccessToken) {
+    private fun updateAccessToken(accessToken: Token) {
         TokenManager.updateToken(accessToken.token, accessToken.tokenType, accessToken.getExpiresIn())
         authRepo.setAccessToken(accessToken)
     }

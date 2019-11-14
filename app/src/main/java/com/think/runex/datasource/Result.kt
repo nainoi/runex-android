@@ -1,9 +1,9 @@
 package com.think.runex.datasource
 
 import com.google.gson.annotations.SerializedName
-import com.think.runex.datasource.remote.ApiUrl.Companion.KEY_DATA
-import com.think.runex.datasource.remote.ApiUrl.Companion.KEY_MESSAGE
-import com.think.runex.datasource.remote.ApiUrl.Companion.KEY_STATUS_CODE
+import com.think.runex.config.KEY_DATA
+import com.think.runex.config.KEY_MESSAGE
+import com.think.runex.config.KEY_STATUS_CODE
 import java.net.HttpURLConnection
 
 data class Result<T>(

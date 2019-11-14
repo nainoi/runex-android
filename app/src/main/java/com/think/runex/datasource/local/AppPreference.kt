@@ -2,7 +2,6 @@ package com.think.runex.datasource.local
 
 import android.content.Context
 import android.content.SharedPreferences
-import android.os.Build
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
@@ -13,7 +12,7 @@ import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.config.KEY_FIREBASE_TOKEN
 import com.think.runex.config.KEY_NIGHT_MODE
 import com.think.runex.config.PREFERENCES_NAME
-import com.think.runex.feature.auth.AccessToken
+import com.think.runex.feature.auth.Token
 import com.think.runex.utility.LocalManager.Companion.KEY_EN
 import com.think.runex.utility.LocalManager.Companion.KEY_LANGUAGE
 
@@ -37,11 +36,11 @@ fun SharedPreferences.setNightMode(nightMode: Int) = edit {
     putInt(KEY_NIGHT_MODE, nightMode)
 }
 
-fun SharedPreferences.getAccessToken(): AccessToken {
-    return getString(KEY_ACCESS_TOKEN, "").toObject(AccessToken::class.java) ?: AccessToken()
+fun SharedPreferences.getAccessToken(): Token {
+    return getString(KEY_ACCESS_TOKEN, "").toObject(Token::class.java) ?: Token()
 }
 
-fun SharedPreferences.setAccessToken(accessToken: AccessToken) = edit {
+fun SharedPreferences.setAccessToken(accessToken: Token) = edit {
     putString(KEY_ACCESS_TOKEN, accessToken.toJson())
 }
 

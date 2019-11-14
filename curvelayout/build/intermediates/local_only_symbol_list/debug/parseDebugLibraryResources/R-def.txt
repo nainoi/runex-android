@@ -1,0 +1,13 @@
+R_DEF: Internal format may change without notice
+local
+attr? curveFormat
+attr? curveHeight
+attr? curvesGravity
+id bottom
+id concave
+id convex
+id left
+id right
+id top
+string app_name
+styleable CurveLayout curveHeight curvesGravity curveFormat
