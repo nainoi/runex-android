@@ -2,24 +2,18 @@ package com.think.runex.java.Pages;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.view.LayoutInflater;
 import android.view.View;
-import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
-import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.java.Activities.RecordActivity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
-import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.EventDetailObject;
-import com.think.runex.java.Models.RunningHistoryObject;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
@@ -164,6 +158,11 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
 
     private void addEventActivityPage() {
         Intent i = new Intent(this, AddEventActivityPage.class);
+        Bundle b = new Bundle();
+        //--> Bundle
+        b.putString("EVENT_ID", mEventId);
+        // update props
+        i.putExtras(b);
         startActivity(i);
     }
 }

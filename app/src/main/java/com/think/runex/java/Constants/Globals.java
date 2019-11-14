@@ -43,6 +43,7 @@ public class Globals {
     public static final int RC_LOGIN_WITH_EMAIL = 2101;
     public static final int RC_LOGIN_WITH_GOOGLE = 2102;
     public static final int RC_LOGIN_WITH_FACEBOOK = 2103;
+    public static final int RC_GALLERY_INTENT = 2104;
 
     //--> Permission request code
     public static final int RC_PERMISSION = 3101;
@@ -54,11 +55,11 @@ public class Globals {
     public static final String BROADCAST_LOCATION = "BROADCAST";
     public static final String BROADCAST_LOCATION_VAL = "BROADCAST";
 
-    public static String mapActivityResult( int activityResult ){
-        if( activityResult == Activity.RESULT_OK ){
+    public static String mapActivityResult(int activityResult) {
+        if (activityResult == Activity.RESULT_OK) {
             return "RESULT_OK";
 
-        } else if( activityResult == Activity.RESULT_CANCELED ){
+        } else if (activityResult == Activity.RESULT_CANCELED) {
             return "RESULT_CANCELED";
 
         } else return "NOTHING_MATCHED";
