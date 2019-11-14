@@ -351,8 +351,6 @@ public class RegisteredEventsPage extends xFragment implements
     public void onResume() {
         super.onResume();
 
-        Toast.makeText(activity, "EVENTS: "+ events.size(), Toast.LENGTH_SHORT).show();
-
         // when no event
         if( events.size() <= 0 ){
             // call api

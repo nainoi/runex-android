@@ -121,9 +121,6 @@ public class LoginActivity extends FragmentActivity implements
                 bottomSheetRegistration.show(Globals.RC_REGISTER_USER, new BottomSheetCallback() {
                     @Override
                     public void xBottomSheetCallback(xTalk xTalk) {
-                        // dismiss dialog
-                        bottomSheetRegistration.dismiss();
-
                         // prepare usage variables
                         View fakeView = new View(LoginActivity.this);
                         rqRegisterUser register = (rqRegisterUser) xTalk.attachObject;
@@ -131,12 +128,18 @@ public class LoginActivity extends FragmentActivity implements
                         // update props
                         fakeView.setId( R.id.btn_to_login_with_email );
 
+                        // perform on-click
+                        onClick( fakeView );
+
+                        // update flag
+                        ON_LOGGING_IN = true;
+
+                        // dismiss dialog
+                        bottomSheetRegistration.dismiss();
+
                         // update login with email props
                         inputEmail.setText( register.getEmail() );
                         inputPassword.setText( register.getPassword() );
-
-                        // perform on-click
-                        onClick( fakeView );
 
                         // auto login with email
                         loginWithEmail();
