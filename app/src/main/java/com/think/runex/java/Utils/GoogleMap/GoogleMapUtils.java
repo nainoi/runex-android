@@ -61,7 +61,7 @@ public class GoogleMapUtils {
         // camera update
         CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds( bounds, 36 );
 
-        // move camera
+        // move camera runex@password
 //        mMap.animateCamera(cameraUpdate);
 
         // zoom out anim
