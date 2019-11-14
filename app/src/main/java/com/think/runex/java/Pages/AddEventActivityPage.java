@@ -3,12 +3,15 @@ package com.think.runex.java.Pages;
 import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
+import android.app.DatePickerDialog;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
+import android.util.Log;
 import android.view.View;
+import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
@@ -24,14 +27,23 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.PermissionUtils;
+import com.think.runex.java.Utils.UriUtils;
+import com.think.runex.ui.components.NumberTextWatcher;
 
+import java.text.SimpleDateFormat;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.Locale;
+
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
 
-public class AddEventActivityPage extends xActivity implements View.OnClickListener {
+public class AddEventActivityPage extends xActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     /**
      * Main variables
      */
     private final String ct = "AddEventActivityPage->";
+    private final String serverDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     // instance variables
     private PermissionUtils mPmUtils;
@@ -39,7 +51,9 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
 
     // explicit variables
     private String mEventId = "";
+    private String recordDate = "";
     private Uri activityImageUri = null;
+    private NumberTextWatcher distantWatcher;
 
     // views
     private ImageView activityImage;
@@ -68,6 +82,9 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
 
         // view event listener
         viewEventListener();
+
+        distantWatcher = new NumberTextWatcher(3, 2, edtDistance);
+        edtDistance.addTextChangedListener(distantWatcher);
 
         //--> Permission utils
         mPmUtils = PermissionUtils.newInstance(this);
@@ -119,7 +136,17 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     }
 
     private void onClickDate() {
+        Calendar calendar = convertDateTimeToCalendar();
+        DatePickerDialog dialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
+        dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
+        dialog.show();
+    }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+        recordDate = "" + year + "-" + to2Digits((month + 1)) + "-" + to2Digits(dayOfMonth) + "T00:00:00Z";
+        btnDate.setText(toDisplayDate(recordDate, DISPLAY_DATE_FORMAT));
     }
 
     private void onClickSubmit() {
@@ -185,7 +212,52 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
             textAddImage.setText(R.string.delete_image);
             Picasso.get().load(activityImageUri)
                     .into(activityImage);
+
+            Log.e("Jozzee", "Path: " + activityImageUri.getPath());
+            Log.e("Jozzee", "getAuthority: " + activityImageUri.getAuthority());
+            Log.e("Jozzee", "Real Path: " + new UriUtils().getRealPath(this, activityImageUri));
         }
     }
+
+    private Calendar convertDateTimeToCalendar() {
+        //String dateTime = btnDate.getText().toString();
+        Calendar calendar = Calendar.getInstance();
+        if (recordDate.length() > 0) {
+            try {
+                Date date = new SimpleDateFormat(serverDateTimeFormat, Locale.getDefault()).parse(recordDate);
+                calendar.setTime(date);
+            } catch (Throwable error) {
+                error.printStackTrace();
+            }
+        }
+        return calendar;
+    }
+
+    private String to2Digits(int number) {
+        if (number < 10) {
+            return "0" + number;
+        } else {
+            return String.valueOf(number);
+        }
+    }
+
+    private String toDisplayDate(String dateStr, String pattern) {
+        if (dateStr == null || dateStr.length() == 0) return dateStr;
+
+        try {
+            Date date = new SimpleDateFormat(serverDateTimeFormat, Locale.getDefault()).parse(dateStr);
+            if (date != null) {
+                return new SimpleDateFormat(pattern, Locale.getDefault()).format(date);
+            } else {
+                return dateStr;
+            }
+        } catch (Throwable error) {
+            error.printStackTrace();
+            return dateStr;
+        }
+
+    }
+
+
 }
 
