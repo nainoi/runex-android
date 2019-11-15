@@ -15,6 +15,7 @@ public class FragmentUtils {
     /**
      * Main variables
      */
+    private final String ct = "FragmentUitls->";
     public int containerId = -1;
     public FragmentActivity activity = null;
 
@@ -39,8 +40,8 @@ public class FragmentUtils {
         return activity.getSupportFragmentManager().getBackStackEntryCount();
     }
 
-    public void removeAllFragment(){
-        while (activity.getSupportFragmentManager().getBackStackEntryCount() > 0){
+    public void removeAllFragment() {
+        while (activity.getSupportFragmentManager().getBackStackEntryCount() > 0) {
             activity.getSupportFragmentManager().popBackStackImmediate();
         }
     }
@@ -62,4 +63,37 @@ public class FragmentUtils {
         t.replace(containerId, fragment);
         t.commit();
     }
+
+
+    public void removeFragment(Fragment fragment) {
+        // prepare usage variables
+        final String mtn = ct + "removeFragment() ";
+        final FragmentTransaction t = activity.getSupportFragmentManager().beginTransaction();
+
+        t.remove(fragment).commit();
+
+    }
+
+    public void addFragment(int containerId, Fragment fragment) {
+        addFragment(containerId, fragment, false);
+    }
+    public void addFragment(int containerId, Fragment fragment, boolean withBackStack) {
+        // prepare usage variables
+        final String mtn = ct + "addFragment() ";
+        final FragmentTransaction t = activity.getSupportFragmentManager().beginTransaction();
+
+        if (fragment.isAdded()) {
+            L.i(mtn + "show");
+            t.show(fragment);
+
+        } else {
+            L.i(mtn + "added");
+            t.add(containerId, fragment);
+
+        }
+
+        if (withBackStack) t.addToBackStack(Constants.Fragment.TAG());
+        t.commit();
+    }
+
 }

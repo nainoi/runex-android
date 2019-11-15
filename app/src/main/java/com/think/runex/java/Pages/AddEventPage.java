@@ -9,8 +9,9 @@ import android.content.pm.PackageManager;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
@@ -20,13 +21,15 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.Activity.xActivity;
-import com.think.runex.java.Utils.ActivityUtils;
+import com.think.runex.java.Constants.xAction;
+import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Utils.KeyboardUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
@@ -44,11 +47,11 @@ import java.util.Locale;
 import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
 
-public class AddEventActivityPage extends xActivity implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
+public class AddEventPage extends xFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     /**
      * Main variables
      */
-    private final String ct = "AddEventActivityPage->";
+    private final String ct = "AddEventPage->";
     private final String serverDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     // instance variables
@@ -60,8 +63,10 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     private String recordDate = "";
     private Uri activityImageUri = null;
     private NumberTextWatcher distantWatcher;
+    private boolean ON_SUBMITTING = false;
 
     // views
+    private SwipeRefreshLayout refreshLayout;
     private ImageView activityImage;
     private RelativeLayout btnAddImage;
     private ImageView iconAddImage;
@@ -71,20 +76,13 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     private TextInputEditText edtNote;
     private AppCompatButton btnSubmit;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_add_event_activity);
-
-        ActivityUtils.newInstance(this).fullScreen();
-
-        Bundle b = getIntent().getExtras();
-        if (b != null) {
-            mEventId = b.getString("EVENT_ID");
-        }
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View v = inflater.inflate(R.layout.page_add_event_activity, container, false);
 
         // view matching
-        viewMatching();
+        viewMatching( v );
 
         // view event listener
         viewEventListener();
@@ -93,23 +91,41 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
         edtDistance.addTextChangedListener(distantWatcher);
 
         //--> Permission utils
-        mPmUtils = PermissionUtils.newInstance(this);
+        mPmUtils = PermissionUtils.newInstance(activity);
+
+        return v;
     }
 
     // view matching
-    private void viewMatching() {
-        activityImage = findViewById(R.id.activity_image);
-        btnAddImage = findViewById(R.id.btn_add_image);
-        edtDistance = findViewById(R.id.edt_distance);
-        btnDate = findViewById(R.id.btn_date);
-        edtNote = findViewById(R.id.edt_note);
-        btnSubmit = findViewById(R.id.btn_submit);
-        iconAddImage = findViewById(R.id.ic_close);
-        textAddImage = findViewById(R.id.tv_add_image);
+    private void viewMatching(View v) {
+        refreshLayout = v.findViewById(R.id.refresh_layout);
+        refreshLayout.setEnabled( false );
+
+        activityImage = v.findViewById(R.id.activity_image);
+        btnAddImage = v.findViewById(R.id.btn_add_image);
+        edtDistance = v.findViewById(R.id.edt_distance);
+        btnDate = v.findViewById(R.id.btn_date);
+        edtNote = v.findViewById(R.id.edt_note);
+        btnSubmit = v.findViewById(R.id.btn_submit);
+        iconAddImage = v.findViewById(R.id.ic_close);
+        textAddImage = v.findViewById(R.id.tv_add_image);
     }
 
     // view event listener
     private void viewEventListener() {
+        refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
+            @Override
+            public void onRefresh() {
+                if( !ON_SUBMITTING) {
+                    // hide progress dialog
+                    refreshLayout.setRefreshing( false );
+
+                    // exit from this process
+                    return;
+                }
+
+            }
+        });
         btnAddImage.setOnClickListener(this);
         btnDate.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
@@ -117,11 +133,20 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
 
     @Override
     public void onClick(View v) {
+        if(ON_SUBMITTING) return;
+
         if (v.getId() == R.id.btn_add_image) {
             onClickAddImage();
         } else if (v.getId() == R.id.btn_date) {
             onClickDate();
         } else if (v.getId() == R.id.btn_submit) {
+            // update flag
+            ON_SUBMITTING = true;
+
+            // display progress dialog
+            refreshLayout.setRefreshing( true );
+
+            // fire submitting api
             onClickSubmit();
         }
     }
@@ -137,7 +162,8 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
                 intentToGallery();
             } else {
                 mPmUtils.requestPermissions(Globals.RC_PERMISSION,
-                        Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE);
+                        Manifest.permission.READ_EXTERNAL_STORAGE,
+                        Manifest.permission.WRITE_EXTERNAL_STORAGE);
             }
         }
     }
@@ -145,7 +171,7 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     private void onClickDate() {
         KeyboardUtils.hideKeyboard(edtDistance);
         Calendar calendar = convertRecordDateToCalendar();
-        DatePickerDialog dialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
+        DatePickerDialog dialog = new DatePickerDialog(activity, this, calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
         dialog.show();
@@ -161,17 +187,33 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
         if (isDataValid()) {
 
             String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
-            String imagePath = (activityImageUri != null) ? new UriUtils().getRealPath(this, activityImageUri) : null;
+            String imagePath = (activityImageUri != null) ? new UriUtils().getRealPath(activity, activityImageUri) : null;
 
-            new AddEventActivityService(this, new onNetworkCallback() {
+            // update flag
+            ON_SUBMITTING = true;
+
+            // fire
+            new AddEventActivityService(activity, new onNetworkCallback() {
                 @Override
                 public void onSuccess(xResponse response) {
                     // prepare usage variables
                     final String mtn = ct + "onSuccess() ";
 
                     L.i(mtn + "json-string: " + response.jsonString);
-                    Toast.makeText(AddEventActivityPage.this, R.string.add_activity_success, Toast.LENGTH_SHORT).show();
-                    finish();
+                    Toast.makeText(activity, R.string.add_activity_success, Toast.LENGTH_SHORT).show();
+
+                    // exit from this page
+                    getParentFragment().getChildFragmentManager()
+                            .beginTransaction()
+                            .remove( AddEventPage.this)
+                            .commit();
+
+                    // prepare usage variables
+                    xTalk x = new xTalk();
+                    x.resultCode = xAction.SUCCESS.ID;
+
+                    // on result
+                    onResult( x );
                 }
 
                 @Override
@@ -179,6 +221,12 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
                     // prepare usage variables
                     final String mtn = ct + "onFailure() ";
                     L.i(mtn + "json-string: " + response.jsonString);
+
+                    // hide progress dialog
+                    refreshLayout.setRefreshing( false );
+
+                    // clear flag
+                    ON_SUBMITTING = false;
                 }
             }).doIt(mEventId, distance, recordDate, imagePath, "");
         }
@@ -191,7 +239,7 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     }
 
     @Override
-    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+    public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RC_GALLERY_INTENT && data != null && data.getData() != null) {
@@ -246,6 +294,11 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
         }
     }
 
+    public AddEventPage setEventId(String eventId ){
+        mEventId = eventId;
+        return this;
+    }
+
     private Calendar convertRecordDateToCalendar() {
         //String dateTime = btnDate.getText().toString();
         Calendar calendar = Calendar.getInstance();
@@ -287,16 +340,16 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
 
     private boolean isDataValid() {
         if (mEventId.length() == 0) {
-            Toast.makeText(this, "No Event", Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, "No Event", Toast.LENGTH_SHORT).show();
             return false;
         }
         String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
         if (distance.length() == 0) {
-            Toast.makeText(this, R.string.distance_required, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.distance_required, Toast.LENGTH_SHORT).show();
             return false;
         }
         if (recordDate == null || recordDate.length() == 0) {
-            Toast.makeText(this, R.string.date_required, Toast.LENGTH_SHORT).show();
+            Toast.makeText(activity, R.string.date_required, Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

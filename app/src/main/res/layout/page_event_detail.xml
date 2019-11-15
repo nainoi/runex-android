@@ -1,19 +1,97 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white"
+    android:clickable="true"
     android:orientation="vertical"
     android:padding="16dp">
 
     <!-- Frame event detail -->
+    <FrameLayout
+        android:id="@+id/card_view_frame"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/frame_event_detail">
+
+        <androidx.cardview.widget.CardView
+            android:id="@+id/card_total_running_distance"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_margin="12dp"
+            android:orientation="vertical"
+            app:cardCornerRadius="8dp">
+
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/btn_add_activity"
+                android:layout_width="@dimen/space_24dp"
+                android:layout_height="@dimen/space_24dp"
+                android:layout_gravity="end"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:background="@drawable/shape_btn_add_activity"
+                android:scaleType="centerCrop"
+                android:src="@mipmap/ic_plus" />
+
+            <com.think.runex.java.Customize.Views.xStatFrame
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/bg_stat"
+                android:gravity="center_vertical"
+                android:orientation="vertical"
+                android:paddingHorizontal="22dp"
+                android:paddingVertical="22dp">
+
+                <TextView
+                    android:id="@+id/v_total_running_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="ระยะสะสม"
+                    android:textColor="@android:color/white"
+                    android:textSize="16dp" />
+
+                <TextView
+                    android:id="@+id/lb_total_running_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="0.0 km"
+                    android:textColor="@android:color/white"
+                    android:textSize="42dp" />
+
+            </com.think.runex.java.Customize.Views.xStatFrame>
+
+        </androidx.cardview.widget.CardView>
+
+    </FrameLayout>
+
+    <!-- Frame total running distance-->
+    <FrameLayout
+        android:id="@+id/display_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+    <!-- Frame display fragment -->
     <LinearLayout
         android:id="@+id/frame_event_detail"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginBottom="28dp"
         android:orientation="horizontal">
+
+        <TextView
+            android:id="@+id/lb_event_name"
+            android:layout_width="wrap_content"
+            android:layout_height="match_parent"
+            android:layout_marginLeft="8dp"
+            android:ellipsize="marquee"
+            android:gravity="center_vertical"
+            android:singleLine="true"
+            android:text="Teerapat Thongbor"
+            android:textColor="@android:color/black"
+            android:textSize="16dp"
+            android:textStyle="bold" />
 
         <androidx.cardview.widget.CardView
             android:layout_width="wrap_content"
@@ -30,70 +108,6 @@
 
         </androidx.cardview.widget.CardView>
 
-        <TextView
-            android:id="@+id/lb_event_name"
-            android:layout_width="wrap_content"
-            android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
-            android:ellipsize="marquee"
-            android:gravity="center_vertical"
-            android:singleLine="true"
-            android:text="Teerapat Thongbor"
-            android:textColor="@android:color/black"
-            android:textSize="16dp"
-            android:textStyle="bold" />
-
     </LinearLayout>
 
-    <!-- Frame total running distance-->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/card_total_running_distance"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@+id/frame_profile"
-        android:layout_margin="12dp"
-        android:orientation="vertical"
-        app:cardCornerRadius="8dp">
-
-
-        <com.think.runex.java.Customize.Views.xStatFrame
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:background="@drawable/bg_stat"
-            android:gravity="center_vertical"
-            android:orientation="vertical"
-            android:paddingHorizontal="22dp"
-            android:paddingVertical="22dp">
-
-            <TextView
-                android:id="@+id/v_total_running_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="ระยะสะสม"
-                android:textColor="@android:color/white"
-                android:textSize="16dp" />
-
-            <TextView
-                android:id="@+id/lb_total_running_distance"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:text="0.0 km"
-                android:textColor="@android:color/white"
-                android:textSize="42dp" />
-
-        </com.think.runex.java.Customize.Views.xStatFrame>
-
-        <androidx.appcompat.widget.AppCompatImageButton
-            android:id="@+id/btn_add_activity"
-            android:layout_width="@dimen/space_24dp"
-            android:layout_height="@dimen/space_24dp"
-            android:layout_gravity="end"
-            android:layout_marginTop="@dimen/space_8dp"
-            android:layout_marginEnd="@dimen/space_8dp"
-            android:background="@drawable/shape_btn_add_activity"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/ic_plus" />
-
-    </androidx.cardview.widget.CardView>
-
-</LinearLayout>
+</RelativeLayout>

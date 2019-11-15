@@ -50,30 +50,9 @@ public class RegisteredEventsPage extends xFragment implements
     private final String ct = "RegisteredEventsPage->";
 
     // instance variables
+    private ChildFragmentUtils mChildFragmentUtils;
     private EventAdapter eventAdapter;
-    private List<MultiObject> events = new ArrayList<MultiObject>() {{
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-//        add( new MultiObject());
-//        add( new MultiObject().setLayoutTypeId(1));
-
-    }};
+    private List<MultiObject> events = new ArrayList<>();
 
     // explicit variables
     private boolean ON_LOADING = false;
@@ -240,6 +219,7 @@ public class RegisteredEventsPage extends xFragment implements
         final View v = inflater.inflate(R.layout.page_registered_events, container, false);
 
         // init
+        mChildFragmentUtils = ChildFragmentUtils.newInstance(this);
         eventAdapter = new EventAdapter(events, new onItemClick() {
             @Override
             public void onItemClicked(int position) {
@@ -247,21 +227,15 @@ public class RegisteredEventsPage extends xFragment implements
                 final String mtn = ct +"onItemClick() ";
 
                 try {
+
                     // prepare usage variables
-                    EventObject.DataBean evt = (EventObject.DataBean) events.get(position).getAttachedObject();
-                    EventObject.DataBean.EventBean evtVal = evt.getEvent();
-                    Intent i = new Intent(activity, EventDetailPage.class);
-                    Bundle b = new Bundle();
+                    final EventDetailPage page = new EventDetailPage();
 
-                    //--> Bundle
-                    b.putString("EVENT_PROFILE", APIs.DOMAIN.VAL +  evtVal.getCover());
-                    b.putString("EVENT_NAME", evtVal.getName());
-                    b.putString("EVENT_ID", evt.getEvent_id());
                     // update props
-                    i.putExtras( b );
+                    page.setEvent( (EventObject.DataBean)events.get(position).getAttachedObject());
 
-                    // start activity for result
-                    startActivityForResult(i, 0);
+                    // go to specified page
+                    mChildFragmentUtils.addChildFragment(R.id.frame_fragment, page);
 
                 } catch ( Exception e ){
                     L.e(mtn +"Err: "+ e.getMessage());
@@ -360,6 +334,13 @@ public class RegisteredEventsPage extends xFragment implements
         } // else onRefresh();
 
     }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        events = new ArrayList<>();
+    }
+
     @Override
     public void onDestroy() {
         super.onDestroy();

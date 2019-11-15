@@ -17,10 +17,11 @@ import com.think.runex.java.App.App;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Pages.RegisteredEvent.RegisteredEventsPage;
-import com.think.runex.java.Pages.Summary.SummaryPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
@@ -35,8 +36,9 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     private final String ct = "MyEventPage->";
 
     // instance variables
-    private ChildFragmentUtils mChildFragmentUtils;
+    private xFragment pageRegisteredEvent;
     private App mApp;
+    private ChildFragmentUtils mChildFragment;
 
     // explicit variables
     private final int SUMMARY_PAGE_CONTAINER_ID = R.id.summary_page_container;
@@ -88,7 +90,7 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         final View v = inflater.inflate(R.layout.page_my_event, container, false);
 
         // init
-        mChildFragmentUtils = new ChildFragmentUtils(this);
+        mChildFragment = ChildFragmentUtils.newInstance(this);
 
         // matching views
         matchingView( v );
@@ -104,7 +106,7 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
 
     /** Feature methods */
     private void summaryPage(){
-        mChildFragmentUtils.replaceChildFragment(SUMMARY_PAGE_CONTAINER_ID, new RegisteredEventsPage());
+        mChildFragment.addChildFragment(SUMMARY_PAGE_CONTAINER_ID, pageRegisteredEvent);
 
     }
 
@@ -116,9 +118,6 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                // display login page
-//                mChildFragmentUtils.addChildFragment(SUMMARY_PAGE_CONTAINER_ID, new LoginScreen());
-
                 L.i(mtn +"clear app entity");
 
                 // logout
@@ -142,7 +141,8 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApp = App.instance( getActivity() );
+        mApp = App.instance( getActivity() );;
+        pageRegisteredEvent = new RegisteredEventsPage().setPriority(Priority.PARENT);
     }
 
     @Override

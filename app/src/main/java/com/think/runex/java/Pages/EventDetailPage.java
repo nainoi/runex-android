@@ -1,32 +1,41 @@
 package com.think.runex.java.Pages;
 
-import android.content.Intent;
 import android.os.Bundle;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Customize.Activity.xActivity;
+import com.think.runex.java.Constants.xAction;
+import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragmentHandler;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
+import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Utils.ActivityUtils;
+import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
-public class EventDetailPage extends xActivity implements View.OnClickListener {
+public class EventDetailPage extends xFragment implements View.OnClickListener {
     /**
      * Main variables
      */
     private final String ct = "EventDetailPage->";
 
     // instance variables
+    private EventObject.DataBean mEvent;
 
     // explicit variables
     private String mEventProfile = null;
@@ -40,22 +49,26 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
     private TextView lbTotalDistance;
     private AppCompatImageButton btnAddActivity;
 
+    @Nullable
     @Override
-    protected void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        setContentView(R.layout.page_event_detail);
-
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        // prepare usage variables
+        final View v = inflater.inflate(R.layout.page_event_detail, container, false);
         final String mtn = ct + "onCreate() ";
 
-        ActivityUtils.newInstance(this).fullScreen();
+        // init
+        ActivityUtils.newInstance(activity).fullScreen();
 
-        Bundle b = getIntent().getExtras();
-        mEventProfile = b.getString("EVENT_PROFILE");
-        mEventName = b.getString("EVENT_NAME");
-        mEventId = b.getString("EVENT_ID");
+        // prepare usage variables
+        EventObject.DataBean.EventBean evtVal = mEvent.getEvent();
+
+        // update props
+        mEventProfile = APIs.DOMAIN.VAL +  evtVal.getCover();
+        mEventName = evtVal.getName();
+        mEventId = mEvent.getEvent_id();
 
         // view matching
-        viewMatching();
+        viewMatching(v);
 
         // view event listener
         viewEventListener();
@@ -68,6 +81,8 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
         }
+
+        return v;
     }
 
     /**
@@ -78,11 +93,11 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
     }
 
     // view matching
-    private void viewMatching() {
-        eventImage = findViewById(R.id.event_image);
-        lbEventName = findViewById(R.id.lb_event_name);
-        lbTotalDistance = findViewById(R.id.lb_total_running_distance);
-        btnAddActivity = findViewById(R.id.btn_add_activity);
+    private void viewMatching(View v) {
+        eventImage = v.findViewById(R.id.event_image);
+        lbEventName = v.findViewById(R.id.lb_event_name);
+        lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
+        btnAddActivity = v.findViewById(R.id.btn_add_activity);
 
     }
 
@@ -99,7 +114,7 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
         final String mtn = ct + "apiGetEventDetail() ";
 
         // fire
-        new GetEventDetailService(this, new onNetworkCallback() {
+        new GetEventDetailService(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "response: " + response.jsonString);
@@ -127,6 +142,13 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
         }).doIt(eventId);
     }
 
+    /** Setter */
+    public xFragment setEvent(EventObject.DataBean event){
+        mEvent = event;
+
+        return this;
+    }
+
     /**
      * Life cycle
      */
@@ -152,17 +174,31 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
     @Override
     public void onClick(View v) {
         if (v.getId() == R.id.btn_add_activity) {
-            addEventActivityPage();
+            // prepare usage variables
+            AddEventPage page = new AddEventPage();
+
+            // update props
+            page.setEventId( mEventId );
+            page.setFragmentHandler(new xFragmentHandler() {
+                @Override
+                public xFragment onResult(xTalk talk) {
+
+                    if( talk.resultCode == xAction.SUCCESS.ID ){
+                        // get event detail
+                        apiGetEventDetail( mEventId );
+
+                    }
+
+                    return null;
+                }
+            });
+
+            // display add event activity
+            ChildFragmentUtils.newInstance( this ).addChildFragment
+                    (R.id.display_fragment_frame,
+                    page);
+
         }
     }
 
-    private void addEventActivityPage() {
-        Intent i = new Intent(this, AddEventActivityPage.class);
-        Bundle b = new Bundle();
-        //--> Bundle
-        b.putString("EVENT_ID", mEventId);
-        // update props
-        i.putExtras(b);
-        startActivity(i);
-    }
 }

@@ -12,27 +12,32 @@ import android.view.ViewGroup;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Activities.RecordActivity;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Fragment.xFragment;
-import com.think.runex.java.Utils.FragmentUtils;
-import com.think.runex.java.Utils.StaticChildFragmentUtils;
+import com.think.runex.java.Utils.ChildFragmentUtils;
+import com.think.runex.java.Utils.L;
 
 public class MainPage extends xFragment {
-    /** Main variables */
+    /**
+     * Main variables
+     */
     private final String ct = "MainPage->";
 
     // instance variables
-    private MyEventPage mMyEvent;
-    private ProfilePage mProfilePage;
+    private xFragment pageMyEvent;
+    private xFragment pageProfile;
 
     // explicit variables
     private final int CHILD_CONTAINER_ID = R.id.navigation_frame;
     private int mCurrentItemId = -1;
+    private Fragment mCurrentFragment = null;
 
     // views
     private BottomNavigationView bottomNavigationView;
@@ -42,14 +47,8 @@ public class MainPage extends xFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         final View v = inflater.inflate(R.layout.page_main, container, false);
 
-        mMyEvent= new MyEventPage();
-        mProfilePage = new ProfilePage();
-
-        // init child fragment
-        StaticChildFragmentUtils.childFragmentManager = getChildFragmentManager();
-
         // matching view
-        matchingView( v );
+        matchingView(v);
 
         // view event listener
         viewEventListener();
@@ -60,8 +59,23 @@ public class MainPage extends xFragment {
         return v;
     }
 
-    /** Feature methods */
-    private void customBottomNavMenu(){
+    /**
+     * Feature methods
+     */
+    private void hideDisplayingFragment(Fragment fragment) {
+        // prepare usage variables
+        final String mtn = ct + "hideDisplayingFragment() ";
+
+        // log
+        L.i(mtn + "Hide fragment: " + fragment.getClass().getSimpleName());
+
+        // hide current child
+        getChildFragmentManager().beginTransaction()
+                .hide(fragment).commit();
+
+    }
+
+    private void customBottomNavMenu() {
         // prepare usage variables
         BottomNavigationMenuView menuView = (BottomNavigationMenuView) bottomNavigationView.getChildAt(0);
 
@@ -80,37 +94,62 @@ public class MainPage extends xFragment {
 
         }
     }
-    private void recordPage(){
+
+    private void recordPage() {
         Intent i = new Intent(activity, RecordActivity.class);
         startActivityForResult(i, Globals.RC_RECORDER);
 
     }
-    private boolean updateScreen(int itemId){
+
+    private boolean updateScreen(int itemId) {
         // prepare usage variables
         boolean onSelected = true;
 
-        switch( itemId ){
+        // hide current displaying fragment
+        if (mCurrentFragment != null) hideDisplayingFragment(mCurrentFragment);
+//
+//        switch( itemId ){
+////            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
+//            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, pageMyEvent); break;
+//            case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
+//            case R.id.menu_profile: Stat3icChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, pageProfile); break;
+//            default: onSelected = false; break;
+//
+//        }
+        ChildFragmentUtils childFragmentUtils = ChildFragmentUtils.newInstance(this);
+
+        switch (itemId) {
 //            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
-            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, mMyEvent); break;
-            case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
-            case R.id.menu_profile: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, mProfilePage); break;
-            default: onSelected = false; break;
+            case R.id.menu_my_events:
+                childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageMyEvent);
+                mCurrentFragment = pageMyEvent;
+                break;
+//            case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
+            case R.id.menu_profile:
+                childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageProfile);
+                mCurrentFragment = pageProfile;
+                break;
+//            default: onSelected = false; break;
 
         }
 
         // update current item id
-        if( onSelected ) mCurrentItemId = itemId;
+        if (onSelected) {
+            mCurrentItemId = itemId;
+        }
 
         return onSelected;
     }
 
-    /** View event listener */
-    private void viewEventListener(){
+    /**
+     * View event listener
+     */
+    private void viewEventListener() {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-                if( item.getItemId() == mCurrentItemId ) return false;
-                if( item.getItemId() == R.id.menu_record ) {
+                if (item.getItemId() == mCurrentItemId) return false;
+                if (item.getItemId() == R.id.menu_record) {
                     // display record page
                     recordPage();
 
@@ -118,23 +157,39 @@ public class MainPage extends xFragment {
                     return false;
                 }
 
-                return updateScreen( item.getItemId() );
+                return updateScreen(item.getItemId());
             }
         });
     }
 
-    /** Matching view */
-    private void matchingView( View v ){
+    /**
+     * Matching view
+     */
+    private void matchingView(View v) {
         bottomNavigationView = v.findViewById(R.id.bottom_navigation);
     }
 
-    /** Life cycle */
+    /**
+     * Life cycle
+     */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // update props
+        setChildContainerId(CHILD_CONTAINER_ID);
+
+        // init pages
+        pageMyEvent = new MyEventPage();
+        pageProfile = new ProfilePage().setPriority(Priority.PARENT);
+    }
+
     @Override
     public void onResume() {
         super.onResume();
 
         // same position
-        if( bottomNavigationView.getSelectedItemId() == mCurrentItemId ) return;
+        if (bottomNavigationView.getSelectedItemId() == mCurrentItemId) return;
 
         // update screen
         updateScreen(bottomNavigationView.getSelectedItemId());
@@ -142,11 +197,12 @@ public class MainPage extends xFragment {
 //        // perform select
 //        bottomNavigationView.setSelectedItemId(R.id.menu_profile);
     }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
-        if( requestCode == Globals.RC_RECORDER && resultCode == Activity.RESULT_OK ){
+        if (requestCode == Globals.RC_RECORDER && resultCode == Activity.RESULT_OK) {
             bottomNavigationView.setSelectedItemId(R.id.menu_profile);
 
         }

@@ -3,6 +3,7 @@ package com.think.runex.java.Activities;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
@@ -12,8 +13,10 @@ import androidx.fragment.app.FragmentTransaction;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Constants;
+import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Pages.EventDetailPage;
 import com.think.runex.java.Pages.MainPage;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.FragmentUtils;
@@ -29,6 +32,7 @@ public class BridgeFile extends xActivity {
 
     // instance variables
     private FragmentUtils mFragmentUtils;
+    private xFragment mMainPage;
 
     // explicit variables
     private final int CONTAINER_ID = R.id.bridge_file_container;
@@ -39,11 +43,30 @@ public class BridgeFile extends xActivity {
     // on back pressed
     @Override
     public void onBackPressed() {
-        if (mFragmentUtils.getStackCount() <= 1) finish();
-        else {
-            super.onBackPressed();
+        // prepare usage variables
+        final String mtn = ct +"onBackPressed() ";
+        final xFragment fragment = (xFragment)getSupportFragmentManager().findFragmentById(CONTAINER_ID);
 
-        }
+        if( fragment == null ) super.onBackPressed();
+
+        xFragment displayedFragment = mMainPage.getCurrentDisplayedFragment("BridgeFile", mMainPage );
+        if( displayedFragment == null ) L.i(mtn +"displayedFragment: null");
+        else L.i(mtn +"displayedFragment: "+ displayedFragment.getClass().getSimpleName());
+
+        if( displayedFragment != null ) {
+            L.i(mtn +"displayedFragment: "+ displayedFragment.getClass().getSimpleName());
+            // on back pressed
+            if(!mMainPage.onBackPressed( displayedFragment )){
+                L.i(mtn +"use super.onBackPressed");
+                super.onBackPressed();
+
+            }
+
+        } else L.i(mtn +"displayedFragment is not ready. ");
+//        L.i(" ");
+//        L.i(" ");
+//        L.i(" ");
+
     }
 
     @Override
@@ -55,11 +78,13 @@ public class BridgeFile extends xActivity {
         ActivityUtils uts = ActivityUtils.newInstance(this);
         uts.fullScreen();
 
+
         // view matching
         viewMatching();
 
         // Fragment inits
         mFragmentUtils = FragmentUtils.newInstance(this, CONTAINER_ID);
+        mMainPage =  new MainPage().setPriority(Priority.PARENT);
 
         // display main page
         mainPage();
@@ -70,7 +95,7 @@ public class BridgeFile extends xActivity {
      * Feature methods
      */
     private void mainPage() {
-        mFragmentUtils.replaceFragment(new MainPage());
+        mFragmentUtils.addFragment(CONTAINER_ID, mMainPage);
     }
 
     /**
