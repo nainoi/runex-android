@@ -43,6 +43,7 @@ import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
@@ -52,6 +53,7 @@ import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.Animation.AnimUtils;
 import com.think.runex.java.Utils.Animation.onAnimCallback;
+import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
@@ -83,7 +85,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     // instance variables
     private CallbackManager callbackManager;
-    private FragmentUtils mFUtils;
     private LocationUtils mLocUtils;
     private PermissionUtils mPmUtils;
     private GoogleMapUtils mMapUtils;
@@ -214,7 +215,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 onNetwork = true;
 
                 // save record without submit
-                apiSaveRecord(false);
+                apiSaveRecord(null);
 
                 break;
 
@@ -223,11 +224,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 // condition
                 if (onNetwork) return;
 
-                // update flag
-                onNetwork = true;
-
                 // save record with submit
-                apiSaveRecord(true);
+                toReviewEventPage();
 
                 break;
 
@@ -350,12 +348,14 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         }
 //
         xLocation x1 = new xLocation(13.845689, 100.596905);
-        xLocation x2 = new xLocation(13.845585, 100.594587);
+        xLocation x11 = new xLocation(13.845989, 100.597905);
+//        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //
         locationChanged(x1);
-        locationChanged(x2);
+        locationChanged(x11);
+//        locationChanged(x2);
 //        locationChanged(x3);
 //        locationChanged(x4);
 
@@ -407,8 +407,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // Activity utils
         ActivityUtils actUtls = ActivityUtils.newInstance(activity);
         actUtls.fullScreen();
-        //--> Fragment utils
-        mFUtils = FragmentUtils.newInstance(activity, CONTAINER_ID);
 
         //--> Location utils
         mLocUtils = LocationUtils.newInstance(activity);
@@ -561,7 +559,24 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         x.requestCode = XRC_REMOVE_ALL_FRAGMENT;
 
         // display fragment
-        mFUtils.replaceFragment(new SuccessfullySubmitRunningResultPage().setRequestCode(x));
+        ChildFragmentUtils.newInstance(this)
+                .addChildFragment(
+                CONTAINER_ID,
+                new SuccessfullySubmitRunningResultPage()
+                        .setFragmentHandler(new xFragmentHandler() {
+                            @Override
+                            public xFragment onResult(xTalk talk) {
+                                // xTalk to profile
+                                xTalk x = new xTalk();
+                                x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+
+                                // on result
+                                RecordPage.this.onResult( x );
+
+                                return null;
+                            }
+                        })
+                        .setRequestCode(x));
     }
 
     private void locationChanged(xLocation location) {
@@ -859,7 +874,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void apiSaveRecord(boolean withSubmit) {
+    private void apiSaveRecord(onNetworkCallback callback) {
         // prepare usage variables
         final String mtn = ct + "apiSaveRecord() ";
         final rqAddRunningHistory request = new rqAddRunningHistory();
@@ -881,19 +896,23 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 L.i(mtn + "successfully");
                 L.i(mtn + "response: " + response.jsonString);
 
-                // clear flag
-                onNetwork = false;
+                if( callback == null ) {
 
-                // successfully submit result
-                // to begin step
-                toBegin();
+                    // clear flag
+                    onNetwork = false;
 
-                // prepare usage variables
-                xTalk x = new xTalk();
-                x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+                    // successfully submit result
+                    // to begin step
+                    toBegin();
 
-                // on result
-                onResult(x);
+                    // prepare usage variables
+                    xTalk x = new xTalk();
+                    x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+
+                    // on result
+                    onResult(x);
+
+                } else callback.onSuccess(response);
             }
 
             @Override
@@ -903,6 +922,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                 // clear flag
                 onNetwork = false;
+
+                // callback
+                if( callback != null) callback.onFailure( response );
             }
         }).doIt(request);
     }
@@ -921,9 +943,26 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         // condition
         if (selectedEvents != null) {
-            // update multiple event
-            apiSubmitMultiEvents(selectedEvents);
+            L.i(mtn +"going to save record.");
 
+            // save before submit multi events
+            apiSaveRecord(new onNetworkCallback() {
+                @Override
+                public void onSuccess(xResponse response) {
+                    L.i(mtn +"going to submit multiple events.");
+
+                    // update multiple event
+                    apiSubmitMultiEvents(selectedEvents);
+
+                }
+
+                @Override
+                public void onFailure(xResponse response) {
+                    // clear flag
+                    mOnSubmitMultiResult = false;
+
+                }
+            });
         }
     }
 

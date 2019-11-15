@@ -192,8 +192,9 @@ public class MainPage extends xFragment {
         pageRecord = new RecordPage().setPriority(Priority.PARENT).setFragmentHandler(new xFragmentHandler() {
             @Override
             public xFragment onResult(xTalk talk) {
-                if( talk.requestCode == Globals.RC_TO_PROFILE_PAGE){
-                    Toast.makeText(activity, "TO PROFILE PAGE.", Toast.LENGTH_SHORT).show();
+                if (talk.requestCode == Globals.RC_TO_PROFILE_PAGE) {
+                    // perform select
+                    bottomNavigationView.setSelectedItemId(R.id.menu_profile);
 
                 }
 

@@ -292,6 +292,7 @@ public class RecorderUtils {
         mRecordDisplayTime = "00:00";
         mRecordPaceDisplayTime = "00:00";
         mRecordDistanceKm = 0.0;
+        mRecordCalories = 0.0;
 
     }
 

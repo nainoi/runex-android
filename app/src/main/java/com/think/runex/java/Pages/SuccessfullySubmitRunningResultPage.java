@@ -32,7 +32,7 @@ public class SuccessfullySubmitRunningResultPage extends xFragment {
             @Override
             public void onClick(View view) {
                 // exit from this page
-                getParentFragment().getChildFragmentManager()
+                getFragmentManager()
                         .beginTransaction()
                         .remove( SuccessfullySubmitRunningResultPage.this )
                         .commit();
