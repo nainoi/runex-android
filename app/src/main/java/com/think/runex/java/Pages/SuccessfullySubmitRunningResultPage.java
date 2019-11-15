@@ -10,7 +10,9 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.think.runex.R;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.xTalk;
 
 public class SuccessfullySubmitRunningResultPage extends xFragment {
     /** Main variables */
@@ -24,15 +26,23 @@ public class SuccessfullySubmitRunningResultPage extends xFragment {
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         View v = inflater.inflate(R.layout.page_successfully_submit_running_result, container, false);
 
-        // update activity result
-        activity.setResult(Activity.RESULT_OK);
-
         // view binding
         btnFinish = v.findViewById(R.id.btn_finish);
         btnFinish.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                activity.onFragmentCallback(xTalk);
+                // exit from this page
+                getParentFragment().getChildFragmentManager()
+                        .beginTransaction()
+                        .remove( SuccessfullySubmitRunningResultPage.this )
+                        .commit();
+
+                // prepare usage variables
+                final xTalk x = new xTalk();
+                x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+
+                // send back result
+                onResult(x);
 
             }
         });

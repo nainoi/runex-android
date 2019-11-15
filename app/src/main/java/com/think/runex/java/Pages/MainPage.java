@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,10 +18,13 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
-import com.think.runex.java.Activities.RecordActivity;
+import com.think.runex.java.Activities.RecordPage;
+import com.think.runex.java.Activities._RecordActivity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.Fragment.xFragmentHandler;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
 
@@ -31,6 +35,7 @@ public class MainPage extends xFragment {
     private final String ct = "MainPage->";
 
     // instance variables
+    private xFragment pageRecord;
     private xFragment pageMyEvent;
     private xFragment pageProfile;
 
@@ -96,7 +101,7 @@ public class MainPage extends xFragment {
     }
 
     private void recordPage() {
-        Intent i = new Intent(activity, RecordActivity.class);
+        Intent i = new Intent(activity, _RecordActivity.class);
         startActivityForResult(i, Globals.RC_RECORDER);
 
     }
@@ -124,7 +129,10 @@ public class MainPage extends xFragment {
                 childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageMyEvent);
                 mCurrentFragment = pageMyEvent;
                 break;
-//            case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
+            case R.id.menu_record:
+                childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageRecord);
+                mCurrentFragment = pageRecord;
+                break;
             case R.id.menu_profile:
                 childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageProfile);
                 mCurrentFragment = pageProfile;
@@ -149,13 +157,13 @@ public class MainPage extends xFragment {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 if (item.getItemId() == mCurrentItemId) return false;
-                if (item.getItemId() == R.id.menu_record) {
-                    // display record page
-                    recordPage();
-
-                    // exit from this process
-                    return false;
-                }
+//                if (item.getItemId() == R.id.menu_record) {
+//                    // display record page
+//                    recordPage();
+//
+//                    // exit from this process
+//                    return false;
+//                }
 
                 return updateScreen(item.getItemId());
             }
@@ -181,6 +189,17 @@ public class MainPage extends xFragment {
 
         // init pages
         pageMyEvent = new MyEventPage();
+        pageRecord = new RecordPage().setPriority(Priority.PARENT).setFragmentHandler(new xFragmentHandler() {
+            @Override
+            public xFragment onResult(xTalk talk) {
+                if( talk.requestCode == Globals.RC_TO_PROFILE_PAGE){
+                    Toast.makeText(activity, "TO PROFILE PAGE.", Toast.LENGTH_SHORT).show();
+
+                }
+
+                return null;
+            }
+        });
         pageProfile = new ProfilePage().setPriority(Priority.PARENT);
     }
 

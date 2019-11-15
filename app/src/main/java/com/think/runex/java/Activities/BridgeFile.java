@@ -45,6 +45,16 @@ public class BridgeFile extends xActivity {
     public void onBackPressed() {
         // prepare usage variables
         final String mtn = ct +"onBackPressed() ";
+
+        if( getSupportFragmentManager().getBackStackEntryCount() > 0 ){
+            // pop back stack out
+            getSupportFragmentManager().popBackStackImmediate();
+
+            // exit from this process
+            return;
+        }
+
+        // prepare usage variables
         final xFragment fragment = (xFragment)getSupportFragmentManager().findFragmentById(CONTAINER_ID);
 
         if( fragment == null ) super.onBackPressed();

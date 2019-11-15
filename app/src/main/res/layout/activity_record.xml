@@ -83,6 +83,7 @@
         <LinearLayout
             android:layout_alignParentBottom="true"
             android:id="@+id/frame_recording"
+            android:visibility="invisible"
             android:orientation="vertical"
             android:padding="8dp"
             android:background="@android:color/white"
@@ -279,6 +280,7 @@
                 <!-- Stop & submit result -->
                 <LinearLayout
                     android:id="@+id/frame_stop_and_submit"
+                    android:visibility="invisible"
                     android:layout_marginLeft="8dp"
                     android:orientation="vertical"
                     android:gravity="center"

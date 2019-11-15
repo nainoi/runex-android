@@ -5,6 +5,7 @@ import android.os.Bundle;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
+import com.google.android.gms.maps.SupportMapFragment;
 import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;
@@ -111,7 +112,7 @@ public class xFragment extends Fragment implements xFragmentRequestCode
             }
         }
 
-        return (xFragment) visibleFragment;
+        return (visibleFragment == null || !(visibleFragment instanceof xFragment)) ? null : (xFragment) visibleFragment;
     }
 
     public int getChildCount() {

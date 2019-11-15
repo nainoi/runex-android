@@ -65,7 +65,7 @@
             android:label="@string/app_name" />
 
         <activity
-            android:name="com.think.runex.java.Activities.RecordActivity"
+            android:name="com.think.runex.java.Activities._RecordActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
             android:launchMode="singleTop" />

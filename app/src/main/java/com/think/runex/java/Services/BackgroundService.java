@@ -1,27 +1,15 @@
 package com.think.runex.java.Services;
 
-import android.Manifest;
-import android.app.Activity;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
-import android.content.Context;
 import android.content.Intent;
-import android.content.IntentFilter;
-import android.content.pm.PackageManager;
 import android.location.Location;
-import android.location.LocationListener;
-import android.location.LocationManager;
 import android.os.Build;
-import android.os.Bundle;
-import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
-import android.widget.Toast;
 
-import androidx.annotation.Nullable;
-import androidx.core.app.ActivityCompat;
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
@@ -31,13 +19,10 @@ import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
-import com.think.runex.application.MainActivity;
-import com.think.runex.java.Activities.BridgeFile;
-import com.think.runex.java.Activities.RecordActivity;
+import com.think.runex.java.Activities._RecordActivity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Location.LocationUtils;
 
 public class BackgroundService extends Service {
     private final String ct = "BackgroundService->";
@@ -144,7 +129,7 @@ public class BackgroundService extends Service {
     private static final String NOTIF_CHANNEL_ID = "Channel_Id";
     private void startForeground() {
         // prepare usage variables
-        Intent notificationIntent = new Intent(this, RecordActivity.class);
+        Intent notificationIntent = new Intent(this, _RecordActivity.class);
         PendingIntent pendingIntent = PendingIntent.getActivity(this, 0,
                 notificationIntent, PendingIntent.FLAG_UPDATE_CURRENT);
 

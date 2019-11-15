@@ -45,6 +45,7 @@ public class Globals {
     public static final int RC_LOGIN_WITH_GOOGLE = 2102;
     public static final int RC_LOGIN_WITH_FACEBOOK = 2103;
     public static final int RC_GALLERY_INTENT = 2104;
+    public static final int RC_TO_PROFILE_PAGE = 2105;
 
     //--> Permission request code
     public static final int RC_PERMISSION = 3101;
