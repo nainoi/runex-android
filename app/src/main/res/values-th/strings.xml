@@ -3,10 +3,11 @@
     <string name="app_name">Runex</string>
 
     <string name="activity">กิจกรรม</string>
+    <string name="activity_record">บันทึกกิจกรรม</string>
+    <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
     <string name="add_distance">เพิ่มระยะวิ่ง</string>
     <string name="add_image">เพิ่มรูปภาพ</string>
     <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
-
 
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
@@ -46,6 +47,7 @@
     <!-- J -->
 
     <!-- K -->
+    <string name="km">กม.</string>
 
     <!-- L -->
     <string name="latest">ล่าสุด</string>

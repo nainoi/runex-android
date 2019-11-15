@@ -49,6 +49,10 @@
             android:theme="@style/AppTheme.NoActionBar" />
 
         <activity
+            android:name=".java.Pages.Record.ActivityRecordPage"
+            android:theme="@style/AppTheme.NoActionBar" />
+
+        <activity
             android:name="com.think.runex.application.SchemeActivity"
             android:launchMode="singleInstance">
             <intent-filter>

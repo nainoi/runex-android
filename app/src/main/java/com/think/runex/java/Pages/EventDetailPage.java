@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
@@ -13,12 +14,16 @@ import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
+import com.think.runex.java.Models.ActivityInfoBean;
 import com.think.runex.java.Models.EventDetailObject;
+import com.think.runex.java.Pages.Record.ActivityRecordPage;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
+
+import java.util.ArrayList;
 
 public class EventDetailPage extends xActivity implements View.OnClickListener {
     /**
@@ -33,12 +38,14 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
     private String mEventName = null;
     private String mEventId = null;
     private boolean ON_NETWORKING = false;
+    private ArrayList<ActivityInfoBean> activityRecordList;
 
     // views
     private TextView lbEventName;
     private ImageView eventImage;
     private TextView lbTotalDistance;
     private AppCompatImageButton btnAddActivity;
+    private AppCompatImageButton btnHistory;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -83,12 +90,14 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
         lbEventName = findViewById(R.id.lb_event_name);
         lbTotalDistance = findViewById(R.id.lb_total_running_distance);
         btnAddActivity = findViewById(R.id.btn_add_activity);
+        btnHistory = findViewById(R.id.btn_history);
 
     }
 
     // view event listener
     private void viewEventListener() {
         btnAddActivity.setOnClickListener(this);
+        btnHistory.setOnClickListener(this);
     }
 
     /**
@@ -111,6 +120,9 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
 
                     // update total distance
                     lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) + " km");
+
+                    //Keep activity record list for ActivityRecordPage
+                    activityRecordList = db.getActivity_info();
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());
@@ -153,6 +165,8 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
     public void onClick(View v) {
         if (v.getId() == R.id.btn_add_activity) {
             addEventActivityPage();
+        } else if (v.getId() == R.id.btn_history) {
+            activityRecordPage();
         }
     }
 
@@ -161,6 +175,20 @@ public class EventDetailPage extends xActivity implements View.OnClickListener {
         Bundle b = new Bundle();
         //--> Bundle
         b.putString("EVENT_ID", mEventId);
+        // update props
+        i.putExtras(b);
+        startActivity(i);
+    }
+
+    private void activityRecordPage() {
+        if (activityRecordList == null || activityRecordList.size() == 0) {
+            Toast.makeText(this, R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent i = new Intent(this, ActivityRecordPage.class);
+        Bundle b = new Bundle();
+        //--> Bundle
+        b.putParcelableArrayList("recodeList", activityRecordList);
         // update props
         i.putExtras(b);
         startActivity(i);

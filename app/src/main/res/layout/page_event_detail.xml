@@ -32,16 +32,30 @@
 
         <TextView
             android:id="@+id/lb_event_name"
-            android:layout_width="wrap_content"
+            android:layout_width="0dp"
             android:layout_height="match_parent"
-            android:layout_marginLeft="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginEnd="@dimen/space_8dp"
+            android:layout_weight="1"
             android:ellipsize="marquee"
             android:gravity="center_vertical"
             android:singleLine="true"
-            android:text="Teerapat Thongbor"
+            android:text="Event Name"
             android:textColor="@android:color/black"
             android:textSize="16dp"
             android:textStyle="bold" />
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_history"
+            android:layout_width="@dimen/space_32dp"
+            android:layout_height="@dimen/space_32dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginEnd="@dimen/space_12dp"
+            android:background="@android:color/transparent"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/space_4dp"
+            android:scaleType="centerCrop"
+            android:src="@drawable/ic_record" />
 
     </LinearLayout>
 
