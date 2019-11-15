@@ -425,8 +425,6 @@ public class LoginActivity extends FragmentActivity implements
         final String mtn = ct + "getRqSocialPd() ";
         final rqSocialPd rq = new rqSocialPd();
 
-        Toast.makeText(this, "fn: " + userProvider.getFirstName(), Toast.LENGTH_SHORT).show();
-
         rq.setAvartar(userProvider.getAvatar());
         rq.setEmail(userProvider.getEmail());
         rq.setFirst_name(userProvider.getFirstName());
