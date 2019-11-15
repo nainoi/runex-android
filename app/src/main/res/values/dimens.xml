@@ -78,4 +78,10 @@
     <!-- Event -->
     <dimen name="event_image_width">96dp</dimen>
     <dimen name="event_image_height">128dp</dimen>
+
+    <!-- Add Distance -->
+    <dimen name="add_distance_imv_width">@dimen/match_parent</dimen>
+    <dimen name="add_distance_imv_height">200dp</dimen>
+    <dimen name="add_distance_margin_start_and_end">32dp</dimen>
+    <dimen name="add_distance_margin_top">16dp</dimen>
 </resources>

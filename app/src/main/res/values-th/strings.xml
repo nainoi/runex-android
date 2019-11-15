@@ -3,6 +3,10 @@
     <string name="app_name">Runex</string>
 
     <string name="activity">กิจกรรม</string>
+    <string name="add_distance">เพิ่มระยะวิ่ง</string>
+    <string name="add_image">เพิ่มรูปภาพ</string>
+    <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
+
 
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
@@ -15,6 +19,10 @@
     <!-- D -->
     <string name="delete">ลบ</string>
     <string name="distance">ระยะทาง</string>
+    <string name="distance_kg">ระยะทาง (กม.)</string>
+    <string name="distance_required">กรุณาระบุระยะทาง</string>
+    <string name="delete_image">ลบรูปภาพ</string>
+    <string name="date_required">กรุณาเลือกวันที่</string>
 
     <!-- E -->
     <string name="email">อีเมล</string>
@@ -57,10 +65,12 @@
     <!-- N -->
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
+    <string name="note">จดบันทึก</string>
 
     <!-- O -->
     <string name="ok">ตกลง</string>
     <string name="or">หรือ</string>
+
 
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
@@ -73,9 +83,11 @@
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>
+    <string name="running_date">วันที่วิ่ง</string>
 
     <!-- S -->
-    <string name="setting">Setting</string>
+    <string name="select_image">เลือกรูปภาพ</string>
+    <string name="setting">ตั้งค่า</string>
     <string name="start_recording">เริ่มจับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>

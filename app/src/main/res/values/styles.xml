@@ -95,4 +95,14 @@
     <style name="TextField.Password.Done" parent="TextField.Password">
         <item name="android:imeOptions">actionDone</item>
     </style>
+
+    <style name="TextField.Distance" parent="TextField">
+        <item name="android:inputType">numberDecimal</item>
+        <item name="android:hint">@string/distance_kg</item>
+    </style>
+
+    <style name="TextField.Note" parent="TextField">
+        <item name="android:inputType">text</item>
+        <item name="android:hint">@string/note</item>
+    </style>
 </resources>

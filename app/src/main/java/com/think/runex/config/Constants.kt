@@ -27,6 +27,8 @@ const val KEY_VERSION = "version"
  */
 const val SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
 
+const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
+
 /**
  * Error Code
  */
