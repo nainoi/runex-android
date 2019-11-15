@@ -46,6 +46,7 @@ public class BridgeFile extends xActivity {
         // prepare usage variables
         final String mtn = ct +"onBackPressed() ";
 
+        // support back stack
         if( getSupportFragmentManager().getBackStackEntryCount() > 0 ){
             // pop back stack out
             getSupportFragmentManager().popBackStackImmediate();
@@ -57,26 +58,26 @@ public class BridgeFile extends xActivity {
         // prepare usage variables
         final xFragment fragment = (xFragment)getSupportFragmentManager().findFragmentById(CONTAINER_ID);
 
-        if( fragment == null ) super.onBackPressed();
+        // default
+        if( fragment == null ) {
+            // default inherit methods
+            super.onBackPressed();
 
+            // exit from this process
+            return;
+        }
+
+        // prepare usage variables
         xFragment displayedFragment = mMainPage.getCurrentDisplayedFragment("BridgeFile", mMainPage );
-        if( displayedFragment == null ) L.i(mtn +"displayedFragment: null");
-        else L.i(mtn +"displayedFragment: "+ displayedFragment.getClass().getSimpleName());
 
+        // remove current displayed fragment
         if( displayedFragment != null ) {
-            L.i(mtn +"displayedFragment: "+ displayedFragment.getClass().getSimpleName());
             // on back pressed
             if(!mMainPage.onBackPressed( displayedFragment )){
-                L.i(mtn +"use super.onBackPressed");
                 super.onBackPressed();
 
             }
-
-        } else L.i(mtn +"displayedFragment is not ready. ");
-//        L.i(" ");
-//        L.i(" ");
-//        L.i(" ");
-
+        }
     }
 
     @Override

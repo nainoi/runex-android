@@ -38,7 +38,7 @@ public class xFragment extends Fragment implements xFragmentRequestCode
 
         // conditions
         if (fragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
-            L.i(mtn + "on back-stack entry count > 0");
+//            L.i(mtn + "on back-stack entry count > 0");
             // pop back stack
             fragment.getChildFragmentManager().popBackStackImmediate();
 
@@ -46,7 +46,7 @@ public class xFragment extends Fragment implements xFragmentRequestCode
             return true;
 
         } else if (getCurrentDisplayedFragment("onBackPressed-Condition", fragment) != null) {
-            L.i(mtn + "on get current displayed fragment != null");
+//            L.i(mtn + "on get current displayed fragment != null");
 
             // prepare usage variables
             Fragment displayedFragment = getCurrentDisplayedFragment("onBackPressed-Condition-Accepted", fragment);
@@ -131,6 +131,7 @@ public class xFragment extends Fragment implements xFragmentRequestCode
             fragmentHandler.onResult(xTalk);
 
         }
+
         return this;
     }
 

@@ -196,11 +196,19 @@ public class MainPage extends xFragment {
                     // perform select
                     bottomNavigationView.setSelectedItemId(R.id.menu_profile);
 
+                    // xtalk refresh
+                    xTalk x = new xTalk();
+                    x.requestCode = Globals.RC_REFRESH;
+
+                    // refresh
+                    pageProfile.onResult( x );
+
                 }
 
                 return null;
             }
         });
+
         pageProfile = new ProfilePage().setPriority(Priority.PARENT);
     }
 

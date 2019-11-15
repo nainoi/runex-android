@@ -347,14 +347,12 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         }
 //
-        xLocation x1 = new xLocation(13.845689, 100.596905);
-        xLocation x11 = new xLocation(13.845989, 100.597905);
+//        xLocation x1 = new xLocation(13.845689, 100.596905);
 //        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //
-        locationChanged(x1);
-        locationChanged(x11);
+//        locationChanged(x1);
 //        locationChanged(x2);
 //        locationChanged(x3);
 //        locationChanged(x4);
@@ -554,10 +552,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     }
 
     private void toSuccessfullySubmitResult() {
-        // prepare usage variables
-        xTalk x = new xTalk();
-        x.requestCode = XRC_REMOVE_ALL_FRAGMENT;
-
         // display fragment
         ChildFragmentUtils.newInstance(this)
                 .addChildFragment(
@@ -575,8 +569,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                                 return null;
                             }
-                        })
-                        .setRequestCode(x));
+                        }));
     }
 
     private void locationChanged(xLocation location) {

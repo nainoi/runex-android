@@ -22,6 +22,7 @@ import com.think.runex.application.MainActivity;
 import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RunningHistoryObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.L;
@@ -58,6 +59,23 @@ public class ProfilePage extends xFragment implements
     /**
      * Implement methods
      */
+    @Override
+    public xFragment onResult(xTalk xTalk) {
+        if( xTalk.requestCode == Globals.RC_REFRESH && isAdded()){
+            // condition
+            if( ON_NETWORKING ) return null;
+
+            // display progress dialog
+            refreshLayout.setRefreshing( true );
+
+            // request on refresh
+            onRefresh();
+
+        }
+
+        return super.onResult(xTalk);
+    }
+
     @Override
     public void onClick(View view) {
         switch (view.getId()) {
@@ -142,6 +160,9 @@ public class ProfilePage extends xFragment implements
 
                 // hide progress dialog
                 hideProgressDialog();
+
+                // clear flag
+                ON_NETWORKING = false;
             }
 
             @Override
@@ -150,6 +171,9 @@ public class ProfilePage extends xFragment implements
 
                 // hide progress dialog
                 hideProgressDialog();
+
+                // clear flag
+                ON_NETWORKING = false;
 
             }
         }).doIt();
@@ -280,6 +304,12 @@ public class ProfilePage extends xFragment implements
         if (mRunningHist == null || mOnLoginHasChanged) {
             // clear flag
             mOnLoginHasChanged = false;
+
+            // condition
+            if( ON_NETWORKING ) return;
+
+            // update flag
+            ON_NETWORKING = true;
 
             // get my profile
             apiGetRunningHistory();

@@ -19,6 +19,7 @@ import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Pages.RegisteredEvent.RegisteredEventsPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.FragmentUtils;

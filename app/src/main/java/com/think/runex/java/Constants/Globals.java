@@ -37,6 +37,7 @@ public class Globals {
     public static final String PROVIDER_GOOGLE = "GoogleID";
 
     //--> xRequest code
+    public static final int RC_REFRESH = 902;
     public static final int RC_REGISTER_USER = 901;
     public static final int RC_RECORDER = 1001;
     public static final int RC_BACK_FROM_LOGIN = 2201;
