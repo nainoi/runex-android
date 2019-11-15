@@ -1,11 +1,13 @@
 package com.think.runex.java.Pages;
 
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -21,6 +23,10 @@ import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
 import com.think.runex.java.Models.EventObject;
+import com.think.runex.java.Customize.Activity.xActivity;
+import com.think.runex.java.Models.ActivityInfoBean;
+import com.think.runex.java.Models.EventDetailObject;
+import com.think.runex.java.Pages.Record.ActivityRecordPage;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
@@ -28,7 +34,11 @@ import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
+
+import java.util.ArrayList;
+
 public class EventDetailPage extends xFragment implements View.OnClickListener {
+
     /**
      * Main variables
      */
@@ -42,12 +52,14 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     private String mEventName = null;
     private String mEventId = null;
     private boolean ON_NETWORKING = false;
+    private ArrayList<ActivityInfoBean> activityRecordList;
 
     // views
     private TextView lbEventName;
     private ImageView eventImage;
     private TextView lbTotalDistance;
     private AppCompatImageButton btnAddActivity;
+    private AppCompatImageButton btnHistory;
 
     @Nullable
     @Override
@@ -63,7 +75,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
         EventObject.DataBean.EventBean evtVal = mEvent.getEvent();
 
         // update props
-        mEventProfile = APIs.DOMAIN.VAL +  evtVal.getCover();
+        mEventProfile = APIs.DOMAIN.VAL + evtVal.getCover();
         mEventName = evtVal.getName();
         mEventId = mEvent.getEvent_id();
 
@@ -98,12 +110,13 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
         lbEventName = v.findViewById(R.id.lb_event_name);
         lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         btnAddActivity = v.findViewById(R.id.btn_add_activity);
-
+        btnHistory = v.findViewById(R.id.btn_history);
     }
 
     // view event listener
     private void viewEventListener() {
         btnAddActivity.setOnClickListener(this);
+        btnHistory.setOnClickListener(this);
     }
 
     /**
@@ -127,6 +140,9 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
                     // update total distance
                     lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) + " km");
 
+                    //Keep activity record list for ActivityRecordPage
+                    activityRecordList = db.getActivity_info();
+
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());
 
@@ -142,8 +158,10 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
         }).doIt(eventId);
     }
 
-    /** Setter */
-    public xFragment setEvent(EventObject.DataBean event){
+    /**
+     * Setter
+     */
+    public xFragment setEvent(EventObject.DataBean event) {
         mEvent = event;
 
         return this;
@@ -178,14 +196,14 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
             AddEventPage page = new AddEventPage();
 
             // update props
-            page.setEventId( mEventId );
+            page.setEventId(mEventId);
             page.setFragmentHandler(new xFragmentHandler() {
                 @Override
                 public xFragment onResult(xTalk talk) {
 
-                    if( talk.resultCode == xAction.SUCCESS.ID ){
+                    if (talk.resultCode == xAction.SUCCESS.ID) {
                         // get event detail
-                        apiGetEventDetail( mEventId );
+                        apiGetEventDetail(mEventId);
 
                     }
 
@@ -194,11 +212,27 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
             });
 
             // display add event activity
-            ChildFragmentUtils.newInstance( this ).addChildFragment
+            ChildFragmentUtils.newInstance(this).addChildFragment
                     (R.id.display_fragment_frame,
-                    page);
+                            page);
 
+        } else if (v.getId() == R.id.btn_history) {
+            activityRecordPage();
         }
     }
 
+
+    private void activityRecordPage() {
+        if (activityRecordList == null || activityRecordList.size() == 0) {
+            Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
+            return;
+        }
+        Intent i = new Intent(getContext(), ActivityRecordPage.class);
+        Bundle b = new Bundle();
+        //--> Bundle
+        b.putParcelableArrayList("recodeList", activityRecordList);
+        // update props
+        i.putExtras(b);
+        startActivity(i);
+    }
 }
