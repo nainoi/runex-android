@@ -112,8 +112,8 @@ public class NetworkUtils {
                     Response response = getHttpClient().newCall(request).execute();
                     final String strResult = response.body().string();
 
-                    L.i(mtn +"url: "+ props.url);
-                    L.i(mtn +"headers: "+ Globals.GSON.toJson(props.headers));
+                    L.i(mtn + "url: " + props.url);
+                    L.i(mtn + "headers: " + Globals.GSON.toJson(props.headers));
 
                     try {
                         onSuccess(response.code(), strResult, callback);
@@ -150,8 +150,8 @@ public class NetworkUtils {
                     MultipartBody.Builder multipartBuilder = new MultipartBody.Builder()
                             .setType(MultipartBody.FORM);
 
-                    L.i(mtn +"url: "+ props.url);
-                    L.i(mtn +"headers: "+ Globals.GSON.toJson(props.headers));
+                    L.i(mtn + "url: " + props.url);
+                    L.i(mtn + "headers: " + Globals.GSON.toJson(props.headers));
 
                     // add parts
                     for (int a = 0; a < props.multiParts.size(); a++) {
@@ -215,8 +215,8 @@ public class NetworkUtils {
                 // build request
                 Request request = builder.build();
 
-                L.i(mtn +"url: "+ props.url);
-                L.i(mtn +"headers: "+ Globals.GSON.toJson(props.headers));
+                L.i(mtn + "url: " + props.url);
+                L.i(mtn + "headers: " + Globals.GSON.toJson(props.headers));
 
                 try (Response response = getHttpClient().newCall(request).execute()) {
 
@@ -247,6 +247,43 @@ public class NetworkUtils {
         thread(runner);
 
 
+    }
+
+    public void postMultiPath(NetworkMultipartProps props, onNetworkCallback callback) {
+        // prepare usage variables
+        final String mtn = ct + "postMultiPath() ";
+        final Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    Request.Builder builder = new Request.Builder()
+                            .url(props.url)
+                            .post(props.getRequestBody());
+
+                    // add headers
+                    for (int a = 0; a < props.headers.size(); a++) {
+                        // prepare usage variables
+                        final String[][] header = props.headers.get(a);
+
+                        // add header
+                        builder.addHeader(header[0][0], header[0][1]);
+                    }
+
+                    try (Response response = getHttpClient().newCall(builder.build()).execute()) {
+                        onSuccess(response.code(), response.body().string(), callback);
+
+                    } catch (Exception e) {
+                        L.e(mtn + "Err: " + e.getMessage());
+                        onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+                    }
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
+                    onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+                }
+            }
+        };
+        thread(runner);
     }
 
     private OkHttpClient getHttpClient() {

@@ -5,6 +5,7 @@
     <string name="activity">กิจกรรม</string>
     <string name="add_distance">เพิ่มระยะวิ่ง</string>
     <string name="add_image">เพิ่มรูปภาพ</string>
+    <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
 
 
     <!-- B -->
@@ -19,7 +20,9 @@
     <string name="delete">ลบ</string>
     <string name="distance">ระยะทาง</string>
     <string name="distance_kg">ระยะทาง (กม.)</string>
+    <string name="distance_required">กรุณาระบุระยะทาง</string>
     <string name="delete_image">ลบรูปภาพ</string>
+    <string name="date_required">กรุณาเลือกวันที่</string>
 
     <!-- E -->
     <string name="email">อีเมล</string>

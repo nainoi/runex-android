@@ -15,6 +15,7 @@ import android.widget.DatePicker;
 import android.widget.ImageView;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,6 +27,11 @@ import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Utils.ActivityUtils;
+import com.think.runex.java.Utils.KeyboardUtils;
+import com.think.runex.java.Utils.L;
+import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.java.Utils.Network.Services.AddEventActivityService;
+import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.UriUtils;
 import com.think.runex.ui.components.NumberTextWatcher;
@@ -121,6 +127,7 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     }
 
     private void onClickAddImage() {
+        KeyboardUtils.hideKeyboard(edtDistance);
         if (iconAddImage.getVisibility() == View.VISIBLE) {
             activityImageUri = null;
             loadActivityImage();
@@ -136,7 +143,8 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     }
 
     private void onClickDate() {
-        Calendar calendar = convertDateTimeToCalendar();
+        KeyboardUtils.hideKeyboard(edtDistance);
+        Calendar calendar = convertRecordDateToCalendar();
         DatePickerDialog dialog = new DatePickerDialog(this, this, calendar.get(Calendar.YEAR),
                 calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH));
         dialog.getDatePicker().setMaxDate(System.currentTimeMillis());
@@ -150,7 +158,30 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
     }
 
     private void onClickSubmit() {
+        if (isDataValid()) {
 
+            String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
+            String imagePath = (activityImageUri != null) ? new UriUtils().getRealPath(this, activityImageUri) : null;
+
+            new AddEventActivityService(this, new onNetworkCallback() {
+                @Override
+                public void onSuccess(xResponse response) {
+                    // prepare usage variables
+                    final String mtn = ct + "onSuccess() ";
+
+                    L.i(mtn + "json-string: " + response.jsonString);
+                    Toast.makeText(AddEventActivityPage.this, R.string.add_activity_success, Toast.LENGTH_SHORT).show();
+                    finish();
+                }
+
+                @Override
+                public void onFailure(xResponse response) {
+                    // prepare usage variables
+                    final String mtn = ct + "onFailure() ";
+                    L.i(mtn + "json-string: " + response.jsonString);
+                }
+            }).doIt(mEventId, distance, recordDate, imagePath, "");
+        }
     }
 
     private void intentToGallery() {
@@ -212,14 +243,10 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
             textAddImage.setText(R.string.delete_image);
             Picasso.get().load(activityImageUri)
                     .into(activityImage);
-
-            Log.e("Jozzee", "Path: " + activityImageUri.getPath());
-            Log.e("Jozzee", "getAuthority: " + activityImageUri.getAuthority());
-            Log.e("Jozzee", "Real Path: " + new UriUtils().getRealPath(this, activityImageUri));
         }
     }
 
-    private Calendar convertDateTimeToCalendar() {
+    private Calendar convertRecordDateToCalendar() {
         //String dateTime = btnDate.getText().toString();
         Calendar calendar = Calendar.getInstance();
         if (recordDate.length() > 0) {
@@ -258,6 +285,22 @@ public class AddEventActivityPage extends xActivity implements View.OnClickListe
 
     }
 
+    private boolean isDataValid() {
+        if (mEventId.length() == 0) {
+            Toast.makeText(this, "No Event", Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
+        if (distance.length() == 0) {
+            Toast.makeText(this, R.string.distance_required, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (recordDate == null || recordDate.length() == 0) {
+            Toast.makeText(this, R.string.date_required, Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
 }
 

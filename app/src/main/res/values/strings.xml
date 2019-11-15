@@ -5,6 +5,7 @@
     <string name="activity">Activity</string>
     <string name="add_distance">Add Distance</string>
     <string name="add_image">Add Image</string>
+    <string name="add_activity_success">Add activity success</string>
 
     <!-- B -->
     <string name="back">Back</string>
@@ -18,7 +19,9 @@
     <string name="delete">Delete</string>
     <string name="distance">Distance</string>
     <string name="distance_kg">Distance (kg.)</string>
+    <string name="distance_required">The distance field is required.</string>
     <string name="delete_image">Delete Image</string>
+    <string name="date_required">Please select date</string>
 
     <!-- E -->
     <string name="email">Email</string>
