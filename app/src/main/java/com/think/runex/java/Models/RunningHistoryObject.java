@@ -77,117 +77,12 @@ public class RunningHistoryObject {
         }
 
         public List<ActivityInfoBean> getActivity_info() {
-            return activity_info;
+            return (activity_info == null) ? activity_info = new ArrayList<>() : activity_info;
         }
 
         public void setActivity_info(List<ActivityInfoBean> activity_info) {
             this.activity_info = activity_info;
         }
 
-        public static class ActivityInfoBean {
-            /**
-             * id : 5dc550ccfc15a8f6bf32c845
-             * activity_type : RUN
-             * calory : 0
-             * caption : Hello Postman
-             * distance : 1.5
-             * pace : 3.98
-             * time : 24.3489
-             * activity_date : 2019-11-08T11:26:04.566Z
-             * created_at : 2019-11-08T11:26:04.566Z
-             * updated_at : 2019-11-08T11:26:04.566Z
-             */
-
-            private String id;
-            private String activity_type;
-            private double calory;
-            private String caption;
-            private double distance;
-            private double pace;
-            private double time;
-            private String activity_date;
-            private String created_at;
-            private String updated_at;
-
-            public String getId() {
-                return id;
-            }
-
-            public void setId(String id) {
-                this.id = id;
-            }
-
-            public String getActivity_type() {
-                return activity_type;
-            }
-
-            public void setActivity_type(String activity_type) {
-                this.activity_type = activity_type;
-            }
-
-            public double getCalory() {
-                return calory;
-            }
-
-            public void setCalory(double calory) {
-                this.calory = calory;
-            }
-
-            public String getCaption() {
-                return caption;
-            }
-
-            public void setCaption(String caption) {
-                this.caption = caption;
-            }
-
-            public double getDistance() {
-                return distance;
-            }
-
-            public void setDistance(double distance) {
-                this.distance = distance;
-            }
-
-            public double getPace() {
-                return pace;
-            }
-
-            public void setPace(double pace) {
-                this.pace = pace;
-            }
-
-            public double getTime() {
-                return time;
-            }
-
-            public void setTime(double time) {
-                this.time = time;
-            }
-
-            public String getActivity_date() {
-                return activity_date;
-            }
-
-            public void setActivity_date(String activity_date) {
-                this.activity_date = activity_date;
-            }
-
-            public String getCreated_at() {
-                return created_at;
-            }
-
-            public void setCreated_at(String created_at) {
-                this.created_at = created_at;
-            }
-
-            public String getUpdated_at() {
-                return updated_at;
-            }
-
-            public void setUpdated_at(String updated_at) {
-                this.updated_at = updated_at;
-            }
-        }
     }
 }

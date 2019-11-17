@@ -11,6 +11,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.R;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.ActivityInfoBean;
 
 public class RecordViewHolder extends RecyclerView.ViewHolder {
@@ -30,11 +31,12 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static RecordViewHolder create(ViewGroup parent) {
-        return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record, parent, false));
+        return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record, null, false));
     }
 
     public void bind(ActivityInfoBean data) {
-        String distance = data.getDistance() + " " + lbDistance.getContext().getString(R.string.km);
+        String distance = Globals.DCM_2.format(data.getDistance()) + " " + lbDistance.getContext().getString(R.string.km);
+
         lbDistance.setText(distance);
         lbDate.setText(data.getActivityDate());
         lbCaption.setText(data.getCaption());

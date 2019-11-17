@@ -69,7 +69,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         return list.size();
     }
 
-    void submitList(List<ActivityInfoBean> list) {
+    public void submitList(List<ActivityInfoBean> list) {
         this.list = list;
         sortByDate();
         notifyDataSetChanged();

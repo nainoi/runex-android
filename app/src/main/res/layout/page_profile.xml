@@ -93,6 +93,14 @@
 
         </androidx.cardview.widget.CardView>
 
+        <androidx.recyclerview.widget.RecyclerView
+            android:layout_below="@+id/card_total_running_distance"
+            android:layout_above="@+id/frame_sign_out"
+            android:layout_marginBottom="8dp"
+            android:id="@+id/recycler_view"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
         <!-- Sign out frame -->
         <LinearLayout
             android:layout_alignParentBottom="true"

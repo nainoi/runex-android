@@ -14,6 +14,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AlertDialog;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
@@ -25,6 +27,7 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RunningHistoryObject;
 import com.think.runex.java.Models.UserObject;
+import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
@@ -44,6 +47,7 @@ public class ProfilePage extends xFragment implements
     // instance variables
     private AlertDialog mDialog;
     private RunningHistoryObject.DataBean mRunningHist;
+    private RecordAdapter recordAdapter;
 
     // explicit variables
     private boolean mOnLoginHasChanged = false;
@@ -55,6 +59,7 @@ public class ProfilePage extends xFragment implements
     private TextView lbFullname, lbEmail;
     private TextView lbTotalDistance;
     private View btnSignOut;
+    private RecyclerView recyclerView;
 
     /**
      * Implement methods
@@ -124,6 +129,9 @@ public class ProfilePage extends xFragment implements
         // view binding
         viewBinding(App.instance(activity).getAppEntity().user);
 
+       // recycler view props
+       recyclerViewProps();
+
         return v;
     }
 
@@ -147,8 +155,19 @@ public class ProfilePage extends xFragment implements
                     double totalDistance = 0.0;
 
                     // condition
-                    if (rhis.getData().size() > 0) totalDistance = (mRunningHist = rhis.getData().get(0)).getTotal_distance();
-                    else mRunningHist = null;
+                    if (rhis.getData().size() > 0) {
+                        // update props
+                        totalDistance = (mRunningHist = rhis.getData().get(0)).getTotal_distance();
+
+                        try {
+                            recordAdapter.submitList(mRunningHist.getActivity_info());
+
+                        } catch ( Exception e ){
+                            L.e(mtn +"Err: "+ e.getMessage());
+
+                        }
+
+                    } else mRunningHist = null;
 
                     // update total distance
                     lbTotalDistance.setText(Globals.DCM.format(totalDistance) + " km");
@@ -269,6 +288,18 @@ public class ProfilePage extends xFragment implements
         }
     }
 
+    /** Recycler view props */
+    private void recyclerViewProps(){
+        // prepare usage variables
+        final String mtn = ct +"recyclerViewProps() ";
+        recordAdapter = new RecordAdapter();
+
+        // update props
+        recyclerView.setLayoutManager( new LinearLayoutManager( activity ));
+        recyclerView.setAdapter( recordAdapter );
+
+    }
+
     /**
      * View event listener
      */
@@ -281,6 +312,7 @@ public class ProfilePage extends xFragment implements
      * Views matching
      */
     private void viewsMatching(View v) {
+        recyclerView = v.findViewById(R.id.recycler_view);
         refreshLayout = v.findViewById(R.id.refresh_layout);
         lbFullname = v.findViewById(R.id.lb_user_name);
         lbEmail = v.findViewById(R.id.lb_email);
@@ -325,6 +357,11 @@ public class ProfilePage extends xFragment implements
             }
 
         }
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
     }
 
     @Override

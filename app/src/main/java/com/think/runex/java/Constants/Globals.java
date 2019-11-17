@@ -17,6 +17,7 @@ public class Globals {
     public static final String EVENT_ID = "5db5bda6874a693a72ef6093";
     public static Gson GSON = new Gson();
     public static DecimalFormat DCM = new DecimalFormat("0.0");
+    public static DecimalFormat DCM_2 = new DecimalFormat("0.00");
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_TOKEN = new SimpleDateFormat(Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
