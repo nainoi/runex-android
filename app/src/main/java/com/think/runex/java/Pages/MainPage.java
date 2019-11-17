@@ -74,7 +74,7 @@ public class MainPage extends xFragment {
         // log
         L.i(mtn + "Hide fragment: " + fragment.getClass().getSimpleName());
 
-        // hide current child
+        // gone current child
         getChildFragmentManager().beginTransaction()
                 .hide(fragment).commit();
 
@@ -110,7 +110,7 @@ public class MainPage extends xFragment {
         // prepare usage variables
         boolean onSelected = true;
 
-        // hide current displaying fragment
+        // gone current displaying fragment
         if (mCurrentFragment != null) hideDisplayingFragment(mCurrentFragment);
 
         // prepare usage variables

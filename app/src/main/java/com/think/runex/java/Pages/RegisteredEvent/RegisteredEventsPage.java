@@ -126,7 +126,7 @@ public class RegisteredEventsPage extends xFragment implements
 
         switch (view.getId()) {
             case R.id.btn_see_all_events:
-                // hide no registered event frame
+                // gone no registered event frame
                 frameNoRegisterEvent.setVisibility(View.INVISIBLE);
 
                 // to runex.co website
@@ -151,7 +151,7 @@ public class RegisteredEventsPage extends xFragment implements
 
         try {
 
-            // hide progress
+            // gone progress
             refreshLayout.setRefreshing(false);
 
             if (xrsp.responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
@@ -226,7 +226,7 @@ public class RegisteredEventsPage extends xFragment implements
                 // notify insert item
             } else eventAdapter.notifyItemRangeInserted(0, rsp.getData().size());
 
-            // hide progress dialog
+            // gone progress dialog
             refreshLayout.setRefreshing(false);
 
             // display frame no register event
@@ -245,7 +245,7 @@ public class RegisteredEventsPage extends xFragment implements
         // clear flag
         ON_REFRESH = false;
 
-        // hide progress
+        // gone progress
         refreshLayout.setRefreshing(false);
 
     }

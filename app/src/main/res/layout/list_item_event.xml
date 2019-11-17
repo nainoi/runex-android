@@ -3,36 +3,42 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="horizontal"
-    android:weightSum="2">
+    android:orientation="horizontal">
 
     <!--  Event Image -->
-    <androidx.cardview.widget.CardView
-        android:id="@+id/frame_image"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_margin="8dp"
-        android:layout_weight="0.5"
-        app:cardCornerRadius="8dp"
-        app:cardElevation="4dp">
+    <com.think.runex.java.Customize.Views.xRectangleViewGroup
+        android:padding="8dp"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
 
-        <com.think.runex.java.Customize.Views.xSquareImage
-            android:id="@+id/view_cover"
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="6dp"
+            app:cardElevation="4dp"
+            android:layout_gravity="center_vertical"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:scaleType="centerCrop" />
+            android:layout_height="wrap_content">
 
-    </androidx.cardview.widget.CardView>
+            <ImageView
+                android:id="@+id/view_cover"
+                android:adjustViewBounds="true"
+                android:background="@android:color/holo_orange_dark"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+        </androidx.cardview.widget.CardView>
+
+    </com.think.runex.java.Customize.Views.xRectangleViewGroup>
+
 
     <!--  Contents  -->
     <LinearLayout
         android:id="@+id/frame_contents"
-        android:layout_width="0dp"
+        android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="8dp"
         android:layout_marginRight="8dp"
         android:layout_marginBottom="8dp"
-        android:layout_weight="1.5"
+        android:gravity="center_vertical"
         android:orientation="vertical">
 
 <!--        <com.think.runex.java.Customize.EventListItem.xEventNameTextView-->
@@ -40,7 +46,7 @@
             android:id="@+id/lb_event_name"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:text="Shinchan Virtual Run 2019"
+            android:text="..."
             android:textColor="@color/textColorPrimary"
             android:textSize="18dp"
             android:singleLine="true"
@@ -52,9 +58,9 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:textSize="12sp"
-            android:text="VIRTUAL RUN"
-            android:textColor="@android:color/black"
+            android:textSize="10sp"
+            android:text="..."
+            android:textColor="@android:color/darker_gray"
             android:textStyle="bold" />
 
         <TextView
@@ -63,6 +69,7 @@
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
             android:textSize="12sp"
+            android:visibility="gone"
             android:layout_marginTop="2dp"
             android:text="สำเร็จแล้ว"
             android:textColor="@color/orange"

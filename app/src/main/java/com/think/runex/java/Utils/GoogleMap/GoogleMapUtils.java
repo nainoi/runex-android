@@ -130,7 +130,7 @@ public class GoogleMapUtils {
 //                        new LatLng(to.latitude, to.longitude)));
         polyline.setColor(color);
 
-        // hide last polyline
+        // gone last polyline
         if (mLastPolyline != null) mLastPolyline.remove();
 
         // keep last polyline

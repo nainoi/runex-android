@@ -177,7 +177,7 @@ public class ProfilePage extends xFragment implements
 
                 }
 
-                // hide progress dialog
+                // gone progress dialog
                 hideProgressDialog();
 
                 // clear flag
@@ -188,7 +188,7 @@ public class ProfilePage extends xFragment implements
             public void onFailure(xResponse response) {
                 L.e(mtn + "err-response: " + response.jsonString);
 
-                // hide progress dialog
+                // gone progress dialog
                 hideProgressDialog();
 
                 // clear flag

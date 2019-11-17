@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,11 +12,14 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
+import androidx.recyclerview.widget.LinearLayoutManager;
+import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Constants.xAction;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
@@ -25,16 +29,20 @@ import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.ActivityInfoBean;
+import com.think.runex.java.Models.MultiObject;
 import com.think.runex.java.Pages.Record.EventRecordHistoryPage;
+import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
+import com.think.runex.java.ViewHolders.VHEvent;
 
 
 import java.util.ArrayList;
+import java.util.List;
 
 public class EventDetailPage extends xFragment implements View.OnClickListener {
 
@@ -45,13 +53,14 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
 
     // instance variables
     private EventObject.DataBean mEvent;
+    private List<ActivityInfoBean> records;
+    private RecordAdapter adapter;
 
     // explicit variables
     private String mEventProfile = null;
     private String mEventName = null;
     private String mEventId = null;
     private boolean ON_NETWORKING = false;
-    private ArrayList<ActivityInfoBean> activityRecordList;
 
     // views
     private TextView lbEventName;
@@ -59,6 +68,9 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     private TextView lbTotalDistance;
     private AppCompatImageButton btnAddActivity;
     private AppCompatImageButton btnHistory;
+    private RecyclerView recyclerView;
+    // views
+    private RecyclerView recordList;
     //--> toolbar
     private xToolbar toolbar;
 
@@ -66,7 +78,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         // prepare usage variables
-        final View v = inflater.inflate(R.layout.page_event_detail, container, false);
+        final View v = inflater.inflate(R.layout.page_event_detail_version2, container, false);
         final String mtn = ct + "onCreate() ";
 
         // init
@@ -82,6 +94,10 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
 
         // view matching
         viewMatching(v);
+        //--> Event view holder
+        eventViewHolder(v);
+        //--> Recycler view props
+        recyclerViewProps();
         //--> toolbar
         toolbar = new xToolbar(v.findViewById(R.id.frame_toolbar)) {
             @Override
@@ -106,10 +122,12 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
             xToolbarProps props = new xToolbarProps();
 
             // update props
-            props.titleImageUrl = mEventProfile;
+//            props.titleImageUrl = mEventProfile;
             props.titleLabel = mEventName;
-            //--> option icon
-            toolbar.setImageOptionIcon( R.drawable.ic_record);
+
+            //--> views
+            toolbar.toolbarOptionButton.gone();
+            toolbar.toolbarTitleIcon.gone();
 
             // binding
             toolbar.bind(props);
@@ -124,15 +142,44 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     /**
      * Feature methods
      */
+
+    // recycler view props
+    private void recyclerViewProps(){
+        // prepare usage variables
+        adapter = new RecordAdapter();
+
+        //--> update props
+        recyclerView.setLayoutManager( new LinearLayoutManager( activity ));
+        recyclerView.setAdapter(adapter);
+    }
+
+    // event view holder
+    private void eventViewHolder(View v){
+        // prepare usage variables
+        View vh = v.findViewById( R.id.vh_event );
+        EventObject.DataBean evt = mEvent;
+        EventObject.DataBean.EventBean evtVal = evt.getEvent();
+        TextView _lbEventName = vh.findViewById(R.id.lb_event_name);
+        TextView _lbEventType = vh.findViewById(R.id.lb_event_type);
+        ImageView imgCover = vh.findViewById(R.id.view_cover);
+
+        // binding
+        _lbEventName.setText((evtVal.getName() +"").trim() );
+        _lbEventType.setText( (evtVal.getCategory().getName() +"").toUpperCase() );
+
+        //--> image
+        Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover() ).into( imgCover );
+    }
     // view matching
     private void viewMatching(View v) {
         eventImage = v.findViewById(R.id.event_image);
-        lbEventName = v.findViewById(R.id.lb_event_name);
+        lbEventName = v.findViewById(R.id.detail_lb_event_name);
         lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         btnAddActivity = v.findViewById(R.id.btn_add_activity);
         btnHistory = v.findViewById(R.id.btn_history);
 
-        //--> toolbar
+        recyclerView = v.findViewById(R.id.recycler_view);
+
     }
 
     // view event listener
@@ -163,7 +210,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
                     lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) + " km");
 
                     //Keep activity record list for EventRecordHistoryPage
-                    activityRecordList = db.getActivity_info();
+                    adapter.submitList(db.getActivity_info());
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());
@@ -245,6 +292,8 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
 
 
     private void toRecordPage() {
+        List<ActivityInfoBean> activityRecordList = new ArrayList<>();
+
         if (activityRecordList == null || activityRecordList.size() == 0) {
             Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
             return;

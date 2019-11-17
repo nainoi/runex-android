@@ -162,7 +162,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             // clear flag
             mOnDisplaySummary = false;
 
-            // hide summary frame
+            // gone summary frame
             hideSummaryFrame();
 
         }
@@ -403,7 +403,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // refresh views
         binding();
 
-        // hide stop button
+        // gone stop button
         btnStopAndSubmit.setVisibility(View.GONE);
 
         // change start button
@@ -414,7 +414,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         mOnDisplaySummary = false;
         mOnSubmitMultiResult = false;
 
-        // hide summary frame
+        // gone summary frame
         hideSummaryFrame();
     }
 
@@ -422,7 +422,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         btnSubmit.setVisibility(View.VISIBLE);
         btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
 
-        // hide preview
+        // gone preview
         previewImage.setImageResource(0);
 
     }
@@ -615,10 +615,10 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
             @Override
             public void onStart() {
-                // hide preview image
+                // gone preview image
                 previewImage.setImageResource(0);
 
-                // hide usability features
+                // gone usability features
                 frameShare.setVisibility(View.INVISIBLE);
                 frameLogo.setVisibility(View.INVISIBLE);
 
@@ -639,7 +639,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, frameSummary.getId());
 
-                // hide recording frame
+                // gone recording frame
                 frameRecording.setVisibility(View.INVISIBLE);
 
             }
@@ -1076,7 +1076,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                     }
                 }, 120);
 
-                // hide
+                // gone
                 btnStopAndSubmit.setVisibility(View.GONE);
                 frameSummary.setY(frameSummary.getY() + frameSummary.getHeight());
 
@@ -1109,7 +1109,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                     // update flag
                     mOnDisplaySummary = false;
 
-                    // hide 
+                    // gone
                     hideSummaryFrame();
 
                     // exit from this process

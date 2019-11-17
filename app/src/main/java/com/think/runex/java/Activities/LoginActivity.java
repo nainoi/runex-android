@@ -26,6 +26,8 @@ import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.TokenObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.ActivityUtils;
+import com.think.runex.java.Utils.DeviceUtils;
+import com.think.runex.java.Utils.KeyboardUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
@@ -39,6 +41,7 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import org.jetbrains.annotations.NotNull;
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 
 import static com.think.runex.feature.social.SocialLoginManger.RC_GOOGLE_LOGIN;
@@ -94,6 +97,9 @@ public class LoginActivity extends FragmentActivity implements
 
         // update flag
         ON_LOGGING_IN = true;
+
+        // gone keyboard
+        KeyboardUtils.hideKeyboard( getWindow().getDecorView() );
 
         switch (view.getId()) {
             //--> Login action
@@ -225,8 +231,8 @@ public class LoginActivity extends FragmentActivity implements
         viewEventListener();
 
         // default account
-        inputEmail.setText("fakespmh.21@gmail.com");
-        inputPassword.setText("p@ss1234");
+//        inputEmail.setText("fakespmh.21@gmail.com");
+//        inputPassword.setText("p@ss1234");
     }
 
     /**
@@ -239,7 +245,8 @@ public class LoginActivity extends FragmentActivity implements
     }
 
     private boolean validate() {
-        return true;
+        return !inputPassword.getText().toString().isEmpty()
+                && isEmailValid(inputEmail.getText().toString());
     }
 
     private void loginWithEmail() {
@@ -248,7 +255,21 @@ public class LoginActivity extends FragmentActivity implements
                     inputPassword.getText().toString(),
                     Globals.PLATFORM));
 
+        } else {
+
+            // clear flag
+            ON_LOGGING_IN = false;
+
+            // toast
+            Toast.makeText(this, "โปรดระบุอีเมล และ พาสเวิร์ดให้ถูกต้อง", Toast.LENGTH_SHORT).show();
+
         }
+    }
+
+    private boolean isEmailValid(String email) {
+        String regex = "^[\\w-_\\.+]*[\\w-_\\.]\\@([\\w]+\\.)+[\\w]+[\\w]$";
+        return email.matches(regex);
+
     }
 
     /**
@@ -370,6 +391,17 @@ public class LoginActivity extends FragmentActivity implements
         nw.postJSON(props, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse rsp) {
+
+                if( rsp.responseCode != HttpURLConnection.HTTP_OK ){
+                    // clear flag
+                    ON_LOGGING_IN = false;
+
+                    // toast
+                    Toast.makeText(LoginActivity.this, "เกิดข้อผิดพลาดขณะเข้าสู่ระบบ", Toast.LENGTH_SHORT).show();
+
+                    // exit from this process
+                    return;
+                }
 
                 try {
                     // prepare usage variables

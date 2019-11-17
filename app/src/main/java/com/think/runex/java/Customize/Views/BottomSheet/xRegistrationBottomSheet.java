@@ -242,7 +242,7 @@ public class xRegistrationBottomSheet implements View.OnClickListener {
         // clear all
         clearAll();
 
-        // hide bottom sheet dialog
+        // gone bottom sheet dialog
         dialogBottomSheet.dismiss();
 
     }

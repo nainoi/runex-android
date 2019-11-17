@@ -54,8 +54,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
                     }
                 }
 
-                L.i(mtn + item.getActivity_date());
-
             } catch ( Exception e ){
                 L.e(mtn +"Err: "+ e.getMessage());
 

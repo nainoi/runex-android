@@ -18,9 +18,9 @@ public class xToolbar implements View.OnClickListener {
 
     // views
     private View toolbar;
-    private ImageView toolbarOptionButton;
-    private ImageView toolbarNavButton;
-    private ImageView toolbarTitleIcon;
+    public xToolbarImageView toolbarOptionButton;
+    public xToolbarImageView toolbarNavButton;
+    public xToolbarImageView toolbarTitleIcon;
     private TextView toolbarTitleLabel;
 
     /**
@@ -52,6 +52,7 @@ public class xToolbar implements View.OnClickListener {
     public void setImageOptionIcon(int resourceId) {
         toolbarOptionButton.setImageResource(resourceId);
     }
+
 
     public void bind(xToolbarProps props) {
         // prepare usage variables

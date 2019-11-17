@@ -117,7 +117,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
             @Override
             public void onRefresh() {
                 if( !ON_SUBMITTING) {
-                    // hide progress dialog
+                    // gone progress dialog
                     refreshLayout.setRefreshing( false );
 
                     // exit from this process
@@ -222,7 +222,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                     final String mtn = ct + "onFailure() ";
                     L.i(mtn + "json-string: " + response.jsonString);
 
-                    // hide progress dialog
+                    // gone progress dialog
                     refreshLayout.setRefreshing( false );
 
                     // clear flag

@@ -154,7 +154,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
             // clear flag
             mOnDisplaySummary = false;
 
-            // hide summary frame
+            // gone summary frame
             hideSummaryFrame();
 
 //        } else if(mRecorderUtils.mRecordDistanceKm > 0L ){
@@ -185,7 +185,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
 //            // refresh views
 //            binding();
 //
-//            // hide stop button
+//            // gone stop button
 //            btnStopAndSubmit.setVisibility(View.GONE);
 //
 //            // change start button
@@ -195,7 +195,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
 //            // clear flag
 //            mOnDisplaySummary = false;
 //
-//            // hide summary frame
+//            // gone summary frame
 //            hideSummaryFrame();
 
         }
@@ -461,7 +461,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
             @Override
             public void onGlobalLayout() {
-                // hide
+                // gone
                 btnStopAndSubmit.setVisibility(View.GONE);
                 frameSummary.setY(frameSummary.getY() + frameSummary.getHeight());
 
@@ -480,7 +480,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         btnSubmit.setVisibility(View.VISIBLE);
         btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
 
-        // hide preview
+        // gone preview
         previewImage.setImageResource( 0 );
 
     }
@@ -655,10 +655,10 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
 
             @Override
             public void onStart() {
-                // hide preview image
+                // gone preview image
                 previewImage.setImageResource( 0 );
 
-                // hide usability features
+                // gone usability features
                 frameShare.setVisibility(View.INVISIBLE);
                 frameLogo.setVisibility(View.INVISIBLE);
 
@@ -679,7 +679,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
                 params.addRule(RelativeLayout.ABOVE, frameSummary.getId());
 
-                // hide recording frame
+                // gone recording frame
                 frameRecording.setVisibility(View.INVISIBLE);
 
             }
@@ -836,7 +836,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                     // refresh views
                     binding();
 
-                    // hide stop button
+                    // gone stop button
                     btnStopAndSubmit.setVisibility(View.GONE);
 
                     // change start button
@@ -846,7 +846,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                     // clear flag
                     mOnDisplaySummary = false;
 
-                    // hide summary frame
+                    // gone summary frame
                     hideSummaryFrame();
 
                     // to success page

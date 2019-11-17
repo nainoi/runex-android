@@ -1,0 +1,220 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:background="@android:color/white"
+    android:clickable="true">
+
+    <!-- Frame contents -->
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+            xmlns:app="http://schemas.android.com/apk/res-auto"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:clickable="true">
+
+            <!-- Frame content version 2 -->
+            <LinearLayout
+                android:id="@+id/frame_contents"
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:background="@drawable/background_gray_borders_with_soft_rounded_corners"
+                android:padding="4dp"
+                android:layout_margin="12dp"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/frame_toolbar">
+
+                <include android:id="@+id/vh_event"
+                    layout="@layout/list_item_event"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"/>
+
+                <TextView
+                    android:id="@+id/v_total_running_distance"
+                    android:text="ระยะสะสม"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/materialBlack"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="8dp"/>
+
+                <TextView
+                    android:id="@+id/lb_total_running_distance"
+                    android:text="0.0 km"
+                    android:layout_marginTop="-6dp"
+                    android:layout_marginLeft="8dp"
+                    android:textColor="@color/materialBlack"
+                    android:textSize="@dimen/textParagraphH1"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+
+            </LinearLayout>
+
+            <!-- Frame recycler view records -->
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_recycler_view"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:layout_below="@+id/frame_contents"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp"
+                android:layout_marginHorizontal="12dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    tools:listitem="@layout/list_item_record"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"/>
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Frame content -->
+            <RelativeLayout
+                android:visibility="gone"
+                android:layout_below="@+id/frame_toolbar"
+                android:id="@+id/frame_container"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:clickable="true"
+                android:orientation="vertical"
+                android:padding="16dp">
+
+                <!-- Frame total running distance-->
+                <FrameLayout
+                    android:id="@+id/card_view_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_below="@+id/frame_event_detail">
+
+                    <androidx.cardview.widget.CardView
+                        android:id="@+id/card_total_running_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:layout_margin="12dp"
+                        android:orientation="vertical"
+                        app:cardCornerRadius="8dp">
+
+
+                        <com.think.runex.java.Customize.Views.xStatFrame
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/bg_stat"
+                            android:gravity="center_vertical"
+                            android:orientation="vertical"
+                            android:paddingHorizontal="22dp"
+                            android:paddingVertical="22dp">
+
+                            <TextView
+                                android:id="@+id/_v_total_running_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="ระยะสะสม"
+                                android:textColor="@android:color/white"
+                                android:textSize="16dp" />
+
+                            <TextView
+                                android:id="@+id/_lb_total_running_distance"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.0 km"
+                                android:textColor="@android:color/white"
+                                android:textSize="42dp" />
+
+                        </com.think.runex.java.Customize.Views.xStatFrame>
+
+                        <androidx.appcompat.widget.AppCompatImageButton
+                            android:id="@+id/btn_add_activity"
+                            android:layout_width="@dimen/space_24dp"
+                            android:layout_height="@dimen/space_24dp"
+                            android:layout_gravity="end"
+                            android:layout_marginTop="@dimen/space_8dp"
+                            android:layout_marginEnd="@dimen/space_8dp"
+                            android:background="@drawable/shape_btn_add_activity"
+                            android:scaleType="centerCrop"
+                            android:src="@mipmap/ic_plus" />
+
+                    </androidx.cardview.widget.CardView>
+
+                </FrameLayout>
+
+                <!-- Frame event detail -->
+                <LinearLayout
+                    android:id="@+id/frame_event_detail"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:visibility="gone"
+                    android:layout_marginBottom="28dp"
+                    android:orientation="horizontal">
+
+                    <androidx.cardview.widget.CardView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        app:cardCornerRadius="8dp">
+
+                        <com.think.runex.java.Customize.Views.xSquareImage
+                            android:id="@+id/event_image"
+                            android:layout_width="70dp"
+                            android:layout_height="70dp"
+                            android:scaleType="centerCrop"
+                            app:civ_border_color="@color/softGray"
+                            app:civ_border_width="1dp" />
+
+                    </androidx.cardview.widget.CardView>
+
+                    <TextView
+                        android:id="@+id/detail_lb_event_name"
+                        android:layout_width="0dp"
+                        android:layout_height="match_parent"
+                        android:layout_marginStart="8dp"
+                        android:layout_marginEnd="@dimen/space_8dp"
+                        android:layout_weight="1"
+                        android:ellipsize="marquee"
+                        android:gravity="center_vertical"
+                        android:singleLine="true"
+                        android:text="Event Name"
+                        android:textColor="@android:color/black"
+                        android:textSize="16dp"
+                        android:textStyle="bold" />
+
+                    <androidx.appcompat.widget.AppCompatImageButton
+                        android:id="@+id/btn_history"
+                        android:layout_width="@dimen/space_32dp"
+                        android:layout_height="@dimen/space_32dp"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginEnd="@dimen/space_12dp"
+                        android:background="@android:color/transparent"
+                        android:foreground="?selectableItemBackground"
+                        android:padding="@dimen/space_4dp"
+                        android:scaleType="centerCrop"
+                        android:src="@drawable/ic_record" />
+
+                </LinearLayout>
+
+            </RelativeLayout>
+
+            <!-- Frame toolbar -->
+            <include layout="@layout/frame_toolbar"
+                android:id="@+id/frame_toolbar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"/>
+
+        </RelativeLayout>
+
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+
+    <!-- Frame display fragment -->
+    <FrameLayout
+        android:id="@+id/display_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
+</FrameLayout>

@@ -25,13 +25,13 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         super(itemView);
 
         rootView = itemView.findViewById(R.id.list_item);
-        lbDistance = itemView.findViewById(R.id.lb_distance);
+        lbDistance = itemView.findViewById(R.id.lb_description);
         lbDate = itemView.findViewById(R.id.lb_date);
         lbCaption = itemView.findViewById(R.id.lb_caption);
     }
 
     public static RecordViewHolder create(ViewGroup parent) {
-        return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record, null, false));
+        return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record, parent, false));
     }
 
     public void bind(ActivityInfoBean data) {

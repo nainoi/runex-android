@@ -1,7 +1,10 @@
 package com.think.runex.java.ViewHolders;
 
+import android.content.Context;
 import android.graphics.Color;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -16,6 +19,7 @@ import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
 import com.think.runex.java.Pages.onItemClick;
+import com.think.runex.java.Utils.L;
 
 public class VHEvent extends RecyclerView.ViewHolder {
     // views
@@ -35,6 +39,10 @@ public class VHEvent extends RecyclerView.ViewHolder {
         lbDistance = v.findViewById(R.id.lb_distance);
         lbStartReg = v.findViewById(R.id.lb_begin_registration);
         imgCover = v.findViewById(R.id.view_cover);
+    }
+
+    public static VHEvent create(ViewGroup parent){
+        return new VHEvent(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, parent, false));
     }
 
     public void bind(MultiObject ml, onItemClick listener){
@@ -58,6 +66,9 @@ public class VHEvent extends RecyclerView.ViewHolder {
             public void onClick(View view) {
                 // exit from this process
                 if( !payment.equals( Payment.PAYMENT_SUCCESS)) return;
+
+                // exit from this process
+                if( listener == null ) return;
 
                 // event listener
                 listener.onItemClicked( getAdapterPosition() );

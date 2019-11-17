@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
-    <ImageView
+    <com.think.runex.java.Customize.Views.Toolbar.xToolbarImageView
         android:src="@drawable/ic_back"
         android:padding="18dp"
         android:id="@+id/toolbar_navigation_button"
@@ -29,7 +29,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
-            <ImageView
+            <com.think.runex.java.Customize.Views.Toolbar.xToolbarImageView
                 android:visibility="gone"
                 android:id="@+id/toolbar_title_icon"
                 android:scaleType="centerCrop"
@@ -52,7 +52,7 @@
 
     </LinearLayout>
 
-    <ImageView
+    <com.think.runex.java.Customize.Views.Toolbar.xToolbarImageView
         android:src="@drawable/ic_record"
         android:padding="20dp"
         android:layout_gravity="right"
