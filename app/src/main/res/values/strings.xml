@@ -1,6 +1,6 @@
 <resources>
     <!-- A -->
-    <string name="app_name">Runex</string>
+    <string name="app_name">RUNEX</string>
     <string name="add_distance">เพิ่มระยะวิ่ง</string>
     <string name="add_image">เพิ่มรูปภาพ</string>
     <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>

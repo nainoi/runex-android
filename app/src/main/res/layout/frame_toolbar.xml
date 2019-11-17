@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:orientation="vertical"
+    android:layout_width="match_parent"
+    android:layout_height="?attr/actionBarSize">
+
+    <ImageButton
+        android:src="@drawable/ic_back"
+        android:padding="18dp"
+        android:background="@android:color/transparent"
+        android:id="@+id/toolbar_navigation_button"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"/>
+
+
+    <TextView
+        android:id="@+id/toolbar_title_label"
+        android:layout_marginHorizontal="?attr/actionBarSize"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"/>
+
+
+    <ImageButton
+        android:src="@android:drawable/ic_menu_more"
+        android:padding="18dp"
+        android:layout_gravity="right"
+        android:background="@android:color/transparent"
+        android:id="@+id/toolbar_options_button"
+        android:layout_width="?attr/actionBarSize"
+        android:layout_height="?attr/actionBarSize"/>
+
+</FrameLayout>

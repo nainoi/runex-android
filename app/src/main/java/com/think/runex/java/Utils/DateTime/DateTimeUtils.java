@@ -29,6 +29,40 @@ public class DateTimeUtils {
                 (sec < 10 ? "0" + sec : sec);
     }
 
+    public static DisplayDateTimeObject stringToDate(String strDate, String format) {
+        // prepare usage variables
+        final String mtn = ct + "stringToDate() ";
+
+        try {
+            // prepare usage variables
+            SimpleDateFormat df = new SimpleDateFormat(format);
+
+            // parse
+            Calendar c = Calendar.getInstance();
+            c.setTimeInMillis(df.parse(strDate).getTime());
+
+            int date = c.get(Calendar.DATE);
+            int month = c.get(Calendar.MONTH);
+            String shortMonth = Months.TH.get(month);
+            int year = c.get(Calendar.YEAR) + 543;
+
+            DisplayDateTimeObject display = new DisplayDateTimeObject();
+            display.Day = date;
+            display.MonthPosition = month;
+            display.shortMonth = shortMonth;
+            display.year = year;
+            display.timestamp = c.getTimeInMillis() / 1000;
+
+            return display;
+
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e);
+
+        }
+
+        return null;
+    }
+
     public static DisplayDateTimeObject stringToDate(String strDate) {
         // prepare usage variables
         final String mtn = ct + "stringToDate() ";

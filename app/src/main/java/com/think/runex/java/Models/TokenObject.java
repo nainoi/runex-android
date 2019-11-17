@@ -1,6 +1,8 @@
 package com.think.runex.java.Models;
 
 import com.google.gson.annotations.SerializedName;
+import com.think.runex.java.App.Configs;
+import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DateTime.DisplayDateTimeObject;
 import com.think.runex.java.Utils.L;
@@ -61,7 +63,7 @@ public class TokenObject{
         if (expire == null || expire.length() == 0) {
             return 0;
         }
-        DisplayDateTimeObject displayDate = DateTimeUtils.stringToDate(expire);
+        DisplayDateTimeObject displayDate = DateTimeUtils.stringToDate(expire, Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
         return displayDate.timestamp;
     }
 

@@ -4,7 +4,6 @@ import android.Manifest;
 import android.app.Activity;
 
 import com.google.gson.Gson;
-import com.google.gson.GsonBuilder;
 import com.think.runex.java.App.Configs;
 
 import java.text.DecimalFormat;
@@ -19,12 +18,15 @@ public class Globals {
     public static Gson GSON = new Gson();
     public static DecimalFormat DCM = new DecimalFormat("0.0");
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
+    public static SimpleDateFormat SDF_TOKEN = new SimpleDateFormat(Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
     public static final int FIXED_SCREEN_WIDTH = 1024;
 
     //--> Platform
     public static final String PLATFORM = "android";
 
+    //--> Payment status
+    public static final String PAYMENT_SUCCESS = "PAYMENT_SUCCESS";
 
     //--> Auth
     public static final String HEADER_AUTHORIZATION = "Authorization";

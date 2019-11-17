@@ -1,5 +1,6 @@
 package com.think.runex.java.ViewHolders;
 
+import android.graphics.Color;
 import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
@@ -11,6 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.APIs;
+import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
 import com.think.runex.java.Pages.onItemClick;
@@ -19,6 +21,7 @@ public class VHEvent extends RecyclerView.ViewHolder {
     // views
     private TextView lbEventName;
     private TextView lbEventType;
+    private TextView lbEventBill;
     private TextView lbDistance;
     private TextView lbStartReg;
     private ImageView imgCover;
@@ -28,6 +31,7 @@ public class VHEvent extends RecyclerView.ViewHolder {
 
         lbEventName = v.findViewById(R.id.lb_event_name);
         lbEventType = v.findViewById(R.id.lb_event_type);
+        lbEventBill = v.findViewById(R.id.lb_event_bill);
         lbDistance = v.findViewById(R.id.lb_distance);
         lbStartReg = v.findViewById(R.id.lb_begin_registration);
         imgCover = v.findViewById(R.id.view_cover);
@@ -37,16 +41,25 @@ public class VHEvent extends RecyclerView.ViewHolder {
         // prepare usage variables
         EventObject.DataBean evt = (EventObject.DataBean)ml.getAttachedObject();
         EventObject.DataBean.EventBean evtVal = evt.getEvent();
+        Payment payment =  evtVal.getCustomPaymentColor();
 
         // binding
         lbEventName.setText( (evtVal.getName() +"").trim() );
         lbEventType.setText( (evtVal.getCategory().getName() +"").toUpperCase() );
         lbStartReg.setText(evtVal.getCustomRegDuration());
+        //--> billing
+        lbEventBill.setText( payment.DESC );
+        lbEventBill.setTextColor(Color.parseColor("#"+ payment.COLOR_HEX) );
+        //--> image
         Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover() ).into( imgCover );
-        
+        //--> event
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                // exit from this process
+                if( !payment.equals( Payment.PAYMENT_SUCCESS)) return;
+
+                // event listener
                 listener.onItemClicked( getAdapterPosition() );
 
             }

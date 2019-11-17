@@ -1,5 +1,7 @@
 package com.think.runex.java.Models;
 
+import com.think.runex.java.Constants.Payment;
+
 import java.util.ArrayList;
 import java.util.List;
 
@@ -243,6 +245,9 @@ public class EventObject {
              */
 
             private String customRegDuration;
+            private Payment customPaymentColor;
+            private int customPaymentDesc;
+
             private String id;
             private String name;
             private String description;
@@ -257,6 +262,22 @@ public class EventObject {
             private String end_event;
             private List<ProductBean> product;
             private List<TicketBean> ticket;
+
+            public int getCustomPaymentDesc() {
+                return customPaymentDesc;
+            }
+
+            public void setCustomPaymentDesc(int customPaymentDesc) {
+                this.customPaymentDesc = customPaymentDesc;
+            }
+
+            public Payment getCustomPaymentColor() {
+                return customPaymentColor;
+            }
+
+            public void setCustomPaymentColor(Payment customPaymentColor) {
+                this.customPaymentColor = customPaymentColor;
+            }
 
             public String getCustomRegDuration() {
                 return customRegDuration;

@@ -23,10 +23,8 @@ import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
 import com.think.runex.java.Models.EventObject;
-import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Models.ActivityInfoBean;
-import com.think.runex.java.Models.EventDetailObject;
-import com.think.runex.java.Pages.Record.ActivityRecordPage;
+import com.think.runex.java.Pages.Record.EventRecordHistoryPage;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
@@ -140,7 +138,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
                     // update total distance
                     lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) + " km");
 
-                    //Keep activity record list for ActivityRecordPage
+                    //Keep activity record list for EventRecordHistoryPage
                     activityRecordList = db.getActivity_info();
 
                 } catch (Exception e) {
@@ -217,22 +215,24 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
                             page);
 
         } else if (v.getId() == R.id.btn_history) {
-            activityRecordPage();
+            recordPage();
         }
     }
 
 
-    private void activityRecordPage() {
+    private void recordPage() {
         if (activityRecordList == null || activityRecordList.size() == 0) {
             Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
             return;
         }
-        Intent i = new Intent(getContext(), ActivityRecordPage.class);
-        Bundle b = new Bundle();
-        //--> Bundle
-        b.putParcelableArrayList("recodeList", activityRecordList);
+
+        // prepare usage variables
+        EventRecordHistoryPage page = new EventRecordHistoryPage();
+
         // update props
-        i.putExtras(b);
-        startActivity(i);
+        page.setRecordList(activityRecordList);
+
+        // go to record page
+        ChildFragmentUtils.newInstance( this ).addChildFragment(R.id.display_fragment_frame, page);
     }
 }

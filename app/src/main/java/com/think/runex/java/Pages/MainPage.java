@@ -112,22 +112,18 @@ public class MainPage extends xFragment {
 
         // hide current displaying fragment
         if (mCurrentFragment != null) hideDisplayingFragment(mCurrentFragment);
-//
-//        switch( itemId ){
-////            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
-//            case R.id.menu_my_events: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, pageMyEvent); break;
-//            case R.id.menu_record: recordPage(); break;// StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new RecordPage()); break;
-//            case R.id.menu_profile: Stat3icChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, pageProfile); break;
-//            default: onSelected = false; break;
-//
-//        }
+
+        // prepare usage variables
         ChildFragmentUtils childFragmentUtils = ChildFragmentUtils.newInstance(this);
 
         switch (itemId) {
-//            case R.id.menu_home: StaticChildFragmentUtils.replaceChildFragment(CHILD_CONTAINER_ID, new EventsPage()); break;
             case R.id.menu_my_events:
                 childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageMyEvent);
                 mCurrentFragment = pageMyEvent;
+
+                // feature
+                pageMyEvent.onResult(null);
+
                 break;
             case R.id.menu_record:
                 childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageRecord);
@@ -156,14 +152,8 @@ public class MainPage extends xFragment {
         bottomNavigationView.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
+                // click on same button
                 if (item.getItemId() == mCurrentItemId) return false;
-//                if (item.getItemId() == R.id.menu_record) {
-//                    // display record page
-//                    recordPage();
-//
-//                    // exit from this process
-//                    return false;
-//                }
 
                 return updateScreen(item.getItemId());
             }

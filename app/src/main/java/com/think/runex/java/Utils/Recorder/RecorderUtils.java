@@ -4,12 +4,7 @@ import android.app.Activity;
 import android.os.Handler;
 
 import com.think.runex.java.Utils.DateTime.DateTimeUtils;
-import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
-
-import java.text.DecimalFormat;
-import java.util.ArrayList;
-import java.util.List;
 
 public class RecorderUtils {
     /**
@@ -24,9 +19,9 @@ public class RecorderUtils {
     private Activity mActivity;
 
     // explicit variables
-    public long mRecordTime = 0L;
-    public long mRecordPace = 0L;
-    public double mRecordCalories = 0L;
+//    public long mRecordTime = 0L;
+    public long paceMillis = 0L;
+    public double calories = 0L;
     public double mRecordDistanceKm = 0.0;
     public double mLastRecordDistanceKm = 0.0;
     public String mRecordDisplayTime = "00:00";
@@ -34,6 +29,9 @@ public class RecorderUtils {
     private boolean START = false;
     private final int RECURSIVE_TIME = 1000;
     private final int INCREATE_TIME = 1000;
+    //--> stamp time recording
+    private long stampMillis = 0L;
+    public long recordDurationMillis = 0L;
 
     private RecorderUtils(Activity activity) {
         // prepare usage variables
@@ -61,6 +59,10 @@ public class RecorderUtils {
     /**
      * Process methods
      */
+    private long diffMillisTime(){
+        // prepare usage variables
+        return System.currentTimeMillis() - stampMillis;
+    }
     private void recursive() {
         mRecursiveHandler.postDelayed(mRecursiveRunner, RECURSIVE_TIME);
 
@@ -90,7 +92,12 @@ public class RecorderUtils {
                 try {
                     while (START) {
                         // update recording time
-                        mRecordTime += INCREATE_TIME;
+//                        mRecordTime += INCREATE_TIME;
+
+                        // update record time'
+                        recordDurationMillis += diffMillisTime();
+                        //-> update props
+                        stampMillis = System.currentTimeMillis();
 
                         // calculate cal
                         calculateCalories();
@@ -99,7 +106,7 @@ public class RecorderUtils {
                         calculatePace();
 
                         // display time
-                        mRecordDisplayTime = DateTimeUtils.toTimeFormat(mRecordTime);
+                        mRecordDisplayTime = DateTimeUtils.toTimeFormat(recordDurationMillis);
 
                         // main runner
                         mActivity.runOnUiThread(mainRunner);
@@ -121,10 +128,10 @@ public class RecorderUtils {
         final String mtn = ct + "recTimeAsMin() ";
 
         try {
-            double toSec = mRecordTime / 1000;
+            double toSec = recordDurationMillis / 1000;
             double toMin = toSec / 60;
 
-            L.i(mtn + "record time: " + mRecordTime);
+            L.i(mtn + "record time: " + recordDurationMillis);
             L.i(String.format(mtn + "record time as min: " + toMin + ""));
 
             return toMin;
@@ -142,10 +149,10 @@ public class RecorderUtils {
         final String mtn = ct + "paceAsMin() ";
 
         try {
-            final double toSec = mRecordPace / 1000;
+            final double toSec = paceMillis / 1000;
             final double toMin = toSec / 60;
 
-            if (mRecordPace <= 0 || Double.isNaN(toMin)) return 0;
+            if (paceMillis <= 0 || Double.isNaN(toMin)) return 0;
 
             return toMin;
 
@@ -166,32 +173,15 @@ public class RecorderUtils {
             // distance does not changed
             if (mLastRecordDistanceKm == mRecordDistanceKm || mRecordDistanceKm <= 0) return;
 
-            if (mRecordTime > 0) {
+            if (recordDurationMillis > 0) {
                 // prepare usage variables
                 final double prancerciseCaloriesPerHour = 450.00;
-                final double hours = (mRecordTime / 1000.00) / 60.00 / 60.00;
+                final double hours = (recordDurationMillis / 1000.00) / 60.00 / 60.00;
                 final double totalCalories = prancerciseCaloriesPerHour * hours;
 
                 // update props
-                mRecordCalories = Double.isNaN(totalCalories) ? 0.00 : totalCalories;
+                calories = Double.isNaN(totalCalories) ? 0.00 : totalCalories;
             }
-
-//            // distance does not changed
-//            if (mLastRecordDistanceKm == mRecordDistanceKm || mRecordDistanceKm <= 0) return;
-//
-//            if (mRecordTime > 0) {
-//                // prepare usage variables
-//                final long sec = mRecordTime / 1000;
-//                final double burnRate = (8.3 * 59 * 3.5) / 200;
-//                final double burnInMin = (burnRate * sec) / 60;
-//
-//                // update props
-//                mRecordCalories = Double.isNaN(burnInMin) ? 0 : burnInMin;
-//
-//            }
-//
-//            // update props
-//            mLastRecordDistanceKm = mRecordDistanceKm;
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
@@ -206,66 +196,28 @@ public class RecorderUtils {
 
         try {
             // calculate pace
-            final long millsec = (mRecordTime);
+            final long millsec = (recordDurationMillis);
 
             if (mRecordDistanceKm <= 0 || millsec <= 0 || Double.isNaN(millsec / 1000)) return;
 
-            final double paceDulation = mRecordTime / (mRecordDistanceKm);
-            final int min = Integer.parseInt(((mRecordPace / 1000) / 60) + "");
+            final double paceDulation = recordDurationMillis / (mRecordDistanceKm);
+            final int min = Integer.parseInt(((paceMillis / 1000) / 60) + "");
             final double secDuration = min * 60;
             final double sec = paceDulation - secDuration;
             final double pace = Double.parseDouble(min + "") + (sec / 1000);
 
             if (!Double.isNaN(pace)) {
-                mRecordPace = (long)((pace * 1000) > (20 * 3600 * 1000)
+                paceMillis = (long)((pace * 1000) > (20 * 3600 * 1000)
                         ? (20 * 3600 * 1000)
                         : pace * 1000);
-                mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
+                mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(paceMillis);
 
             }
-
-//
-//            if (!Double.isNaN(sec / mRecordDistanceKm)) {
-//                final long pace = Long.parseLong((long) (sec / mRecordDistanceKm) + "");
-//
-//                if (!Double.isNaN(pace)) {
-//                    mRecordPace = (pace * 1000) > (20 * 3600 * 1000)
-//                            ? (20 * 3600 * 1000)
-//                            : pace * 1000;
-//                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
-//
-//                }
-//
-//            }
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
         }
 
-
-//        try {
-//            // calculate pace
-//            final long millsec = (mRecordTime);
-//            final double sec = millsec / 1000;
-//
-//            if (mRecordDistanceKm <= 0 || sec <= 0 || Double.isNaN(sec)) return;
-//
-//            if (!Double.isNaN(sec / mRecordDistanceKm)) {
-//                final long pace = Long.parseLong((long) (sec / mRecordDistanceKm) + "");
-//
-//                if (!Double.isNaN(pace)) {
-//                    mRecordPace = (pace * 1000) > (20 * 3600 * 1000)
-//                            ? (20 * 3600 * 1000)
-//                            : pace * 1000;
-//                    mRecordPaceDisplayTime = DateTimeUtils.toTimeFormat(mRecordPace);
-//
-//                }
-//
-//            }
-//
-//        } catch (Exception e) {
-//            L.e(mtn + "Err: " + e.getMessage());
-//        }
     }
 
     public void addDistance(double distance) {
@@ -287,12 +239,12 @@ public class RecorderUtils {
         START = false;
 
         // clear result
-        mRecordTime = 0L;
-        mRecordPace = 0L;
+        recordDurationMillis = 0L;
+        paceMillis = 0L;
         mRecordDisplayTime = "00:00";
         mRecordPaceDisplayTime = "00:00";
         mRecordDistanceKm = 0.0;
-        mRecordCalories = 0.0;
+        calories = 0.0;
 
     }
 
@@ -319,6 +271,9 @@ public class RecorderUtils {
 
         // update flag
         START = true;
+
+        // update props
+        stampMillis = System.currentTimeMillis();
 
         // thread handler
         threadHandler();

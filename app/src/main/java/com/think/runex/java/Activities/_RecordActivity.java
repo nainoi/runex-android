@@ -296,9 +296,9 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 // prepare recording object
                 RecorderObject recorderObj = new RecorderObject();
                 recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
-                recorderObj.setRecordingTime(mRecorderUtils.mRecordTime);
+                recorderObj.setRecordingTime(mRecorderUtils.recordDurationMillis);
                 recorderObj.setRecordingDisplayTime(mRecorderUtils.mRecordDisplayTime);
-                recorderObj.setCalories(mRecorderUtils.mRecordCalories);
+                recorderObj.setCalories(mRecorderUtils.calories);
                 recorderObj.setRecordingPaceDisplayTime(mRecorderUtils.mRecordPaceDisplayTime);
 
                 // display confirm stop recording
@@ -620,7 +620,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
         lbDistance.setText(Globals.DCM.format(mRecorderUtils.mRecordDistanceKm) + "km");
         lbPace.setText(mRecorderUtils.mRecordPaceDisplayTime);
-        lbCalories.setText( Globals.DCM.format(mRecorderUtils.mRecordCalories) );
+        lbCalories.setText( Globals.DCM.format(mRecorderUtils.calories) );
 
     }
 
@@ -813,7 +813,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         final double recordTime = mRecorderUtils.recTimeAsMin();
 
         // update props
-        request.setCalory(mRecorderUtils.mRecordCalories);
+        request.setCalory(mRecorderUtils.calories);
         request.setDistance(mRecorderUtils.mRecordDistanceKm);
         request.setTime(recordTime);
         request.setCaption("");

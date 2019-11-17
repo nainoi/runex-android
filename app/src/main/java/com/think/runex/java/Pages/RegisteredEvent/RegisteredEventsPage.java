@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
+import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -18,11 +19,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.java.App.App;
+import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Customize.Fragment.xFragment;
+import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
+import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.EventDetailPage;
 import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.ChildFragmentUtils;
@@ -55,8 +61,9 @@ public class RegisteredEventsPage extends xFragment implements
     private List<MultiObject> events = new ArrayList<>();
 
     // explicit variables
-    private boolean ON_LOADING = false;
     private boolean ON_REFRESH = false;
+    private String mUserEmail = null;
+
     // views
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
@@ -70,19 +77,54 @@ public class RegisteredEventsPage extends xFragment implements
      * Implement methods
      */
     @Override
+    public xFragment onResult(com.think.runex.java.Customize.xTalk talk) {
+        if (isAdded()) {
+            // prepare usage variables
+            final String mtn = ct + "onResult() ";
+
+            // prepare usage variables
+            AppEntity appEntity = App.instance(activity).getAppEntity();
+            UserObject.DataBean user = appEntity.user.getData();
+
+            if (!((mUserEmail + "").equalsIgnoreCase(user.getEmail()))) {
+
+                // exit from this process
+                if (ON_REFRESH) return null;
+
+                // update flag
+                ON_REFRESH = true;
+
+                // when no event
+                // display refresh dialog
+                refreshLayout.setRefreshing(true);
+
+                // refresh
+                onRefresh();
+            }
+
+            // update user email
+            // for condition
+            mUserEmail = user.getEmail();
+
+        }
+
+        return super.onResult(talk);
+    }
+
+    @Override
     public void onClick(View view) {
         // prepare usage variables
-        final String mtn = ct +"onClick() ";
+        final String mtn = ct + "onClick() ";
 
-        if( ON_REFRESH ) {
+        if (ON_REFRESH) {
             // log
-            L.i(mtn +"on refresh...");
+            L.i(mtn + "on refresh...");
 
             // exit from this process
             return;
         }
 
-        switch( view.getId() ){
+        switch (view.getId()) {
             case R.id.btn_see_all_events:
                 // hide no registered event frame
                 frameNoRegisterEvent.setVisibility(View.INVISIBLE);
@@ -100,8 +142,8 @@ public class RegisteredEventsPage extends xFragment implements
         }
 
 
-
     }
+
     @Override
     public void onSuccess(xResponse xrsp) {
         // prepare usage variables
@@ -110,9 +152,9 @@ public class RegisteredEventsPage extends xFragment implements
         try {
 
             // hide progress
-            refreshLayout.setRefreshing( false );
+            refreshLayout.setRefreshing(false);
 
-            if( xrsp.responseCode == HttpURLConnection.HTTP_UNAUTHORIZED ){
+            if (xrsp.responseCode == HttpURLConnection.HTTP_UNAUTHORIZED) {
                 // display need auth image
                 displayNeedAuth();
 
@@ -145,6 +187,8 @@ public class RegisteredEventsPage extends xFragment implements
                 //--> evt val
                 evtVal.setCustomRegDuration(start.Day + " " + start.shortMonth
                         + " - " + end.Day + " " + end.shortMonth + " " + end.year);
+                evtVal.setCustomPaymentColor(Payment.match(evt.getStatus()));
+
                 //--> multi object
                 ml.setAttachedObject(evt);
                 ml.setLayoutTypeId(0);
@@ -162,17 +206,17 @@ public class RegisteredEventsPage extends xFragment implements
 
 
             // on refresh
-            if( ON_REFRESH ) {
+            if (ON_REFRESH) {
                 // clear all item
                 events.clear();
 
             }
 
             // add all items
-            events.addAll( mlList );
+            events.addAll(mlList);
 
             // notify data has changed
-            if( ON_REFRESH ){
+            if (ON_REFRESH) {
                 // clear flag
                 this.ON_REFRESH = false;
 
@@ -183,7 +227,7 @@ public class RegisteredEventsPage extends xFragment implements
             } else eventAdapter.notifyItemRangeInserted(0, rsp.getData().size());
 
             // hide progress dialog
-            refreshLayout.setRefreshing( false );
+            refreshLayout.setRefreshing(false);
 
             // display frame no register event
             frameNoRegisterEvent.setVisibility(events.size() <= 0 ? View.VISIBLE : View.INVISIBLE);
@@ -198,8 +242,11 @@ public class RegisteredEventsPage extends xFragment implements
     public void onFailure(xResponse xResponse) {
         Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
 
+        // clear flag
+        ON_REFRESH = false;
+
         // hide progress
-        refreshLayout.setRefreshing( false );
+        refreshLayout.setRefreshing(false);
 
     }
 
@@ -223,8 +270,11 @@ public class RegisteredEventsPage extends xFragment implements
         eventAdapter = new EventAdapter(events, new onItemClick() {
             @Override
             public void onItemClicked(int position) {
+                // exit from this process
+                if( ON_REFRESH ) return;
+
                 // prepare usage variables
-                final String mtn = ct +"onItemClick() ";
+                final String mtn = ct + "onItemClick() ";
 
                 try {
 
@@ -232,13 +282,13 @@ public class RegisteredEventsPage extends xFragment implements
                     final EventDetailPage page = new EventDetailPage();
 
                     // update props
-                    page.setEvent( (EventObject.DataBean)events.get(position).getAttachedObject());
+                    page.setEvent((EventObject.DataBean) events.get(position).getAttachedObject());
 
                     // go to specified page
                     mChildFragmentUtils.addChildFragment(R.id.frame_fragment, page);
 
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e.getMessage());
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
                 }
 
             }
@@ -261,13 +311,15 @@ public class RegisteredEventsPage extends xFragment implements
         recyclerViewProps();
 
         // display progress dialog
-        refreshLayout.setRefreshing( true );
+        refreshLayout.setRefreshing(true);
 
         return v;
     }
 
-    /** Feature methods */
-    private void toRUNEXWebSite(){
+    /**
+     * Feature methods
+     */
+    private void toRUNEXWebSite() {
         // prepare usage variables
         Intent i = new Intent(Intent.ACTION_VIEW);
 
@@ -277,11 +329,13 @@ public class RegisteredEventsPage extends xFragment implements
         // go to web browser
         startActivityForResult(i, 0);
     }
-    private void hideNeedAuth(){
+
+    private void hideNeedAuth() {
         frameNeedAuth.setVisibility(View.INVISIBLE);
 
     }
-    private void displayNeedAuth(){
+
+    private void displayNeedAuth() {
         // display need auth image
         Picasso.get().load("https://firebasestorage.googleapis.com/v0/b/beverestlife.appspot.com/o/folderEmptyState.png?alt=media&token=ec2146a6-e656-4a05-a1ef-25db7529047b")
                 .into(imgNeedAuth, new Callback() {
@@ -307,9 +361,11 @@ public class RegisteredEventsPage extends xFragment implements
         new GetRegisteredEventService(getActivity(), this).doIt();
     }
 
-    /** View event listener */
-    private void viewEventListener(){
-        btnSeeAllEvents.setOnClickListener( this );
+    /**
+     * View event listener
+     */
+    private void viewEventListener() {
+        btnSeeAllEvents.setOnClickListener(this);
     }
 
     /**
@@ -320,18 +376,19 @@ public class RegisteredEventsPage extends xFragment implements
         recyclerView.setAdapter(eventAdapter);
     }
 
-    /** Life cycle */
+    /**
+     * Life cycle
+     */
     @Override
     public void onResume() {
         super.onResume();
 
-        // when no event
-        if( events.size() <= 0 ){
+        // when no item to display
+        if (events.size() <= 0) {
             // call api
             apiGetEvents();
 
-            // just refresh
-        } // else onRefresh();
+        }
 
     }
 

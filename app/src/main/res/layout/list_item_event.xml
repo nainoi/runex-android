@@ -52,8 +52,19 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:includeFontPadding="false"
-            android:textSize="8sp"
+            android:textSize="12sp"
             android:text="VIRTUAL RUN"
+            android:textColor="@android:color/black"
+            android:textStyle="bold" />
+
+        <TextView
+            android:id="@+id/lb_event_bill"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:includeFontPadding="false"
+            android:textSize="12sp"
+            android:layout_marginTop="2dp"
+            android:text="สำเร็จแล้ว"
             android:textColor="@color/orange"
             android:textStyle="bold" />
         

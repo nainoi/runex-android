@@ -48,8 +48,24 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     // views
     private View btnSubmit;
 
-
     /** Implement methods */
+    @Override
+    public xFragment onResult(xTalk talk) {
+
+        if( isAdded() ) {
+            Toast.makeText(activity, "hello", Toast.LENGTH_SHORT).show();
+
+            // xtalk refresh
+            xTalk x = new xTalk();
+            x.requestCode = Globals.RC_REFRESH;
+
+            // to registered event
+            pageRegisteredEvent.onResult(talk);
+
+        }
+
+        return this;
+    }
     @Override
     public void onSuccess(xResponse rsp) {
         // prepaer usage variables

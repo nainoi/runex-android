@@ -260,9 +260,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 // prepare recording object
                 RecorderObject recorderObj = new RecorderObject();
                 recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
-                recorderObj.setRecordingTime(mRecorderUtils.mRecordTime);
+                recorderObj.setRecordingTime(mRecorderUtils.recordDurationMillis);
                 recorderObj.setRecordingDisplayTime(mRecorderUtils.mRecordDisplayTime);
-                recorderObj.setCalories(mRecorderUtils.mRecordCalories);
+                recorderObj.setCalories(mRecorderUtils.calories);
                 recorderObj.setRecordingPaceDisplayTime(mRecorderUtils.mRecordPaceDisplayTime);
 
                 // display confirm stop recording
@@ -345,7 +345,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             // update map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Configs.GoogleMap.INITIAL_ZOOM));
 
-        }
+        } else L.e(mtn +"last know location does not exists: "+ lkLoc);
 //
 //        xLocation x1 = new xLocation(13.845689, 100.596905);
 //        xLocation x2 = new xLocation(13.845585, 100.594587);
@@ -608,7 +608,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         binding();
 
         // lab views
-        labAccuracy.setText("accuracy: " + location.accuracy);
+//        labAccuracy.setText("accuracy: " + location.accuracy);
+        labAccuracy.setVisibility(View.GONE); //setText("");
 
         // update props
         mLastLocation = xTo;
@@ -634,7 +635,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
         lbDistance.setText(Globals.DCM.format(mRecorderUtils.mRecordDistanceKm) + "km");
         lbPace.setText(mRecorderUtils.mRecordPaceDisplayTime);
-        lbCalories.setText(Globals.DCM.format(mRecorderUtils.mRecordCalories));
+        lbCalories.setText(Globals.DCM.format(mRecorderUtils.calories));
 
     }
 
@@ -830,7 +831,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         final double recordTime = mRecorderUtils.recTimeAsMin();
 
         // update props
-        request.setCalory(mRecorderUtils.mRecordCalories);
+        request.setCalory(mRecorderUtils.calories);
         request.setDistance(mRecorderUtils.mRecordDistanceKm);
         request.setTime(recordTime);
         request.setCaption("");
