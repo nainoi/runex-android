@@ -1,6 +1,5 @@
 package com.think.runex.java.Pages;
 
-import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,6 +19,8 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xAction;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
+import com.think.runex.java.Customize.Views.Toolbar.xToolbar;
+import com.think.runex.java.Customize.Views.Toolbar.xToolbarProps;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
 import com.think.runex.java.Models.EventObject;
@@ -58,6 +59,8 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     private TextView lbTotalDistance;
     private AppCompatImageButton btnAddActivity;
     private AppCompatImageButton btnHistory;
+    //--> toolbar
+    private xToolbar toolbar;
 
     @Nullable
     @Override
@@ -79,6 +82,17 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
 
         // view matching
         viewMatching(v);
+        //--> toolbar
+        toolbar = new xToolbar(v.findViewById(R.id.frame_toolbar)) {
+            @Override
+            public void onClick(View view) {
+                switch(view.getId()){
+                    case R.id.toolbar_navigation_button: activity.onBackPressed(); break;
+                    case R.id.toolbar_options_button: toRecordPage(); break;
+
+                }
+            }
+        };
 
         // view event listener
         viewEventListener();
@@ -87,6 +101,18 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
             // binding event name
             lbEventName.setText(mEventName);
             Picasso.get().load(mEventProfile).into(eventImage);
+
+            // toolbar props
+            xToolbarProps props = new xToolbarProps();
+
+            // update props
+            props.titleImageUrl = mEventProfile;
+            props.titleLabel = mEventName;
+            //--> option icon
+            toolbar.setImageOptionIcon( R.drawable.ic_record);
+
+            // binding
+            toolbar.bind(props);
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
@@ -98,10 +124,6 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     /**
      * Feature methods
      */
-    private void binding() {
-//        lbTotalDistance.setText();
-    }
-
     // view matching
     private void viewMatching(View v) {
         eventImage = v.findViewById(R.id.event_image);
@@ -109,6 +131,8 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
         lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         btnAddActivity = v.findViewById(R.id.btn_add_activity);
         btnHistory = v.findViewById(R.id.btn_history);
+
+        //--> toolbar
     }
 
     // view event listener
@@ -215,12 +239,12 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
                             page);
 
         } else if (v.getId() == R.id.btn_history) {
-            recordPage();
+            toRecordPage();
         }
     }
 
 
-    private void recordPage() {
+    private void toRecordPage() {
         if (activityRecordList == null || activityRecordList.size() == 0) {
             Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
             return;
@@ -233,6 +257,6 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
         page.setRecordList(activityRecordList);
 
         // go to record page
-        ChildFragmentUtils.newInstance( this ).addChildFragment(R.id.display_fragment_frame, page);
+        ChildFragmentUtils.newInstance(this).addChildFragment(R.id.display_fragment_frame, page);
     }
 }

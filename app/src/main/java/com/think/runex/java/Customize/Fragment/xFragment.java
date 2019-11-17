@@ -128,7 +128,7 @@ public class xFragment extends Fragment implements xFragmentRequestCode
     @Override
     public xFragment onResult(xTalk talk) {
         if (fragmentHandler != null) {
-            fragmentHandler.onResult(xTalk);
+            fragmentHandler.onResult(talk);
 
         }
 

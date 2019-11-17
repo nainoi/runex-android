@@ -1,32 +1,71 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:orientation="vertical"
     android:layout_width="match_parent"
     android:layout_height="?attr/actionBarSize">
 
-    <ImageButton
+    <ImageView
         android:src="@drawable/ic_back"
         android:padding="18dp"
-        android:background="@android:color/transparent"
         android:id="@+id/toolbar_navigation_button"
         android:layout_width="?attr/actionBarSize"
-        android:layout_height="?attr/actionBarSize"/>
+        android:layout_height="?attr/actionBarSize"
+        android:background="?android:attr/selectableItemBackgroundBorderless" />
 
-
-    <TextView
-        android:id="@+id/toolbar_title_label"
+    <LinearLayout
+        android:id="@+id/frame_toolbar_title"
+        android:layout_gravity="center"
+        android:gravity="center"
         android:layout_marginHorizontal="?attr/actionBarSize"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:orientation="horizontal"
+        android:layout_width="wrap_content"
+        android:layout_height="?attr/actionBarSize">
 
+        <androidx.cardview.widget.CardView
+            app:cardCornerRadius="8dp"
+            android:layout_marginRight="4dp"
+            android:id="@+id/frame_title_icon"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content">
 
-    <ImageButton
-        android:src="@android:drawable/ic_menu_more"
-        android:padding="18dp"
+            <ImageView
+                android:visibility="gone"
+                android:id="@+id/toolbar_title_icon"
+                android:scaleType="centerCrop"
+                android:layout_width="@dimen/textParagraphH1"
+                android:layout_height="@dimen/textParagraphH1"/>
+
+        </androidx.cardview.widget.CardView>
+
+        <TextView
+            android:id="@+id/toolbar_title_label"
+            android:text="label"
+            android:singleLine="true"
+            android:ellipsize="marquee"
+            android:gravity="center"
+            android:textSize="@dimen/textSmall"
+            android:textStyle="bold"
+            android:textColor="@android:color/black"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"/>
+
+    </LinearLayout>
+
+    <ImageView
+        android:src="@drawable/ic_record"
+        android:padding="20dp"
         android:layout_gravity="right"
-        android:background="@android:color/transparent"
         android:id="@+id/toolbar_options_button"
+        android:background="?android:attr/selectableItemBackgroundBorderless"
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"/>
 
+    <View
+        android:background="@android:color/darker_gray"
+        android:alpha="0.3"
+        android:layout_gravity="bottom"
+        android:id="@+id/toolbar_bottom_line"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"/>
 </FrameLayout>

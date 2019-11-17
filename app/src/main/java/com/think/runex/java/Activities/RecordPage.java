@@ -13,6 +13,7 @@ import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -345,51 +347,21 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             // update map camera
             mMap.moveCamera(CameraUpdateFactory.newLatLngZoom(ll, Configs.GoogleMap.INITIAL_ZOOM));
 
-        } else L.e(mtn +"last know location does not exists: "+ lkLoc);
+        } else L.e(mtn + "last know location does not exists: " + lkLoc);
 //
 //        xLocation x1 = new xLocation(13.845689, 100.596905);
+//        xLocation x11 = new xLocation(13.844689, 100.596905);
 //        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //
 //        locationChanged(x1);
-//        locationChanged(x2);
+//        locationChanged(x11);
 //        locationChanged(x3);
 //        locationChanged(x4);
 
-        new Thread(new Runnable() {
-
-            double l1 = -0.00003;
-            double l2 = -0.00003;
-
-            @Override
-            public void run() {
-                while (true) {
-
-                    try {
-                        Thread.sleep(1200);
-
-                        activity.runOnUiThread(new Runnable() {
-                            @Override
-                            public void run() {
-
-
-                                l1 += 0.000003;
-                                l2 += 0.000003;
-                                xLocation x4 = new xLocation(13.843457 + l1, 100.597479 + l2);
-                                locationChanged(x4);
-
-
-                            }
-                        });
-                    } catch (Exception e) {
-                        L.e(mtn + "Err: " + e.getMessage());
-                    }
-                }
-            }
-        });
-
     }
+
 
     @Nullable
     @Override
@@ -405,35 +377,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // Activity utils
         ActivityUtils actUtls = ActivityUtils.newInstance(activity);
         actUtls.fullScreen();
-
-        //--> Location utils
-        mLocUtils = LocationUtils.newInstance(activity);
-        //--> Permission utils
-        mPmUtils = PermissionUtils.newInstance(activity);
-
-        // view change listener
-        activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
-            @Override
-            public void onGlobalLayout() {
-                // remove listener
-                btnStopAndSubmit.getViewTreeObserver().removeOnGlobalLayoutListener(this);
-
-                // show
-                new Handler().postDelayed(new Runnable() {
-                    @Override
-                    public void run() {
-                        frameRecording.setVisibility(View.VISIBLE);
-
-                    }
-                }, 120);
-
-                // hide
-                btnStopAndSubmit.setVisibility(View.GONE);
-                frameSummary.setY(frameSummary.getY() + frameSummary.getHeight());
-
-
-            }
-        });
 
         return mView;
     }
@@ -555,21 +498,21 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // display fragment
         ChildFragmentUtils.newInstance(this)
                 .addChildFragment(
-                CONTAINER_ID,
-                new SuccessfullySubmitRunningResultPage()
-                        .setFragmentHandler(new xFragmentHandler() {
-                            @Override
-                            public xFragment onResult(xTalk talk) {
-                                // xTalk to profile
-                                xTalk x = new xTalk();
-                                x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+                        CONTAINER_ID,
+                        new SuccessfullySubmitRunningResultPage()
+                                .setFragmentHandler(new xFragmentHandler() {
+                                    @Override
+                                    public xFragment onResult(xTalk talk) {
+                                        // xTalk to profile
+                                        xTalk x = new xTalk();
+                                        x.requestCode = Globals.RC_TO_PROFILE_PAGE;
 
-                                // on result
-                                RecordPage.this.onResult( x );
+                                        // on result
+                                        RecordPage.this.onResult(x);
 
-                                return null;
-                            }
-                        }));
+                                        return null;
+                                    }
+                                }));
     }
 
     private void locationChanged(xLocation location) {
@@ -890,8 +833,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 L.i(mtn + "successfully");
                 L.i(mtn + "response: " + response.jsonString);
 
-                if( callback == null ) {
-
+                if (callback == null) {
                     // clear flag
                     onNetwork = false;
 
@@ -918,7 +860,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 onNetwork = false;
 
                 // callback
-                if( callback != null) callback.onFailure( response );
+                if (callback != null) callback.onFailure(response);
             }
         }).doIt(request);
     }
@@ -937,13 +879,13 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         // condition
         if (selectedEvents != null) {
-            L.i(mtn +"going to save record.");
+            L.i(mtn + "going to save record.");
 
             // save before submit multi events
             apiSaveRecord(new onNetworkCallback() {
                 @Override
                 public void onSuccess(xResponse response) {
-                    L.i(mtn +"going to submit multiple events.");
+                    L.i(mtn + "going to submit multiple events.");
 
                     // update multiple event
                     apiSubmitMultiEvents(selectedEvents);
@@ -1107,6 +1049,77 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // conditions
         beforeGPSRecording();
 
+    }
+
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        //--> Location utils
+        mLocUtils = LocationUtils.newInstance(activity);
+        //--> Permission utils
+        mPmUtils = PermissionUtils.newInstance(activity);
+
+        // view change listener
+        activity.getWindow().getDecorView().getViewTreeObserver().addOnGlobalLayoutListener(new ViewTreeObserver.OnGlobalLayoutListener() {
+            @Override
+            public void onGlobalLayout() {
+                // remove listener
+                btnStopAndSubmit.getViewTreeObserver().removeOnGlobalLayoutListener(this);
+
+                // show
+                new Handler().postDelayed(new Runnable() {
+                    @Override
+                    public void run() {
+                        frameRecording.setVisibility(View.VISIBLE);
+
+                    }
+                }, 120);
+
+                // hide
+                btnStopAndSubmit.setVisibility(View.GONE);
+                frameSummary.setY(frameSummary.getY() + frameSummary.getHeight());
+
+
+            }
+        });
+
+        // back pressed handler
+        handlerBackPressed();
+    }
+
+    @Override
+    public void onHiddenChanged(boolean hidden) {
+        super.onHiddenChanged(hidden);
+
+        // when visible
+        if( !hidden ) handlerBackPressed();
+    }
+
+    public void handlerBackPressed(){
+        //-> Handler back button
+        getView().setFocusableInTouchMode(true);
+        getView().requestFocus();
+        getView().setOnKeyListener(new View.OnKeyListener() {
+            @Override
+            public boolean onKey(View view, int i, KeyEvent keyEvent) {
+
+                // on back pressed 
+                if (mOnDisplaySummary && i == KeyEvent.KEYCODE_BACK) {
+                    // update flag
+                    mOnDisplaySummary = false;
+
+                    // hide 
+                    hideSummaryFrame();
+
+                    // exit from this process
+                    return true;
+
+                }
+
+                return false;
+            }
+        });
     }
 
 }

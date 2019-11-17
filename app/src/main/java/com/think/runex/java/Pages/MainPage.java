@@ -180,8 +180,13 @@ public class MainPage extends xFragment {
         // init pages
         pageMyEvent = new MyEventPage();
         pageRecord = new RecordPage().setPriority(Priority.PARENT).setFragmentHandler(new xFragmentHandler() {
+            // prepare usage variables
+            final String mtn = ct +"pageRecord() ";
+
             @Override
             public xFragment onResult(xTalk talk) {
+                L.i(mtn +"xtalk request-code: "+ talk.requestCode);
+
                 if (talk.requestCode == Globals.RC_TO_PROFILE_PAGE) {
                     // perform select
                     bottomNavigationView.setSelectedItemId(R.id.menu_profile);

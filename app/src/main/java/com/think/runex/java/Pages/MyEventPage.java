@@ -53,8 +53,6 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     public xFragment onResult(xTalk talk) {
 
         if( isAdded() ) {
-            Toast.makeText(activity, "hello", Toast.LENGTH_SHORT).show();
-
             // xtalk refresh
             xTalk x = new xTalk();
             x.requestCode = Globals.RC_REFRESH;
@@ -176,8 +174,5 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
             summaryPage();
 
         }
-
-
-
     }
 }

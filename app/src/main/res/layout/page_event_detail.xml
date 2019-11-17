@@ -80,6 +80,7 @@
             android:id="@+id/frame_event_detail"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:layout_marginBottom="28dp"
             android:orientation="horizontal">
 
@@ -134,7 +135,6 @@
     <include layout="@layout/frame_toolbar"
         android:id="@+id/frame_toolbar"
         android:layout_width="match_parent"
-        android:visibility="gone"
         android:layout_height="wrap_content"/>
 
     <!-- Frame display fragment -->
