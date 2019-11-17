@@ -66,6 +66,7 @@
                 android:layout_below="@+id/frame_contents"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
+                android:layout_marginBottom="4dp"
                 android:layout_marginHorizontal="12dp">
 
                 <androidx.recyclerview.widget.RecyclerView

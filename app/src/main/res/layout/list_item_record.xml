@@ -30,7 +30,8 @@
 
         <TextView
             android:id="@+id/lb_date"
-            style="@style/TextBody.Secondary"
+            android:textSize="12dp"
+            android:includeFontPadding="false"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_16dp"
@@ -42,8 +43,10 @@
         <TextView
             android:id="@+id/lb_description"
             android:text="10.50 กม. ใน 1:00:12"
+            android:includeFontPadding="false"
             android:layout_below="@+id/lb_date"
-            style="@style/TextBody2.Primary"
+            android:textSize="16dp"
+            android:textColor="@color/materialBlack"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignTop="@+id/ic_activity_type"

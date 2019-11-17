@@ -14,6 +14,7 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatImageButton;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
@@ -44,7 +45,8 @@ import com.think.runex.java.ViewHolders.VHEvent;
 import java.util.ArrayList;
 import java.util.List;
 
-public class EventDetailPage extends xFragment implements View.OnClickListener {
+public class EventDetailPage extends xFragment implements View.OnClickListener
+    , SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * Main variables
@@ -69,10 +71,23 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
     private AppCompatImageButton btnAddActivity;
     private AppCompatImageButton btnHistory;
     private RecyclerView recyclerView;
+    private SwipeRefreshLayout refreshLayout;
     // views
     private RecyclerView recordList;
     //--> toolbar
     private xToolbar toolbar;
+
+    /** Implement methods */
+    @Override
+    public void onRefresh() {
+        if( ON_NETWORKING ) return;
+
+        // update flag
+        ON_NETWORKING = true;
+
+        // get event detail
+        apiGetEventDetail(mEventId);
+    }
 
     @Nullable
     @Override
@@ -179,11 +194,13 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
         btnHistory = v.findViewById(R.id.btn_history);
 
         recyclerView = v.findViewById(R.id.recycler_view);
+        refreshLayout = v.findViewById(R.id.refresh_layout);
 
     }
 
     // view event listener
     private void viewEventListener() {
+        refreshLayout.setOnRefreshListener( this );
         btnAddActivity.setOnClickListener(this);
         btnHistory.setOnClickListener(this);
     }
@@ -217,11 +234,23 @@ public class EventDetailPage extends xFragment implements View.OnClickListener {
 
                 }
 
+                // hide progress dialog
+                refreshLayout.setRefreshing( false );
+
+                // clear flag
+                ON_NETWORKING = false;
+
             }
 
             @Override
             public void onFailure(xResponse response) {
                 L.e(mtn + "err-response: " + response.jsonString);
+
+                // hide progress dialog
+                refreshLayout.setRefreshing( false );
+
+                // clear flag
+                ON_NETWORKING = false;
 
             }
         }).doIt(eventId);
