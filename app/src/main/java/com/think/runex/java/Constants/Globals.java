@@ -36,6 +36,8 @@ public class Globals {
 
     //--> Permission name
     public static final String ACCESS_FINE_LOCAITON = Manifest.permission.ACCESS_FINE_LOCATION;
+    public static final String WRITE_EXTERNAL_STORAGE = Manifest.permission.WRITE_EXTERNAL_STORAGE;
+    public static final String READ_EXTERNAL_STORAGE = Manifest.permission.READ_EXTERNAL_STORAGE;
 
     //--> Providers
     public static final String PROVIDER_GOOGLE = "GoogleID";

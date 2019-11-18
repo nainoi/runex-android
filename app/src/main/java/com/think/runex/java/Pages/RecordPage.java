@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.FragmentManager;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -45,6 +46,7 @@ import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
+import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
@@ -83,7 +85,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private final String ct = "RecordPage->";
 
     // instance variables
-    private CallbackManager callbackManager;
+    private ActiveRegisteredEventCheckerPage mActiveRegisteredEventCheckerPageDialog;
     private LocationUtils mLocUtils;
     private PermissionUtils mPmUtils;
     private GoogleMapUtils mMapUtils;
@@ -134,7 +136,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     //-->Labs
     private TextView labAccuracy;
     //--> Frame map
-    private View frameMap;
+    private xMapViewGroup frameMap;
     //--> Frame share
     private View frameShare;
     private View btnSocialShare;
@@ -191,10 +193,12 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 // before share
                 beforeShare(); */
 
-                frameSummary.post(new Runnable() {
+                // full-size map frame
+                frameMap.overrideRequestLayout(1);
+                // handler callback
+                frameMap.post(new Runnable() {
                     @Override
                     public void run() {
-
                         // capture google map preview image
                         mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                             @Override
@@ -204,10 +208,13 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 RecorderObject recorderObject = getRecorderObject();
 
                                 // update props
-                                recorderObject.setMapPreviewImage( bitmap );
+                                recorderObject.setMapPreviewImage(bitmap);
 
                                 // go to share page
-                                toSharePage( recorderObject );
+                                toSharePage(recorderObject);
+
+                                // reverse-size map frame
+                                frameMap.overrideRequestLayout(1.1);
 
                                 // record
                                 // display map preview
@@ -217,7 +224,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 //                                shareWithFacebook();
                             }
                         });
-
                     }
                 });
 
@@ -356,16 +362,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         } else L.e(mtn + "last know location does not exists: " + lkLoc);
 //
-//        xLocation x1 = new xLocation(13.845689, 100.596905);
-//        xLocation x11 = new xLocation(13.844689, 100.596905);
-//        xLocation x2 = new xLocation(13.845585, 100.594587);
+        xLocation x1 = new xLocation(13.845689, 100.596905);
+        xLocation x11 = new xLocation(13.844689, 100.596905);
+        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //        xLocation x5 = new xLocation(13.842600, 100.598379);
 ////
-//        locationChanged(x1);
-//        locationChanged(x11);
-//        locationChanged(x2);
+        locationChanged(x1);
+        locationChanged(x11);
+        locationChanged(x2);
 //        locationChanged(x3);
 //        locationChanged(x4);
 //        locationChanged(x5);
@@ -389,18 +395,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         actUtls.fullScreen();
 
         return mView;
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-        // init facebook sdk
-        FacebookSdk.sdkInitialize(activity);
-        callbackManager = CallbackManager.Factory.create();
-
-        // prepare usage variables
-        final String mtn = ct + "onCreate() ";
-
     }
 
     /**
@@ -443,42 +437,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void shareWithFacebook() {
-        // prepare usage variables
-        ShareDialog shareDialog = new ShareDialog(this);
-        File file = DeviceUtils.instance(activity).takeScreenshot(activity, R.id.full_view_display);
-        Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
-        SharePhoto photo = new SharePhoto.Builder()
-                .setBitmap(bitmap)
-                .build();
-        SharePhotoContent content = new SharePhotoContent.Builder()
-                .addPhoto(photo)
-                .build();
-
-        // update props
-        shareDialog.registerCallback(callbackManager, new FacebookCallback<Sharer.Result>() {
-            @Override
-            public void onSuccess(Sharer.Result result) {
-                // after share
-                afterShare();
-            }
-
-            @Override
-            public void onCancel() {
-                afterShare();
-
-            }
-
-            @Override
-            public void onError(FacebookException error) {
-                afterShare();
-
-            }
-        });
-        // share to facebook
-        shareDialog.show(content);
-    }
-
     private AlertDialog dialogDiscardRecording(String title, String desc, DialogInterface.OnClickListener listener) {
         // prepare usage variables
         AlertDialog.Builder builder = new AlertDialog.Builder(activity);
@@ -497,17 +455,18 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    ActiveRegisteredEventCheckerPage mActiveRegisteredEventCheckerPageDialog;
-    private void toSharePage(RecorderObject recorderObject){
+    private void toSharePage(RecorderObject recorderObject) {
         // prepare usage variables
         SharePage page = new SharePage();
 
         //update props
-        page.setRecorderObject( recorderObject );
+        page.setRecorderObject(recorderObject);
 
         // to page
-        ChildFragmentUtils.newInstance( this ).addChildFragment(CONTAINER_ID, page);
+        ChildFragmentUtils.newInstance(this).addChildFragment(CONTAINER_ID, page);
+
     }
+
     private void toReviewEventPage() {
         mActiveRegisteredEventCheckerPageDialog = new ActiveRegisteredEventCheckerPage();
         mActiveRegisteredEventCheckerPageDialog.show(getChildFragmentManager(), "ReviewEvent");
@@ -624,12 +583,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         AnimUtils.instance().translateDown(frameSummary, new onAnimCallback() {
             @Override
             public void onEnd() {
-                // change layout above
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
-                params.addRule(RelativeLayout.ABOVE, frameRecording.getId());
-
-                frameMap.requestLayout();
-
             }
 
             @Override
@@ -654,13 +607,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         AnimUtils.instance().translateUp(frameSummary, new onAnimCallback() {
             @Override
             public void onEnd() {
-                // change layout above
-                RelativeLayout.LayoutParams params = (RelativeLayout.LayoutParams) frameMap.getLayoutParams();
-                params.addRule(RelativeLayout.ABOVE, frameSummary.getId());
-
-                // gone recording frame
-                frameRecording.setVisibility(View.INVISIBLE);
-
             }
 
             @Override
@@ -956,7 +902,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         icRecordState = v.findViewById(R.id.ic_recording_state);
 
         //--> Frame map
-        frameMap = v.findViewById(R.id.frame_map);
+        frameMap = v.findViewById(R.id.map);
 
         //--> Frame share
         frameShare = v.findViewById(R.id.frame_toolbar);
@@ -971,7 +917,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         frameChangeBgImage = v.findViewById(R.id.frame_change_background_image);
 
         //--> Summary views
-        frameSummary = v.findViewById(R.id.frame_summary);
+        frameSummary = v.findViewById(R.id.inherit_frame_summary);
         inputDistance = frameSummary.findViewById(R.id.lb_distance);
         inputDisplayTime = frameSummary.findViewById(R.id.lb_time);
         inputPaceDisplayTime = frameSummary.findViewById(R.id.lb_step);
@@ -983,15 +929,26 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
      * Initial GoogleMap
      */
     private void initMap() {
+        // prepare usage variables
+        FragmentManager fm = getFragmentManager();
+        SupportMapFragment mapFragment = SupportMapFragment.newInstance();
+
+        // transaction
+        fm.beginTransaction()
+                .replace(frameMap.getId(), mapFragment)
+                .commit();
+
         // Obtain the SupportMapFragment and get notified when the map is ready to be used.
-        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
+//        SupportMapFragment mapFragment = (SupportMapFragment) getChildFragmentManager().findFragmentById(R.id.map);
         mapFragment.getMapAsync(this);
 
     }
 
 
-    /** Getrer */
-    private RecorderObject getRecorderObject(){
+    /**
+     * Getrer
+     */
+    private RecorderObject getRecorderObject() {
         // prepare recording object
         RecorderObject recorderObj = new RecorderObject();
         recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
@@ -1032,8 +989,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             }
         }
 
-        callbackManager.onActivityResult(requestCode, resultCode, data);
-
     }
 
     @Override
@@ -1056,14 +1011,13 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     @Override
     public void onStop() {
+        super.onStop();
+
         // prepare usage variables
         final String mtn = ct + "onStop() ";
-
         // log
         L.i(mtn);
-//        mLocUtils.stop();
 
-        super.onStop();
     }
 
     @Override
@@ -1110,6 +1064,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                 // gone
                 btnStopAndSubmit.setVisibility(View.GONE);
+
+                // hide frame summary
                 frameSummary.setY(frameSummary.getY() + frameSummary.getHeight());
 
 
@@ -1125,10 +1081,10 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         super.onHiddenChanged(hidden);
 
         // when visible
-        if( !hidden ) handlerBackPressed();
+        if (!hidden) handlerBackPressed();
     }
 
-    public void handlerBackPressed(){
+    public void handlerBackPressed() {
         //-> Handler back button
         getView().setFocusableInTouchMode(true);
         getView().requestFocus();
@@ -1136,8 +1092,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
 
-                // on back pressed 
-                if (mOnDisplaySummary && i == KeyEvent.KEYCODE_BACK) {
+                // on back pressed
+                if (getChildFragmentCount() <= 0 && mOnDisplaySummary && i == KeyEvent.KEYCODE_BACK) {
                     // update flag
                     mOnDisplaySummary = false;
 

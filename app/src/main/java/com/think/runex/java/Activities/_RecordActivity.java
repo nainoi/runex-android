@@ -431,7 +431,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_record);
+        setContentView(R.layout.page_record);
 
         // init facebook sdk
         FacebookSdk.sdkInitialize(this);

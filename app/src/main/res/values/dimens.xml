@@ -45,6 +45,7 @@
 
     <!-- Text paragraph -->
     <dimen name="textVerticalPaddingNoRelate">28dp</dimen>
+    <dimen name="textRecordTime">48dp</dimen>
     <dimen name="textParagraphH1">36dp</dimen>
     <dimen name="textParagraphH2">28dp</dimen>
     <dimen name="textParagraphH3">22dp</dimen>

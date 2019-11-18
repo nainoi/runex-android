@@ -6,6 +6,7 @@ import android.content.pm.PackageManager;
 
 import androidx.core.app.ActivityCompat;
 import androidx.core.content.ContextCompat;
+import androidx.fragment.app.Fragment;
 
 public class PermissionUtils {
     /**
@@ -15,13 +16,22 @@ public class PermissionUtils {
 
     // instance variables
     private Activity mActivity;
+    private Fragment mFragment;
 
     public static PermissionUtils newInstance(Activity activity) {
         return new PermissionUtils(activity);
     }
 
+    public static PermissionUtils newInstance(Fragment fragment) {
+        return new PermissionUtils(fragment);
+    }
+
     private PermissionUtils(Activity activity) {
         mActivity = activity;
+    }
+
+    private PermissionUtils(Fragment fragment) {
+        mFragment = fragment;
     }
 
     /**
@@ -33,8 +43,11 @@ public class PermissionUtils {
     }
 
     public void requestPermissions(int requestCode, String... permissions) {
-        // No explanation needed; request the permission
-        ActivityCompat.requestPermissions(mActivity,
+        if(mFragment != null ) {
+            mFragment.requestPermissions(permissions, requestCode);
+
+            // No explanation needed; request the permission
+        } else ActivityCompat.requestPermissions(mActivity,
                 permissions,
                 requestCode);
 

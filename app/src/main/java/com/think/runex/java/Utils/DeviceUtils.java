@@ -70,14 +70,26 @@ public class DeviceUtils {
         else if(host instanceof Fragment) (((Fragment)host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
     }
 
+    public boolean isDirectoryExists(String dir){
+        File file = new File(dir);
+        if( !file.exists() ){
+            file.mkdirs();
+
+        }
+        return true;
+    }
     public File takeScreenshot(Context context, int viewId) {
         // prepare usage variables
         final String mtn = ct +"takeScreenshot() ";
         final String fileName = System.currentTimeMillis() +"";
 
         try {
+            // prepare usage variables
+            final String dir = Environment.getExternalStorageDirectory() +"/RUNEX";
+            isDirectoryExists( dir );
+
             // path
-            final String path = context.getExternalFilesDir(null).getAbsolutePath() +"/"+ fileName +".jpg";
+            final String path = dir +"/"+ fileName +".jpg";
 
             // create bitmap screen capture
             View frame = ((Activity) context).getWindow().getDecorView()

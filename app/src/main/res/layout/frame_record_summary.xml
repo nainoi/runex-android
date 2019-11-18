@@ -1,7 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
-    android:layout_height="wrap_content"
+    android:layout_height="match_parent"
     android:clickable="true"
     android:orientation="vertical">
 
@@ -46,10 +46,11 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:gravity="center"
+                android:includeFontPadding="false"
                 android:maxLines="1"
-                android:text="0km"
+                android:text="0.00km"
                 android:textColor="@android:color/black"
-                android:textSize="56dp"
+                android:textSize="@dimen/textRecordTime"
                 android:textStyle="bold" />
 
             <!-- running detail -->

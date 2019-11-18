@@ -16,12 +16,10 @@
         <FrameLayout
             android:id="@+id/frame_map"
             android:layout_width="match_parent"
-            android:layout_above="@+id/frame_recording"
-            android:layout_height="match_parent">
+            android:layout_height="wrap_content">
 
-            <fragment
+            <com.think.runex.java.Customize.Views.xMapViewGroup
                 android:id="@+id/map"
-                android:name="com.google.android.gms.maps.SupportMapFragment"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
@@ -81,14 +79,15 @@
 
         <!-- Record -->
         <LinearLayout
-            android:layout_alignParentBottom="true"
             android:id="@+id/frame_recording"
             android:visibility="invisible"
             android:orientation="vertical"
+            android:gravity="center"
             android:padding="8dp"
             android:background="@android:color/white"
+            android:layout_below="@+id/frame_map"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+            android:layout_height="match_parent">
 
             <!-- Record information -->
             <LinearLayout
@@ -104,6 +103,7 @@
                     android:id="@+id/v_distance"
                     android:textSize="16dp"
                     android:text="@string/distance"
+                    android:includeFontPadding="false"
                     android:gravity="center"
                     android:textColor="@android:color/darker_gray"
                     android:layout_width="match_parent"
@@ -114,10 +114,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
                     android:text="0.00km"
+                    android:includeFontPadding="false"
                     android:maxLines="1"
                     android:gravity="center"
                     android:textColor="@android:color/black"
-                    android:textSize="56dp"
+                    android:textSize="@dimen/textRecordTime"
                     android:textStyle="bold" />
 
                 <!-- running detail -->
@@ -333,22 +334,26 @@
         </LinearLayout>
 
         <!-- Summary -->
-        <include
-            android:id="@+id/frame_summary"
-            layout="@layout/frame_record_summary"
-            android:layout_alignParentBottom="true"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"/>
-
         <FrameLayout
-            android:id="@+id/display_fragment_frame"
+            android:id="@+id/inherit_frame_summary"
+            android:layout_below="@+id/frame_map"
+            android:background="@android:color/white"
             android:layout_width="match_parent"
-            android:layout_height="match_parent" />
+            android:layout_height="match_parent">
+
+            <include
+                android:id="@+id/frame_summary"
+                layout="@layout/frame_record_summary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"/>
+
+        </FrameLayout>
 
         <LinearLayout
             android:id="@+id/frame_labs"
             android:orientation="vertical"
             android:padding="2dp"
+            android:visibility="gone"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content">
 
@@ -390,4 +395,10 @@
             android:layout_height="match_parent"/>
 
     </FrameLayout>
+
+    <!-- Frame fragment display container -->
+    <FrameLayout
+        android:id="@+id/display_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 </FrameLayout>

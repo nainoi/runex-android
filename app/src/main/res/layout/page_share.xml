@@ -11,7 +11,7 @@
 
         <com.think.runex.java.Customize.Views.xSquareImage
             android:id="@+id/preview_image"
-            android:scaleType="centerCrop"
+            android:scaleType="fitXY"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
 
@@ -27,7 +27,7 @@
                 android:layout_marginLeft="18dp"
                 android:layout_marginTop="18dp"
                 android:src="@drawable/ic_logo_large"
-                android:layout_width="wrap_content"
+                android:layout_width="100dp"
                 android:layout_height="wrap_content"/>
 
             <!-- Frame contents -->
@@ -59,7 +59,6 @@
                         android:id="@+id/lb_distance"
                         android:textColor="@android:color/white"
                         android:text="0.00 กม."
-                        android:textStyle="bold"
                         android:includeFontPadding="false"
                         android:textSize="@dimen/textParagraphH1"
                         android:layout_width="wrap_content"
@@ -88,7 +87,6 @@
                         android:id="@+id/lb_duration"
                         android:textColor="@android:color/white"
                         android:text="00:00"
-                        android:textStyle="bold"
                         android:includeFontPadding="false"
                         android:textSize="@dimen/textParagraphH1"
                         android:layout_width="wrap_content"
