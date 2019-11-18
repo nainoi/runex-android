@@ -45,16 +45,33 @@
                     android:layout_height="wrap_content"
                     android:layout_marginTop="8dp"/>
 
-                <TextView
-                    android:id="@+id/lb_total_running_distance"
-                    android:text="0.0 km"
+                <LinearLayout
+                    android:id="@+id/frame_distance"
+                    android:orientation="horizontal"
                     android:layout_marginTop="-6dp"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="@color/materialBlack"
-                    android:textSize="@dimen/textParagraphH1"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content">
 
+                    <TextView
+                        android:id="@+id/lb_total_running_distance"
+                        android:text="0.0"
+                        android:layout_marginLeft="8dp"
+                        android:textStyle="bold"
+                        android:textColor="@color/materialBlack"
+                        android:textSize="@dimen/textParagraphH1"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                    <TextView
+                        android:id="@+id/lb_distance_unit"
+                        android:text="กม."
+                        android:layout_marginLeft="4dp"
+                        android:textColor="@color/materialBlack"
+                        android:textSize="@dimen/textSmall"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"/>
+
+                </LinearLayout>
 
             </LinearLayout>
 
@@ -64,6 +81,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
                 android:layout_below="@+id/frame_contents"
+                android:background="@android:color/white"
                 app:cardCornerRadius="8dp"
                 app:cardElevation="0dp"
                 android:layout_marginBottom="4dp"
@@ -126,7 +144,7 @@
                                 android:id="@+id/_lb_total_running_distance"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0.0 km"
+                                android:text="0.0"
                                 android:textColor="@android:color/white"
                                 android:textSize="42dp" />
 

@@ -65,7 +65,7 @@ public class GoogleMapUtils {
 //        mMap.animateCamera(cameraUpdate);
 
         // zoom out anim
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 15f));
+        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 16f));
 
     }
 
@@ -98,6 +98,9 @@ public class GoogleMapUtils {
 
     public void clearPolyline() {
         if (mLastPolyline != null) mLastPolyline.remove();
+
+        // clear point storage
+        points.clear();
 
     }
 

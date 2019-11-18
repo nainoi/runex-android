@@ -6,6 +6,8 @@ import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.core.content.ContextCompat;
+
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Utils.L;
@@ -49,6 +51,13 @@ public class xToolbar implements View.OnClickListener {
 
     }
 
+    public void setNavigationButtonColorFilter(int colorId){
+        toolbarNavButton.setColorFilter(ContextCompat.getColor(toolbar.getContext(), colorId));
+    }
+
+    public void setOptionButtonColorFilter(int colorId){
+        toolbarOptionButton.setColorFilter(ContextCompat.getColor(toolbar.getContext(), colorId));
+    }
     public void setImageOptionIcon(int resourceId) {
         toolbarOptionButton.setImageResource(resourceId);
     }

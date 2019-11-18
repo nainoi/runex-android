@@ -94,19 +94,20 @@
         </androidx.cardview.widget.CardView>
 
         <androidx.cardview.widget.CardView
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp"
-            android:layout_marginBottom="8dp"
-            android:layout_below="@+id/card_total_running_distance"
-            android:layout_above="@+id/frame_sign_out"
             android:id="@+id/cardview_recycler_view"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_above="@+id/frame_sign_out"
+            android:layout_below="@+id/card_total_running_distance"
+            android:layout_marginBottom="8dp"
+            android:background="@android:color/white"
+            app:cardCornerRadius="8dp"
+            app:cardElevation="0dp">
 
             <androidx.recyclerview.widget.RecyclerView
                 android:id="@+id/recycler_view"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </androidx.cardview.widget.CardView>
 

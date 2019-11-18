@@ -113,7 +113,7 @@
                     android:id="@+id/lb_distance"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="0km"
+                    android:text="0.00km"
                     android:maxLines="1"
                     android:gravity="center"
                     android:textColor="@android:color/black"

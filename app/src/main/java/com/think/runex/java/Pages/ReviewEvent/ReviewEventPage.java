@@ -17,8 +17,10 @@ import android.widget.Toast;
 
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Models.ActiveRegisteredEventObject;
 import com.think.runex.java.Models.RegEventsObject;
 import com.think.runex.java.Utils.L;
+import com.think.runex.java.Utils.Network.Services.GetMyActiveRegisteredEventService;
 import com.think.runex.java.Utils.Network.Services.MyRegEventService;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
@@ -77,8 +79,7 @@ public class ReviewEventPage extends DialogFragment implements View.OnClickListe
             }
         });
 
-
-        apiGetMyRegEvent();
+        apiGetMyActiveRegEvent();
 
         return v;
     }
@@ -125,19 +126,19 @@ public class ReviewEventPage extends DialogFragment implements View.OnClickListe
     /**
      * API methods
      */
-    private void apiGetMyRegEvent() {
-        new MyRegEventService(getActivity(), new onNetworkCallback() {
+    private void apiGetMyActiveRegEvent() {
+        new GetMyActiveRegisteredEventService(getActivity(), new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i("json-string: " + response.jsonString);
-                RegEventsObject object = Globals.GSON.fromJson(response.jsonString, RegEventsObject.class);
+                ActiveRegisteredEventObject object = Globals.GSON.fromJson(response.jsonString, ActiveRegisteredEventObject.class);
                 if (object.getCode() == HttpURLConnection.HTTP_OK) {
-                    for (int i = 0; i < object.getList().size(); i++) {
-                        RegEventsObject.EventChecker eventChecker = object.getList().get(i);
+                    for (int i = 0; i < object.getData().size(); i++) {
+                        ActiveRegisteredEventObject.DataBean eventChecker = object.getData().get(i);
                         eventChecker.setChecked(true);
-                        object.getList().set(i, eventChecker);
+                        object.getData().set(i, eventChecker);
                     }
-                    adapter.submitList(object.getList());
+                    adapter.submitList(object.getData());
                 }
             }
 

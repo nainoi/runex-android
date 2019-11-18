@@ -6,6 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
@@ -20,6 +21,12 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
     private TextView lbDistance;
     private TextView lbDate;
     private TextView lbCaption;
+    private View btnDel;
+    private View.OnClickListener listener = new View.OnClickListener(){
+        @Override
+        public void onClick(View view) {
+        }
+    };
 
     public RecordViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -28,6 +35,7 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         lbDistance = itemView.findViewById(R.id.lb_description);
         lbDate = itemView.findViewById(R.id.lb_date);
         lbCaption = itemView.findViewById(R.id.lb_caption);
+        btnDel = itemView.findViewById(R.id.btn_del);
     }
 
     public static RecordViewHolder create(ViewGroup parent) {
@@ -40,6 +48,9 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         lbDistance.setText(distance);
         lbDate.setText(data.getActivityDate());
         lbCaption.setText(data.getCaption());
+
+        btnDel.setOnClickListener( listener );
+
     }
 
 }

@@ -354,11 +354,14 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 //        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
-//
+//        xLocation x5 = new xLocation(13.842600, 100.598379);
+////
 //        locationChanged(x1);
 //        locationChanged(x11);
+//        locationChanged(x2);
 //        locationChanged(x3);
 //        locationChanged(x4);
+//        locationChanged(x5);
 
     }
 
@@ -568,7 +571,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void bindingSummary(RecorderObject recorder) {
         inputDisplayTime.setText(recorder.recordingDisplayTime);
-        inputDistance.setText(Globals.DCM.format(recorder.distanceKm) + "km");
+        inputDistance.setText(Globals.DCM_2.format(recorder.distanceKm) + "km");
         inputPaceDisplayTime.setText(recorder.recordingPaceDisplayTime);
         inputCalories.setText(Globals.DCM.format(recorder.calories) + "");
 
@@ -576,7 +579,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void binding() {
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
-        lbDistance.setText(Globals.DCM.format(mRecorderUtils.mRecordDistanceKm) + "km");
+        lbDistance.setText(Globals.DCM_2.format(mRecorderUtils.mRecordDistanceKm) + "km");
         lbPace.setText(mRecorderUtils.mRecordPaceDisplayTime);
         lbCalories.setText(Globals.DCM.format(mRecorderUtils.calories));
 

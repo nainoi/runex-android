@@ -139,9 +139,10 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             // update props
 //            props.titleImageUrl = mEventProfile;
             props.titleLabel = mEventName;
-
             //--> views
-            toolbar.toolbarOptionButton.gone();
+            toolbar.setImageOptionIcon(R.drawable.ic_plus);
+            toolbar.setNavigationButtonColorFilter(R.color.orange);
+            toolbar.setOptionButtonColorFilter(R.color.orange);
             toolbar.toolbarTitleIcon.gone();
 
             // binding
@@ -224,7 +225,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                     EventDetailObject.DataBean db = rhis.getData();
 
                     // update total distance
-                    lbTotalDistance.setText(Globals.DCM.format(db.getTotal_distance()) + " km");
+                    lbTotalDistance.setText(""+ Globals.DCM.format(db.getTotal_distance()));
 
                     //Keep activity record list for EventRecordHistoryPage
                     adapter.submitList(db.getActivity_info());
@@ -321,20 +322,25 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 
 
     private void toRecordPage() {
-        List<ActivityInfoBean> activityRecordList = new ArrayList<>();
-
-        if (activityRecordList == null || activityRecordList.size() == 0) {
-            Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
-            return;
-        }
-
         // prepare usage variables
-        EventRecordHistoryPage page = new EventRecordHistoryPage();
+        View v = new View(getActivity());
+        v.setId( R.id.btn_add_activity );
 
-        // update props
-        page.setRecordList(activityRecordList);
-
-        // go to record page
-        ChildFragmentUtils.newInstance(this).addChildFragment(R.id.display_fragment_frame, page);
+        // by pass
+        onClick( v );
+//
+//        if (adapter.getItemCount() == 0) {
+//            Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
+//            return;
+//        }
+//
+//        // prepare usage variables
+//        EventRecordHistoryPage page = new EventRecordHistoryPage();
+//
+//        // update props
+//        page.setRecordList(adapter.getList());
+//
+//        // go to record page
+//        ChildFragmentUtils.newInstance(this).addChildFragment(R.id.display_fragment_frame, page);
     }
 }

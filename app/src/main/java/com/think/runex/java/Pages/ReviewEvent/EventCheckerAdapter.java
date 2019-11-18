@@ -5,6 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.think.runex.java.Models.ActiveRegisteredEventObject;
 import com.think.runex.java.Models.RegEventsObject;
 
 import java.util.ArrayList;
@@ -13,7 +14,7 @@ import java.util.List;
 public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHolder> implements
         EventCheckerViewHolder.OnCheckedChangeListener {
 
-    private List<RegEventsObject.EventChecker> list;
+    private List<ActiveRegisteredEventObject.DataBean> list;
 
     @NonNull
     @Override
@@ -32,7 +33,7 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
         return list.size();
     }
 
-    void submitList(List<RegEventsObject.EventChecker> list) {
+    void submitList(List<ActiveRegisteredEventObject.DataBean> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -41,7 +42,7 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
     @Override
     public void onCheckedChanged(int position, boolean isChecked) {
         if (list != null) {
-            RegEventsObject.EventChecker eventChecker = list.get(position);
+            ActiveRegisteredEventObject.DataBean eventChecker = list.get(position);
             if (eventChecker != null) {
                 eventChecker.setChecked(isChecked);
                 list.set(position, eventChecker);
@@ -54,7 +55,7 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
         if(list == null || list.size() == 0) return new  String[0];
 
         ArrayList<String> selectedList = new ArrayList<String>();
-        for (RegEventsObject.EventChecker event : list) {
+        for (ActiveRegisteredEventObject.DataBean event : list) {
             if (event.isChecked()) {
                 selectedList.add(event.getId());
             }

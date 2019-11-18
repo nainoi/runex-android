@@ -11,6 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.think.runex.R;
+import com.think.runex.java.Models.ActiveRegisteredEventObject;
 import com.think.runex.java.Models.RegEventsObject;
 
 public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
@@ -33,7 +34,7 @@ public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
                 .inflate(R.layout.list_item_event_send_distance, parent, false));
     }
 
-    public void bind(RegEventsObject.EventChecker data, OnCheckedChangeListener checkedChangeListener) {
+    public void bind(ActiveRegisteredEventObject.DataBean data, OnCheckedChangeListener checkedChangeListener) {
         if (checkedChangeListener != null) {
             this.checkedChangeListener = checkedChangeListener;
         }
@@ -44,7 +45,7 @@ public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
             icon.setImageResource(R.mipmap.ic_checkbox);
         }
 
-        title.setText(data.getEvent().getName());
+        title.setText(data.getName());
 
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override

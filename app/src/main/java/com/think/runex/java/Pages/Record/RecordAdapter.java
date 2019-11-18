@@ -61,6 +61,9 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         }
     }
 
+    public List<ActivityInfoBean> getList(){
+        return list;
+    }
     @Override
     public int getItemCount() {
         if (list == null) return 0;
