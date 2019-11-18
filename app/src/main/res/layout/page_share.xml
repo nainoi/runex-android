@@ -1,6 +1,7 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
     android:orientation="vertical" android:layout_width="match_parent"
+    android:background="@android:color/white"
     android:layout_height="match_parent">
 
     <RelativeLayout
@@ -9,7 +10,7 @@
         android:layout_height="wrap_content">
 
         <com.think.runex.java.Customize.Views.xSquareImage
-            android:id="@+id/img_map_preview"
+            android:id="@+id/preview_image"
             android:scaleType="centerCrop"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"/>
@@ -19,7 +20,7 @@
             android:id="@+id/frame_customize"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
-            android:layout_alignBottom="@id/img_map_preview">
+            android:layout_alignBottom="@id/preview_image">
 
             <ImageView
                 android:id="@+id/logo"
@@ -57,7 +58,7 @@
                     <TextView
                         android:id="@+id/lb_distance"
                         android:textColor="@android:color/white"
-                        android:text="12.00 กม."
+                        android:text="0.00 กม."
                         android:textStyle="bold"
                         android:includeFontPadding="false"
                         android:textSize="@dimen/textParagraphH1"
@@ -86,7 +87,7 @@
                     <TextView
                         android:id="@+id/lb_duration"
                         android:textColor="@android:color/white"
-                        android:text="55:28"
+                        android:text="00:00"
                         android:textStyle="bold"
                         android:includeFontPadding="false"
                         android:textSize="@dimen/textParagraphH1"

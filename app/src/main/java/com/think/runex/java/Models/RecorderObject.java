@@ -1,11 +1,18 @@
 package com.think.runex.java.Models;
 
+import android.graphics.Bitmap;
+
 public class RecorderObject {
     public double distanceKm = 0.0;
     public long recordingTime = 0L;
     public String recordingDisplayTime = "00:00";
     public String recordingPaceDisplayTime = "00:00";
     public double calories = 0;
+    public Bitmap mapPreviewImage;
+
+    public void setMapPreviewImage(Bitmap mapPreviewImage) {
+        this.mapPreviewImage = mapPreviewImage;
+    }
 
     public void setRecordingPaceDisplayTime(String recordingPaceDisplayTime) {
         this.recordingPaceDisplayTime = recordingPaceDisplayTime;
