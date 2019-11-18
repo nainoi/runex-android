@@ -3,6 +3,7 @@ package com.think.runex.java.App;
 
 public class Configs {
     public static final String PLATFORM = "android";
+    public static final String SERVER_DISPLAY_FULL_DATE_TIME = "EEE, dd MMM yyyy HH:mm";
     public static final String SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'";
     public static final String SERVER_TOKEN_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
     public static final String SERVER_DATE_FORMAT = "yyyy-MM-dd";

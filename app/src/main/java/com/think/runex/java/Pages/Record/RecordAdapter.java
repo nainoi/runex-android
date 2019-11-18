@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.ActivityInfoBean;
 import com.think.runex.java.Models.RegEventsObject;
+import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.L;
 
 import java.util.List;
@@ -16,6 +17,15 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     /** Main variables */
     private final String ct = "RecordAdapter->";
     private List<ActivityInfoBean> list;
+    private onItemClick onItemClickListener;
+    private boolean editor;
+
+    public RecordAdapter(boolean editor, onItemClick onItemClickListener) {
+        super();
+
+        this.onItemClickListener = onItemClickListener;
+        this.editor = editor;
+    }
 
     @NonNull
     @Override
@@ -25,7 +35,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
-        holder.bind(list.get(position));
+        holder.bind(list.get(position), editor, onItemClickListener);
     }
 
     /** Feature methods */
@@ -68,6 +78,10 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     public int getItemCount() {
         if (list == null) return 0;
         return list.size();
+    }
+
+    public ActivityInfoBean getItem( int position ){
+        return list.get( position );
     }
 
     public void submitList(List<ActivityInfoBean> list) {

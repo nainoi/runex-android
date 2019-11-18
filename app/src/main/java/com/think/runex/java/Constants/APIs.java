@@ -6,6 +6,9 @@ public enum APIs {
     //--> A
     ADD_HISTORY(DOMAIN.VAL +"/api/v1/runhistory/add"),
 
+    //--> D
+    DELETE_EVENT_HISTORY(DOMAIN.VAL +"/api/v1/activity/deleteActivity/%s/%s"), ///v1/activity/deleteActivity/{event_id}/{act_id}
+
     //--> G
     GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v1/activity/getByEvent2/%s"), //{event_id}
     GET_REGISTERED_EVENT(DOMAIN.VAL + "/api/v1/register/myRegEvent"),

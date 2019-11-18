@@ -65,7 +65,7 @@ public class EventRecordHistoryPage extends xFragment {
     }
 
     private void setupRecyclerView() {
-        adapter = new RecordAdapter();
+        adapter = new RecordAdapter(false,null);
         recordList.setLayoutManager(new LinearLayoutManager(activity));
         recordList.setAdapter(adapter);
     }

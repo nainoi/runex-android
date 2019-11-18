@@ -25,7 +25,6 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -48,8 +47,8 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
-import com.think.runex.java.Pages.ReviewEvent.ReviewEventPage;
 import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
@@ -57,7 +56,6 @@ import com.think.runex.java.Utils.Animation.AnimUtils;
 import com.think.runex.java.Utils.Animation.onAnimCallback;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.DeviceUtils;
-import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
@@ -490,11 +488,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    ReviewEventPage mReviewEventPageDialog;
+    ActiveRegisteredEventCheckerPage mActiveRegisteredEventCheckerPageDialog;
 
     private void toReviewEventPage() {
-        mReviewEventPageDialog = new ReviewEventPage();
-        mReviewEventPageDialog.show(getChildFragmentManager(), "ReviewEvent");
+        mActiveRegisteredEventCheckerPageDialog = new ActiveRegisteredEventCheckerPage();
+        mActiveRegisteredEventCheckerPageDialog.show(getChildFragmentManager(), "ReviewEvent");
     }
 
     private void toSuccessfullySubmitResult() {
@@ -791,7 +789,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                 if (response.responseCode == HttpURLConnection.HTTP_OK) {
                     // remove fragment dialog
-                    mReviewEventPageDialog.dismissAllowingStateLoss();
+                    mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
 
                     // to begin step
                     toBegin();
@@ -807,7 +805,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 L.e(mtn + "err-response: " + response.jsonString);
 
                 // remove fragment dialog
-                mReviewEventPageDialog.dismissAllowingStateLoss();
+                mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
 
             }
         }).doIt(request);

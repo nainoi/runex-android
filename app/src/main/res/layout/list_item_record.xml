@@ -76,8 +76,11 @@
         android:layout_alignTop="@+id/frame_contents"
         android:layout_alignBottom="@+id/frame_contents"
         android:layout_alignParentRight="true"
+        android:layout_marginRight="8dp"
+        android:paddingVertical="12dp"
+        android:tint="@android:color/darker_gray"
         android:background="?attr/selectableItemBackgroundBorderless"
-        android:src="@android:drawable/ic_delete" />
+        android:src="@drawable/ic_trash" />
 
 <!--    <View-->
 <!--        android:layout_width="match_parent"-->

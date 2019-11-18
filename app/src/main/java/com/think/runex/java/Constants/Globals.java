@@ -18,6 +18,7 @@ public class Globals {
     public static Gson GSON = new Gson();
     public static DecimalFormat DCM = new DecimalFormat("0.0");
     public static DecimalFormat DCM_2 = new DecimalFormat("0.00");
+    public static SimpleDateFormat SDF_DISPLAY_FULL_DATE_TIME = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME);
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_TOKEN = new SimpleDateFormat(Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);

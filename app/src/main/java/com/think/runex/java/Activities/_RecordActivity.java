@@ -40,8 +40,8 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
-import com.think.runex.java.Pages.ReviewEvent.ReviewEventPage;
 import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
 import com.think.runex.java.Services.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
@@ -542,11 +542,11 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    ReviewEventPage mReviewEventPageDialog;
+    ActiveRegisteredEventCheckerPage mActiveRegisteredEventCheckerPageDialog;
 
     private void toReviewEventPage() {
-        mReviewEventPageDialog = new ReviewEventPage();
-        mReviewEventPageDialog.show(getSupportFragmentManager(), "ReviewEvent");
+        mActiveRegisteredEventCheckerPageDialog = new ActiveRegisteredEventCheckerPage();
+        mActiveRegisteredEventCheckerPageDialog.show(getSupportFragmentManager(), "ReviewEvent");
     }
 
     private void toSuccessfullySubmitResult() {
@@ -828,7 +828,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 if (response.responseCode == HttpURLConnection.HTTP_OK) {
 
                     // remove fragment dialog
-                    mReviewEventPageDialog.dismissAllowingStateLoss();
+                    mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
 
                     // reset result
                     reset();
@@ -859,7 +859,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 L.e(mtn + "err-response: " + response.jsonString);
 
                 // remove fragemnt dialog
-                mReviewEventPageDialog.dismissAllowingStateLoss();
+                mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
 
             }
         }).doIt(request);

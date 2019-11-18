@@ -139,6 +139,53 @@ public class NetworkUtils {
         thread(runner);
     }
 
+    public void delete(NetworkProps props, onNetworkCallback callback) {
+        // prepare usage variables
+        final String mtn = ct + "get() ";
+        final Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                try {
+                    // prepare usage variables
+                    Request.Builder builder = new Request.Builder()
+                            .delete()
+                            .url(props.url);
+
+                    // add headers
+                    addHeaders(props, builder);
+
+                    // prepare usage variables
+                    Request request = builder.build();
+                    Response response = getHttpClient().newCall(request).execute();
+                    final String strResult = response.body().string();
+
+                    L.i(mtn + "url: " + props.url);
+                    L.i(mtn + "headers: " + Globals.GSON.toJson(props.headers));
+
+                    try {
+                        onSuccess(response.code(), strResult, callback);
+
+                    } catch (Exception e) {
+                        L.e(mtn + "Err: " + e);
+                        onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+
+                    }
+
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e);
+                    onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+
+                }
+
+
+            }
+        };
+
+        // on thread
+        thread(runner);
+    }
+
     public void postFormData(NetworkProps props, onNetworkCallback callback) {
         // prepare usage variables
         final String mtn = ct + "postFormData() ";

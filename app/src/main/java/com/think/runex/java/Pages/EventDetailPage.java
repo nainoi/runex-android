@@ -1,5 +1,7 @@
 package com.think.runex.java.Pages;
 
+import android.app.AlertDialog;
+import android.content.DialogInterface;
 import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -37,11 +39,13 @@ import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.java.Utils.Network.Services.DeleteEventHistoryService;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.ViewHolders.VHEvent;
 
 
+import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -55,7 +59,6 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 
     // instance variables
     private EventObject.DataBean mEvent;
-    private List<ActivityInfoBean> records;
     private RecordAdapter adapter;
 
     // explicit variables
@@ -158,11 +161,52 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     /**
      * Feature methods
      */
+    private AlertDialog dialogConfirmation(String title, String desc, DialogInterface.OnClickListener listener) {
+        // prepare usage variables
+        AlertDialog.Builder builder = new AlertDialog.Builder(activity);
 
+        // update props
+        builder.setTitle(title);
+        builder.setMessage(desc);
+        builder.setPositiveButton("ยืนยัน", listener);
+        builder.setNegativeButton("ยกเลิก", listener);
+
+        // show
+        return builder.create();
+
+    }
+    private void removeItem(int position){
+        adapter.getList().remove( position );
+        adapter.notifyItemRemoved( position );
+    }
     // recycler view props
     private void recyclerViewProps(){
         // prepare usage variables
-        adapter = new RecordAdapter();
+        adapter = new RecordAdapter(true,new onItemClick() {
+            @Override
+            public void onItemClicked(int position) {
+
+                dialogConfirmation("ยืนยันลบกิจกรรม", "คุณต้องการลบกิจกรรมนี้ใช่หรือไม่", new DialogInterface.OnClickListener() {
+                    @Override
+                    public void onClick(DialogInterface dialogInterface, int i) {
+
+                        if( DialogInterface.BUTTON_POSITIVE == i ){
+                            // display progress dialog
+                            refreshLayout.setRefreshing( true );
+
+                            // update flag
+                            ON_NETWORKING = true;
+
+                            // fire: delete event history
+                            apiDeleteEventHistory(mEventId, adapter.getItem(position).getId(), position);
+
+                            // dismiss
+                        } else dialogInterface.dismiss();
+
+                    }
+                }).show();
+            }
+        });
 
         //--> update props
         recyclerView.setLayoutManager( new LinearLayoutManager( activity ));
@@ -209,6 +253,51 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     /**
      * API methods
      */
+    private void apiDeleteEventHistory(String eventId, String historyId, int position){
+        // prepare usage variables
+        final String mtn = ct +"apiDeleteEventHistory() ";
+
+        // fire
+        new DeleteEventHistoryService(activity, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                L.i(mtn +"response-code: "+ response.responseCode);
+                L.i(mtn +"response-json: "+ response.jsonString);
+
+                if( response.responseCode == HttpURLConnection.HTTP_OK ){
+                    // toast
+                    Toast.makeText(activity, "ลบกิจกรรมสำเร็จ", Toast.LENGTH_SHORT).show();
+
+                    // item removed notify
+                    removeItem( position );
+
+                }
+
+                // hide progress bar
+                refreshLayout.setRefreshing( false );
+
+                // update flag
+                ON_NETWORKING = false;
+
+                // refresh
+                onRefresh();
+
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                L.i(mtn +"response-code: "+ response.responseCode);
+                L.i(mtn +"response-json: "+ response.jsonString);
+
+                // hide progress bar
+                refreshLayout.setRefreshing( false );
+
+                // update flag
+                ON_NETWORKING = false;
+
+            }
+        }).doIt(eventId, historyId);
+    }
     private void apiGetEventDetail(String eventId) {
         // prepare usage variables
         final String mtn = ct + "apiGetEventDetail() ";

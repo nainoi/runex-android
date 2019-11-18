@@ -292,7 +292,7 @@ public class ProfilePage extends xFragment implements
     private void recyclerViewProps(){
         // prepare usage variables
         final String mtn = ct +"recyclerViewProps() ";
-        recordAdapter = new RecordAdapter();
+        recordAdapter = new RecordAdapter(false,null);
 
         // update props
         recyclerView.setLayoutManager( new LinearLayoutManager( activity ));

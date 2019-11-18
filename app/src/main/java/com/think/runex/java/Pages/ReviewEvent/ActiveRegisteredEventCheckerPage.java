@@ -18,16 +18,14 @@ import android.widget.Toast;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.ActiveRegisteredEventObject;
-import com.think.runex.java.Models.RegEventsObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Services.GetMyActiveRegisteredEventService;
-import com.think.runex.java.Utils.Network.Services.MyRegEventService;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import java.net.HttpURLConnection;
 
-public class ReviewEventPage extends DialogFragment implements View.OnClickListener {
+public class ActiveRegisteredEventCheckerPage extends DialogFragment implements View.OnClickListener {
 
     private RecyclerView eventList;
     private EventCheckerAdapter adapter;
@@ -37,9 +35,9 @@ public class ReviewEventPage extends DialogFragment implements View.OnClickListe
     /**
      * Main variables
      */
-    private final String ct = "ReviewEventPage->";
+    private final String ct = "ActiveRegisteredEventCheckerPage->";
 
-    public ReviewEventPage() {
+    public ActiveRegisteredEventCheckerPage() {
         // Required empty public constructor
     }
 
@@ -64,7 +62,7 @@ public class ReviewEventPage extends DialogFragment implements View.OnClickListe
         v.findViewById(R.id.btn_back).setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                Fragment fragment = ReviewEventPage.this;
+                Fragment fragment = ActiveRegisteredEventCheckerPage.this;
 
                 // event callback
                 if (getConfirmEventsListener() != null) {
