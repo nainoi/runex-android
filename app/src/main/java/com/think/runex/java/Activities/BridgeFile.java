@@ -46,6 +46,8 @@ public class BridgeFile extends xActivity {
         // prepare usage variables
         final String mtn = ct +"onBackPressed() ";
 
+        if( preventFromBackPressed ) return;
+
         // support back stack
         if( getSupportFragmentManager().getBackStackEntryCount() > 0 ){
             // pop back stack out

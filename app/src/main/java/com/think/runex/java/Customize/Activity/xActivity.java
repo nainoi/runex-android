@@ -18,6 +18,7 @@ public class xActivity extends FragmentActivity implements xActivityHandler {
     private final String ct = "xActivity->";
     public FragmentUtils fragmentManager;
     public int containerId = -1;
+    public boolean preventFromBackPressed = false;
 
     public void removeChildFragments() {
         // prepare usage variables
@@ -49,6 +50,10 @@ public class xActivity extends FragmentActivity implements xActivityHandler {
     /**
      * Setter
      */
+    public xActivity preventFromBackPressed( boolean b){
+        preventFromBackPressed = b;
+        return this;
+    }
     public xActivity setFragmentContainerId(int containerId) {
         this.containerId = containerId;
         return this;

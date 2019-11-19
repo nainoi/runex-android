@@ -78,6 +78,29 @@ public class DeviceUtils {
         }
         return true;
     }
+    public File saveFileFromBitmap(Bitmap bitmap, String destinationPath){
+        // prepare usage variables
+        final String mtn = ct +"saveFileFromBitmap() ";
+
+        try {
+            // create file temporary
+            File file = new File(destinationPath);
+
+            // Write file
+            FileOutputStream outputStream = new FileOutputStream(file);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+            //--> flush and close stream writing
+            outputStream.flush();
+            outputStream.close();
+
+            return file;
+
+        } catch ( Exception e ){
+            L.e(mtn +"Err: "+ e.getMessage());
+        }
+
+        return null;
+    }
     public File takeScreenshot(Context context, int viewId) {
         // prepare usage variables
         final String mtn = ct +"takeScreenshot() ";
@@ -102,17 +125,8 @@ public class DeviceUtils {
             //--> drawing a cache
             root.setDrawingCacheEnabled(false);
 
-            // create file temporary
-            File imageFile = new File( path );
-
-            // Write file
-            FileOutputStream outputStream = new FileOutputStream(imageFile);
-            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
-            //--> flush and close stream writing
-            outputStream.flush();
-            outputStream.close();
-
-            return imageFile;
+            // save file
+            return saveFileFromBitmap(bitmap, path);
 
         } catch (Throwable e) {
             L.e(mtn +"Err: "+ e.getMessage());

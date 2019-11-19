@@ -11,6 +11,7 @@ import com.think.runex.java.Models.RegEventsObject;
 import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.L;
 
+import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
@@ -18,7 +19,7 @@ import java.util.List;
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     /** Main variables */
     private final String ct = "RecordAdapter->";
-    private List<ActivityInfoBean> list;
+    private List<ActivityInfoBean> list = new ArrayList<>();
     private onItemClick onItemClickListener;
     private boolean editor;
 
@@ -121,5 +122,6 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         toCustomizeDate(addHour);
         sortByDate();
         notifyDataSetChanged();
+
     }
 }

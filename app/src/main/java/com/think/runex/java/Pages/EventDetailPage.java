@@ -391,8 +391,8 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                 public xFragment onResult(xTalk talk) {
 
                     if (talk.resultCode == xAction.SUCCESS.ID) {
-                        // get event detail
-                        apiGetEventDetail(mEventId);
+                        // on refresh
+                        onRefresh();
 
                     }
 

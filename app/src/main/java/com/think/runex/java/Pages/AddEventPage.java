@@ -4,8 +4,12 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
+import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.graphics.Matrix;
 import android.net.Uri;
 import android.os.Bundle;
 import android.provider.MediaStore;
@@ -21,15 +25,19 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
+import androidx.core.content.FileProvider;
+import androidx.exifinterface.media.ExifInterface;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
+import com.think.runex.BuildConfig;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xAction;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
+import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.KeyboardUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
@@ -39,12 +47,15 @@ import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.UriUtils;
 import com.think.runex.ui.components.NumberTextWatcher;
 
+import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.Objects;
 import java.util.TimeZone;
 
+import static androidx.core.content.FileProvider.getUriForFile;
 import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
 
@@ -63,6 +74,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
     private String mEventId = "";
     private String recordDate = "";
     private Uri activityImageUri = null;
+    private Bitmap mBitmap = null;
     private NumberTextWatcher distantWatcher;
     private boolean ON_SUBMITTING = false;
 
@@ -97,6 +109,14 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         return v;
     }
 
+    /** Main variables */
+    private File getImageFile(){
+        // prepare usage variables
+        final String destinationPath = activity.getExternalCacheDir() +"/"+ System.currentTimeMillis() +".jpg";
+
+        // save file from bitmap
+        return DeviceUtils.instance(activity).saveFileFromBitmap(mBitmap, destinationPath);
+    }
     // view matching
     private void viewMatching(View v) {
         refreshLayout = v.findViewById(R.id.refresh_layout);
@@ -141,12 +161,6 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         } else if (v.getId() == R.id.btn_date) {
             onClickDate();
         } else if (v.getId() == R.id.btn_submit) {
-            // update flag
-            ON_SUBMITTING = true;
-
-            // display progress dialog
-            refreshLayout.setRefreshing(true);
-
             // fire submitting api
             onClickSubmit();
         }
@@ -157,6 +171,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         if (iconAddImage.getVisibility() == View.VISIBLE) {
             activityImageUri = null;
             loadActivityImage();
+
         } else {
             if (mPmUtils.checkPermission(Manifest.permission.READ_EXTERNAL_STORAGE) &&
                     mPmUtils.checkPermission(Manifest.permission.WRITE_EXTERNAL_STORAGE)) {
@@ -196,11 +211,18 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
     private void onClickSubmit() {
         if (isDataValid()) {
 
-            String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
-            String imagePath = (activityImageUri != null) ? new UriUtils().getRealPath(activity, activityImageUri) : null;
+            // prevent from back pressed
+            activity.preventFromBackPressed( true );
 
             // update flag
             ON_SUBMITTING = true;
+
+            // display progress dialog
+            refreshLayout.setRefreshing(true);
+
+            String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
+//            String imagePath = (activityImageUri != null) ? new UriUtils().getRealPath(activity, activityImageUri) : null;
+            File imageFile = getImageFile();
 
             // fire
             new AddEventActivityService(activity, new onNetworkCallback() {
@@ -218,9 +240,10 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
 //                            .remove(AddEventPage.this)
 //                            .commit();
 
-                    getFragmentManager().beginTransaction()
-                            .remove( AddEventPage.this )
-                            .commit();
+                    // clear flag
+                    activity.preventFromBackPressed(false);
+                    // back pressed
+                    activity.onBackPressed();
 
                     // prepare usage variables
                     xTalk x = new xTalk();
@@ -241,8 +264,13 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
 
                     // clear flag
                     ON_SUBMITTING = false;
+
+                    // clear flag
+                    activity.preventFromBackPressed(false);
                 }
-            }).doIt(mEventId, distance, recordDate, imagePath, "");
+            }).doIt(mEventId, distance, recordDate, (imageFile == null)
+                    ? null
+                    : imageFile.getPath(), "");
         }
     }
 
@@ -252,13 +280,63 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                 RC_GALLERY_INTENT);
     }
 
+    public static Bitmap rotateImage(Bitmap source, float angle) {
+        Matrix matrix = new Matrix();
+        matrix.postRotate(angle);
+        return Bitmap.createBitmap(source, 0, 0, source.getWidth(), source.getHeight(),
+                matrix, true);
+    }
+
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
+
+        // prepare usage variables
+        final String mtn = ct +"onActivityResult-> ";
+
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RC_GALLERY_INTENT && data != null && data.getData() != null) {
                 activityImageUri = data.getData();
-                loadActivityImage();
+
+                try {
+                    // prepare usage variables
+                    final String path = new UriUtils().getRealPath(activity, activityImageUri);
+                    final File imageFile = new File( path );
+                    final Bitmap bitmap = BitmapFactory.decodeFile( imageFile.getPath() );
+                    final ExifInterface ei = new ExifInterface(imageFile.getPath());
+                    final int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
+                            ExifInterface.ORIENTATION_UNDEFINED);
+                    Bitmap rotatedBitmap = null;
+
+                    switch (orientation) {
+
+                        case ExifInterface.ORIENTATION_ROTATE_90:
+                            rotatedBitmap = rotateImage(bitmap, 90);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_180:
+                            rotatedBitmap = rotateImage(bitmap, 180);
+                            break;
+
+                        case ExifInterface.ORIENTATION_ROTATE_270:
+                            rotatedBitmap = rotateImage(bitmap, 270);
+                            break;
+
+                        case ExifInterface.ORIENTATION_NORMAL:
+                        default:
+                            rotatedBitmap = bitmap;
+                    }
+
+                    // update props
+                    mBitmap = rotatedBitmap;
+
+                    // view binding
+                    activityImage.setImageBitmap( mBitmap );
+
+                } catch ( Exception e ){
+                    L.e(mtn +"Err: "+ e.getMessage());
+                }
+
             }
         }
     }
