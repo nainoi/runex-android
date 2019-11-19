@@ -285,7 +285,9 @@ public class RegisteredEventsPage extends xFragment implements
                     page.setEvent((EventObject.DataBean) events.get(position).getAttachedObject());
 
                     // go to specified page
-                    mChildFragmentUtils.addChildFragment(R.id.frame_fragment, page);
+
+                    FragmentUtils.newInstance(activity).addFragment(activity.containerId, page, true);
+//                    mChildFragmentUtils.addChildFragment(R.id.frame_fragment, page);
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());

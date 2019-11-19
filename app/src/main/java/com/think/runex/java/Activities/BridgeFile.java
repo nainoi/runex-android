@@ -89,6 +89,8 @@ public class BridgeFile extends xActivity {
         ActivityUtils uts = ActivityUtils.newInstance(this);
         uts.fullScreen();
 
+        // update container id
+        setFragmentContainerId( CONTAINER_ID );
 
         // view matching
         viewMatching();

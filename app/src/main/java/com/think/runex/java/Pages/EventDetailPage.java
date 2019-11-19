@@ -37,6 +37,7 @@ import com.think.runex.java.Pages.Record.EventRecordHistoryPage;
 import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.ChildFragmentUtils;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.DeleteEventHistoryService;
@@ -143,7 +144,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 //            props.titleImageUrl = mEventProfile;
             props.titleLabel = mEventName;
             //--> views
-            toolbar.setImageOptionIcon(R.drawable.ic_plus);
+            toolbar.setImageOptionIcon(R.drawable.ic_add);
             toolbar.setNavigationButtonColorFilter(R.color.orange);
             toolbar.setOptionButtonColorFilter(R.color.orange);
             toolbar.toolbarTitleIcon.gone();
@@ -314,7 +315,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                     EventDetailObject.DataBean db = rhis.getData();
 
                     // update total distance
-                    lbTotalDistance.setText(""+ Globals.DCM.format(db.getTotal_distance()));
+                    lbTotalDistance.setText(""+ Globals.DCM_2.format(db.getTotal_distance()));
 
                     //Keep activity record list for EventRecordHistoryPage
                     adapter.submitList(db.getActivity_info());
@@ -400,9 +401,10 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             });
 
             // display add event activity
-            ChildFragmentUtils.newInstance(this).addChildFragment
-                    (R.id.display_fragment_frame,
-                            page);
+            FragmentUtils.newInstance(activity).addFragment(activity.containerId, page, true);
+//            ChildFragmentUtils.newInstance(this).addChildFragment
+//                    (R.id.display_fragment_frame,
+//                            page);
 
         } else if (v.getId() == R.id.btn_history) {
             toRecordPage();

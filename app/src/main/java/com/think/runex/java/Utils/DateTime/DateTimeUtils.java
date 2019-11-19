@@ -22,9 +22,10 @@ public class DateTimeUtils {
         final int min = (((allSec) / 60) % 60);
         final int hour = (allSec / 3600);
 
-        return ((hour <= 0)
-                ? "" : ((hour < 10 ? "0" + hour : hour + "")) + ":") +
+        return /*((hour <= 0)
+                ? "" : ((hour < 10 ? "0" + hour : hour + "")) + ":") +*/
 
+                (hour < 10 ? "0" + hour : hour + "") + ":" +
                 (min < 10 ? "0" + min : min + "") + ":" +
                 (sec < 10 ? "0" + sec : sec);
     }

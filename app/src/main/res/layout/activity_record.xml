@@ -80,10 +80,10 @@
         <!-- Record -->
         <LinearLayout
             android:id="@+id/frame_recording"
-            android:visibility="invisible"
             android:orientation="vertical"
             android:gravity="center"
             android:padding="8dp"
+            android:visibility="invisible"
             android:background="@android:color/white"
             android:layout_below="@+id/frame_map"
             android:layout_width="match_parent"
@@ -102,7 +102,7 @@
                 <TextView
                     android:id="@+id/v_distance"
                     android:textSize="16dp"
-                    android:text="@string/distance"
+                    android:text="ระยะทาง (km.)"
                     android:includeFontPadding="false"
                     android:gravity="center"
                     android:textColor="@android:color/darker_gray"
@@ -113,7 +113,7 @@
                     android:id="@+id/lb_distance"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:text="0.00km"
+                    android:text="0.00"
                     android:includeFontPadding="false"
                     android:maxLines="1"
                     android:gravity="center"
@@ -152,7 +152,7 @@
                             android:layout_width="match_parent"
                             android:layout_height="wrap_content"
                             android:gravity="center"
-                            android:text="00:00"
+                            android:text="00:00:00"
                             android:textColor="@color/orange"
                             android:textSize="18dp" />
 
@@ -181,7 +181,7 @@
                             android:id="@+id/lb_pace"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="00:00"
+                            android:text="00:00:00"
                             android:maxLines="1"
                             android:textColor="@color/orange"
                             android:textSize="18dp" />
@@ -210,7 +210,7 @@
                             android:id="@+id/lb_calories"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:text="0"
+                            android:text="0.0"
                             android:maxLines="1"
                             android:textColor="@color/orange"
                             android:textSize="18dp" />
@@ -374,25 +374,26 @@
     <FrameLayout
         android:id="@+id/frame_toolbar"
         android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
         android:background="@android:color/white"
-        android:visibility="invisible"
         android:paddingHorizontal="12dp"
         android:paddingVertical="16dp"
-        android:layout_height="?attr/actionBarSize">
+        android:visibility="gone">
 
         <ImageView
             android:id="@+id/btn_cancel_submit"
-            android:src="@drawable/ic_close"
             android:layout_width="?attr/actionBarSize"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:src="@drawable/ic_close"
+            android:tint="@color/orange" />
 
         <ImageView
             android:id="@+id/btn_share"
-            android:src="@drawable/ic_share"
-            android:layout_gravity="right"
-            android:tint="@color/orange"
             android:layout_width="?attr/actionBarSize"
-            android:layout_height="match_parent"/>
+            android:layout_height="match_parent"
+            android:layout_gravity="right"
+            android:src="@drawable/ic_share_android"
+            android:tint="@color/orange" />
 
     </FrameLayout>
 

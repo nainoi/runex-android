@@ -35,6 +35,7 @@ import com.facebook.share.Sharer;
 import com.facebook.share.model.SharePhoto;
 import com.facebook.share.model.SharePhotoContent;
 import com.facebook.share.widget.ShareDialog;
+import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -157,12 +158,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private View btnSubmit;
 
     public void onBackPressed() {
-        if (mOnDisplaySummary) {
-            // clear flag
-            mOnDisplaySummary = false;
 
-            // gone summary frame
-            hideSummaryFrame();
+        if (mOnDisplaySummary) {
+            // prepare usage variables
+            final DialogInterface.OnClickListener listener = getConfirmationDialogListener();
+
+            // confirmation dialog
+            dialogDiscardRecording("ยืนยัน",
+                    "คุณต้องการออกจากหน้านี้โดยไม่บันทึกผลการวิ่ง ?",
+                    listener).show();
+
 
         }
     }
@@ -277,9 +282,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 // paused
                 paused();
 
-                // prepare recording object
-                RecorderObject recorderObj = getRecorderObject();
-
                 // display confirm stop recording
                 dialogDiscardRecording("ยืนยัน", "คุณยืนยันที่จะสิ้นสุดการวิ่ง", new DialogInterface.OnClickListener() {
                     @Override
@@ -287,24 +289,29 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         // conditions
                         if (DialogInterface.BUTTON_POSITIVE == i) {
-                            // update flag
-                            mOnDisplaySummary = true;
 
-                            // zoom to fit
-                            mMapUtils.zoomToFit();
+                            // distance condition
+                            if (mRecorderUtils.mRecordDistanceKm > 0) {
+                                // prepare recording object
+                                RecorderObject recorderObj = getRecorderObject();
 
-                            // display summary frame
-                            displaySummaryFrame(recorderObj);
+                                // zoom to fit
+                                mMapUtils.zoomToFit();
+
+                                // update flag
+                                mOnDisplaySummary = true;
+
+                                // display summary frame
+                                displaySummaryFrame(recorderObj);
+
+                                // initial
+                            } else toBegin(true);
 
                             // dismiss
                         } else dialogInterface.dismiss();
 
                     }
                 }).show();
-
-
-                // display change background image
-//                frameChangeBgImage.setVisibility(View.VISIBLE);
 
                 break;
         }
@@ -362,22 +369,31 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         } else L.e(mtn + "last know location does not exists: " + lkLoc);
 //
-        xLocation x1 = new xLocation(13.845689, 100.596905);
-        xLocation x11 = new xLocation(13.844689, 100.596905);
-        xLocation x2 = new xLocation(13.845585, 100.594587);
+//        xLocation x1 = new xLocation(13.845689, 100.596905);
+
+//        xLocation x11 = new xLocation(13.844689, 100.596905);
+//        xLocation x111 = new xLocation(13.843689, 100.596905);
+//        xLocation x1111 = new xLocation(13.840689, 100.596905);
+//        xLocation x11111 = new xLocation(13.835689, 100.580905);
+
+//        xLocation x2 = new xLocation(13.845585, 100.594587);
 //        xLocation x3 = new xLocation(13.842551, 100.595622);
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //        xLocation x5 = new xLocation(13.842600, 100.598379);
 ////
-        locationChanged(x1);
-        locationChanged(x11);
-        locationChanged(x2);
+//        locationChanged(x1);
+
+//        locationChanged(x11);
+//        locationChanged(x111);
+//        locationChanged(x1111);
+//        locationChanged(x11111);
+
+//        locationChanged(x2);
 //        locationChanged(x3);
 //        locationChanged(x4);
 //        locationChanged(x5);
 
     }
-
 
     @Nullable
     @Override
@@ -400,7 +416,30 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private DialogInterface.OnClickListener getConfirmationDialogListener() {
+        return new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialogInterface, int i) {
+
+                if (DialogInterface.BUTTON_POSITIVE == i) {
+
+                    // clear flag
+                    mOnDisplaySummary = false;
+
+                    // to beginning
+                    toBegin();
+
+                } else dialogInterface.dismiss();
+
+            }
+        };
+    }
+
     private void toBegin() {
+        toBegin(false);
+    }
+
+    private void toBegin(boolean preventHide) {
         // reset result
         reset();
 
@@ -419,7 +458,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         mOnSubmitMultiResult = false;
 
         // gone summary frame
-        hideSummaryFrame();
+        if (!preventHide) hideSummaryFrame();
     }
 
     private void afterShare() {
@@ -523,6 +562,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // test add polyline
         mMapUtils.addPolyline(xFrom, xTo);
         mMapUtils.addDistance(xFrom, xTo);
+        //--> tracking
+        mMapUtils.tracking(xTo);
+        //--> update distance to recorder utils
         mRecorderUtils.addDistance(mMapUtils.difDistance(xFrom, xTo));
 
         // update view
@@ -546,7 +588,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void bindingSummary(RecorderObject recorder) {
         inputDisplayTime.setText(recorder.recordingDisplayTime);
-        inputDistance.setText(Globals.DCM_2.format(recorder.distanceKm) + "km");
+        inputDistance.setText(Globals.DCM_2.format(recorder.distanceKm));
         inputPaceDisplayTime.setText(recorder.recordingPaceDisplayTime);
         inputCalories.setText(Globals.DCM.format(recorder.calories) + "");
 
@@ -554,7 +596,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void binding() {
         lbTime.setText(mRecorderUtils.mRecordDisplayTime);
-        lbDistance.setText(Globals.DCM_2.format(mRecorderUtils.mRecordDistanceKm) + "km");
+        lbDistance.setText(Globals.DCM_2.format(mRecorderUtils.mRecordDistanceKm));
         lbPace.setText(mRecorderUtils.mRecordPaceDisplayTime);
         lbCalories.setText(Globals.DCM.format(mRecorderUtils.calories));
 
@@ -685,6 +727,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         // recording state description
         lbRecordingState.setText(getString(R.string.resume_recording));
+
+
     }
 
     private void startRecording() {
@@ -1035,6 +1079,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // conditions
         beforeGPSRecording();
 
+
     }
 
     @Override
@@ -1072,8 +1117,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             }
         });
 
-        // back pressed handler
-        handlerBackPressed();
+        // handler back pressed
+        handlerBackPressed("onViewCreated", mView);
     }
 
     @Override
@@ -1081,29 +1126,39 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         super.onHiddenChanged(hidden);
 
         // when visible
-        if (!hidden) handlerBackPressed();
+        if (!hidden) handlerBackPressed("onHiddenChanged", getView());
     }
 
-    public void handlerBackPressed() {
+    public void handlerBackPressed(String tag, View view) {
+        // prepare usage variables
+        final String mtn = ct + "handlerBackPressed(" + tag + ") ";
+
         //-> Handler back button
-        getView().setFocusableInTouchMode(true);
-        getView().requestFocus();
-        getView().setOnKeyListener(new View.OnKeyListener() {
+        view.setFocusableInTouchMode(true);
+        view.requestFocus();
+        view.setOnKeyListener(new View.OnKeyListener() {
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
 
                 // on back pressed
-                if (getChildFragmentCount() <= 0 && mOnDisplaySummary && i == KeyEvent.KEYCODE_BACK) {
-                    // update flag
-                    mOnDisplaySummary = false;
+                if (keyEvent.getAction() != KeyEvent.ACTION_DOWN
+                        && getChildFragmentCount() <= 0 && mOnDisplaySummary && i == KeyEvent.KEYCODE_BACK) {
 
-                    // gone
-                    hideSummaryFrame();
+                    // prepare usage variables
+                    final DialogInterface.OnClickListener listener = getConfirmationDialogListener();
+
+                    // confirmation dialog
+                    dialogDiscardRecording("ยืนยัน",
+                            "คุณต้องการออกจากหน้านี้โดยไม่บันทึกผลการวิ่ง ?",
+                            listener).show();
 
                     // exit from this process
                     return true;
 
                 }
+
+                //This is the filter
+                if (keyEvent.getAction() != KeyEvent.ACTION_DOWN) return false;
 
                 return false;
             }

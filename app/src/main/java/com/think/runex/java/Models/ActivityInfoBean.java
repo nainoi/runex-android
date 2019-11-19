@@ -28,6 +28,8 @@ public class ActivityInfoBean implements Parcelable {
     private String activity_date;
     private String created_at;
     private String updated_at;
+    //--> custom date
+    private String custom_display_date = "-";
 
     public ActivityInfoBean() {
     }
@@ -69,6 +71,14 @@ public class ActivityInfoBean implements Parcelable {
             return new ActivityInfoBean[size];
         }
     };
+
+    public String getCustom_display_date() {
+        return custom_display_date;
+    }
+
+    public void setCustom_display_date(String custom_display_date) {
+        this.custom_display_date = custom_display_date;
+    }
 
     public String getId() {
         return id;

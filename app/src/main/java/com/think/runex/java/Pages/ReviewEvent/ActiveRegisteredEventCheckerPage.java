@@ -136,6 +136,7 @@ public class ActiveRegisteredEventCheckerPage extends DialogFragment implements 
                         eventChecker.setChecked(true);
                         object.getData().set(i, eventChecker);
                     }
+
                     adapter.submitList(object.getData());
                 }
             }

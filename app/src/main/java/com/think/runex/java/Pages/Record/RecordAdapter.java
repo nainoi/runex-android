@@ -11,6 +11,8 @@ import com.think.runex.java.Models.RegEventsObject;
 import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.L;
 
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 
 public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
@@ -51,8 +53,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
 
                 for (int b = a; b < list.size(); b++) {
 
-                    if (Globals.SDF_ONLY_DATE.parse(list.get(a).getActivity_date())
-                            .before(Globals.SDF_ONLY_DATE.parse(list.get( b ).getActivity_date())
+                    if (Globals.SDF_TOKEN.parse(list.get(a).getActivity_date())
+                            .before(Globals.SDF_TOKEN.parse(list.get( b ).getActivity_date())
 
                     )) {
 
@@ -71,6 +73,33 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
         }
     }
 
+    private void toCustomizeDate(int addHour){
+        // prepare usage variables
+        final String mtn = ct +"toCustomizeDate() ";
+        final Calendar calendar = Calendar.getInstance();
+
+        for(int a = 0; a < list.size(); a++){
+            // prepare usage variables
+            final ActivityInfoBean data = list.get( a );
+
+            try {
+                final Date d = Globals.SDF_TOKEN.parse(data.getActivity_date());
+
+                // update props
+                calendar.setTimeInMillis(d.getTime());
+                calendar.add(Calendar.HOUR, addHour);
+
+                // custom display date-time
+                String displayDatetime = Globals.SDF_DISPLAY_FULL_DATE_TIME.format(calendar.getTime());
+
+                // update props
+                data.setCustom_display_date( displayDatetime );
+
+            } catch ( Exception e ){
+                L.e(mtn +"Err: "+ e.getMessage());
+            }
+        }
+    }
     public List<ActivityInfoBean> getList(){
         return list;
     }
@@ -85,7 +114,11 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     }
 
     public void submitList(List<ActivityInfoBean> list) {
+        this.submitList(list, 0);
+    }
+    public void submitList(List<ActivityInfoBean> list, int addHour) {
         this.list = list;
+        toCustomizeDate(addHour);
         sortByDate();
         notifyDataSetChanged();
     }

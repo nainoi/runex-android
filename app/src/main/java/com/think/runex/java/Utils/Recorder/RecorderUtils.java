@@ -24,8 +24,8 @@ public class RecorderUtils {
     public double calories = 0L;
     public double mRecordDistanceKm = 0.0;
     public double mLastRecordDistanceKm = 0.0;
-    public String mRecordDisplayTime = "00:00";
-    public String mRecordPaceDisplayTime = "00:00";
+    public String mRecordDisplayTime = "00:00:00";
+    public String mRecordPaceDisplayTime = "00:00:00";
     private boolean START = false;
     private final int RECURSIVE_TIME = 1000;
     private final int INCREATE_TIME = 1000;
@@ -241,8 +241,8 @@ public class RecorderUtils {
         // clear result
         recordDurationMillis = 0L;
         paceMillis = 0L;
-        mRecordDisplayTime = "00:00";
-        mRecordPaceDisplayTime = "00:00";
+        mRecordDisplayTime = "00:00:00";
+        mRecordPaceDisplayTime = "00:00:00";
         mRecordDistanceKm = 0.0;
         calories = 0.0;
 

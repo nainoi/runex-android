@@ -11,6 +11,7 @@ import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.maps.model.LatLngBounds;
 import com.google.android.gms.maps.model.Polyline;
 import com.google.android.gms.maps.model.PolylineOptions;
+import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
@@ -31,6 +32,9 @@ public class GoogleMapUtils {
     private Polyline mLastPolyline;
     public double distance = 0.0;
 
+    // explicit variables
+    private final float MAP_TRACKING_ZOOM_LEVEL = 17f;
+
     private GoogleMapUtils(Activity activity, GoogleMap map) {
         this.mActivity = activity;
         this.mMap = map;
@@ -43,6 +47,11 @@ public class GoogleMapUtils {
     /**
      * Feature methods
      */
+    public void tracking(xLocation xLoc){
+        // to current location
+        mMap.animateCamera( CameraUpdateFactory.newLatLngZoom(new LatLng(xLoc.latitude, xLoc.longitude), MAP_TRACKING_ZOOM_LEVEL));
+
+    }
     public void zoomToFit() {
         // exit from this process
         // when points are not ready
@@ -59,13 +68,21 @@ public class GoogleMapUtils {
         LatLngBounds bounds = builder.build();
 
         // camera update
-        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds( bounds, 36 );
+        CameraUpdate cameraUpdate = CameraUpdateFactory.newLatLngBounds( bounds, 65 );
 
         // move camera runex@password
-//        mMap.animateCamera(cameraUpdate);
+        mMap.animateCamera(cameraUpdate);
 
-        // zoom out anim
-        mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), 16f));
+        // zoom fit
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                // zoom out anim
+                mMap.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.getCenter(), mMap.getCameraPosition().zoom - 1));
+
+            }
+        }, 900);
+
 
     }
 
@@ -105,7 +122,8 @@ public class GoogleMapUtils {
     }
 
     public void addDistance(xLocation from, xLocation to) {
-        distance += difDistance(from, to);
+        final double diffDistance = difDistance(from, to);
+        if( diffDistance > 0.005 ) { distance += diffDistance; }
     }
 
     public double difDistance(xLocation from, xLocation to) {

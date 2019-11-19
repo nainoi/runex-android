@@ -43,6 +43,7 @@ import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
+import java.util.TimeZone;
 
 import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
@@ -82,7 +83,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         final View v = inflater.inflate(R.layout.page_add_event_activity, container, false);
 
         // view matching
-        viewMatching( v );
+        viewMatching(v);
 
         // view event listener
         viewEventListener();
@@ -99,7 +100,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
     // view matching
     private void viewMatching(View v) {
         refreshLayout = v.findViewById(R.id.refresh_layout);
-        refreshLayout.setEnabled( false );
+        refreshLayout.setEnabled(false);
 
         activityImage = v.findViewById(R.id.activity_image);
         btnAddImage = v.findViewById(R.id.btn_add_image);
@@ -116,9 +117,9 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         refreshLayout.setOnRefreshListener(new SwipeRefreshLayout.OnRefreshListener() {
             @Override
             public void onRefresh() {
-                if( !ON_SUBMITTING) {
+                if (!ON_SUBMITTING) {
                     // gone progress dialog
-                    refreshLayout.setRefreshing( false );
+                    refreshLayout.setRefreshing(false);
 
                     // exit from this process
                     return;
@@ -133,7 +134,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
 
     @Override
     public void onClick(View v) {
-        if(ON_SUBMITTING) return;
+        if (ON_SUBMITTING) return;
 
         if (v.getId() == R.id.btn_add_image) {
             onClickAddImage();
@@ -144,7 +145,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
             ON_SUBMITTING = true;
 
             // display progress dialog
-            refreshLayout.setRefreshing( true );
+            refreshLayout.setRefreshing(true);
 
             // fire submitting api
             onClickSubmit();
@@ -179,7 +180,16 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
 
     @Override
     public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
-        recordDate = "" + year + "-" + to2Digits((month + 1)) + "-" + to2Digits(dayOfMonth) + "T00:00:00Z";
+        // prepare usage variables
+        Calendar calendar = Calendar.getInstance(TimeZone.getTimeZone("UTC"));
+
+        // update props
+        recordDate = "" + year + "-" + to2Digits((month + 1)) + "-" + to2Digits(dayOfMonth) + "T"
+                + to2Digits(calendar.get(Calendar.HOUR_OF_DAY) + 7) +":"
+                + to2Digits(calendar.get(Calendar.MINUTE)) +":"
+                + to2Digits(calendar.get(Calendar.SECOND)) +"Z";
+
+        // view binding
         btnDate.setText(toDisplayDate(recordDate, DISPLAY_DATE_FORMAT));
     }
 
@@ -203,9 +213,13 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                     Toast.makeText(activity, R.string.add_activity_success, Toast.LENGTH_SHORT).show();
 
                     // exit from this page
-                    getParentFragment().getChildFragmentManager()
-                            .beginTransaction()
-                            .remove( AddEventPage.this)
+//                    getParentFragment().getChildFragmentManager()
+//                            .beginTransaction()
+//                            .remove(AddEventPage.this)
+//                            .commit();
+
+                    getFragmentManager().beginTransaction()
+                            .remove( AddEventPage.this )
                             .commit();
 
                     // prepare usage variables
@@ -213,7 +227,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                     x.resultCode = xAction.SUCCESS.ID;
 
                     // on result
-                    onResult( x );
+                    onResult(x);
                 }
 
                 @Override
@@ -223,7 +237,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                     L.i(mtn + "json-string: " + response.jsonString);
 
                     // gone progress dialog
-                    refreshLayout.setRefreshing( false );
+                    refreshLayout.setRefreshing(false);
 
                     // clear flag
                     ON_SUBMITTING = false;
@@ -294,7 +308,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         }
     }
 
-    public AddEventPage setEventId(String eventId ){
+    public AddEventPage setEventId(String eventId) {
         mEventId = eventId;
         return this;
     }

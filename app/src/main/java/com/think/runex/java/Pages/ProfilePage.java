@@ -35,6 +35,7 @@ import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,
@@ -160,17 +161,24 @@ public class ProfilePage extends xFragment implements
                         totalDistance = (mRunningHist = rhis.getData().get(0)).getTotal_distance();
 
                         try {
-                            recordAdapter.submitList(mRunningHist.getActivity_info());
+                            recordAdapter.submitList(mRunningHist.getActivity_info(), 7);
 
                         } catch ( Exception e ){
                             L.e(mtn +"Err: "+ e.getMessage());
 
                         }
 
-                    } else mRunningHist = null;
+                    } else {
+                        // update props
+                        mRunningHist = null;
+
+                        // clear record list
+                        recordAdapter.submitList(new ArrayList<>());
+
+                    }
 
                     // update total distance
-                    lbTotalDistance.setText(Globals.DCM.format(totalDistance) + " km");
+                    lbTotalDistance.setText(Globals.DCM_2.format(totalDistance) + " km");
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());

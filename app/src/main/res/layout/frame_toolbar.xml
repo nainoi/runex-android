@@ -53,8 +53,8 @@
     </LinearLayout>
 
     <com.think.runex.java.Customize.Views.Toolbar.xToolbarImageView
-        android:src="@drawable/ic_record"
-        android:padding="22dp"
+        android:src="@drawable/ic_add"
+        android:padding="16dp"
         android:layout_gravity="right"
         android:id="@+id/toolbar_options_button"
         android:background="?android:attr/selectableItemBackgroundBorderless"

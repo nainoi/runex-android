@@ -17,6 +17,7 @@ import com.think.runex.java.Models.ActivityInfoBean;
 import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.L;
 
+import java.util.Calendar;
 import java.util.Date;
 
 public class RecordViewHolder extends RecyclerView.ViewHolder {
@@ -26,6 +27,7 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
     private TextView lbDate;
     private TextView lbCaption;
     private View btnDel;
+    private Calendar calendar = Calendar.getInstance();
 
     public RecordViewHolder(@NonNull View itemView) {
         super(itemView);
@@ -43,19 +45,10 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
 
     public void bind(ActivityInfoBean data, boolean needEditor, onItemClick onItemClick) {
         String distance = Globals.DCM_2.format(data.getDistance()) + " " + lbDistance.getContext().getString(R.string.km);
-        String histDate = "-";
         String mtn = ct +"bind() ";
 
-        try{
-            Date d = Globals.SDF_TOKEN.parse( data.getActivity_date() );
-            histDate = Globals.SDF_DISPLAY_FULL_DATE_TIME.format( d );
-
-        }catch (Exception e ){
-            L.e(mtn +"Err: "+ e.getMessage());
-        }
-
         lbDistance.setText(distance );
-        lbDate.setText( histDate );
+        lbDate.setText( data.getCustom_display_date() );
         lbCaption.setText(data.getCaption());
 
         if( needEditor ) {
