@@ -103,6 +103,8 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         // init
         ActivityUtils.newInstance(activity).fullScreen();
 
+        if( mEvent == null ) return v;
+
         // prepare usage variables
         EventObject.DataBean.EventBean evtVal = mEvent.getEvent();
 

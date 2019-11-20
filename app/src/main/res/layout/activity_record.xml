@@ -78,260 +78,268 @@
         </FrameLayout>
 
         <!-- Record -->
-        <LinearLayout
-            android:id="@+id/frame_recording"
-            android:orientation="vertical"
-            android:gravity="center"
-            android:padding="8dp"
-            android:visibility="invisible"
-            android:background="@android:color/white"
+        <ScrollView
+            android:id="@+id/scroll_frame_recording"
+            android:fillViewport="true"
             android:layout_below="@+id/frame_map"
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <!-- Record information -->
             <LinearLayout
-                android:id="@+id/frame_recording_info"
+                android:id="@+id/frame_recording"
                 android:orientation="vertical"
+                android:gravity="center"
                 android:padding="8dp"
+                android:visibility="invisible"
                 android:background="@android:color/white"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="match_parent">
 
-                <!-- Distance -->
-                <TextView
-                    android:id="@+id/v_distance"
-                    android:textSize="16dp"
-                    android:text="ระยะทาง (km.)"
-                    android:includeFontPadding="false"
-                    android:gravity="center"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
-
-                <TextView
-                    android:id="@+id/lb_distance"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:text="0.00"
-                    android:includeFontPadding="false"
-                    android:maxLines="1"
-                    android:gravity="center"
-                    android:textColor="@android:color/black"
-                    android:textSize="@dimen/textRecordTime"
-                    android:textStyle="bold" />
-
-                <!-- running detail -->
+                <!-- Record information -->
                 <LinearLayout
-                    android:id="@+id/frame_running_detail"
+                    android:id="@+id/frame_recording_info"
+                    android:orientation="vertical"
+                    android:padding="8dp"
+                    android:background="@android:color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:orientation="horizontal"
-                    android:weightSum="3">
+                    android:layout_height="wrap_content">
 
                     <!-- Distance -->
-                    <LinearLayout
-                        android:id="@+id/frame_distance"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9"
+                    <TextView
+                        android:id="@+id/v_distance"
+                        android:textSize="16dp"
+                        android:text="ระยะทาง (km.)"
+                        android:includeFontPadding="false"
                         android:gravity="center"
-                        android:orientation="vertical"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="12dp">
+                        android:textColor="@android:color/darker_gray"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"/>
 
-                        <TextView
-                            android:id="@+id/v_time"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="@string/time"
-                            android:textColor="@android:color/darker_gray" />
+                    <TextView
+                        android:id="@+id/lb_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:text="0.00"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:gravity="center"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/textRecordTime"
+                        android:textStyle="bold" />
 
-                        <TextView
-                            android:id="@+id/lb_time"
-                            android:layout_width="match_parent"
+                    <!-- running detail -->
+                    <LinearLayout
+                        android:id="@+id/frame_running_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <!-- Distance -->
+                        <LinearLayout
+                            android:id="@+id/frame_distance"
+                            android:layout_width="0dp"
                             android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
                             android:gravity="center"
-                            android:text="00:00:00"
-                            android:textColor="@color/orange"
-                            android:textSize="18dp" />
+                            android:orientation="vertical"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/v_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time"
+                                android:textColor="@android:color/darker_gray" />
+
+                            <TextView
+                                android:id="@+id/lb_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="00:00:00"
+                                android:textColor="@color/orange"
+                                android:textSize="18dp" />
 
 
+                        </LinearLayout>
+
+                        <!-- Calories-->
+                        <LinearLayout
+                            android:id="@+id/frame_pace"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/v_pace"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pace (min/hr)"
+                                android:textColor="@android:color/darker_gray"/>
+
+                            <TextView
+                                android:id="@+id/lb_pace"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="00:00:00"
+                                android:maxLines="1"
+                                android:textColor="@color/orange"
+                                android:textSize="18dp" />
+
+                        </LinearLayout>
+
+                        <!-- Step -->
+                        <LinearLayout
+                            android:id="@+id/frame_calories"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/v_calories"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="แคลอรี่"
+                                android:textColor="@android:color/darker_gray"/>
+
+                            <TextView
+                                android:id="@+id/lb_calories"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="0.0"
+                                android:maxLines="1"
+                                android:textColor="@color/orange"
+                                android:textSize="18dp" />
+
+                        </LinearLayout>
                     </LinearLayout>
 
-                    <!-- Calories-->
+                </LinearLayout>
+
+                <!--  Feature buttons  -->
+                <LinearLayout
+                    android:id="@+id/frame_controller_buttons"
+                    android:layout_width="match_parent"
+                    android:orientation="horizontal"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:layout_height="wrap_content">
+
+                    <!-- Record button-->
                     <LinearLayout
-                        android:id="@+id/frame_pace"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="1.2"
-                        android:gravity="center"
+                        android:id="@+id/frame_recording_feature_button"
                         android:orientation="vertical"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="12dp">
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <!-- Record icon -->
+                        <FrameLayout
+                            android:id="@+id/frame_recording_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/btn_start"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@android:color/white"
+                                android:textSize="20dp"
+                                android:background="@drawable/view_circle_orange"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/ic_recording_state"
+                                android:src="@drawable/ic_play"
+                                android:tint="@android:color/white"
+                                android:padding="4dp"
+                                android:layout_width="35dp"
+                                android:layout_gravity="center"
+                                android:layout_height="35dp"/>
+
+                        </FrameLayout>
 
                         <TextView
-                            android:id="@+id/v_pace"
+                            android:id="@+id/lb_recording_state_description"
+                            android:text="@string/start_recording"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/background_recording_state_description"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="Pace (min/hr)"
-                            android:textColor="@android:color/darker_gray"/>
-
-                        <TextView
-                            android:id="@+id/lb_pace"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="00:00:00"
-                            android:maxLines="1"
-                            android:textColor="@color/orange"
-                            android:textSize="18dp" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
 
-                    <!-- Step -->
+                    <!-- Stop & submit result -->
                     <LinearLayout
-                        android:id="@+id/frame_calories"
-                        android:layout_width="0dp"
-                        android:layout_height="wrap_content"
-                        android:layout_weight="0.9"
-                        android:gravity="center"
+                        android:id="@+id/frame_stop_and_submit"
+                        android:visibility="invisible"
+                        android:layout_marginLeft="8dp"
                         android:orientation="vertical"
-                        android:paddingTop="2dp"
-                        android:paddingBottom="12dp">
+                        android:gravity="center"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content">
+
+                        <!-- Stop icon -->
+                        <FrameLayout
+                            android:id="@+id/frame_stop_and_submit_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/btn_pause"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@android:color/white"
+                                android:textSize="20dp"
+                                android:background="@drawable/view_circle_black"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/ic_stop_state"
+                                android:layout_width="25dp"
+                                android:padding="4dp"
+                                android:background="@drawable/ic_stop"
+                                android:layout_gravity="center"
+                                android:layout_height="25dp"/>
+
+                        </FrameLayout>
 
                         <TextView
-                            android:id="@+id/v_calories"
+                            android:id="@+id/lb_stop_state_description"
+                            android:text="@string/finish_recording"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/background_recording_state_description"
                             android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="แคลอรี่"
-                            android:textColor="@android:color/darker_gray"/>
-
-                        <TextView
-                            android:id="@+id/lb_calories"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:text="0.0"
-                            android:maxLines="1"
-                            android:textColor="@color/orange"
-                            android:textSize="18dp" />
+                            android:layout_height="wrap_content"/>
 
                     </LinearLayout>
+
+
+
                 </LinearLayout>
 
             </LinearLayout>
 
-            <!--  Feature buttons  -->
-            <LinearLayout
-                android:id="@+id/frame_controller_buttons"
-                android:layout_width="match_parent"
-                android:orientation="horizontal"
-                android:layout_alignParentBottom="true"
-                android:layout_marginBottom="8dp"
-                android:gravity="center"
-                android:layout_height="wrap_content">
-
-                <!-- Record button-->
-                <LinearLayout
-                    android:id="@+id/frame_recording_feature_button"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <!-- Record icon -->
-                    <FrameLayout
-                        android:id="@+id/frame_recording_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/btn_start"
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@android:color/white"
-                            android:textSize="20dp"
-                            android:background="@drawable/view_circle_orange"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/ic_recording_state"
-                            android:src="@drawable/ic_play"
-                            android:tint="@android:color/white"
-                            android:padding="4dp"
-                            android:layout_width="35dp"
-                            android:layout_gravity="center"
-                            android:layout_height="35dp"/>
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/lb_recording_state_description"
-                        android:text="@string/start_recording"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="2dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/background_recording_state_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-                <!-- Stop & submit result -->
-                <LinearLayout
-                    android:id="@+id/frame_stop_and_submit"
-                    android:visibility="invisible"
-                    android:layout_marginLeft="8dp"
-                    android:orientation="vertical"
-                    android:gravity="center"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
-
-                    <!-- Stop icon -->
-                    <FrameLayout
-                        android:id="@+id/frame_stop_and_submit_button"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <TextView
-                            android:id="@+id/btn_pause"
-                            android:layout_width="75dp"
-                            android:layout_height="75dp"
-                            android:gravity="center"
-                            android:text=""
-                            android:textColor="@android:color/white"
-                            android:textSize="20dp"
-                            android:background="@drawable/view_circle_black"
-                            android:textStyle="bold" />
-
-                        <ImageView
-                            android:id="@+id/ic_stop_state"
-                            android:layout_width="25dp"
-                            android:padding="4dp"
-                            android:background="@drawable/ic_stop"
-                            android:layout_gravity="center"
-                            android:layout_height="25dp"/>
-
-                    </FrameLayout>
-
-                    <TextView
-                        android:id="@+id/lb_stop_state_description"
-                        android:text="@string/finish_recording"
-                        android:paddingHorizontal="8dp"
-                        android:paddingVertical="2dp"
-                        android:layout_marginTop="8dp"
-                        android:background="@drawable/background_recording_state_description"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
-
-                </LinearLayout>
-
-
-
-            </LinearLayout>
-
-        </LinearLayout>
+        </ScrollView>
 
         <!-- Summary -->
         <FrameLayout

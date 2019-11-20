@@ -75,10 +75,7 @@ public class BridgeFile extends xActivity {
         // remove current displayed fragment
         if( displayedFragment != null ) {
             // on back pressed
-            if(!mMainPage.onBackPressed( displayedFragment )){
-                super.onBackPressed();
-
-            }
+            if(!mMainPage.onBackPressed( displayedFragment )) super.onBackPressed();
         }
     }
 
