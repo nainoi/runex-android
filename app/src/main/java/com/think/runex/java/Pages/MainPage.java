@@ -201,7 +201,6 @@ public class MainPage extends xFragment {
                 return null;
             }
         });
-
         pageProfile = new ProfilePage().setPriority(Priority.PARENT);
     }
 

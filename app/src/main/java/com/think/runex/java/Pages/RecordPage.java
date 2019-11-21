@@ -25,6 +25,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
 import com.facebook.CallbackManager;
@@ -121,6 +122,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private boolean mOnSubmitMultiResult = false;
     private boolean mInitMap = false;
     private final int CONTAINER_ID = R.id.display_fragment_frame;
+    private xFragment pageSuccessfully;
     private boolean mOnDisplaySummary = false;
     //--> XRequest code
     private final int XRC_REMOVE_ALL_FRAGMENT = 1001;
@@ -369,9 +371,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         } else L.e(mtn + "last know location does not exists: " + lkLoc);
 //
-//        xLocation x1 = new xLocation(13.845689, 100.596905);
+        xLocation x1 = new xLocation(13.845689, 100.596905);
 
-//        xLocation x11 = new xLocation(13.844689, 100.596905);
+        xLocation x11 = new xLocation(13.844689, 100.596905);
 //        xLocation x111 = new xLocation(13.843689, 100.596905);
 //        xLocation x1111 = new xLocation(13.840689, 100.596905);
 //        xLocation x11111 = new xLocation(13.835689, 100.580905);
@@ -381,9 +383,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //        xLocation x5 = new xLocation(13.842600, 100.598379);
 ////
-//        locationChanged(x1);
+        locationChanged(x1);
 
-//        locationChanged(x11);
+        locationChanged(x11);
 //        locationChanged(x111);
 //        locationChanged(x1111);
 //        locationChanged(x11111);
@@ -516,7 +518,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         ChildFragmentUtils.newInstance(this)
                 .addChildFragment(
                         CONTAINER_ID,
-                        new SuccessfullySubmitRunningResultPage()
+                        (pageSuccessfully = new SuccessfullySubmitRunningResultPage())
                                 .setFragmentHandler(new xFragmentHandler() {
                                     @Override
                                     public xFragment onResult(xTalk talk) {
@@ -974,7 +976,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
      */
     private void initMap() {
         // prepare usage variables
-        FragmentManager fm = getFragmentManager();
+        FragmentManager fm = getChildFragmentManager();
         SupportMapFragment mapFragment = SupportMapFragment.newInstance();
 
         // transaction
@@ -1140,25 +1142,36 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             @Override
             public boolean onKey(View view, int i, KeyEvent keyEvent) {
 
+                L.i(mtn + "Child count: " + getChildFragmentCount());
                 // on back pressed
-                if (keyEvent.getAction() != KeyEvent.ACTION_DOWN
-                        && getChildFragmentCount() <= 0 && mOnDisplaySummary && i == KeyEvent.KEYCODE_BACK) {
+                if (keyEvent.getAction() != KeyEvent.ACTION_DOWN) {
+                    // conditions
+                    if(i != KeyEvent.KEYCODE_BACK ) return false;
+                    if (getChildFragmentCount() <= 1 && mOnDisplaySummary ) {
 
-                    // prepare usage variables
-                    final DialogInterface.OnClickListener listener = getConfirmationDialogListener();
+                        // prepare usage variables
+                        final DialogInterface.OnClickListener listener = getConfirmationDialogListener();
 
-                    // confirmation dialog
-                    dialogDiscardRecording("ยืนยัน",
-                            "คุณต้องการออกจากหน้านี้โดยไม่บันทึกผลการวิ่ง ?",
-                            listener).show();
+                        // confirmation dialog
+                        dialogDiscardRecording("ยืนยัน",
+                                "คุณต้องการออกจากหน้านี้โดยไม่บันทึกผลการวิ่ง ?",
+                                listener).show();
 
-                    // exit from this process
-                    return true;
+                        // exit from this process
+                        return true;
 
+                    } else if( getChildFragmentCount() > 1 ){
+                        // get latest fragment
+                        final Fragment fragment = getChildFragments().get( getChildFragmentCount() - 1 );
+
+                        // remove fragment
+                        getChildFragmentManager().beginTransaction()
+                                .remove( fragment )
+                                .commit();
+
+                        return true;
+                    }
                 }
-
-                //This is the filter
-                if (keyEvent.getAction() != KeyEvent.ACTION_DOWN) return false;
 
                 return false;
             }

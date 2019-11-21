@@ -115,6 +115,9 @@ public class xFragment extends Fragment implements xFragmentRequestCode
         return (visibleFragment == null || !(visibleFragment instanceof xFragment)) ? null : (xFragment) visibleFragment;
     }
 
+    public List<Fragment> getChildFragments(){
+        return getChildFragmentManager().getFragments();
+    }
     public int getChildFragmentCount() {
         return getChildFragmentManager().getFragments().size();
     }

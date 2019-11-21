@@ -37,13 +37,6 @@ public class SuccessfullySubmitRunningResultPage extends xFragment {
                         .remove( SuccessfullySubmitRunningResultPage.this )
                         .commit();
 
-                // prepare usage variables
-                final xTalk x = new xTalk();
-                x.requestCode = Globals.RC_TO_PROFILE_PAGE;
-
-                // send back result
-                onResult(x);
-
             }
         });
 
@@ -54,6 +47,12 @@ public class SuccessfullySubmitRunningResultPage extends xFragment {
     public void onDestroy() {
         super.onDestroy();
 
+        // prepare usage variables
+        final xTalk x = new xTalk();
+        x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+
+        // send back result
+        onResult(x);
 
         // callback
         activity.onFragmentCallback(xTalk);
