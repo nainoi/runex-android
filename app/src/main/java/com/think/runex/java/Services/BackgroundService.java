@@ -141,7 +141,7 @@ public class BackgroundService extends Service {
         startForeground(NOTIF_ID, new NotificationCompat.Builder(this,
                 NOTIF_CHANNEL_ID) // don't forget create a notification channel first
                 .setOngoing(true)
-                .setSmallIcon(R.drawable.com_facebook_button_icon)
+                .setSmallIcon(R.drawable.ic_logo_small)
                 .setContentTitle(getString(R.string.app_name))
                 .setContentText("Service is running background")
                 .setContentIntent(pendingIntent)

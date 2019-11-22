@@ -20,13 +20,17 @@ import com.think.runex.common.getCurrentNightMode
 import com.think.runex.java.Activities.BridgeFile
 import com.think.runex.java.Activities.LoginActivity
 import com.think.runex.java.App.App
+import com.think.runex.java.App.AppEntity
+import com.think.runex.java.Constants.Globals
 import com.think.runex.java.Utils.ActivityUtils
+import com.think.runex.java.Utils.L
 import com.think.runex.ui.MainScreen
 import com.think.runex.ui.SplashScreen
 import com.think.runex.utility.LocalManager
 
 class MainActivity : AppCompatActivity() {
 
+    private val ct = "MainActivity->"
     private var backPressedEnabled = true
 
     //override fun attachBaseContext(newBase: Context?) {
@@ -34,6 +38,8 @@ class MainActivity : AppCompatActivity() {
     //}
 
     override fun onCreate(savedInstanceState: Bundle?) {
+        // prepare usage variables
+        val mtn = ct +"onCreateView() ";
 
         //Initial logger show log when is debug mode.
         Logger.isLogging = BuildConfig.DEBUG
@@ -53,8 +59,11 @@ class MainActivity : AppCompatActivity() {
 
         // fullscreen display
         ActivityUtils.newInstance(this).fullScreen();
+        //-->
+        val appEntity: AppEntity = App.instance(this).appEntity;
+        L.i(  "{$mtn} App-entity: {$appEntity}")
 
-        if(App.instance(this).appEntity.token.isAlive){
+        if(appEntity.token.isAlive && appEntity.isLoggedIn){
             // go to bridge file
             val intent = Intent(this, BridgeFile::class.java);
 

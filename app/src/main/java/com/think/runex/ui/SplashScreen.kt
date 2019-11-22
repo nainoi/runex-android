@@ -27,10 +27,7 @@ import kotlinx.coroutines.delay
 import kotlinx.coroutines.launch
 
 class SplashScreen : ScreenFragment() {
-
-    private val authViewModel: AuthViewModel by lazy {
-        ViewModelProviders.of(this, InjectorUtils.provideAuthViewModelFactory(context!!)).get(AuthViewModel::class.java)
-    }
+    private val ct = "SplashScreen->";
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_splash, container, false)

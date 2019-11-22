@@ -51,15 +51,18 @@ public class App {
 
         return new AppEntity();
     }
-    public void save(AppEntity appEntity){
+    public App save(AppEntity appEntity){
         editor.putString( APP_ENTITY, Globals.GSON.toJson( appEntity ));
         editor.commit();
 
+        return this;
     }
 
 
     public App clear(){
+        // clear spf's editor
         editor.clear().commit();
+
         return this;
     }
     public App serveLoginPage(Fragment fragment, int requestCode){
