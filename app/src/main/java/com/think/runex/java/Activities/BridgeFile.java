@@ -5,6 +5,7 @@ import android.content.Intent;
 import android.os.Bundle;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
@@ -36,6 +37,7 @@ public class BridgeFile extends xActivity {
 
     // explicit variables
     private final int CONTAINER_ID = R.id.bridge_file_container;
+    private final String FRAGMENT_MAIN_PAGE = "MAIN_PAGE";
 
     // views
     private BottomNavigationView bottomView;
@@ -90,6 +92,9 @@ public class BridgeFile extends xActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bridge_file);
 
+        // prepare usage variables
+        final String mtn = ct +"onCreate() ";
+
         // fullscreen
         ActivityUtils uts = ActivityUtils.newInstance(this);
         uts.fullScreen();
@@ -102,10 +107,26 @@ public class BridgeFile extends xActivity {
 
         // Fragment inits
         mFragmentUtils = FragmentUtils.newInstance(this, CONTAINER_ID);
-        mMainPage =  new MainPage().setPriority(Priority.PARENT);
 
-        // display main page
-        mainPage();
+        if( savedInstanceState == null ) {
+            // create fragment
+            mMainPage = new MainPage().setPriority(Priority.PARENT);
+
+            // display main page
+            mainPage();
+
+        } else {
+            // state fragment
+            mMainPage = (xFragment)getSupportFragmentManager().getFragment(savedInstanceState,  FRAGMENT_MAIN_PAGE);
+
+            Toast.makeText(this, mtn +"isAdd: "+ mMainPage.isAdded(), Toast.LENGTH_SHORT).show();
+
+            // display stated fragment
+            getSupportFragmentManager().beginTransaction()
+                    .show( mMainPage )
+                    .commit();
+
+        }
 
     }
 
@@ -127,6 +148,14 @@ public class BridgeFile extends xActivity {
      * Life cycle
      */
     @Override
+    protected void onSaveInstanceState(Bundle outState) {
+
+        //Save the fragment's instance
+        getSupportFragmentManager().putFragment(outState, FRAGMENT_MAIN_PAGE, mMainPage);
+
+        super.onSaveInstanceState(outState);
+
+    }    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 

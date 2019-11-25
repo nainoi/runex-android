@@ -41,6 +41,10 @@ public class MainPage extends xFragment {
     private final int CHILD_CONTAINER_ID = R.id.navigation_frame;
     private int mCurrentItemId = -1;
     private Fragment mCurrentFragment = null;
+    //--> pages
+    private final String PAGE_RECORD = "PAGE_RECORD";
+    private final String PAGE_PROFILE = "PAGE_PROFILE";
+    private final String PAGE_MY_EVENT = "PAGE_MY_EVENT";
 
     // views
     private BottomNavigationView bottomNavigationView;
@@ -165,25 +169,15 @@ public class MainPage extends xFragment {
         bottomNavigationView = v.findViewById(R.id.bottom_navigation);
     }
 
-    /**
-     * Life cycle
-     */
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // update props
-        setChildContainerId(CHILD_CONTAINER_ID);
-
-        // init pages
-        pageMyEvent = new MyEventPage();
-        pageRecord = new RecordPage().setPriority(Priority.PARENT).setFragmentHandler(new xFragmentHandler() {
+    /** Getter */
+    private xFragment getRecordPage(){
+        return new RecordPage().setPriority(Priority.PARENT).setFragmentHandler(new xFragmentHandler() {
             // prepare usage variables
-            final String mtn = ct +"pageRecord() ";
+            final String mtn = ct + "pageRecord() ";
 
             @Override
             public xFragment onResult(xTalk talk) {
-                L.i(mtn +"xtalk request-code: "+ talk.requestCode);
+                L.i(mtn + "xtalk request-code: " + talk.requestCode);
 
                 if (talk.requestCode == Globals.RC_TO_PROFILE_PAGE) {
                     // perform select
@@ -194,14 +188,59 @@ public class MainPage extends xFragment {
                     x.requestCode = Globals.RC_REFRESH;
 
                     // refresh
-                    pageProfile.onResult( x );
+                    pageProfile.onResult(x);
 
                 }
 
                 return null;
             }
         });
-        pageProfile = new ProfilePage().setPriority(Priority.PARENT);
+    }
+
+    /**
+     * Life cycle
+     */
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+
+        if(pageRecord.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_RECORD, pageRecord);
+        if(pageProfile.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_PROFILE, pageProfile);
+        if(pageMyEvent.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_MY_EVENT, pageMyEvent);
+
+        super.onSaveInstanceState(outState);
+    }
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // update props
+        setChildContainerId(CHILD_CONTAINER_ID);
+
+        if( savedInstanceState == null ) {
+            // init pages
+            pageMyEvent = new MyEventPage();
+            pageRecord = getRecordPage();
+            pageProfile = new ProfilePage().setPriority(Priority.PARENT);
+
+        } else {
+            if((pageRecord = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_RECORD)) == null){
+                pageRecord = getRecordPage();
+
+            }
+
+            if( (pageMyEvent = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_MY_EVENT)) == null ){
+                pageMyEvent = new MyEventPage();
+
+            }
+
+            if( (pageProfile = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_PROFILE)) == null ){
+                pageProfile = new ProfilePage().setPriority(Priority.PARENT);
+
+            }
+
+        }
     }
 
     @Override

@@ -44,7 +44,8 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     // explicit variables
     private final int SUMMARY_PAGE_CONTAINER_ID = R.id.summary_page_container;
     private boolean ON_LOADING = false;
-
+    //--> Fragment
+    private final String PAGE_REGISTERED_EVENT = "PAGE_REGISTERED_EVENT";
     // views
     private View btnSubmit;
 
@@ -151,13 +152,30 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         btnSubmit = v.findViewById(R.id.submit_result_frame);
     }
 
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        getChildFragmentManager().putFragment(outState, PAGE_REGISTERED_EVENT, pageRegisteredEvent);
+
+        super.onSaveInstanceState(outState);
+    }
+
     /** Life cycle */
+
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApp = App.instance( getActivity() );;
-        pageRegisteredEvent = new RegisteredEventsPage().setPriority(Priority.PARENT);
+        mApp = App.instance( getActivity() );
+
+        if( savedInstanceState == null ) {
+            pageRegisteredEvent = new RegisteredEventsPage().setPriority(Priority.PARENT);
+
+        } else {
+            pageRegisteredEvent = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_REGISTERED_EVENT );
+
+        }
     }
 
     @Override

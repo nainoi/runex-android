@@ -1,5 +1,6 @@
 package com.think.runex.java.Services;
 
+import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
 import android.app.PendingIntent;
@@ -7,8 +8,10 @@ import android.app.Service;
 import android.content.Intent;
 import android.location.Location;
 import android.os.Build;
+import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.widget.RemoteViews;
 
 import androidx.core.app.NotificationCompat;
 
@@ -33,19 +36,41 @@ public class BackgroundService extends Service {
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
     final double FIXED_ACCURACY = 15;
+    private boolean onDestroy = false;
+    //--> notification
+    private NotificationCompat.Builder notificationBuilder;
+    private NotificationManager notificationManager;
 
-    /** Feature methods */
-    private void broadcast(String jsonString){
+    /**
+     * Feature methods
+     */
+    private void broadcast(String jsonString) {
         Intent i = new Intent();
         i.setAction(Globals.BROADCAST_LOCATION);
         i.putExtra(Globals.BROADCAST_LOCATION_VAL, jsonString);
 
-        sendBroadcast( i );
+        sendBroadcast(i);
+    }
+
+    private void recursive(){
+        new Handler().postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                if( onDestroy ) return;
+//
+                notificationBuilder.setContentText(System.currentTimeMillis() +"");
+                notificationManager.notify(NOTIF_ID, notificationBuilder.build());
+
+                recursive();
+            }
+        }, 1000);
     }
 
     @Override
     public void onCreate() {
         super.onCreate();
+
+        recursive();
 
         // update props
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -58,8 +83,8 @@ public class BackgroundService extends Service {
                 if (location != null && location.getAccuracy() <= FIXED_ACCURACY) {
                     xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude());
 
-                    broadcast( Globals.GSON.toJson( xLoc ) );
-
+//                    broadcast( Globals.GSON.toJson( xLoc ) );
+//
 //                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
                 }
             }
@@ -82,12 +107,13 @@ public class BackgroundService extends Service {
                 }
 
                 for (Location location : locationResult.getLocations()) {
-                    if( location.getAccuracy() > FIXED_ACCURACY ) return;
+                    if (location.getAccuracy() > FIXED_ACCURACY) return;
                     if (location != null) {
                         xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
                                 , location.getAccuracy());
 
-                        broadcast( Globals.GSON.toJson( xLoc ) );
+                        broadcast(Globals.GSON.toJson(xLoc));
+
 
 //                        L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
                     }
@@ -103,31 +129,31 @@ public class BackgroundService extends Service {
 
     @Override
     public int onStartCommand(Intent intent, int flags, int startId) {
-
-
         return START_STICKY;
     }
 
     @Override
     public void onDestroy() {
+        onDestroy = true;
+
         super.onDestroy();
-        final String mtn = ct +"onDestroy() ";
+        final String mtn = ct + "onDestroy() ";
 
         // remove location update
-        mFusedLocationClient.removeLocationUpdates( mLocationCallback );
+        mFusedLocationClient.removeLocationUpdates(mLocationCallback);
 
         // log
-        L.i(mtn +"");
+        L.i(mtn + "");
     }
 
     @Override
-    public IBinder onBind(Intent intent)
-    {
+    public IBinder onBind(Intent intent) {
         return null;
     }
 
     private static final int NOTIF_ID = 1;
     private static final String NOTIF_CHANNEL_ID = "Channel_Id";
+
     private void startForeground() {
         // prepare usage variables
         Intent notificationIntent = new Intent(this, BridgeFile.class);
@@ -137,16 +163,36 @@ public class BackgroundService extends Service {
         // create notification channel
         createNotificationChannel();
 
-        // start foreground notification
-        startForeground(NOTIF_ID, new NotificationCompat.Builder(this,
+//        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_lay);
+        Notification notification = (notificationBuilder = new NotificationCompat.Builder(this,
                 NOTIF_CHANNEL_ID) // don't forget create a notification channel first
                 .setOngoing(true)
+                //--> display
                 .setSmallIcon(R.drawable.ic_logo_small)
-                .setContentTitle(getString(R.string.app_name))
-                .setContentText("Service is running background")
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+
+                //--> actions
+                .addAction(R.drawable.ic_record, "OK", pendingIntent)
+
+                //--> custom
+//                .setCustomContentView(mRemoteViews)
+//                .setCustomBigContentView(notificationLayoutExpanded)
+                .setOnlyAlertOnce(true)
+                .setContentText("00000")
+//                .setStyle(new NotificationCompat.InboxStyle())
+
+                //--> contents
+//                .setContentTitle(getString(R.string.app_name))
+//                .setContentText("Service is running background")
                 .setContentIntent(pendingIntent)
-                .build());
+
+                //--> create build
+        ).build();
+
+        // start foreground notification
+        startForeground(NOTIF_ID, notification);
     }
+
     private void createNotificationChannel() {
         // Create the NotificationChannel, but only on API 26+ because
         // the NotificationChannel class is new and not in the support library
@@ -158,7 +204,7 @@ public class BackgroundService extends Service {
             channel.setDescription(description);
             // Register the channel with the system; you can't change the importance
             // or other notification behaviors after this
-            NotificationManager notificationManager = getSystemService(NotificationManager.class);
+            notificationManager = getSystemService(NotificationManager.class);
             notificationManager.createNotificationChannel(channel);
         }
     }

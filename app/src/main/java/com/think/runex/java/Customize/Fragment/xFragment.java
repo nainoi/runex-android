@@ -2,6 +2,7 @@ package com.think.runex.java.Customize.Fragment;
 
 import android.os.Bundle;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
@@ -31,6 +32,9 @@ public class xFragment extends Fragment implements xFragmentRequestCode
     // instance variables
     public onTabChangedListener tabChangedListener;
     public xFragmentHandler fragmentHandler;
+
+    // explicit variables
+    private final String STATE_PRIORITY = "STATE_PRIORITY";
 
     public boolean onBackPressed(xFragment fragment) {
         // prepare usage variables
@@ -138,12 +142,6 @@ public class xFragment extends Fragment implements xFragmentRequestCode
         return this;
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        activity = (xActivity) getActivity();
-        super.onCreate(savedInstanceState);
-    }
-
     public xFragment setOnTabChangedListener(onTabChangedListener listener) {
         this.tabChangedListener = listener;
         return this;
@@ -174,4 +172,25 @@ public class xFragment extends Fragment implements xFragmentRequestCode
         return this;
     }
 
+    /** Life cycle */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        activity = (xActivity) getActivity();
+
+        if( savedInstanceState != null ){
+            // resume priority
+            PRIORITY = (Priority)savedInstanceState.getSerializable(STATE_PRIORITY);
+
+        }
+
+        super.onCreate(savedInstanceState);
+    }
+    @Override
+    public void onSaveInstanceState(@NonNull Bundle outState) {
+
+        // save priority
+        outState.putSerializable( STATE_PRIORITY, PRIORITY);
+
+        super.onSaveInstanceState(outState);
+    }
 }

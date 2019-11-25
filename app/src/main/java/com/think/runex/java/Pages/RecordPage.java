@@ -105,6 +105,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 final String jsonString = intent.getStringExtra(Globals.BROADCAST_LOCATION_VAL);
                 final xLocation location = Globals.GSON.fromJson(jsonString, xLocation.class);
 
+                // does not record
+                if( !mOnRecording ) return;
+
                 // on location changed
                 locationChanged(location);
 
@@ -371,9 +374,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         } else L.e(mtn + "last know location does not exists: " + lkLoc);
 //
-        xLocation x1 = new xLocation(13.845689, 100.596905);
+//        xLocation x1 = new xLocation(13.845689, 100.596905);
 
-        xLocation x11 = new xLocation(13.844689, 100.596905);
+//        xLocation x11 = new xLocation(13.844689, 100.596905);
 //        xLocation x111 = new xLocation(13.843689, 100.596905);
 //        xLocation x1111 = new xLocation(13.840689, 100.596905);
 //        xLocation x11111 = new xLocation(13.835689, 100.580905);
@@ -383,9 +386,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 //        xLocation x4 = new xLocation(13.843457, 100.597479);
 //        xLocation x5 = new xLocation(13.842600, 100.598379);
 ////
-        locationChanged(x1);
-
-        locationChanged(x11);
+//        locationChanged(x1);
+//
+//        locationChanged(x11);
 //        locationChanged(x111);
 //        locationChanged(x1111);
 //        locationChanged(x11111);

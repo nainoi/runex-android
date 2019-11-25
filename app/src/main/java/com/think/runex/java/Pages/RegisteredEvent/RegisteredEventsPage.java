@@ -86,7 +86,7 @@ public class RegisteredEventsPage extends xFragment implements
             AppEntity appEntity = App.instance(activity).getAppEntity();
             UserObject.DataBean user = appEntity.user.getData();
 
-            if (!((mUserEmail + "").equalsIgnoreCase(user.getEmail()))) {
+            if (mUserEmail != null && !((mUserEmail + "").equalsIgnoreCase(user.getEmail()))) {
 
                 // exit from this process
                 if (ON_REFRESH) return null;

@@ -248,15 +248,6 @@ public class RecorderUtils {
 
     }
 
-    public void finish() {
-        // stop recursive
-        mRecursiveHandler.removeCallbacksAndMessages(null);
-
-        // clear flag
-        START = false;
-
-    }
-
     public void start() {
         // prepare usage variables
         final String mtn = ct + "start() ";
