@@ -146,9 +146,15 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 //            props.titleImageUrl = mEventProfile;
             props.titleLabel = mEventName;
             //--> views
-            toolbar.setImageOptionIcon(R.drawable.ic_add);
+            //--> option button
+            if(!mEvent.getEvent().isInapp()) {
+                toolbar.setImageOptionIcon(R.drawable.ic_add);
+                toolbar.setOptionButtonColorFilter(R.color.orange);
+
+                // hide toolbar option button
+            } else toolbar.toolbarOptionButton.gone();
+            //--> navigate button
             toolbar.setNavigationButtonColorFilter(R.color.orange);
-            toolbar.setOptionButtonColorFilter(R.color.orange);
             toolbar.toolbarTitleIcon.gone();
 
             // binding

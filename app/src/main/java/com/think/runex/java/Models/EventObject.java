@@ -256,6 +256,16 @@ public class EventObject {
             private String status;
             private String location;
             private boolean is_active;
+            private boolean inapp;
+
+            public boolean isInapp() {
+                return inapp;
+            }
+
+            public void setInapp(boolean inapp) {
+                this.inapp = inapp;
+            }
+
             private String start_reg;
             private String end_reg;
             private String start_event;

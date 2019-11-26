@@ -70,7 +70,7 @@ public class BackgroundService extends Service {
     public void onCreate() {
         super.onCreate();
 
-        recursive();
+//        recursive();
 
         // update props
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -172,13 +172,14 @@ public class BackgroundService extends Service {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
                 //--> actions
-                .addAction(R.drawable.ic_record, "OK", pendingIntent)
+//                .addAction(R.drawable.ic_record, "OK", pendingIntent)
 
                 //--> custom
 //                .setCustomContentView(mRemoteViews)
 //                .setCustomBigContentView(notificationLayoutExpanded)
+                .setContentText("Background service is running.")
                 .setOnlyAlertOnce(true)
-                .setContentText("00000")
+//                .setContentText("00000")
 //                .setStyle(new NotificationCompat.InboxStyle())
 
                 //--> contents
