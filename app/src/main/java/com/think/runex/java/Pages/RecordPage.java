@@ -375,7 +375,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         } else L.e(mtn + "last know location does not exists: " + lkLoc);
 //
 //        xLocation x1 = new xLocation(13.845689, 100.596905);
-
+//
 //        xLocation x11 = new xLocation(13.844689, 100.596905);
 //        xLocation x111 = new xLocation(13.843689, 100.596905);
 //        xLocation x1111 = new xLocation(13.840689, 100.596905);
@@ -387,7 +387,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 //        xLocation x5 = new xLocation(13.842600, 100.598379);
 ////
 //        locationChanged(x1);
-//
+////
 //        locationChanged(x11);
 //        locationChanged(x111);
 //        locationChanged(x1111);

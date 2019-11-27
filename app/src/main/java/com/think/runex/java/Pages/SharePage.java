@@ -72,6 +72,26 @@ public class SharePage extends xFragment implements View.OnClickListener {
         }
     }
 
+    @Override
+    public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+
+        // exit from this page
+        if( recorderObject == null ){
+            // exit from this page
+            getFragmentManager().beginTransaction()
+                    .remove( this )
+                    .commit();
+
+            // exit from this process
+            return;
+        }
+
+        // binding
+        binding();
+
+    }
+
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
@@ -82,9 +102,6 @@ public class SharePage extends xFragment implements View.OnClickListener {
 
         // view event listener
         viewEventListener();
-
-        // binding
-        binding();
 
         return v;
     }

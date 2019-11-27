@@ -36,6 +36,8 @@ public class BackgroundService extends Service {
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
     final double FIXED_ACCURACY = 15;
+    final double FIXED_ACQUIRING = 3;
+    private int acquiring_count = 0;
     private boolean onDestroy = false;
     //--> notification
     private NotificationCompat.Builder notificationBuilder;
@@ -52,13 +54,13 @@ public class BackgroundService extends Service {
         sendBroadcast(i);
     }
 
-    private void recursive(){
+    private void recursive() {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
-                if( onDestroy ) return;
+                if (onDestroy) return;
 //
-                notificationBuilder.setContentText(System.currentTimeMillis() +"");
+                notificationBuilder.setContentText(System.currentTimeMillis() + "");
                 notificationManager.notify(NOTIF_ID, notificationBuilder.build());
 
                 recursive();
@@ -107,16 +109,21 @@ public class BackgroundService extends Service {
                 }
 
                 for (Location location : locationResult.getLocations()) {
-                    if (location.getAccuracy() > FIXED_ACCURACY) return;
-                    if (location != null) {
-                        xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
-                                , location.getAccuracy());
+                    // useless location
+                    if (location == null || location.getAccuracy() > FIXED_ACCURACY) return;
 
-                        broadcast(Globals.GSON.toJson(xLoc));
+                    // acquiring
+                    if( acquiring_count < FIXED_ACQUIRING ) ++acquiring_count;
+
+                    // accepted location
+                    xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
+                            , location.getAccuracy());
+
+                    // broadcast
+                    broadcast(Globals.GSON.toJson(xLoc));
 
 
 //                        L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
-                    }
                 }
             }
         };
