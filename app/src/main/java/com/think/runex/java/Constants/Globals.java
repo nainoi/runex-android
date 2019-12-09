@@ -24,6 +24,7 @@ public class Globals {
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
     public static final int FIXED_SCREEN_WIDTH = 1024;
 
+    //--> Points
     //--> Platform
     public static final String PLATFORM = "android";
 
@@ -62,6 +63,8 @@ public class Globals {
 
     //--> Broadcast
     public static final String BROADCAST_LOCATION = "BROADCAST";
+    public static final String BROADCAST_SERVICE = "BROADCAST-SERVICE";
+    public static final String BROADCAST_TEST = "BROADCAST-TEST";
     public static final String BROADCAST_LOCATION_VAL = "BROADCAST";
 
     //--> URL

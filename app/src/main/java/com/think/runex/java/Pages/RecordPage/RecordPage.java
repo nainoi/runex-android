@@ -1,7 +1,7 @@
-package com.think.runex.java.Pages;
-
+package com.think.runex.java.Pages.RecordPage;
 
 import android.app.Activity;
+import android.app.ActivityManager;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
@@ -19,7 +19,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.ViewTreeObserver;
 import android.widget.ImageView;
-import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,15 +27,6 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.facebook.CallbackManager;
-import com.facebook.FacebookCallback;
-import com.facebook.FacebookException;
-import com.facebook.FacebookSdk;
-import com.facebook.share.Sharer;
-import com.facebook.share.model.SharePhoto;
-import com.facebook.share.model.SharePhotoContent;
-import com.facebook.share.widget.ShareDialog;
-import com.google.android.gms.common.util.MapUtils;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
@@ -45,20 +35,25 @@ import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
 import com.think.runex.R;
 import com.think.runex.java.App.Configs;
+import com.think.runex.java.Constants.GPSRecordType;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
+import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
-import com.think.runex.java.Services.BackgroundService;
+import com.think.runex.java.Pages.SharePage;
+import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
+import com.think.runex.java.Services.v2.BackgroundService;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.Animation.AnimUtils;
 import com.think.runex.java.Utils.Animation.onAnimCallback;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.DeviceUtils;
+import com.think.runex.java.Utils.GPSFileRecorder;
 import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
@@ -73,7 +68,6 @@ import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.RecorderUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
-import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
 
@@ -117,6 +111,25 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             }
         }
     };
+    private BroadcastReceiver testBroadcastReceiver = new BroadcastReceiver() {
+        // prepare usage variables
+        final String mtn = ct + "testBroadcastReceiver() ";
+
+        @Override
+        public void onReceive(Context context, Intent intent) {
+            try {
+                // prepare usage variables
+                final String jsonString = intent.getStringExtra(Globals.BROADCAST_LOCATION_VAL);
+                L.i(mtn +"found props: "+ jsonString);
+
+            } catch (Exception e) {
+                e.printStackTrace();
+                L.e(mtn + "Err: " + e.getMessage());
+            }
+        }
+    };
+    //--> GPS record file
+    private GPSFileRecorder gpsFileRecorder;
 
     // explicit variables
     private boolean onNetwork = false;
@@ -153,6 +166,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private TextView btnSaveWithoutSubmitResult;
     private View btnStopAndSubmit;
     private ImageView previewImage;
+    //--> Read/Write GPS file
+    private View btnWriteFile
+            , btnReadFile;
     //--> Toolbar
     private View btnCancelSubmit;
     //--> Change background image
@@ -196,13 +212,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 onBackPressed();
                 break;
             case R.id.btn_share:
-                // display share page
-//                toSharePage();
-
-                /*
-                // before share
-                beforeShare(); */
-
                 // full-size map frame
                 frameMap.overrideRequestLayout(1);
                 // handler callback
@@ -226,12 +235,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 // reverse-size map frame
                                 frameMap.overrideRequestLayout(1.1);
 
-                                // record
-                                // display map preview
-//                                previewImage.setImageBitmap(bitmap);
-
-                                // share with facebook
-//                                shareWithFacebook();
                             }
                         });
                     }
@@ -266,6 +269,17 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 break;
 
             case R.id.btn_start:
+                if( mMap == null ) {
+                    // does gps available
+                    mLocUtils.isGPSAvailable();
+
+                    // exit from this process
+                    return;
+                }
+
+                // init gps file recorder
+                if( gpsFileRecorder == null ) gpsFileRecorder = new GPSFileRecorder("gps.txt", activity);
+
                 // going to stop recording
                 if (mOnRecording) {
                     // log
@@ -326,17 +340,30 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
      * Service methods
      */
     public void startService() {
+        // prepare usage variables
+        final String mtn = ct +"startService() ";
+
+        if( isMyServiceRunning(BackgroundService.class)) {
+            L.i(mtn + "Service is running...");
+
+            // exit from this process
+            return;
+
+        } else L.i(mtn +"Start service.");
+
         // use activity to start and trigger a service
         Intent i = new Intent(activity, BackgroundService.class);
         // potentially add data to the intent
         i.putExtra("KEY1", "Value to be used by the service");
 
+        // start service
         activity.startService(i);
     }
 
     // Stop the service
     public void stopService() {
-        activity.stopService(new Intent(activity, BackgroundService.class));
+         activity.stopService(new Intent(activity, BackgroundService.class));
+
     }
 
     @Override
@@ -421,6 +448,23 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private void broadcastService(){
+        // prepare usage variables
+        Intent i = new Intent();
+        i.setAction(Globals.BROADCAST_SERVICE);
+        i.putExtra(Globals.BROADCAST_LOCATION_VAL, "SsS");
+
+        activity.sendBroadcast(i);
+    }
+    private boolean isMyServiceRunning(Class<?> serviceClass) {
+        ActivityManager manager = (ActivityManager) activity.getSystemService(Context.ACTIVITY_SERVICE);
+        for (ActivityManager.RunningServiceInfo service : manager.getRunningServices(Integer.MAX_VALUE)) {
+            if (serviceClass.getName().equals(service.service.getClassName())) {
+                return true;
+            }
+        }
+        return false;
+    }
     private DialogInterface.OnClickListener getConfirmationDialogListener() {
         return new DialogInterface.OnClickListener() {
             @Override
@@ -572,6 +616,18 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         //--> update distance to recorder utils
         mRecorderUtils.addDistance(mMapUtils.difDistance(xFrom, xTo));
 
+        // write to gps file recorder
+        //--> record object
+        GPSFileRecordObject data = new GPSFileRecordObject();
+        data.record = new GPSFileRecordObject.xGPSRecord();
+        data.record.latitude = xTo.latitude;
+        data.record.longitude = xTo.longitude;
+        data.record.timestamp = System.currentTimeMillis() / 1000;
+        //--> record props
+        data.recorder = getRecorderObject();
+        //--> write to file
+        gpsFileRecorder.write(data, GPSRecordType.RECORDING);
+
         // update view
         binding();
 
@@ -592,9 +648,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     }
 
     private void bindingSummary(RecorderObject recorder) {
-        inputDisplayTime.setText(recorder.recordingDisplayTime);
+        inputDisplayTime.setText(recorder.displayRecordAsTime);
         inputDistance.setText(Globals.DCM_2.format(recorder.distanceKm));
-        inputPaceDisplayTime.setText(recorder.recordingPaceDisplayTime);
+        inputPaceDisplayTime.setText(recorder.displayPaceAsTime);
         inputCalories.setText(Globals.DCM.format(recorder.calories) + "");
 
     }
@@ -929,6 +985,67 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         //--> Frame share
         btnCancelSubmit.setOnClickListener(this);
         btnSocialShare.setOnClickListener(this);
+
+        View.OnClickListener ls = new View.OnClickListener() {
+            // prepare usage variables
+            final String mtn = ct +"viewEventListener() ";
+            final GPSFileRecorder gpsFileRecorder = new GPSFileRecorder("gps.txt", activity);
+
+            @Override
+            public void onClick(View view) {
+                if(view.getId() == R.id.btnReadGPSFile ){
+                    StringBuilder stringBuilder = new StringBuilder(gpsFileRecorder.readFile());
+                    L.i(mtn +"file-content: "+ stringBuilder);
+
+                    String[] locs = stringBuilder.toString().split("@");
+                    if( locs.length < 1 ) {
+                        L.e(mtn +"locs length is not ready: "+ locs.length);
+
+                        // exit from this process
+                        return;
+                    }
+
+                    L.i(mtn +"Locs-length: "+ locs.length);
+                    L.i(mtn +"Locs: "+ Globals.GSON.toJson(locs[ locs.length - 1]));
+                    L.i(mtn +" * * * As object * * * ");
+                    //--> object
+                    GPSFileRecordObject data = Globals.GSON.fromJson(locs[0], GPSFileRecordObject.class);
+                    if( data == null ) {
+                        // log
+                        L.e(mtn +"data["+ data +"] is not ready.");
+
+                        // exit from this process
+                        return;
+                    }
+
+                    L.i(mtn +"Latitude: "+ data.record.latitude);
+                    L.i(mtn +"Longitude: "+ data.record.longitude);
+                    L.i(mtn +"Timestamp: "+ data.record.timestamp);
+                    L.i(mtn +"Type: "+ data.record.type);
+                    L.i(mtn);
+
+                } else if( view.getId() == R.id.btnWriteGPSFile ){
+                    broadcastService();
+
+//                    GPSFileRecordObject data = new GPSFileRecordObject();
+//                    data.record = new GPSFileRecordObject.xGPSRecord();
+//                    // update props
+//                    data.record.latitude = 1.101;
+//                    data.record.longitude = 101.222;
+//                    data.record.type = GPSRecordType.START.ID;
+//                    data.record.timestamp = System.currentTimeMillis() / 1000;
+//
+//                    for(int a = 0; a < 100000; a++) {
+//                        gpsFileRecorder.write(data, GPSRecordType.START);
+//
+//                    }
+
+                } else L.e(mtn +"view.getId does not matches.");
+            }
+        };
+
+        btnReadFile.setOnClickListener( ls );
+        btnWriteFile.setOnClickListener( ls );
     }
 
     /**
@@ -949,6 +1066,10 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         btnStopAndSubmit = v.findViewById(R.id.frame_stop_and_submit);
         btnSaveWithoutSubmitResult = v.findViewById(R.id.btn_save_without_submit_result);
         icRecordState = v.findViewById(R.id.ic_recording_state);
+
+        //--> Record gps file
+        btnWriteFile = v.findViewById(R.id.btnWriteGPSFile);
+        btnReadFile = v.findViewById(R.id.btnReadGPSFile);
 
         //--> Frame map
         frameMap = v.findViewById(R.id.map);
@@ -1002,16 +1123,25 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         RecorderObject recorderObj = new RecorderObject();
         recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
         recorderObj.setRecordingTime(mRecorderUtils.recordDurationMillis);
-        recorderObj.setRecordingDisplayTime(mRecorderUtils.mRecordDisplayTime);
+        recorderObj.setDisplayRecordAsTime(mRecorderUtils.mRecordDisplayTime);
         recorderObj.setCalories(mRecorderUtils.calories);
-        recorderObj.setRecordingPaceDisplayTime(mRecorderUtils.mRecordPaceDisplayTime);
+        recorderObj.setDisplayPaceAsTime(mRecorderUtils.mRecordPaceDisplayTime);
 
         return recorderObj;
     }
 
+
     /**
      * Life cycle
      */
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        // prepare usage variables
+        final String mtn = ct +"onCreate() ";
+
+//        L.i(mtn +"is BackgroundService running: "+ isMyServiceRunning(BackgroundService.class));
+    }
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -1045,10 +1175,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         super.onDestroy();
 
         // stop background service
-        stopService();
+//        stopService();
 
         // unregister
         activity.unregisterReceiver(broadcastReceiver);
+        activity.unregisterReceiver(testBroadcastReceiver);
 
         // prepare usage variables
         final String mtn = ct + "onDestroy() ";
@@ -1076,7 +1207,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         final String mtn = ct + "onResume() ";
 
         // register broadcast
-        activity.registerReceiver(broadcastReceiver, new IntentFilter("BROADCAST"));
+        activity.registerReceiver(broadcastReceiver, new IntentFilter(Globals.BROADCAST_LOCATION));
+        activity.registerReceiver(testBroadcastReceiver, new IntentFilter(Globals.BROADCAST_TEST));
 
         // log
         L.i(mtn);

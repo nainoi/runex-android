@@ -36,7 +36,7 @@
         </provider>
 
         <service
-            android:name=".java.Services.BackgroundService"
+            android:name=".java.Services.v2.BackgroundService"
             android:foregroundServiceType="location"
             android:icon="@drawable/ic_logo_small"
             android:label="@string/background_service" />

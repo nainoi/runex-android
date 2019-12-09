@@ -2,24 +2,27 @@ package com.think.runex.java.Models;
 
 import android.graphics.Bitmap;
 
+import com.think.runex.java.Utils.GoogleMap.xLocation;
+
 public class RecorderObject {
     public double distanceKm = 0.0;
     public long recordingTime = 0L;
-    public String recordingDisplayTime = "00:00";
-    public String recordingPaceDisplayTime = "00:00";
+    public String displayRecordAsTime = "00:00";
+    public String displayPaceAsTime = "00:00";
     public double calories = 0;
     public Bitmap mapPreviewImage;
+    public xLocation xLocCurrent;
 
     public void setMapPreviewImage(Bitmap mapPreviewImage) {
         this.mapPreviewImage = mapPreviewImage;
     }
 
-    public void setRecordingPaceDisplayTime(String recordingPaceDisplayTime) {
-        this.recordingPaceDisplayTime = recordingPaceDisplayTime;
+    public void setDisplayPaceAsTime(String displayPaceAsTime) {
+        this.displayPaceAsTime = displayPaceAsTime;
     }
 
-    public void setRecordingDisplayTime(String recordingDisplayTime) {
-        this.recordingDisplayTime = recordingDisplayTime;
+    public void setDisplayRecordAsTime(String displayRecordAsTime) {
+        this.displayRecordAsTime = displayRecordAsTime;
     }
 
     public void setCalories(double calories) {

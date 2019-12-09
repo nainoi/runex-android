@@ -75,6 +75,26 @@
 
             </LinearLayout>
 
+
+            <LinearLayout
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content">
+
+                <Button
+                    android:id="@+id/btnWriteGPSFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="write" />
+
+                <Button
+                    android:layout_marginLeft="8dp"
+                    android:id="@+id/btnReadGPSFile"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="read" />
+
+            </LinearLayout>
+
         </FrameLayout>
 
         <!-- Record -->
@@ -180,7 +200,7 @@
                                 android:id="@+id/v_pace"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="Pace (min/hr)"
+                                android:text="Pace (min/km)"
                                 android:textColor="@android:color/darker_gray"/>
 
                             <TextView

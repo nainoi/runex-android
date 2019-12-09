@@ -297,9 +297,9 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 RecorderObject recorderObj = new RecorderObject();
                 recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
                 recorderObj.setRecordingTime(mRecorderUtils.recordDurationMillis);
-                recorderObj.setRecordingDisplayTime(mRecorderUtils.mRecordDisplayTime);
+                recorderObj.setDisplayRecordAsTime(mRecorderUtils.mRecordDisplayTime);
                 recorderObj.setCalories(mRecorderUtils.calories);
-                recorderObj.setRecordingPaceDisplayTime(mRecorderUtils.mRecordPaceDisplayTime);
+                recorderObj.setDisplayPaceAsTime(mRecorderUtils.mRecordPaceDisplayTime);
 
                 // display confirm stop recording
                 dialogDiscardRecording("ยืนยัน", "คุณยืนยันที่จะสิ้นสุดการวิ่ง", new DialogInterface.OnClickListener() {
@@ -609,9 +609,9 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
     }
 
     private void bindingSummary(RecorderObject recorder) {
-        inputDisplayTime.setText(recorder.recordingDisplayTime);
+        inputDisplayTime.setText(recorder.displayRecordAsTime);
         inputDistance.setText(Globals.DCM.format(recorder.distanceKm) + "km");
-        inputPaceDisplayTime.setText(recorder.recordingPaceDisplayTime);
+        inputPaceDisplayTime.setText(recorder.displayPaceAsTime);
         inputCalories.setText(Globals.DCM.format(recorder.calories )+ "");
 
     }

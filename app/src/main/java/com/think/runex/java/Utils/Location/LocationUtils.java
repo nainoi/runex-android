@@ -139,7 +139,7 @@ public class LocationUtils implements LocationListener {
     public boolean isGPSAvailable() {
         if( mLocationManager == null ) init();
 
-        if (!mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
             //Ask the user to enable GPS
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             builder.setTitle("Location Manager");
