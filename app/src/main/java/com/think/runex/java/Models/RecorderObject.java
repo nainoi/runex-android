@@ -4,14 +4,18 @@ import android.graphics.Bitmap;
 
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 
-public class RecorderObject {
+import java.io.Serializable;
+
+public class RecorderObject implements Serializable {
     public double distanceKm = 0.0;
     public long recordingTime = 0L;
     public String displayRecordAsTime = "00:00";
     public String displayPaceAsTime = "00:00";
     public double calories = 0;
     public Bitmap mapPreviewImage;
+    public xLocation xLoc;
     public xLocation xLocCurrent;
+    public xLocation xLocLast;
 
     public void setMapPreviewImage(Bitmap mapPreviewImage) {
         this.mapPreviewImage = mapPreviewImage;

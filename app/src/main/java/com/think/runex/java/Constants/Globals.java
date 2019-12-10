@@ -3,11 +3,13 @@ package com.think.runex.java.Constants;
 import android.Manifest;
 import android.app.Activity;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.think.runex.java.App.Configs;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
+import java.util.List;
 
 public class Globals {
     //--> Activities
@@ -25,6 +27,7 @@ public class Globals {
     public static final int FIXED_SCREEN_WIDTH = 1024;
 
     //--> Points
+    public static List<LatLng> POINTS;
     //--> Platform
     public static final String PLATFORM = "android";
 
@@ -62,10 +65,15 @@ public class Globals {
     public static final int RC_PICK_IMAGE = 4100;
 
     //--> Broadcast
+    public static final String JSON = "JSON";
+    public static final String SERIALIZABLE = "SERIALIZABLE";
     public static final String BROADCAST_LOCATION = "BROADCAST";
     public static final String BROADCAST_SERVICE = "BROADCAST-SERVICE";
     public static final String BROADCAST_TEST = "BROADCAST-TEST";
-    public static final String BROADCAST_LOCATION_VAL = "BROADCAST";
+    public static final String BROADCAST_VAL = "BROADCAST-VAL";
+    public static final String BROADCAST_LOCATION_VAL = "BROADCAST-LOCATION-VAL";
+    public static final String BROADCAST_RECORD_VAL = "BROADCAST-RECORD-VAL";
+    public static final String BROADCAST_ACTION_VAL = "BROADCAST-ACTION-VAL";
 
     //--> URL
     public static final String URL_RUNEX = "https://runex.co";

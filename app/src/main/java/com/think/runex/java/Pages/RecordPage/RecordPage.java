@@ -1032,11 +1032,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 //                    // update props
 //                    data.record.latitude = 1.101;
 //                    data.record.longitude = 101.222;
-//                    data.record.type = GPSRecordType.START.ID;
+//                    data.record.type = GPSRecordType.INITIAL.ID;
 //                    data.record.timestamp = System.currentTimeMillis() / 1000;
 //
 //                    for(int a = 0; a < 100000; a++) {
-//                        gpsFileRecorder.write(data, GPSRecordType.START);
+//                        gpsFileRecorder.write(data, GPSRecordType.INITIAL);
 //
 //                    }
 

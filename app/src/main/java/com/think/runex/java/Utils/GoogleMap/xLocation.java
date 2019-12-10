@@ -1,6 +1,8 @@
 package com.think.runex.java.Utils.GoogleMap;
 
-public class xLocation {
+import java.io.Serializable;
+
+public class xLocation implements Serializable {
     public double latitude = 0;
     public double longitude = 0;
     public double accuracy = 0;

@@ -22,15 +22,22 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.maps.model.LatLng;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
 import com.think.runex.java.Activities.BridgeFile;
+import com.think.runex.java.Constants.BroadcastAction;
+import com.think.runex.java.Constants.BroadcastType;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 import com.think.runex.java.Utils.Recorder.v2.RecorderUtils;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class BackgroundService extends Service {
     private final String ct = "BackgroundService->";
@@ -42,8 +49,11 @@ public class BackgroundService extends Service {
     final double FIXED_ACCURACY = 15;
     final double FIXED_ACQUIRING = 3;
     private int acquiring_count = 0;
-    private boolean onDestroy = false;
     private xLocation lastLocation = null;
+    private List<LatLng> points = new ArrayList<>();
+    //--> Flags
+    private boolean onRecordPaused = false;
+    private boolean onDestroy = false;
     //--> notification
     private NotificationCompat.Builder notificationBuilder;
     private NotificationManager notificationManager;
@@ -57,7 +67,73 @@ public class BackgroundService extends Service {
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
+                // prepare usage variables
+                final BroadcastObject broadcast = (BroadcastObject) intent.getSerializableExtra(Globals.SERIALIZABLE);
+
+                // broadcast null
+                if (broadcast == null) {
+                    // log
+                    L.e(mtn + "broadcast[" + broadcast + "] is not ready.");
+
+                    // exit from this process
+                    return;
+
+                }
+
+                // prepare usage variables
+                final String actionType = broadcast.broadcastAction.TYPE;
+
+                L.i(mtn + "Action type: " + actionType);
+                // conditions
+                if (actionType.equalsIgnoreCase(BroadcastAction.INITIAL.TYPE)) {
+
+                    // prepare usage variables
+                    // create points instance
+                    Globals.POINTS = new ArrayList<>();
+
+                    //--> flush all points
+                    Globals.POINTS.addAll(points);
+
+                    // prepare usage variables
+                    Intent i = new Intent();
+                    BroadcastObject broadcastObject = new BroadcastObject();
+
+                    //--> update props
+                    broadcastObject.broadcastType = BroadcastType.ACTIONS.TYPE;
+
+                    //--> intent props
+                    i.setAction(Globals.BROADCAST_TEST);
+                    i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+
+                    // send broadcast
+                    sendBroadcast(i);
+
+                } else if (actionType.equalsIgnoreCase(BroadcastAction.PAUSE.TYPE)) {
+
+                    if (recorderUtils != null) {
+                        // update flag
+                        onRecordPaused = true;
+
+                        // pause recorder
+                        recorderUtils.pause();
+
+                    } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
+
+                } else if( actionType.equalsIgnoreCase( BroadcastAction.RESUME.TYPE )) {
+
+                    if (recorderUtils != null) {
+                        // update flag
+                        onRecordPaused = false;
+
+                        // pause recorder
+                        recorderUtils.start();
+
+                    } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
+
+
+                } else L.e(mtn + "Action type[" + actionType + "] does not matches.");
                 L.i(mtn + "received action...");
+
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -81,25 +157,27 @@ public class BackgroundService extends Service {
         recorderUtils.setRecorderCallback(new onRecorderCallback() {
             @Override
             public void onRecordTimeChanged(String time) {
-                // when last location
-                // is not ready
-                if( lastLocation == null ) return;
-
                 // prepare usage variables
                 Intent i = new Intent();
+                BroadcastObject broadcastObject = new BroadcastObject();
                 RecorderObject record = new RecorderObject();
 
                 //--> record props
                 record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
                 record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
-                record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
                 record.distanceKm = recorderUtils.distanceKm;
                 record.calories = recorderUtils.calories;
-                record.xLocCurrent = new xLocation(lastLocation.latitude, lastLocation.longitude);
+                record.xLoc = (lastLocation != null)
+                        ? new xLocation(lastLocation.latitude, lastLocation.longitude)
+                        : null;
+
+                //--> broadcast props
+                broadcastObject.attachedObject = record;
+                broadcastObject.broadcastType = BroadcastType.RECORDING.TYPE;
 
                 //--> intent props
                 i.setAction(Globals.BROADCAST_TEST);
-                i.putExtra(Globals.BROADCAST_LOCATION_VAL, Globals.GSON.toJson(record));
+                i.putExtra(Globals.SERIALIZABLE, broadcastObject);
 
                 // send broadcast
                 sendBroadcast(i);
@@ -138,7 +216,7 @@ public class BackgroundService extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 // location is not ready
-                if (locationResult == null) return;
+                if (onRecordPaused || locationResult == null) return;
 
                 // loop locations
                 for (Location location : locationResult.getLocations()) {
@@ -153,7 +231,7 @@ public class BackgroundService extends Service {
                             , location.getAccuracy());
 
                     // broadcast
-                    broadcast(Globals.GSON.toJson(xLoc));
+//                    broadcast(Globals.GSON.toJson(xLoc));
 
                     // last location condition
                     if (lastLocation == null) {
@@ -162,6 +240,9 @@ public class BackgroundService extends Service {
 
                         // update last location;
                         lastLocation = xLoc;
+
+                        // keep point
+                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
 
                         // exit from this process
                         return;
@@ -172,29 +253,51 @@ public class BackgroundService extends Service {
 
                     // should add distance
                     if (differenceDist > 0.005) {
+                        // keep point
+                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+
                         // update distance
                         recorderUtils.addDistance(differenceDist);
 
+                        // broadcast location
+                        // prepare usage variables
+                        Intent i = new Intent();
+                        RecorderObject record = new RecorderObject();
+                        BroadcastObject broadcastObject = new BroadcastObject();
 
+                        //--> record props
+                        record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
+                        record.xLocLast = lastLocation;
+                        //--> broadcast attached object
+                        broadcastObject.broadcastType = BroadcastType.LOCATION.TYPE;
+                        broadcastObject.attachedObject = record;
+
+                        //--> intent props
+                        i.setAction(Globals.BROADCAST_TEST);
+                        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+                        // send broadcast
+                        sendBroadcast(i);
+
+                        // update last location
+                        lastLocation = xLoc;
+
+                        L.i(mtn + "Location accepted..");
                     }
 
-                    // update last location
-                    lastLocation = xLoc;
-
-                    L.i(mtn + "");
-                    L.i(mtn + "");
-                    L.i(mtn + " * * * Location Information * * * ");
-                    L.i(mtn + "--> timing");
-                    L.i(mtn + "Pace: " + recorderUtils.displayPaceAsTime);
-                    L.i(mtn + "Record duration: " + recorderUtils.displayRecordAsTime);
-                    L.i(mtn + "--> Unit");
-                    L.i(mtn + "Calorie: " + recorderUtils.calories);
-                    L.i(mtn + "Distance: " + recorderUtils.distanceKm);
-                    L.i(mtn + "--> Ect.");
-                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
-                    L.i(mtn + "");
-                    L.i(mtn + "");
-                    L.i(mtn + "");
+//                    L.i(mtn + "");
+//                    L.i(mtn + "");
+//                    L.i(mtn + " * * * Location Information * * * ");
+//                    L.i(mtn + "--> timing");
+//                    L.i(mtn + "Pace: " + recorderUtils.displayPaceAsTime);
+//                    L.i(mtn + "Record duration: " + recorderUtils.displayRecordAsTime);
+//                    L.i(mtn + "--> Unit");
+//                    L.i(mtn + "Calorie: " + recorderUtils.calories);
+//                    L.i(mtn + "Distance: " + recorderUtils.distanceKm);
+//                    L.i(mtn + "--> Ect.");
+//                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
+//                    L.i(mtn + "");
+//                    L.i(mtn + "");
+//                    L.i(mtn + "");
 
                 }
             }

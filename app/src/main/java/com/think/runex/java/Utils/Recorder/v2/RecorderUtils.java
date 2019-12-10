@@ -100,7 +100,7 @@ public class RecorderUtils {
                         // delayed
                         Thread.sleep(INCREATE_TIME);
 
-                        L.i(mtn + "cooking result...");
+//                        L.i(mtn + "cooking result...");
                     }
 
                 } catch (Exception e) {
