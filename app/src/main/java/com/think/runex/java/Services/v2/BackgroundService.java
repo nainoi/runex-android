@@ -17,7 +17,6 @@ import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -36,7 +35,6 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.RecorderObject;
-import com.think.runex.java.Services.BroadcastReceiverService;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
@@ -52,9 +50,6 @@ public class BackgroundService extends Service {
     FusedLocationProviderClient mFusedLocationClient;
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
-    final double FIXED_ACCURACY = 15;
-    final double FIXED_ACQUIRING = 3;
-    private int acquiring_count = 0;
     private xLocation lastLocation = null;
     private RecorderObject currentRecorder = null;
     private List<LatLng> points = new ArrayList<>();
@@ -68,7 +63,6 @@ public class BackgroundService extends Service {
     //--> Recorder
     private RecorderUtils recorderUtils;
     //--> broadcast receiver
-    private BroadcastReceiver broadcastReceiverServices = new BroadcastReceiverService();
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         // prepare usage variables
         final String mtn = ct + "BroadcastReceiver() ";
@@ -99,6 +93,11 @@ public class BackgroundService extends Service {
         }
     };
 
+    // explicit variables
+    private final double FIXED_ACCURACY = 15;
+    private final double FIXED_GPS_ACQUIRING = 1;
+    private boolean GPS_ACQUIRED = false;
+    private int acquiring_count = 0;
 
     @Override
     public void onCreate() {
@@ -120,13 +119,14 @@ public class BackgroundService extends Service {
                         String displayTime = recorderUtils.displayRecordAsTime;
 //
                         // update props
-                        notificationBuilder.setContentText( stringPattern(displayTime, Globals.DCM_2.format(recorderUtils.distanceKm)) );
+                        notificationBuilder.setContentText(stringPattern(displayTime, Globals.DCM_2.format(recorderUtils.distanceKm)));
 
                         // update notify
                         notificationManager.notify(NOTIF_ID, notificationBuilder.build());
 
                     } catch (Exception e) {
                         L.e(mtn + "Err: " + e.getMessage());
+
                     }
 
                 }
@@ -140,11 +140,13 @@ public class BackgroundService extends Service {
                 record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
                 record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
                 record.paceMillis = recorderUtils.paceMillis;
+                record.durationMillis = recorderUtils.recordDurationMillis;
                 record.distanceKm = recorderUtils.distanceKm;
                 record.calories = recorderUtils.calories;
                 record.xLoc = (lastLocation != null)
                         ? new xLocation(lastLocation.latitude, lastLocation.longitude)
                         : null;
+                record.gpsAcquired = GPS_ACQUIRED;
 
                 //--> broadcast props
                 broadcastObject.attachedObject = (currentRecorder = record);
@@ -202,7 +204,23 @@ public class BackgroundService extends Service {
                     if (location == null || location.getAccuracy() > (FIXED_ACCURACY)) return;
 
                     // acquiring
-                    if (acquiring_count < FIXED_ACQUIRING) ++acquiring_count;
+                    final boolean gpsAcquiring = acquiring_count < FIXED_GPS_ACQUIRING;
+                    // gps acquiring condition
+                    if (gpsAcquiring) ++acquiring_count;
+                    else if (!gpsAcquiring && !GPS_ACQUIRED) {
+                        // update flag
+                        GPS_ACQUIRED = true;
+
+                    }
+
+                    // does gps acquired
+                    if (!GPS_ACQUIRED) {
+                        // logs
+                        L.i(mtn + "gps acquiring amount[" + acquiring_count + "/" + FIXED_GPS_ACQUIRING + "]");
+
+                        // exit from this process
+                        return;
+                    }
 
                     // accepted location
                     xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
@@ -246,6 +264,14 @@ public class BackgroundService extends Service {
                         //--> record props
                         record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
                         record.xLocLast = lastLocation;
+                        record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
+                        record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
+                        record.durationMillis = recorderUtils.recordDurationMillis;
+                        record.paceMillis = recorderUtils.paceMillis;
+                        record.distanceKm = recorderUtils.distanceKm;
+                        record.calories = recorderUtils.calories;
+                        record.gpsAcquired = GPS_ACQUIRED;
+
                         //--> broadcast attached object
                         broadcastObject.broadcastType = BroadcastType.LOCATION;
                         broadcastObject.attachedObject = record;
@@ -285,15 +311,71 @@ public class BackgroundService extends Service {
         // display foreground
         startForeground();
 
+        // alert / check gps acquiring
+        alertGPSAcquiring(true);
+
     }
 
 
     /**
      * Feature methods
      */
-    private void resumeRecording(){
+    private void alertGPSAcquiring(boolean recursive) {
+
         // prepare usage variables
-        final String mtn = ct +"resumeRecording() ";
+        final String mtn = ct +"alertGPSAcquiring() ";
+        Handler handler = new Handler();
+        Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                // prepare usage variables
+                Intent i = new Intent();
+                BroadcastObject broadcastObject = new BroadcastObject();
+                RecorderObject recorder = new RecorderObject();
+                boolean _gpsAcquiring = GPS_ACQUIRED;
+
+                //--> update props
+                recorder.gpsAcquired = _gpsAcquiring;
+
+                //--> broadcast
+                broadcastObject.broadcastType = BroadcastType.ACTIONS;
+                broadcastObject.broadcastAction = BroadcastAction.GPS_ACQUIRING;
+                broadcastObject.attachedObject = recorder;
+
+                //--> intent props
+                i.setAction(Globals.BROADCAST_TEST);
+                i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+
+                // send broadcast
+                sendBroadcast(i);
+
+                // exit from recursive
+                if( _gpsAcquiring || !recursive ){
+                    // logs
+                    L.i(mtn +"exit from \"alert gps acquiring\" ");
+                    // exit from this process
+                    return;
+                }
+
+                // recursive
+                if( !GPS_ACQUIRED ) alertGPSAcquiring(true);
+                else {
+                    // recursive
+                    if( GPS_ACQUIRED && recursive ) alertGPSAcquiring( false );
+
+                }
+
+            }
+        };
+
+        handler.postDelayed(runner, 1000);
+
+
+    }
+
+    private void resumeRecording() {
+        // prepare usage variables
+        final String mtn = ct + "resumeRecording() ";
 
         if (recorderUtils != null) {
             // update flag
@@ -304,9 +386,10 @@ public class BackgroundService extends Service {
 
         } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
     }
-    private void pauseRecording(){
+
+    private void pauseRecording() {
         // prepare usage variables
-        final String mtn = ct +"pauseRecording() ";
+        final String mtn = ct + "pauseRecording() ";
 
         if (recorderUtils != null) {
             // update flag
@@ -317,6 +400,7 @@ public class BackgroundService extends Service {
 
         } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
     }
+
     private void broadcastConditions(BroadcastObject broadcast) {
         // prepare usage variables
         final String mtn = ct + "broadcastConditions() ";
@@ -400,13 +484,13 @@ public class BackgroundService extends Service {
                     NotificationCompat.Action actionButton = notificationBuilder.mActions.get(0);
 
                     // job must started
-                    if( onRecordStarted ){
+                    if (onRecordStarted) {
                         // update flag
                         onRecordPaused = (onRecordPaused) ? false : true;
 
                         // record state conditions
-                        if( onRecordPaused ){
-                            L.i(mtn +"going to pause");
+                        if (onRecordPaused) {
+                            L.i(mtn + "going to pause");
                             // resume recording
                             pauseRecording();
 
@@ -414,7 +498,7 @@ public class BackgroundService extends Service {
                             actionButton.title = "RESUME";
 
                         } else {
-                            L.i(mtn +"going to resume");
+                            L.i(mtn + "going to resume");
 
                             // resume recording
                             resumeRecording();
@@ -426,10 +510,10 @@ public class BackgroundService extends Service {
                         // notify to
                         notificationManager.notify(NOTIF_ID, notificationBuilder.build());
 
-                    } else L.e(mtn +"record["+ onRecordStarted +"] does not start yet.");
+                    } else L.e(mtn + "record[" + onRecordStarted + "] does not start yet.");
 
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e.getMessage());
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
 
                 }
 
@@ -439,12 +523,10 @@ public class BackgroundService extends Service {
     }
 
     private void unregisterBroadcast() {
-        unregisterReceiver(broadcastReceiverServices);
         unregisterReceiver(broadcastReceiver);
     }
 
     private void registerBroadcast() {
-        registerReceiver(broadcastReceiverServices, new IntentFilter(Globals.BROADCAST_SERVICE_MANAGER) );
         registerReceiver(broadcastReceiver, new IntentFilter(Globals.BROADCAST_SERVICE));
 
     }
@@ -484,7 +566,7 @@ public class BackgroundService extends Service {
     /**
      * Getter
      */
-    private PendingIntent intentBroadcastReceiverService(){
+    private PendingIntent intentBroadcastReceiverService() {
         // prepare usage variables
         Intent i = new Intent();
         BroadcastObject broadcastObject = new BroadcastObject();
@@ -502,6 +584,7 @@ public class BackgroundService extends Service {
 
         return pendingIntent;
     }
+
     private BackgroundServiceInfoObject serviceInfoObject(RecorderObject recorder) {
         // prepare usage variables
         BackgroundServiceInfoObject info = new BackgroundServiceInfoObject();
@@ -594,7 +677,7 @@ public class BackgroundService extends Service {
 //                .setContentText("Service is running background")
                 .setContentIntent(pendingIntent)
 
-        //--> create build
+                //--> create build
         ).build();
 
         // start foreground notification
@@ -618,8 +701,10 @@ public class BackgroundService extends Service {
     }
 
 
-    /** Micro methods */
-    private String stringPattern(String displayTime, String displayKm){
+    /**
+     * Micro methods
+     */
+    private String stringPattern(String displayTime, String displayKm) {
         return String.format(getString(R.string.notification_display_info),
                 getString(R.string.u250),
                 displayTime,

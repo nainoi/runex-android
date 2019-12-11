@@ -96,6 +96,25 @@
 
             </LinearLayout>
 
+            <!-- Frame gps acquiring -->
+            <FrameLayout
+                android:paddingVertical="8dp"
+                android:id="@+id/frame_gps_signal"
+                android:visibility="invisible"
+                android:background="@android:color/holo_green_light"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:id="@+id/lb_gps_signal"
+                    android:text="GPS ACQUIRED"
+                    android:layout_gravity="center"
+                    android:textColor="@android:color/white"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"/>
+
+            </FrameLayout>
+
         </FrameLayout>
 
         <!-- Record -->

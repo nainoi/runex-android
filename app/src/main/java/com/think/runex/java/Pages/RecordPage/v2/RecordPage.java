@@ -24,6 +24,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
@@ -153,6 +154,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 mMapUtils.addPolyline(from, to);
 
                             }
+
+                        } else if( action.equals(BroadcastAction.GPS_ACQUIRING) ){
+                            // prepare usage variables
+                            final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
+
+                            // gps conditions
+                            if( record.gpsAcquired ) onGPSAcquired();
+                            else onGPSSignalLost();
+
+                            L.i(mtn +"is gps acquiring: "+ record.gpsAcquired);
 
                         } else if (action.equals(BroadcastAction.GET_BACKGROUND_SERVICE_INFO)) {
                             // prepare usage variables
@@ -587,6 +598,30 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private void onGPSSignalLost(){
+        final View frame = getView().findViewById(R.id.frame_gps_signal );
+        final TextView lb = getView().findViewById(R.id.lb_gps_signal );
+        frame.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_light));
+        lb.setText("WAITING FOR GPS SIGNAL");
+        lb.setTextColor(ContextCompat.getColor(activity, android.R.color.white));
+
+        frame.setVisibility(View.VISIBLE);
+    }
+    private void onGPSAcquired(){
+        final View frame = getView().findViewById(R.id.frame_gps_signal );
+        final TextView lb = getView().findViewById(R.id.lb_gps_signal );
+        frame.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_light));
+        lb.setText("GPS ACQUIRED");
+        lb.setTextColor(ContextCompat.getColor(activity, android.R.color.white));
+
+        frame.postDelayed(new Runnable() {
+            @Override
+            public void run() {
+                frame.setVisibility(View.GONE);
+
+            }
+        }, 800);
+    }
     private boolean isMapReady() {
         // prepare usage variables
         final String mtn = ct + "isMapReady() ";

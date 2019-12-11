@@ -7,6 +7,7 @@ public enum BroadcastAction {
     PAUSE("Pause" ),
     RESUME("Resume"),
     RESET("Reset"),
+    GPS_ACQUIRING("GPS Acquiring"),
     GET_BACKGROUND_SERVICE_INFO("Get Background Service Info"),
 
     ;

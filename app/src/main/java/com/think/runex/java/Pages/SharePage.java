@@ -189,9 +189,12 @@ public class SharePage extends xFragment implements View.OnClickListener {
 
     // binding
     private void binding() {
+        final String mtn = ct +"binding() ";
         // labels
         lbDistance.setText(Globals.DCM_2.format(recorderObject.distanceKm) + " กม.");
         lbDuration.setText(DateTimeUtils.toTimeFormat(recorderObject.durationMillis));
+
+        L.i(mtn +"recorder-object: "+ Globals.GSON.toJson( recorderObject ));
 
         // image bitmap
         previewImage.setImageBitmap(recorderObject.mapPreviewImage);
