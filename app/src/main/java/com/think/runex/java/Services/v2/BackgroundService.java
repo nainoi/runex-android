@@ -14,6 +14,10 @@ import android.os.Build;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
+import android.text.Spannable;
+import android.text.SpannableString;
+import android.text.style.StyleSpan;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -29,8 +33,10 @@ import com.think.runex.java.Activities.BridgeFile;
 import com.think.runex.java.Constants.BroadcastAction;
 import com.think.runex.java.Constants.BroadcastType;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Services.BroadcastReceiverService;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
@@ -50,9 +56,11 @@ public class BackgroundService extends Service {
     final double FIXED_ACQUIRING = 3;
     private int acquiring_count = 0;
     private xLocation lastLocation = null;
+    private RecorderObject currentRecorder = null;
     private List<LatLng> points = new ArrayList<>();
     //--> Flags
     private boolean onRecordPaused = false;
+    private boolean onRecordStarted = false;
     private boolean onDestroy = false;
     //--> notification
     private NotificationCompat.Builder notificationBuilder;
@@ -60,6 +68,7 @@ public class BackgroundService extends Service {
     //--> Recorder
     private RecorderUtils recorderUtils;
     //--> broadcast receiver
+    private BroadcastReceiver broadcastReceiverServices = new BroadcastReceiverService();
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         // prepare usage variables
         final String mtn = ct + "BroadcastReceiver() ";
@@ -80,60 +89,8 @@ public class BackgroundService extends Service {
 
                 }
 
-                // prepare usage variables
-                final String actionType = broadcast.broadcastAction.TYPE;
-
-                L.i(mtn + "Action type: " + actionType);
-                // conditions
-                if (actionType.equalsIgnoreCase(BroadcastAction.INITIAL.TYPE)) {
-
-                    // prepare usage variables
-                    // create points instance
-                    Globals.POINTS = new ArrayList<>();
-
-                    //--> flush all points
-                    Globals.POINTS.addAll(points);
-
-                    // prepare usage variables
-                    Intent i = new Intent();
-                    BroadcastObject broadcastObject = new BroadcastObject();
-
-                    //--> update props
-                    broadcastObject.broadcastType = BroadcastType.ACTIONS.TYPE;
-
-                    //--> intent props
-                    i.setAction(Globals.BROADCAST_TEST);
-                    i.putExtra(Globals.SERIALIZABLE, broadcastObject);
-
-                    // send broadcast
-                    sendBroadcast(i);
-
-                } else if (actionType.equalsIgnoreCase(BroadcastAction.PAUSE.TYPE)) {
-
-                    if (recorderUtils != null) {
-                        // update flag
-                        onRecordPaused = true;
-
-                        // pause recorder
-                        recorderUtils.pause();
-
-                    } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
-
-                } else if( actionType.equalsIgnoreCase( BroadcastAction.RESUME.TYPE )) {
-
-                    if (recorderUtils != null) {
-                        // update flag
-                        onRecordPaused = false;
-
-                        // pause recorder
-                        recorderUtils.start();
-
-                    } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
-
-
-                } else L.e(mtn + "Action type[" + actionType + "] does not matches.");
-                L.i(mtn + "received action...");
-
+                // broadcast conditions
+                broadcastConditions(broadcast);
 
             } catch (Exception e) {
                 e.printStackTrace();
@@ -157,6 +114,23 @@ public class BackgroundService extends Service {
         recorderUtils.setRecorderCallback(new onRecorderCallback() {
             @Override
             public void onRecordTimeChanged(String time) {
+                if (notificationBuilder != null) {
+                    try {
+                        // prepare usage variables
+                        String displayTime = recorderUtils.displayRecordAsTime;
+//
+                        // update props
+                        notificationBuilder.setContentText( stringPattern(displayTime, Globals.DCM_2.format(recorderUtils.distanceKm)) );
+
+                        // update notify
+                        notificationManager.notify(NOTIF_ID, notificationBuilder.build());
+
+                    } catch (Exception e) {
+                        L.e(mtn + "Err: " + e.getMessage());
+                    }
+
+                }
+
                 // prepare usage variables
                 Intent i = new Intent();
                 BroadcastObject broadcastObject = new BroadcastObject();
@@ -165,6 +139,7 @@ public class BackgroundService extends Service {
                 //--> record props
                 record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
                 record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
+                record.paceMillis = recorderUtils.paceMillis;
                 record.distanceKm = recorderUtils.distanceKm;
                 record.calories = recorderUtils.calories;
                 record.xLoc = (lastLocation != null)
@@ -172,8 +147,8 @@ public class BackgroundService extends Service {
                         : null;
 
                 //--> broadcast props
-                broadcastObject.attachedObject = record;
-                broadcastObject.broadcastType = BroadcastType.RECORDING.TYPE;
+                broadcastObject.attachedObject = (currentRecorder = record);
+                broadcastObject.broadcastType = BroadcastType.RECORDING;
 
                 //--> intent props
                 i.setAction(Globals.BROADCAST_TEST);
@@ -185,6 +160,9 @@ public class BackgroundService extends Service {
             }
         });
         recorderUtils.start();
+
+        // update flag
+        onRecordStarted = true;
 
         // update props
         mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
@@ -269,7 +247,7 @@ public class BackgroundService extends Service {
                         record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
                         record.xLocLast = lastLocation;
                         //--> broadcast attached object
-                        broadcastObject.broadcastType = BroadcastType.LOCATION.TYPE;
+                        broadcastObject.broadcastType = BroadcastType.LOCATION;
                         broadcastObject.attachedObject = record;
 
                         //--> intent props
@@ -281,7 +259,7 @@ public class BackgroundService extends Service {
                         // update last location
                         lastLocation = xLoc;
 
-                        L.i(mtn + "Location accepted..");
+//                        L.i(mtn + "Location accepted..");
                     }
 
 //                    L.i(mtn + "");
@@ -313,11 +291,160 @@ public class BackgroundService extends Service {
     /**
      * Feature methods
      */
+    private void resumeRecording(){
+        // prepare usage variables
+        final String mtn = ct +"resumeRecording() ";
+
+        if (recorderUtils != null) {
+            // update flag
+            onRecordPaused = false;
+
+            // pause recorder
+            recorderUtils.start();
+
+        } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
+    }
+    private void pauseRecording(){
+        // prepare usage variables
+        final String mtn = ct +"pauseRecording() ";
+
+        if (recorderUtils != null) {
+            // update flag
+            onRecordPaused = true;
+
+            // pause recorder
+            recorderUtils.pause();
+
+        } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
+    }
+    private void broadcastConditions(BroadcastObject broadcast) {
+        // prepare usage variables
+        final String mtn = ct + "broadcastConditions() ";
+        final String actionType = broadcast.broadcastAction.TYPE;
+
+        L.i(mtn + "Action type: " + actionType);
+
+        // conditions
+        if (actionType.equalsIgnoreCase(BroadcastAction.INITIAL.TYPE)) {
+
+            // prepare usage variables
+            // create points instance
+            Globals.POINTS = new ArrayList<>();
+
+            //--> flush all points
+            Globals.POINTS.addAll(points);
+
+            // prepare usage variables
+            Intent i = new Intent();
+            BroadcastObject broadcastObject = new BroadcastObject();
+
+            //--> update props
+            broadcastObject.broadcastType = BroadcastType.ACTIONS;
+            broadcastObject.broadcastAction = BroadcastAction.INITIAL;
+
+            //--> intent props
+            i.setAction(Globals.BROADCAST_TEST);
+            i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+
+            // send broadcast
+            sendBroadcast(i);
+
+        } else if (actionType.equalsIgnoreCase(BroadcastAction.PAUSE.TYPE)) {
+            // pause recording
+            pauseRecording();
+
+        } else if (actionType.equalsIgnoreCase(BroadcastAction.RESUME.TYPE)) {
+            // resume recording
+            resumeRecording();
+
+        } else if (actionType.equalsIgnoreCase(BroadcastAction.RESET.TYPE)) {
+
+            if (recorderUtils != null) {
+                // stop and reset all
+                // variables and prepare for next start
+                onRecordPaused = true;
+
+                // clear props
+                points.clear();
+                //--> last location
+                lastLocation = null;
+                //--> current record
+                currentRecorder = null;
+
+                // reset recorder
+                recorderUtils.reset();
+
+            } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
+
+        } else if (actionType.equalsIgnoreCase(BroadcastAction.GET_BACKGROUND_SERVICE_INFO.TYPE)) {
+            // prepare usage variables
+            Intent i = new Intent();
+            BroadcastObject broadcastObject = new BroadcastObject();
+
+            //--> update props
+            broadcastObject.broadcastType = BroadcastType.ACTIONS;
+            broadcastObject.broadcastAction = BroadcastAction.GET_BACKGROUND_SERVICE_INFO;
+            broadcastObject.attachedObject = serviceInfoObject(currentRecorder);
+
+            //--> intent props
+            i.setAction(Globals.BROADCAST_TEST);
+            i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+
+            // send broadcast
+            sendBroadcast(i);
+
+        } else if (actionType.equalsIgnoreCase(BroadcastAction.NONE.TYPE)) {
+
+            if (notificationBuilder != null) {
+                try {
+                    NotificationCompat.Action actionButton = notificationBuilder.mActions.get(0);
+
+                    // job must started
+                    if( onRecordStarted ){
+                        // update flag
+                        onRecordPaused = (onRecordPaused) ? false : true;
+
+                        // record state conditions
+                        if( onRecordPaused ){
+                            L.i(mtn +"going to pause");
+                            // resume recording
+                            pauseRecording();
+
+                            // update button description
+                            actionButton.title = "RESUME";
+
+                        } else {
+                            L.i(mtn +"going to resume");
+
+                            // resume recording
+                            resumeRecording();
+
+                            // update button description
+                            actionButton.title = "STOP";
+                        }
+
+                        // notify to
+                        notificationManager.notify(NOTIF_ID, notificationBuilder.build());
+
+                    } else L.e(mtn +"record["+ onRecordStarted +"] does not start yet.");
+
+                } catch ( Exception e ){
+                    L.e(mtn +"Err: "+ e.getMessage());
+
+                }
+
+            }
+
+        } else L.e(mtn + "Action type[" + actionType + "] does not matches.");
+    }
+
     private void unregisterBroadcast() {
+        unregisterReceiver(broadcastReceiverServices);
         unregisterReceiver(broadcastReceiver);
     }
 
     private void registerBroadcast() {
+        registerReceiver(broadcastReceiverServices, new IntentFilter(Globals.BROADCAST_SERVICE_MANAGER) );
         registerReceiver(broadcastReceiver, new IntentFilter(Globals.BROADCAST_SERVICE));
 
     }
@@ -355,6 +482,39 @@ public class BackgroundService extends Service {
     }
 
     /**
+     * Getter
+     */
+    private PendingIntent intentBroadcastReceiverService(){
+        // prepare usage variables
+        Intent i = new Intent();
+        BroadcastObject broadcastObject = new BroadcastObject();
+
+        //--> update props
+        broadcastObject.broadcastType = BroadcastType.ACTIONS;
+        broadcastObject.broadcastAction = BroadcastAction.NONE;
+
+        // update intent
+        i.setAction(Globals.BROADCAST_SERVICE);
+        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+
+        // prepare pending intent
+        PendingIntent pendingIntent = PendingIntent.getBroadcast(this, 0, i, 0);
+
+        return pendingIntent;
+    }
+    private BackgroundServiceInfoObject serviceInfoObject(RecorderObject recorder) {
+        // prepare usage variables
+        BackgroundServiceInfoObject info = new BackgroundServiceInfoObject();
+
+        // update props
+        info.isRecordPaused = onRecordPaused;
+        info.isRecordStarted = onRecordStarted;
+        info.attachedObject = recorder;
+
+        return info;
+    }
+
+    /**
      * Life cycle
      */
     @Override
@@ -389,6 +549,7 @@ public class BackgroundService extends Service {
     /**
      * Notification feature
      */
+    private NotificationCompat.InboxStyle inboxStyle;
     private static final int NOTIF_ID = 1;
     private static final String NOTIF_CHANNEL_ID = "Channel_Id";
 
@@ -401,6 +562,10 @@ public class BackgroundService extends Service {
         // create notification channel
         createNotificationChannel();
 
+        // create inbox style
+        Spannable sb = new SpannableString(stringPattern("00:00:00", "0.0"));
+        sb.setSpan(new StyleSpan(android.graphics.Typeface.BOLD), 0, 3, Spannable.SPAN_EXCLUSIVE_EXCLUSIVE);
+
 //        RemoteViews mRemoteViews = new RemoteViews(getPackageName(), R.layout.notification_lay);
         Notification notification = (notificationBuilder = new NotificationCompat.Builder(this,
                 NOTIF_CHANNEL_ID) // don't forget create a notification channel first
@@ -410,22 +575,26 @@ public class BackgroundService extends Service {
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
                 //--> actions
-//                .addAction(R.drawable.ic_record, "OK", pendingIntent)
-
+                .addAction(R.drawable.ic_record, "STOP", intentBroadcastReceiverService())
                 //--> custom
-//                .setCustomContentView(mRemoteViews)
-//                .setCustomBigContentView(notificationLayoutExpanded)
-                .setContentText("Background service is running.")
+//                .setShowWhen(false)
                 .setOnlyAlertOnce(true)
-//                .setContentText("00000")
-//                .setStyle(new NotificationCompat.InboxStyle())
+//                .setStyle(((inboxStyle == null) ? inboxStyle = new NotificationCompat.InboxStyle()
+////                        .addLine("line-1")
+////                        .addLine("line-2")
+////                        .addLine(sb)
+////                        .setBigContentTitle("Big Content Title")
+//                        .setSummaryText("Summary Text")
+//                        : inboxStyle))
+                .setContentText(sb)
+//                .setContentText("Background service is running.")
 
                 //--> contents
 //                .setContentTitle(getString(R.string.app_name))
 //                .setContentText("Service is running background")
                 .setContentIntent(pendingIntent)
 
-                //--> create build
+        //--> create build
         ).build();
 
         // start foreground notification
@@ -448,4 +617,14 @@ public class BackgroundService extends Service {
         }
     }
 
+
+    /** Micro methods */
+    private String stringPattern(String displayTime, String displayKm){
+        return String.format(getString(R.string.notification_display_info),
+                getString(R.string.u250),
+                displayTime,
+                getString(R.string.u250),
+                displayKm);
+
+    }
 }

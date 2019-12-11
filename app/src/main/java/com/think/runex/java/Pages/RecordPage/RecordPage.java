@@ -1122,7 +1122,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // prepare recording object
         RecorderObject recorderObj = new RecorderObject();
         recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
-        recorderObj.setRecordingTime(mRecorderUtils.recordDurationMillis);
+        recorderObj.setDurationMillis(mRecorderUtils.recordDurationMillis);
         recorderObj.setDisplayRecordAsTime(mRecorderUtils.mRecordDisplayTime);
         recorderObj.setCalories(mRecorderUtils.calories);
         recorderObj.setDisplayPaceAsTime(mRecorderUtils.mRecordPaceDisplayTime);

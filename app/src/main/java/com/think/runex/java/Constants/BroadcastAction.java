@@ -6,6 +6,8 @@ public enum BroadcastAction {
     ADD("Add" ),
     PAUSE("Pause" ),
     RESUME("Resume"),
+    RESET("Reset"),
+    GET_BACKGROUND_SERVICE_INFO("Get Background Service Info"),
 
     ;
 

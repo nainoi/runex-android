@@ -69,6 +69,7 @@ public class Globals {
     public static final String SERIALIZABLE = "SERIALIZABLE";
     public static final String BROADCAST_LOCATION = "BROADCAST";
     public static final String BROADCAST_SERVICE = "BROADCAST-SERVICE";
+    public static final String BROADCAST_SERVICE_MANAGER = "BROADCAST-SERVICE-MANAGER";
     public static final String BROADCAST_TEST = "BROADCAST-TEST";
     public static final String BROADCAST_VAL = "BROADCAST-VAL";
     public static final String BROADCAST_LOCATION_VAL = "BROADCAST-LOCATION-VAL";

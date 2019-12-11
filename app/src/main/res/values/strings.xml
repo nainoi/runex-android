@@ -64,6 +64,7 @@
     <string name="my_events">อีเว้นท์ของฉัน</string>
 
     <!-- N -->
+    <string name="notification_display_info">Run %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
     <string name="note">Note</string>
@@ -86,6 +87,7 @@
     <string name="running_date">Running date</string>
 
     <!-- S -->
+    <string name="u250">·</string>
     <string name="select_image">Select Image</string>
     <string name="setting">Setting</string>
     <string name="start_recording">เริ่มจับเวลา</string>

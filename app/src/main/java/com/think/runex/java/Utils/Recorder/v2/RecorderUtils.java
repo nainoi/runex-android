@@ -208,9 +208,6 @@ public class RecorderUtils {
     }
 
     public void reset() {
-        // stop recursive
-//        mRecursiveHandler.removeCallbacksAndMessages(null);
-
         // clear flag
         START = false;
 

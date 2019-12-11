@@ -145,7 +145,7 @@ public class GoogleMapUtils {
         final int color = Color.parseColor(Configs.GoogleMap.Polyline.COLOR);
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
                 .clickable(true)
-                .width(15)
+                .width(10)
                 .add(points.toArray(new LatLng[points.size()])));
 //                .add(new LatLng(from.latitude, from.longitude),
 //                        new LatLng(to.latitude, to.longitude)));

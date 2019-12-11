@@ -41,6 +41,9 @@
             android:icon="@drawable/ic_logo_small"
             android:label="@string/background_service" />
 
+        <receiver android:name=".java.Services.BroadcastReceiverService"  android:exported="true">
+        </receiver>
+
         <activity
             android:name="com.think.runex.application.MainActivity"
             android:screenOrientation="portrait"

@@ -8,9 +8,10 @@ import java.io.Serializable;
 
 public class RecorderObject implements Serializable {
     public double distanceKm = 0.0;
-    public long recordingTime = 0L;
-    public String displayRecordAsTime = "00:00";
-    public String displayPaceAsTime = "00:00";
+    public long durationMillis = 0L;
+    public long paceMillis = 0L;
+    public String displayRecordAsTime = "00:00:00";
+    public String displayPaceAsTime = "00:00:00";
     public double calories = 0;
     public Bitmap mapPreviewImage;
     public xLocation xLoc;
@@ -37,7 +38,7 @@ public class RecorderObject implements Serializable {
         this.distanceKm = distanceKm;
     }
 
-    public void setRecordingTime(long recordingTime) {
-        this.recordingTime = recordingTime;
+    public void setDurationMillis(long durationMillis) {
+        this.durationMillis = durationMillis;
     }
 }

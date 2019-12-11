@@ -42,6 +42,7 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
+import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RecorderObject;
@@ -88,6 +89,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private GoogleMapUtils mMapUtils;
     private GoogleMap mMap;
     private xLocation mLastLocation;
+    private RecorderObject currentRecorder;
     private BroadcastReceiver testBroadcastReceiver = new BroadcastReceiver() {
         // prepare usage variables
         final String mtn = ct + "testBroadcastReceiver() ";
@@ -95,27 +97,22 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         @Override
         public void onReceive(Context context, Intent intent) {
             try {
-                // map condition
-                if( mMap == null ) {
-                    // log
-                    L.e(mtn +"mMap["+ mMap +"] is not ready.");
-
-                    // exit from this process
-                    return;
-                }
 
                 // prepare usage variables
                 Serializable serializable = intent.getSerializableExtra(Globals.SERIALIZABLE);
 
                 try {
                     // prepare usage variables
-                    BroadcastObject broadcastObj = (BroadcastObject)serializable;
-                    String broadcastType = broadcastObj.broadcastType;
+                    BroadcastObject broadcastObj = (BroadcastObject) serializable;
+                    BroadcastType broadcastType = broadcastObj.broadcastType;
 
                     // conditions
-                    if( broadcastType.equalsIgnoreCase(BroadcastType.RECORDING.TYPE) ) {
+                    if (broadcastType.equals(BroadcastType.RECORDING) && isMapReady()) {
                         // prepare usage variables
                         final RecorderObject recorder = (RecorderObject) broadcastObj.attachedObject;
+
+                        // update props
+                        currentRecorder = recorder;
 
                         // binding views
                         binding(recorder);
@@ -123,37 +120,87 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                         // update map camera
                         zoomOnce(recorder);
 
-                    } else if(broadcastType.equalsIgnoreCase( BroadcastType.LOCATION.TYPE) ) {
+                    } else if (broadcastType.equals(BroadcastType.LOCATION) && isMapReady()) {
                         // prepare usage variables
                         final RecorderObject recorder = (RecorderObject) broadcastObj.attachedObject;
+
+                        // tracking
+                        mMapUtils.tracking(recorder.xLocCurrent);
 
                         // add polyline
                         mMapUtils.addPolyline(recorder.xLocLast, recorder.xLocCurrent);
 
-                    } else if( broadcastType.equalsIgnoreCase( BroadcastType.ACTIONS.TYPE ) ){
-                        // update all points
-                        mMapUtils.points.addAll( Globals.POINTS );
-
+                    } else if (broadcastType.equals(BroadcastType.ACTIONS)) {
                         // prepare usage variables
-                        final List<LatLng> points = mMapUtils.points;
+                        final BroadcastAction action = broadcastObj.broadcastAction;
+                        L.i(mtn + "broadcast action: " + action);
 
-                        if( points.size() > 1 ){
+                        if (action.equals(BroadcastAction.INITIAL) && isMapReady()) {
+                            // update all points
+                            mMapUtils.points.addAll(Globals.POINTS);
+
                             // prepare usage variables
-                            final LatLng lastPoint = points.remove( points.size() - 1 );
-                            final LatLng fromPoint = points.get( points.size() - 1 );
-                            final xLocation from = new xLocation(fromPoint.latitude, fromPoint.longitude);
-                            final xLocation to = new xLocation(lastPoint.latitude, lastPoint.longitude);
+                            final List<LatLng> points = mMapUtils.points;
 
-                            // redraw
-                            mMapUtils.addPolyline(from, to);
+                            if (points.size() > 1) {
+                                // prepare usage variables
+                                final LatLng lastPoint = points.remove(points.size() - 1);
+                                final LatLng fromPoint = points.get(points.size() - 1);
+                                final xLocation from = new xLocation(fromPoint.latitude, fromPoint.longitude);
+                                final xLocation to = new xLocation(lastPoint.latitude, lastPoint.longitude);
 
-                        }
+                                // redraw
+                                mMapUtils.addPolyline(from, to);
 
-                    } else L.e(mtn +"Broadcast type["+ broadcastType +"] does not matched.");
+                            }
 
+                        } else if (action.equals(BroadcastAction.GET_BACKGROUND_SERVICE_INFO)) {
+                            // prepare usage variables
+                            final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
+                            final RecorderObject record = (currentRecorder = (RecorderObject) info.attachedObject);
 
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e.getMessage());
+                            L.i(mtn + " * * * background-service info * * * ");
+                            L.i(mtn + "record > is pause: " + info.isRecordPaused);
+
+                            if (info.isRecordPaused && record != null) {
+                                L.i(mtn + "display paused state buttons.");
+
+                                // display resume & stop states
+                                // anim
+                                animScaleOut();
+
+                                // recording state description
+                                lbRecordingState.setText(getString(R.string.pause_recording));
+
+                                // views binding
+                                binding(record);
+
+                            } else if( info.isRecordStarted && !info.isRecordPaused ){
+                                L.i(mtn + "display recording state buttons.");
+
+                                // views binding
+                                if (record != null) {
+                                    binding(record);
+
+                                    // display resume & stop states
+                                    // anim
+                                    animScaleOut();
+
+                                }
+
+                                // start / continue record activity
+                                start();
+                            }
+
+                            L.i(mtn + " ");
+
+                        } else L.e(mtn + "Broadcast action[" + action + "] does not matches.");
+
+                    } else
+                        L.e(mtn + "Broadcast type[" + broadcastType + "] does not matches, Or map status[" + isMapReady() + "]");
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
 
                 }
 
@@ -239,34 +286,10 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             case R.id.btn_cancel_submit:
                 onBackPressed();
                 break;
+
             case R.id.btn_share:
-                // full-size map frame
-                frameMap.overrideRequestLayout(1);
-                // handler callback
-                frameMap.post(new Runnable() {
-                    @Override
-                    public void run() {
-                        // capture google map preview image
-                        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
-                            @Override
-                            public void onSnapshotReady(Bitmap bitmap) {
-
-                                // prepare usage variables
-                                RecorderObject recorderObject = getRecorderObject();
-
-                                // update props
-                                recorderObject.setMapPreviewImage(bitmap);
-
-                                // go to share page
-                                toSharePage(recorderObject);
-
-                                // reverse-size map frame
-                                frameMap.overrideRequestLayout(1.1);
-
-                            }
-                        });
-                    }
-                });
+                // share
+                share();
 
                 break;
             case R.id.btn_save_without_submit_result:
@@ -319,6 +342,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                     // exit from activity process
                     return;
+
                 }
 
                 // start
@@ -339,21 +363,38 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                         if (DialogInterface.BUTTON_POSITIVE == i) {
 
                             // distance condition
-//                            if (mRecorderUtils.mRecordDistanceKm > 0) {
-//                                // prepare recording object
-//                                RecorderObject recorderObj = getRecorderObject();
-//
-//                                // zoom to fit
-//                                mMapUtils.zoomToFit();
-//
-//                                // update flag
-//                                mOnDisplaySummary = true;
-//
-//                                // display summary frame
-//                                displaySummaryFrame(recorderObj);
-//
-//                                // initial
-//                            } else toBegin(true);
+                            if (currentRecorder != null && currentRecorder.distanceKm > 0) {
+                                // zoom to fit
+                                mMapUtils.zoomToFit();
+
+                                // update flag
+                                mOnDisplaySummary = true;
+
+                                // display summary frame
+                                displaySummaryFrame(currentRecorder);
+
+                                // reset service
+                                resetService();
+
+                                // stop service
+                                stopService();
+
+                                // binding views
+                                binding(new RecorderObject());
+
+                            } else  {
+                                // reset service
+                                resetService();
+
+                                // stop service
+                                stopService();
+
+                                // binding views
+                                binding(new RecorderObject());
+
+                                // to begin
+                                toBegin(true);
+                            }
 
                             // dismiss
                         } else dialogInterface.dismiss();
@@ -368,27 +409,60 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Service methods
      */
-    public void pauseService(){
+    public void resetService() {
         // prepare usage variables
         final Intent i = new Intent();
         final BroadcastObject broadcast = new BroadcastObject();
 
         //--> update props
-        broadcast.broadcastType = BroadcastType.ACTIONS.TYPE;
+        broadcast.broadcastType = BroadcastType.ACTIONS;
+        broadcast.broadcastAction = BroadcastAction.RESET;
+        //-- intent props
+        i.setAction(Globals.BROADCAST_SERVICE);
+        i.putExtra(Globals.SERIALIZABLE, broadcast);
+
+        // broadcast
+        activity.sendBroadcast(i);
+    }
+
+    public void resumeService() {
+        // prepare usage variables
+        final Intent i = new Intent();
+        final BroadcastObject broadcast = new BroadcastObject();
+
+        //--> update props
+        broadcast.broadcastType = BroadcastType.ACTIONS;
+        broadcast.broadcastAction = BroadcastAction.RESUME;
+        //-- intent props
+        i.setAction(Globals.BROADCAST_SERVICE);
+        i.putExtra(Globals.SERIALIZABLE, broadcast);
+
+        // broadcast
+        activity.sendBroadcast(i);
+    }
+
+    public void pauseService() {
+        // prepare usage variables
+        final Intent i = new Intent();
+        final BroadcastObject broadcast = new BroadcastObject();
+
+        //--> update props
+        broadcast.broadcastType = BroadcastType.ACTIONS;
         broadcast.broadcastAction = BroadcastAction.PAUSE;
         //-- intent props
         i.setAction(Globals.BROADCAST_SERVICE);
         i.putExtra(Globals.SERIALIZABLE, broadcast);
 
         // broadcast
-        activity.sendBroadcast( i );
+        activity.sendBroadcast(i);
     }
+
     public void startService() {
         // prepare usage variables
         final String mtn = ct + "startService() ";
 
         if (isMyServiceRunning(BackgroundService.class)) {
-            L.i(mtn + "Service is running...");
+            L.i(mtn + "Service is running, Going to resume...");
 
             // exit from this process
             return;
@@ -442,11 +516,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // broadcast props
         BroadcastObject broadcast = new BroadcastObject();
         //--> update props
-        broadcast.broadcastType = BroadcastType.ACTIONS.TYPE;
+        broadcast.broadcastType = BroadcastType.ACTIONS;
         broadcast.broadcastAction = BroadcastAction.INITIAL;
 
         // broadcast service
-        broadcastService( broadcast );
+        broadcastService(broadcast);
 
 //        xLocation x1 = new xLocation(13.845689, 100.596905);
 //
@@ -489,20 +563,81 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         ActivityUtils actUtls = ActivityUtils.newInstance(activity);
         actUtls.fullScreen();
 
+        // buttons state
+        if (isMyServiceRunning(BackgroundService.class)) {
+            // prepare usage variables
+            final Intent i = new Intent();
+            final BroadcastObject broadcast = new BroadcastObject();
+
+            //--> update props
+            broadcast.broadcastType = BroadcastType.ACTIONS;
+            broadcast.broadcastAction = BroadcastAction.GET_BACKGROUND_SERVICE_INFO;
+            //-- intent props
+            i.setAction(Globals.BROADCAST_SERVICE);
+            i.putExtra(Globals.SERIALIZABLE, broadcast);
+
+            // broadcast
+            activity.sendBroadcast(i);
+
+        }
+
         return mView;
     }
 
     /**
      * Feature methods
      */
+    private boolean isMapReady() {
+        // prepare usage variables
+        final String mtn = ct + "isMapReady() ";
+
+        // map condition
+        if (mMap == null) {
+            // log
+            L.e(mtn + "mMap[" + mMap + "] is not ready.");
+
+            // exit from this process
+            return false;
+        }
+
+        return true;
+    }
+
+    private void share() {
+        // full-size map frame
+        frameMap.overrideRequestLayout(1);
+        // handler callback
+        frameMap.post(new Runnable() {
+            @Override
+            public void run() {
+                // capture google map preview image
+                mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+                    @Override
+                    public void onSnapshotReady(Bitmap bitmap) {
+
+                        // update props
+                        currentRecorder.setMapPreviewImage(bitmap);
+
+                        // go to share page
+                        toSharePage(currentRecorder);
+
+                        // reverse-size map frame
+                        frameMap.overrideRequestLayout(1.1);
+
+                    }
+                });
+            }
+        });
+    }
+
     private void zoomOnce(RecorderObject recorder) {
         // prepare usage variables
-        final String mtn = ct +"zoomOnce() ";
+        final String mtn = ct + "zoomOnce() ";
 
         // exit from this process
         if (recorder.xLoc == null || (mMap != null && mZoomOnce)) return;
 
-        L.i(mtn +"mZoomOnce: "+ mZoomOnce);
+        L.i(mtn + "mZoomOnce: " + mZoomOnce);
 
         // update flag
         mZoomOnce = true;
@@ -559,6 +694,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private void toBegin(boolean preventHide) {
         // reset result
         reset();
+
+        // reset service
+        resetService();
 
         // gone stop button
         btnStopAndSubmit.setVisibility(View.GONE);
@@ -752,8 +890,12 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // update flag
         mOnRecording = true;
 
-        // start recording
-        startRecording();
+        if (isMyServiceRunning(BackgroundService.class)) {
+            // resume service
+            resumeService();
+
+            // start recording
+        } else startService();
 
         // anim
         anim(R.drawable.ic_pause);
@@ -790,14 +932,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         lbRecordingState.setText(getString(R.string.resume_recording));
 
 
-    }
-
-    private void startRecording() {
-        // start recording
-//        mRecorderUtils.start();
-
-        // start service
-        startService();
     }
 
     private void pauseRecording() {
@@ -844,12 +978,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // prepare usage variables
         final String mtn = ct + "apiSubmitMultiEvents() ";
         final rqSubmitMultiEvents request = new rqSubmitMultiEvents();
-//        final double recordTime = mRecorderUtils.recTimeAsMin();
 
         // update props
-//        request.setCalory(mRecorderUtils.calories);
-//        request.setDistance(mRecorderUtils.mRecordDistanceKm);
-//        request.setTime(recordTime);
+        request.setCalory(currentRecorder.calories);
+        request.setDistance(currentRecorder.distanceKm);
+        request.setTime(recTimeAsMin(currentRecorder.durationMillis));
         request.setCaption("");
         request.setEvent_id(eventIds);
 
@@ -888,16 +1021,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // prepare usage variables
         final String mtn = ct + "apiSaveRecord() ";
         final rqAddRunningHistory request = new rqAddRunningHistory();
-//        final double recordTime = mRecorderUtils.recTimeAsMin();
-//        final double recordPace = mRecorderUtils.paceAsMin();
+        final double recordTime = recTimeAsMin(currentRecorder.durationMillis);
+        final double recordPace = paceAsMin(currentRecorder.paceMillis);
 
         request.setActivity_type(Globals.ACTIVITY_RUN);
         request.setCalory(0);
-//        request.setDistance(mRecorderUtils.mRecordDistanceKm);
+        request.setDistance(currentRecorder.distanceKm);
         request.setCaption("");
         request.setImage_path("");
-//        request.setPace(recordPace);
-//        request.setTime(recordTime);
+        request.setPace(recordPace);
+        request.setTime(recordTime);
 
         L.i(mtn + "save record: " + Globals.GSON.toJson(request));
         new AddHistoryService(activity, new onNetworkCallback() {
@@ -1117,23 +1250,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-
-    /**
-     * Getrer
-     */
-    private RecorderObject getRecorderObject() {
-        // prepare recording object
-        RecorderObject recorderObj = new RecorderObject();
-//        recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
-//        recorderObj.setRecordingTime(mRecorderUtils.recordDurationMillis);
-//        recorderObj.setDisplayRecordAsTime(mRecorderUtils.mRecordDisplayTime);
-//        recorderObj.setCalories(mRecorderUtils.calories);
-//        recorderObj.setDisplayPaceAsTime(mRecorderUtils.mRecordPaceDisplayTime);
-
-        return recorderObj;
-    }
-
-
     /**
      * Life cycle
      */
@@ -1142,13 +1258,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         super.onCreate(savedInstanceState);
         // prepare usage variables
         final String mtn = ct + "onCreate() ";
-
-        // does background-service start
-        if( isMyServiceRunning(BackgroundService.class) ){
-
-
-        }
-
 
 //        L.i(mtn +"is BackgroundService running: "+ isMyServiceRunning(BackgroundService.class));
     }
@@ -1320,6 +1429,51 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 return false;
             }
         });
+    }
+
+
+    /**
+     * Micro methods
+     */
+    public double recTimeAsMin(long recordDurationMillis) {
+        // prepare usage variables
+        final String mtn = ct + "recTimeAsMin() ";
+
+        try {
+            double toSec = recordDurationMillis / 1000;
+            double toMin = toSec / 60;
+
+            L.i(mtn + "record time: " + recordDurationMillis);
+            L.i(String.format(mtn + "record time as min: " + toMin + ""));
+
+            return toMin;
+
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
+
+        }
+
+        return 0;
+    }
+
+    public double paceAsMin(long paceMillis) {
+        // prepare usage variables
+        final String mtn = ct + "paceAsMin() ";
+
+        try {
+            final double toSec = paceMillis / 1000;
+            final double toMin = toSec / 60;
+
+            if (paceMillis <= 0 || Double.isNaN(toMin)) return 0;
+
+            return toMin;
+
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
+
+        }
+
+        return 0;
     }
 
 }
