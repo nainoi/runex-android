@@ -203,11 +203,9 @@ public class MainPage extends xFragment {
      */
     @Override
     public void onSaveInstanceState(@NonNull Bundle outState) {
-
-
-        if(pageRecord.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_RECORD, pageRecord);
-        if(pageProfile.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_PROFILE, pageProfile);
-        if(pageMyEvent.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_MY_EVENT, pageMyEvent);
+//        if(pageRecord.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_RECORD, pageRecord);
+//        if(pageProfile.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_PROFILE, pageProfile);
+//        if(pageMyEvent.isAdded()) getChildFragmentManager().putFragment(outState, PAGE_MY_EVENT, pageMyEvent);
 
         super.onSaveInstanceState(outState);
     }

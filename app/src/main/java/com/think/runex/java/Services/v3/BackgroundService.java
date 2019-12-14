@@ -1,5 +1,6 @@
-package com.think.runex.java.Services.v2;
+package com.think.runex.java.Services.v3;
 
+import android.Manifest;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -9,15 +10,19 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.location.Location;
+import android.location.LocationListener;
 import android.location.LocationManager;
 import android.os.Build;
+import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
 import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
@@ -39,6 +44,7 @@ import com.think.runex.java.Models.DebugUIObject;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
+import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 import com.think.runex.java.Utils.Recorder.v2.RecorderUtils;
 
@@ -50,6 +56,7 @@ public class BackgroundService extends Service {
 
     //--> Fused location provider client
     FusedLocationProviderClient mFusedLocationClient;
+    //--> Location manager
     LocationManager mLocationManager;
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
@@ -97,7 +104,7 @@ public class BackgroundService extends Service {
     };
 
     // explicit variables
-    private final double FIXED_ACCURACY = 50;
+    private final double FIXED_ACCURACY = 700;
     private final double FIXED_GPS_ACQUIRING = 1;
     private boolean GPS_ACQUIRED = false;
     private int acquiring_count = 0;
@@ -132,7 +139,7 @@ public class BackgroundService extends Service {
                 record.distanceKm = recorderUtils.distanceKm;
                 record.calories = recorderUtils.calories;
                 record.xLoc = (lastLocation != null)
-                        ? new xLocation(lastLocation.latitude, lastLocation.longitude, lastLocation.accuracy)
+                        ? new xLocation(lastLocation.latitude, lastLocation.longitude)
                         : null;
                 record.gpsAcquired = GPS_ACQUIRED;
 
@@ -147,11 +154,6 @@ public class BackgroundService extends Service {
                 // send broadcast
                 sendBroadcast(i);
 
-                // debug
-//                DebugUIBroadcast(record.xLoc == null
-//                        ? new xLocation(0, 0, 0)
-//                        : record.xLoc);
-
             }
         });
         recorderUtils.start();
@@ -159,165 +161,152 @@ public class BackgroundService extends Service {
         // update flag
         onRecordStarted = true;
 
-        // update props
-        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
-        /*mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
-            // prepare usage variables
-            final String mtn = ct + "getLastLocation() ";
+        // initial location manager
+        initialLocationManager();
 
-            @Override
-            public void onSuccess(Location location) {
-                if (location != null && location.getAccuracy() <= FIXED_ACCURACY) {
-                    xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude());
-
-//                    broadcast( Globals.GSON.toJson( xLoc ) );
 //
-//                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
-                }
-            }
-        });*/
-
-        mLocationRequest = LocationRequest.create();
-        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
-        mLocationRequest.setSmallestDisplacement(1);
-        mLocationRequest.setInterval(1 * 1000);
-        mLocationRequest.setFastestInterval(1 * 1000);
-        mLocationCallback = new LocationCallback() {
-            // prepare usage variables
-            final String mtn = ct + "LocationCallback() - test ";
-
-            @Override
-            public void onLocationResult(LocationResult locationResult) {
-                // on paused
-                if( onRecordPaused ) return;
-
-                // location is not ready
-                if (locationResult == null) {
-                    // logs
-                    L.e(mtn +"location-result["+ locationResult +"] is not ready.");
-
-                    // exit from this process
-                    return;
-                }
-
-                // loop locations
-                for (Location location : locationResult.getLocations()) {
-                    // location is null
-                    if (location == null) {
-                        // log
-                        L.e(mtn +"location is null.");
-                        // exit from this process
-                        return;
-                    }
-
-                    // debug
-//                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()));
-
-                    // useless location
-                    if( location.getAccuracy() > FIXED_ACCURACY ) return;
-
-                    // acquiring
-                    final boolean gpsAcquiring = acquiring_count < FIXED_GPS_ACQUIRING;
-                    // gps acquiring condition
-                    if (gpsAcquiring) ++acquiring_count;
-                    else if (!gpsAcquiring && !GPS_ACQUIRED) {
-                        // update flag
-                        GPS_ACQUIRED = true;
-
-                    }
-
-                    // does gps acquired
-                    if (!GPS_ACQUIRED) {
-                        // logs
-                        L.i(mtn + "gps acquiring amount[" + acquiring_count + "/" + FIXED_GPS_ACQUIRING + "]");
-
-                        // exit from this process
-                        return;
-                    }
-
-                    // accepted location
-                    xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
-                            , location.getAccuracy());
-
-                    // last location condition
-                    if (lastLocation == null) {
-                        // log
-                        L.i(mtn + "update last location.");
-
-                        // update last location;
-                        lastLocation = xLoc;
-
-                        // keep point
-                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
-
-                        // exit from this process
-                        return;
-                    }
-
-                    // difference distance
-                    final double differenceDist = recorderUtils.differenceDistance(xLoc, lastLocation);
-
-                    // should add distance
-                    if (differenceDist > 0.005) {
-                        // keep point
-                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
-
-                        // update distance
-                        recorderUtils.addDistance(differenceDist);
-
-                        // broadcast location
-                        // prepare usage variables
-                        Intent i = new Intent();
-                        RecorderObject record = new RecorderObject();
-                        BroadcastObject broadcastObject = new BroadcastObject();
-
-                        //--> record props
-                        record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
-                        record.xLocLast = lastLocation;
-                        record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
-                        record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
-                        record.durationMillis = recorderUtils.recordDurationMillis;
-                        record.paceMillis = recorderUtils.paceMillis;
-                        record.distanceKm = recorderUtils.distanceKm;
-                        record.calories = recorderUtils.calories;
-                        record.gpsAcquired = GPS_ACQUIRED;
-
-                        //--> broadcast attached object
-                        broadcastObject.broadcastType = BroadcastType.LOCATION;
-                        broadcastObject.attachedObject = record;
-
-                        //--> intent props
-                        i.setAction(Globals.BROADCAST_TEST);
-                        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
-                        // send broadcast
-                        sendBroadcast(i);
-
-                        // update last location
-                        lastLocation = xLoc;
-
-//                        L.i(mtn + "Location accepted..");
-                    }
-
-//                    L.i(mtn + "");
-//                    L.i(mtn + "");
-//                    L.i(mtn + " * * * Location Information * * * ");
-//                    L.i(mtn + "--> timing");
-//                    L.i(mtn + "Pace: " + recorderUtils.displayPaceAsTime);
-//                    L.i(mtn + "Record duration: " + recorderUtils.displayRecordAsTime);
-//                    L.i(mtn + "--> Unit");
-//                    L.i(mtn + "Calorie: " + recorderUtils.calories);
-//                    L.i(mtn + "Distance: " + recorderUtils.distanceKm);
-//                    L.i(mtn + "--> Ect.");
-//                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
-//                    L.i(mtn + "");
-//                    L.i(mtn + "");
-//                    L.i(mtn + "");
-
-                }
-            }
-        };
-        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper());
-
+//        // update props
+//        mFusedLocationClient = LocationServices.getFusedLocationProviderClient(this);
+//        mFusedLocationClient.getLastLocation().addOnSuccessListener(new OnSuccessListener<Location>() {
+//            // prepare usage variables
+//            final String mtn = ct + "getLastLocation() ";
+//
+//            @Override
+//            public void onSuccess(Location location) {
+//                if (location != null && location.getAccuracy() <= FIXED_ACCURACY) {
+//                    xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude());
+//
+////                    broadcast( Globals.GSON.toJson( xLoc ) );
+////
+////                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
+//                }
+//            }
+//        });
+//
+//        mLocationRequest = LocationRequest.create();
+//        mLocationRequest.setPriority(LocationRequest.PRIORITY_HIGH_ACCURACY);
+//        mLocationRequest.setSmallestDisplacement(1);
+//        mLocationRequest.setInterval(1 * 1000);
+//        mLocationRequest.setFastestInterval(1 * 1000);
+//        mLocationCallback = new LocationCallback() {
+//            // prepare usage variables
+//            final String mtn = ct + "LocationCallback() - test ";
+//
+//            @Override
+//            public void onLocationResult(LocationResult locationResult) {
+//                // location is not ready
+//                if (onRecordPaused || locationResult == null) return;
+//
+//                // loop locations
+//                for (Location location : locationResult.getLocations()) {
+//                    // useless location
+//                    if (location == null || location.getAccuracy() > (FIXED_ACCURACY)) return;
+//
+//                    // acquiring
+//                    final boolean gpsAcquiring = acquiring_count < FIXED_GPS_ACQUIRING;
+//                    // gps acquiring condition
+//                    if (gpsAcquiring) ++acquiring_count;
+//                    else if (!gpsAcquiring && !GPS_ACQUIRED) {
+//                        // update flag
+//                        GPS_ACQUIRED = true;
+//
+//                    }
+//
+//                    // does gps acquired
+//                    if (!GPS_ACQUIRED) {
+//                        // logs
+//                        L.i(mtn + "gps acquiring amount[" + acquiring_count + "/" + FIXED_GPS_ACQUIRING + "]");
+//
+//                        // exit from this process
+//                        return;
+//                    }
+//
+//                    // accepted location
+//                    xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
+//                            , location.getAccuracy());
+//
+//                    // broadcast
+////                    broadcast(Globals.GSON.toJson(xLoc));
+//
+//                    // last location condition
+//                    if (lastLocation == null) {
+//                        // log
+//                        L.i(mtn + "update last location.");
+//
+//                        // update last location;
+//                        lastLocation = xLoc;
+//
+//                        // keep point
+//                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+//
+//                        // exit from this process
+//                        return;
+//                    }
+//
+//                    // difference distance
+//                    final double differenceDist = recorderUtils.differenceDistance(xLoc, lastLocation);
+//
+//                    // should add distance
+//                    if (differenceDist > 0.005) {
+//                        // keep point
+//                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+//
+//                        // update distance
+//                        recorderUtils.addDistance(differenceDist);
+//
+//                        // broadcast location
+//                        // prepare usage variables
+//                        Intent i = new Intent();
+//                        RecorderObject record = new RecorderObject();
+//                        BroadcastObject broadcastObject = new BroadcastObject();
+//
+//                        //--> record props
+//                        record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
+//                        record.xLocLast = lastLocation;
+//                        record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
+//                        record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
+//                        record.durationMillis = recorderUtils.recordDurationMillis;
+//                        record.paceMillis = recorderUtils.paceMillis;
+//                        record.distanceKm = recorderUtils.distanceKm;
+//                        record.calories = recorderUtils.calories;
+//                        record.gpsAcquired = GPS_ACQUIRED;
+//
+//                        //--> broadcast attached object
+//                        broadcastObject.broadcastType = BroadcastType.LOCATION;
+//                        broadcastObject.attachedObject = record;
+//
+//                        //--> intent props
+//                        i.setAction(Globals.BROADCAST_TEST);
+//                        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+//                        // send broadcast
+//                        sendBroadcast(i);
+//
+//                        // update last location
+//                        lastLocation = xLoc;
+//
+////                        L.i(mtn + "Location accepted..");
+//                    }
+//
+////                    L.i(mtn + "");
+////                    L.i(mtn + "");
+////                    L.i(mtn + " * * * Location Information * * * ");
+////                    L.i(mtn + "--> timing");
+////                    L.i(mtn + "Pace: " + recorderUtils.displayPaceAsTime);
+////                    L.i(mtn + "Record duration: " + recorderUtils.displayRecordAsTime);
+////                    L.i(mtn + "--> Unit");
+////                    L.i(mtn + "Calorie: " + recorderUtils.calories);
+////                    L.i(mtn + "Distance: " + recorderUtils.distanceKm);
+////                    L.i(mtn + "--> Ect.");
+////                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
+////                    L.i(mtn + "");
+////                    L.i(mtn + "");
+////                    L.i(mtn + "");
+//
+//                }
+//            }
+//        };
+//        mFusedLocationClient.requestLocationUpdates(mLocationRequest, mLocationCallback, Looper.getMainLooper());
+//
         // display foreground
         startForeground();
 
@@ -330,10 +319,45 @@ public class BackgroundService extends Service {
     /**
      * Feature methods
      */
-    private void DebugUIBroadcast(xLocation location) {
+    private void updateNotifyContent(){
         // prepare usage variables
-        if (mLocationManager == null)
-            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+        final String mtn = ct +"updateNotifyContent() ";
+
+        if (notificationBuilder != null) {
+            try {
+                // prepare usage variables
+                String displayTime = recorderUtils.displayRecordAsTime;
+                String stringContent = stringPattern(displayTime, Globals.DCM_2.format(recorderUtils.distanceKm));
+
+                stringContent += " accuracy: "+ ((lastLocation != null )
+                        ? lastLocation.accuracy +"" : "0");
+
+                // update props
+                notificationBuilder.setContentText(stringContent );
+
+                // update notify
+                notificationManager.notify(NOTIF_ID, notificationBuilder.build());
+
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
+
+            }
+
+        }
+    }
+    private void initialLocationManager() {
+        // prepare usage variables
+        final String mtn = ct + "initialLocationManager() ";
+        L.i(mtn + "called...");
+
+        // condition
+        if (checkSelfPermission(Manifest.permission.ACCESS_FINE_LOCATION) != PackageManager.PERMISSION_GRANTED) {
+            L.i(mtn + "need location permission.");
+            return;
+        }
+        ;
+        // prepare usage variables
+        mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
 
         // getting GPS status
         boolean isGPSEnabled = mLocationManager
@@ -350,7 +374,7 @@ public class BackgroundService extends Service {
         BroadcastObject broadcastObject = new BroadcastObject();
 
         //--> debug
-        debug.xLocation = new xLocation(location.latitude, location.longitude, location.accuracy);
+        debug.xLocation = new xLocation(0.0, 0.0, 0);
         debug.isGPSEnabled = isGPSEnabled;
         debug.isNetworkEnabled = isNetworkEnabled;
         //--> broadcast
@@ -364,33 +388,65 @@ public class BackgroundService extends Service {
 
         // send broadcast
         sendBroadcast(i);
-    }
 
-    private void updateNotifyContent() {
-        // prepare usage variables
-        final String mtn = ct + "updateNotifyContent() ";
+        L.i(mtn + "isGPSEnabled: " + isGPSEnabled);
+        L.i(mtn + "isNetworkEnabled: " + isNetworkEnabled);
+        mLocationManager.requestLocationUpdates(LocationManager.GPS_PROVIDER, 1 * 1000,
+                1, new LocationListener() {
+                    @Override
+                    public void onLocationChanged(Location location) {
+                        // prepare usage variables
+                        final String msg = "location-changed: " + location.getLatitude() + " " + location.getLongitude();
 
-        if (notificationBuilder != null) {
-            try {
-                // prepare usage variables
-                String displayTime = recorderUtils.displayRecordAsTime;
-                String stringContent = stringPattern(displayTime, Globals.DCM_2.format(recorderUtils.distanceKm));
+                        L.i(mtn + msg);
+//                        Toast.makeText(BackgroundService.this, msg, Toast.LENGTH_SHORT).show();
 
-                stringContent += " accuracy: " + ((lastLocation != null)
-                        ? lastLocation.accuracy + "" : "0");
+                        // update flag
+                        GPS_ACQUIRED = true;
 
-                // update props
-                notificationBuilder.setContentText(stringContent);
+                        // broadcast location
+                        // prepare usage variables
+                        Intent i = new Intent();
+                        DebugUIObject debug = new DebugUIObject();
+                        BroadcastObject broadcastObject = new BroadcastObject();
 
-                // update notify
-                notificationManager.notify(NOTIF_ID, notificationBuilder.build());
+                        //--> debug
+                        debug.xLocation = new xLocation(location.getLatitude(), location.getLongitude()
+                                , location.getAccuracy());
+                        debug.isGPSEnabled = isGPSEnabled;
+                        debug.isNetworkEnabled = isNetworkEnabled;
+                        //--> broadcast
+                        broadcastObject.broadcastType = BroadcastType.ACTIONS;
+                        broadcastObject.broadcastAction = BroadcastAction.UI_DEBUG_UPDATE;
+                        broadcastObject.attachedObject = debug;
 
-            } catch (Exception e) {
-                L.e(mtn + "Err: " + e.getMessage());
+                        //--> intent props
+                        i.setAction(Globals.BROADCAST_TEST);
+                        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
 
-            }
+                        // send broadcast
+                        sendBroadcast(i);
 
-        }
+                        // received location
+                        receivedLocation(location);
+                    }
+
+                    @Override
+                    public void onStatusChanged(String s, int i, Bundle bundle) {
+
+                    }
+
+                    @Override
+                    public void onProviderEnabled(String s) {
+
+                    }
+
+                    @Override
+                    public void onProviderDisabled(String s) {
+
+                    }
+                });
+
     }
 
     private void notifyController(boolean forceAction) {
@@ -439,6 +495,118 @@ public class BackgroundService extends Service {
             L.e(mtn + "Err: " + e.getMessage());
 
         }
+
+    }
+
+    private void receivedLocation(Location location) {
+        // prepare usage variables
+        final String mtn = ct + "receivedLocation() ";
+        // location is not ready
+        if (onRecordPaused || location == null) return;
+
+        // loop locations
+        // useless location
+        if (location == null || location.getAccuracy() > (FIXED_ACCURACY)) return;
+
+        // acquiring
+        final boolean gpsAcquiring = acquiring_count < FIXED_GPS_ACQUIRING;
+        // gps acquiring condition
+        if (gpsAcquiring) ++acquiring_count;
+        else if (!gpsAcquiring && !GPS_ACQUIRED) {
+            // update flag
+            GPS_ACQUIRED = true;
+
+        }
+
+        // does gps acquired
+        if (!GPS_ACQUIRED) {
+            // logs
+            L.i(mtn + "gps acquiring amount[" + acquiring_count + "/" + FIXED_GPS_ACQUIRING + "]");
+
+            // exit from this process
+            return;
+        }
+
+        // accepted location
+        xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
+                , location.getAccuracy());
+
+        // broadcast
+//                    broadcast(Globals.GSON.toJson(xLoc));
+
+        // last location condition
+        if (lastLocation == null) {
+            // log
+            L.i(mtn + "update last location.");
+
+            // update last location;
+            lastLocation = xLoc;
+
+            // keep point
+            points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+
+            // exit from this process
+            return;
+        }
+
+        // difference distance
+        final double differenceDist = recorderUtils.differenceDistance(xLoc, lastLocation);
+
+        // should add distance
+        if (differenceDist > 0.005) {
+            // keep point
+            points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+
+            // update distance
+            recorderUtils.addDistance(differenceDist);
+
+            // broadcast location
+            // prepare usage variables
+            Intent i = new Intent();
+            RecorderObject record = new RecorderObject();
+            BroadcastObject broadcastObject = new BroadcastObject();
+
+            //--> record props
+            record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude, xLoc.accuracy);
+            record.xLocLast = lastLocation;
+            record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
+            record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
+            record.durationMillis = recorderUtils.recordDurationMillis;
+            record.paceMillis = recorderUtils.paceMillis;
+            record.distanceKm = recorderUtils.distanceKm;
+            record.calories = recorderUtils.calories;
+            record.gpsAcquired = GPS_ACQUIRED;
+
+            //--> broadcast attached object
+            broadcastObject.broadcastType = BroadcastType.LOCATION;
+            broadcastObject.attachedObject = record;
+
+            //--> intent props
+            i.setAction(Globals.BROADCAST_TEST);
+            i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+            // send broadcast
+            sendBroadcast(i);
+
+            // update last location
+            lastLocation = xLoc;
+
+//                        L.i(mtn + "Location accepted..");
+        }
+
+//                    L.i(mtn + "");
+//                    L.i(mtn + "");
+//                    L.i(mtn + " * * * Location Information * * * ");
+//                    L.i(mtn + "--> timing");
+//                    L.i(mtn + "Pace: " + recorderUtils.displayPaceAsTime);
+//                    L.i(mtn + "Record duration: " + recorderUtils.displayRecordAsTime);
+//                    L.i(mtn + "--> Unit");
+//                    L.i(mtn + "Calorie: " + recorderUtils.calories);
+//                    L.i(mtn + "Distance: " + recorderUtils.distanceKm);
+//                    L.i(mtn + "--> Ect.");
+//                    L.i(mtn + "xLoc: " + xLoc.latitude + "," + xLoc.longitude);
+//                    L.i(mtn + "");
+//                    L.i(mtn + "");
+//                    L.i(mtn + "");
 
     }
 
@@ -638,9 +806,6 @@ public class BackgroundService extends Service {
 
     }
 
-    private void locationUpdate(xLocation loc) {
-    }
-
     private void broadcast(String jsonString) {
         Intent i = new Intent();
         i.setAction(Globals.BROADCAST_LOCATION);
@@ -722,6 +887,7 @@ public class BackgroundService extends Service {
         super.onDestroy();
         final String mtn = ct + "onDestroy() ";
 
+        // if(
         // remove location update
         if (mFusedLocationClient != null)
             mFusedLocationClient.removeLocationUpdates(mLocationCallback);

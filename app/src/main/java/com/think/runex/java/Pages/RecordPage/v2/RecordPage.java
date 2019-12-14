@@ -8,11 +8,13 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
+import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,12 +30,23 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
+import com.google.android.gms.common.api.ApiException;
+import com.google.android.gms.common.api.ResolvableApiException;
+import com.google.android.gms.location.LocationRequest;
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.LocationSettingsStatusCodes;
+import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.android.gms.tasks.OnCanceledListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.BroadcastAction;
@@ -45,6 +58,7 @@ import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
+import com.think.runex.java.Models.DebugUIObject;
 import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
@@ -155,15 +169,55 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                             }
 
-                        } else if( action.equals(BroadcastAction.GPS_ACQUIRING) ){
+                        } else if( action.equals(BroadcastAction.GPS_ACQUIRING) ) {
                             // prepare usage variables
                             final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
 
                             // gps conditions
-                            if( record.gpsAcquired ) onGPSAcquired();
+                            if (record.gpsAcquired) onGPSAcquired();
                             else onGPSSignalLost();
 
-                            L.i(mtn +"is gps acquiring: "+ record.gpsAcquired);
+//                            L.i(mtn + "is gps acquiring: " + record.gpsAcquired);
+
+                        } else if( action.equals(BroadcastAction.UI_UPDATE) ){
+                            // prepare usage variables
+                            final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
+                            final RecorderObject record = (RecorderObject) info.attachedObject;
+
+                            // record is not ready
+                            if( record == null ){
+                                // log
+                                L.i(mtn +"record["+ record +"] is not ready.");
+
+                                // exit from this process
+                                return;
+                            }
+
+                            // state condition
+                            if (info.isRecordPaused) {
+                                L.i(mtn + "display paused state buttons.");
+                                // update flag
+                                mOnRecording = false;
+
+                                // anim pause
+                                anim(R.drawable.ic_play);
+
+                                // display on paused
+                                displayOnPaused(record);
+
+                            } else if( info.isRecordStarted && !info.isRecordPaused ){
+                                L.i(mtn + "display recording state buttons.");
+
+                                // update flag
+                                mOnRecording = true;
+
+                                // anim pause
+                                anim(R.drawable.ic_pause);
+
+                                // display on started
+                                displayOnStarted(record);
+
+                            }
 
                         } else if (action.equals(BroadcastAction.GET_BACKGROUND_SERVICE_INFO)) {
                             // prepare usage variables
@@ -176,34 +230,41 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                             if (info.isRecordPaused && record != null) {
                                 L.i(mtn + "display paused state buttons.");
 
-                                // display resume & stop states
-                                // anim
-                                animScaleOut();
-
-                                // recording state description
-                                lbRecordingState.setText(getString(R.string.pause_recording));
-
-                                // views binding
-                                binding(record);
+                                // display on paused
+                                displayOnPaused(record);
 
                             } else if( info.isRecordStarted && !info.isRecordPaused ){
                                 L.i(mtn + "display recording state buttons.");
 
-                                // views binding
-                                if (record != null) {
-                                    binding(record);
-
-                                    // display resume & stop states
-                                    // anim
-                                    animScaleOut();
-
-                                }
+                                // display on started
+                                displayOnStarted(record);
 
                                 // start / continue record activity
                                 start();
                             }
 
                             L.i(mtn + " ");
+
+                        } else if (action.equals(BroadcastAction.UI_DEBUG_UPDATE)) {
+                            // prepare usage variables
+                            final DebugUIObject debug = (DebugUIObject) broadcastObj.attachedObject;
+
+                            L.i(mtn + " * * * debug * * * ");
+                            L.i(mtn + "debug-object: " + Globals.GSON.toJson(debug));
+
+                            View d = getView().findViewById(R.id.frame_debug);
+                            d.setVisibility(View.VISIBLE);
+                            TextView lbGPSEnabled = d.findViewById(R.id.lb_gps_enabled);
+                            TextView lbNetworkEnabled = d.findViewById(R.id.lb_network_enabled);
+                            TextView lbAccuracy = d.findViewById(R.id.lb_location_accuracy);
+                            TextView lbLat = d.findViewById(R.id.lb_location_latitude);
+                            TextView lbLon = d.findViewById(R.id.lb_location_longitude);
+
+                            lbGPSEnabled.setText( (debug.isGPSEnabled +"").toUpperCase() +"");
+                            lbNetworkEnabled.setText( (debug.isNetworkEnabled +"").toUpperCase() +"");
+                            lbAccuracy.setText("Accuracy: "+  (debug.xLocation.accuracy +"").toUpperCase() +" Meters");
+                            lbLat.setText("Latitude: "+ (debug.xLocation.latitude+"").toUpperCase() +"");
+                            lbLon.setText("Longitude: "+ (debug.xLocation.longitude +"").toUpperCase() +"");
 
                         } else L.e(mtn + "Broadcast action[" + action + "] does not matches.");
 
@@ -598,6 +659,27 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
+    private void displayOnStarted(RecorderObject record){
+        // views binding
+        if (record != null) {
+            binding(record);
+
+            // display resume & stop states
+            // anim
+            animScaleOut();
+
+        }
+
+    }
+    private void displayOnPaused(RecorderObject record){
+        // display resume & stop states
+        // anim
+        animScaleOut();
+
+        // views binding
+        binding(record);
+
+    }
     private void onGPSSignalLost(){
         final View frame = getView().findViewById(R.id.frame_gps_signal );
         final TextView lb = getView().findViewById(R.id.lb_gps_signal );
@@ -1294,7 +1376,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // prepare usage variables
         final String mtn = ct + "onCreate() ";
 
-//        L.i(mtn +"is BackgroundService running: "+ isMyServiceRunning(BackgroundService.class));
+        L.i(mtn +"is BackgroundService running: "+ isMyServiceRunning(BackgroundService.class));
     }
 
     @Override

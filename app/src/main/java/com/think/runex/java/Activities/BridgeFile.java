@@ -11,6 +11,8 @@ import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentActivity;
 import androidx.fragment.app.FragmentTransaction;
 
+import com.google.android.gms.common.api.GoogleApiClient;
+import com.google.android.gms.location.LocationServices;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Constants;
@@ -91,7 +93,6 @@ public class BridgeFile extends xActivity {
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_bridge_file);
-
         // prepare usage variables
         final String mtn = ct +"onCreate() ";
 
@@ -119,7 +120,7 @@ public class BridgeFile extends xActivity {
             // state fragment
             mMainPage = (xFragment)getSupportFragmentManager().getFragment(savedInstanceState,  FRAGMENT_MAIN_PAGE);
 
-            Toast.makeText(this, mtn +"isAdd: "+ mMainPage.isAdded(), Toast.LENGTH_SHORT).show();
+//            Toast.makeText(this, mtn +"isAdd: "+ mMainPage.isAdded(), Toast.LENGTH_SHORT).show();
 
             // display stated fragment
             getSupportFragmentManager().beginTransaction()

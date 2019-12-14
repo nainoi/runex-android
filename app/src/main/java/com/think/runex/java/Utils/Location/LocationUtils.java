@@ -13,6 +13,12 @@ import android.provider.Settings;
 
 import androidx.appcompat.app.AlertDialog;
 
+import com.google.android.gms.location.LocationServices;
+import com.google.android.gms.location.LocationSettingsRequest;
+import com.google.android.gms.location.LocationSettingsResponse;
+import com.google.android.gms.location.SettingsClient;
+import com.google.android.gms.tasks.OnSuccessListener;
+import com.google.android.gms.tasks.Task;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
@@ -139,7 +145,14 @@ public class LocationUtils implements LocationListener {
     public boolean isGPSAvailable() {
         if( mLocationManager == null ) init();
 
-        if (!mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER) && !mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER)) {
+        // prepare usage variables
+        final String mtn = ct +"isGPSAvailable() ";
+        final boolean gpsProvider = mLocationManager.isProviderEnabled(LocationManager.GPS_PROVIDER);
+        final boolean gpsNetworkProvider = mLocationManager.isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+
+        L.i(mtn +"gpsProvider: "+ gpsProvider);
+        L.i(mtn +"gpsNetworkProvider: "+ gpsNetworkProvider);
+        if (!gpsProvider && !gpsNetworkProvider ) {
             //Ask the user to enable GPS
             AlertDialog.Builder builder = new AlertDialog.Builder(mActivity);
             builder.setTitle("Location Manager");

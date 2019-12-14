@@ -107,7 +107,7 @@
                         android:id="@+id/v_step"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:text="Pace (min/hr)"
+                        android:text="Pace (min/km)"
                         android:textColor="@android:color/darker_gray"/>
 
                     <TextView

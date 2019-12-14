@@ -1,0 +1,123 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.cardview.widget.CardView
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content"
+    android:layout_margin="18dp">
+    <LinearLayout
+        android:orientation="vertical"
+        android:layout_width="wrap_content"
+        android:padding="8dp"
+        android:layout_height="wrap_content">
+
+        <LinearLayout
+            android:id="@+id/frame_network_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/v_network_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Network Enabled: "
+                android:textColor="@android:color/black"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lb_network_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FALSE"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+        <LinearLayout
+            android:id="@+id/frame_gps_enable"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/v_gps_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="GPS Enabled: "
+                android:textColor="@android:color/black"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <TextView
+                android:id="@+id/lb_gps_enabled"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="FALSE"
+                android:textColor="@android:color/holo_orange_dark"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+        </LinearLayout>
+
+
+        <LinearLayout
+            android:id="@+id/frame_location_props"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content">
+
+            <TextView
+                android:id="@+id/v_location_props"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Location Props: "
+                android:textColor="@android:color/black"
+                android:textSize="10dp"
+                android:textStyle="bold" />
+
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <TextView
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:maxLines="1"
+                    android:text="========================================"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="10dp" />
+
+                <TextView
+                    android:id="@+id/lb_location_accuracy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Accuracy: 0 Meters"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lb_location_latitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Latitude: 0.0"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/lb_location_longitude"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Longitude: 0.0"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+        </LinearLayout>
+
+    </LinearLayout>
+</androidx.cardview.widget.CardView>
