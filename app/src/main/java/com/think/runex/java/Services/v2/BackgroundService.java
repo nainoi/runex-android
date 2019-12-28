@@ -97,8 +97,12 @@ public class BackgroundService extends Service {
     };
 
     // explicit variables
-    private final double FIXED_ACCURACY = 50;
+    private final double FIXED_MAX_ACCURACY = 40;
+    private final double FIXED_MIN_ACCURACY = 15;
     private final double FIXED_GPS_ACQUIRING = 1;
+    private double AVG_ACCURACY = FIXED_MAX_ACCURACY;
+    private double TOTAL_VALUE_ACCURACY = 0;
+    private double MIN_ACCURACY = FIXED_MIN_ACCURACY;
     private boolean GPS_ACQUIRED = false;
     private int acquiring_count = 0;
 
@@ -213,14 +217,29 @@ public class BackgroundService extends Service {
                     // debug
 //                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()));
 
+                    // really useless location
+                    if( location.getAccuracy() > FIXED_MAX_ACCURACY ) return;
+
+                    // keep average accuracy
+                    AVG_ACCURACY = findAvgAccuracy( location.getAccuracy());
+
+                    // debug
+//                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), AVG_ACCURACY));
+
                     // useless location
-                    if( location.getAccuracy() > FIXED_ACCURACY ) return;
+                    if( location.getAccuracy() > AVG_ACCURACY ) return;
+
+                    // calculate average accuracy
+                    TOTAL_VALUE_ACCURACY += AVG_ACCURACY;
 
                     // acquiring
                     final boolean gpsAcquiring = acquiring_count < FIXED_GPS_ACQUIRING;
+
                     // gps acquiring condition
-                    if (gpsAcquiring) ++acquiring_count;
-                    else if (!gpsAcquiring && !GPS_ACQUIRED) {
+                    ++acquiring_count;
+
+                    // condition
+                    if (!gpsAcquiring && !GPS_ACQUIRED) {
                         // update flag
                         GPS_ACQUIRED = true;
 
@@ -330,6 +349,18 @@ public class BackgroundService extends Service {
     /**
      * Feature methods
      */
+    private double findAvgAccuracy( double currentAvg ){
+        // exit when nan
+        if( Double.isNaN( currentAvg ) ) return 0.0;
+
+        // prepare usage variables
+        final double totalAvg = TOTAL_VALUE_ACCURACY + currentAvg;
+        final double avgResult = totalAvg / acquiring_count;
+
+        return Double.isNaN(avgResult) ? 0.0 : (avgResult < MIN_ACCURACY) ? MIN_ACCURACY : avgResult;
+
+
+    }
     private void DebugUIBroadcast(xLocation location) {
         // prepare usage variables
         if (mLocationManager == null)
@@ -667,7 +698,7 @@ public class BackgroundService extends Service {
                 L.i(mtn + "recursive: " + System.currentTimeMillis());
                 recursive();
             }
-        }, 1000);
+        }, 1);
     }
 
     /**

@@ -240,13 +240,21 @@ public class RegisteredEventsPage extends xFragment implements
 
     @Override
     public void onFailure(xResponse xResponse) {
-        Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
+        // prepare usage variables
+        final String mtn = ct +"onFailure() ";
 
-        // clear flag
-        ON_REFRESH = false;
+        try {
+            Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
 
-        // gone progress
-        refreshLayout.setRefreshing(false);
+            // clear flag
+            ON_REFRESH = false;
+
+            // gone progress
+            refreshLayout.setRefreshing(false);
+
+        } catch ( Exception e ){
+            L.e(mtn +"Err: "+ e.getMessage());
+        }
 
     }
 

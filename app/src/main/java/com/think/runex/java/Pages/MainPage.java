@@ -79,7 +79,7 @@ public class MainPage extends xFragment {
 
         // gone current child
         getChildFragmentManager().beginTransaction()
-                .hide(fragment).commit();
+                .hide(fragment).commitAllowingStateLoss();
 
     }
 

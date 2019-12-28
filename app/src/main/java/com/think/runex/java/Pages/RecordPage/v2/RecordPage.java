@@ -48,6 +48,8 @@ import com.google.android.gms.tasks.OnCanceledListener;
 import com.google.android.gms.tasks.OnFailureListener;
 import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
+import com.think.runex.java.App.App;
+import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.BroadcastAction;
 import com.think.runex.java.Constants.BroadcastType;
@@ -444,6 +446,12 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                                 // display summary frame
                                 displaySummaryFrame(currentRecorder);
+
+                                // keep temporary recorder
+                                AppEntity appEntity = App.instance(activity).getAppEntity();
+                                appEntity.temporaryRecorder = currentRecorder;
+                                //--> commit
+                                App.instance(activity).save( appEntity );
 
                                 // reset service
                                 resetService();
