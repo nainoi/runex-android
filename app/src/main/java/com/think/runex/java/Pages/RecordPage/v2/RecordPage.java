@@ -89,6 +89,7 @@ import com.think.runex.java.Utils.PermissionUtils;
 import java.io.InputStream;
 import java.io.Serializable;
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 import java.util.List;
 
 public class RecordPage extends xFragment implements OnMapReadyCallback
@@ -171,7 +172,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                             }
 
-                        } else if( action.equals(BroadcastAction.GPS_ACQUIRING) ) {
+                        } else if (action.equals(BroadcastAction.GPS_ACQUIRING)) {
                             // prepare usage variables
                             final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
 
@@ -181,15 +182,15 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
 //                            L.i(mtn + "is gps acquiring: " + record.gpsAcquired);
 
-                        } else if( action.equals(BroadcastAction.UI_UPDATE) ){
+                        } else if (action.equals(BroadcastAction.UI_UPDATE)) {
                             // prepare usage variables
                             final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
                             final RecorderObject record = (RecorderObject) info.attachedObject;
 
                             // record is not ready
-                            if( record == null ){
+                            if (record == null) {
                                 // log
-                                L.i(mtn +"record["+ record +"] is not ready.");
+                                L.i(mtn + "record[" + record + "] is not ready.");
 
                                 // exit from this process
                                 return;
@@ -207,7 +208,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 // display on paused
                                 displayOnPaused(record);
 
-                            } else if( info.isRecordStarted && !info.isRecordPaused ){
+                            } else if (info.isRecordStarted && !info.isRecordPaused) {
                                 L.i(mtn + "display recording state buttons.");
 
                                 // update flag
@@ -235,7 +236,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 // display on paused
                                 displayOnPaused(record);
 
-                            } else if( info.isRecordStarted && !info.isRecordPaused ){
+                            } else if (info.isRecordStarted && !info.isRecordPaused) {
                                 L.i(mtn + "display recording state buttons.");
 
                                 // display on started
@@ -262,11 +263,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                             TextView lbLat = d.findViewById(R.id.lb_location_latitude);
                             TextView lbLon = d.findViewById(R.id.lb_location_longitude);
 
-                            lbGPSEnabled.setText( (debug.isGPSEnabled +"").toUpperCase() +"");
-                            lbNetworkEnabled.setText( (debug.isNetworkEnabled +"").toUpperCase() +"");
-                            lbAccuracy.setText("Accuracy: "+  (debug.xLocation.accuracy +"").toUpperCase() +" Meters");
-                            lbLat.setText("Latitude: "+ (debug.xLocation.latitude+"").toUpperCase() +"");
-                            lbLon.setText("Longitude: "+ (debug.xLocation.longitude +"").toUpperCase() +"");
+                            lbGPSEnabled.setText((debug.isGPSEnabled + "").toUpperCase() + "");
+                            lbNetworkEnabled.setText((debug.isNetworkEnabled + "").toUpperCase() + "");
+                            lbAccuracy.setText("Accuracy: " + (debug.xLocation.accuracy + "").toUpperCase() + " Meters");
+                            lbLat.setText("Latitude: " + (debug.xLocation.latitude + "").toUpperCase() + "");
+                            lbLon.setText("Longitude: " + (debug.xLocation.longitude + "").toUpperCase() + "");
 
                         } else L.e(mtn + "Broadcast action[" + action + "] does not matches.");
 
@@ -441,17 +442,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 // zoom to fit
                                 mMapUtils.zoomToFit();
 
-                                // update flag
-                                mOnDisplaySummary = true;
-
                                 // display summary frame
                                 displaySummaryFrame(currentRecorder);
 
                                 // keep temporary recorder
-                                AppEntity appEntity = App.instance(activity).getAppEntity();
-                                appEntity.temporaryRecorder = currentRecorder;
-                                //--> commit
-                                App.instance(activity).save( appEntity );
+                                keepTemporaryRecorder();
 
                                 // reset service
                                 resetService();
@@ -462,7 +457,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 // binding views
                                 binding(new RecorderObject());
 
-                            } else  {
+                            } else {
                                 // reset service
                                 resetService();
 
@@ -574,6 +569,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         //--> Map utils
         mMapUtils = GoogleMapUtils.newInstance(activity, mMap);
+        //--> should redraw
+        shouldRedrawPolyline();
 
         UiSettings uiSettings = mMap.getUiSettings();
         uiSettings.setMyLocationButtonEnabled(true);
@@ -661,13 +658,77 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         }
 
+        // does user exits from
+        // application before summit result
+        shouldShowSummaryFrame();
+
         return mView;
     }
 
     /**
      * Feature methods
      */
-    private void displayOnStarted(RecorderObject record){
+    private void keepTemporaryRecorder() {
+        // keep temporary recorder
+        AppEntity appEntity = App.instance(activity).getAppEntity();
+        appEntity.temporaryRecorder = currentRecorder;
+        appEntity.temporaryPoints = mMapUtils.points;
+        //--> commit
+        App.instance(activity).save(appEntity);
+    }
+
+    private void clearTemporaryRecorder() {
+        // clear temporary recorder
+        final AppEntity appEntity = App.instance(activity).getAppEntity();
+        //--> update props
+        appEntity.temporaryRecorder = null;
+        appEntity.temporaryPoints = null;
+        //--> commit
+        App.instance(activity).save(appEntity);
+    }
+
+    private void shouldRedrawPolyline() {
+        // prepare usage variables
+        final String mtn = ct +"shouldRedrawPolyline() ";
+        // should display summary record
+        AppEntity appEntity;
+
+        try {
+            if (((appEntity = App.instance(activity).getAppEntity()).temporaryPoints) != null) {
+                if (mMapUtils != null) {
+                    // update props
+                    mMapUtils.points = appEntity.temporaryPoints;
+
+                    // redraw polyline
+                    mMapUtils.redrawPolyline();
+
+                    // zoom to fit
+                    mMapUtils.zoomToFit();
+
+                }
+
+            }
+
+        } catch ( Exception e ){
+            L.e(mtn +"Err: "+ e.getMessage());
+
+        }
+    }
+
+    private void shouldShowSummaryFrame() {
+        // should display summary record
+        AppEntity appEntity;
+        if (((appEntity = App.instance(activity).getAppEntity()).temporaryRecorder) != null) {
+            // update current recorder object
+            currentRecorder = appEntity.temporaryRecorder;
+
+            // display
+            displaySummaryFrame(appEntity.temporaryRecorder);
+
+        }
+    }
+
+    private void displayOnStarted(RecorderObject record) {
         // views binding
         if (record != null) {
             binding(record);
@@ -679,7 +740,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         }
 
     }
-    private void displayOnPaused(RecorderObject record){
+
+    private void displayOnPaused(RecorderObject record) {
         // display resume & stop states
         // anim
         animScaleOut();
@@ -688,18 +750,20 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         binding(record);
 
     }
-    private void onGPSSignalLost(){
-        final View frame = getView().findViewById(R.id.frame_gps_signal );
-        final TextView lb = getView().findViewById(R.id.lb_gps_signal );
+
+    private void onGPSSignalLost() {
+        final View frame = getView().findViewById(R.id.frame_gps_signal);
+        final TextView lb = getView().findViewById(R.id.lb_gps_signal);
         frame.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_red_light));
         lb.setText("WAITING FOR GPS SIGNAL");
         lb.setTextColor(ContextCompat.getColor(activity, android.R.color.white));
 
         frame.setVisibility(View.VISIBLE);
     }
-    private void onGPSAcquired(){
-        final View frame = getView().findViewById(R.id.frame_gps_signal );
-        final TextView lb = getView().findViewById(R.id.lb_gps_signal );
+
+    private void onGPSAcquired() {
+        final View frame = getView().findViewById(R.id.frame_gps_signal);
+        final TextView lb = getView().findViewById(R.id.lb_gps_signal);
         frame.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_green_light));
         lb.setText("GPS ACQUIRED");
         lb.setTextColor(ContextCompat.getColor(activity, android.R.color.white));
@@ -712,6 +776,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             }
         }, 800);
     }
+
     private boolean isMapReady() {
         // prepare usage variables
         final String mtn = ct + "isMapReady() ";
@@ -799,6 +864,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             public void onClick(DialogInterface dialogInterface, int i) {
 
                 if (DialogInterface.BUTTON_POSITIVE == i) {
+                    // clear temporary recorder
+                    clearTemporaryRecorder();
 
                     // clear flag
                     mOnDisplaySummary = false;
@@ -966,6 +1033,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     }
 
     private void displaySummaryFrame(RecorderObject recorder) {
+        // update flag
+        mOnDisplaySummary = true;
+
         // binding views summary
         bindingSummary(recorder);
 
@@ -1127,6 +1197,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                     // to success page
                     toSuccessfullySubmitResult();
 
+                    // clear temporary recorder
+                    clearTemporaryRecorder();
+
                 }
             }
 
@@ -1165,6 +1238,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 L.i(mtn + "response: " + response.jsonString);
 
                 if (callback == null) {
+                    // clear temporary recorder
+                    clearTemporaryRecorder();
+
                     // clear flag
                     onNetwork = false;
 
@@ -1384,7 +1460,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // prepare usage variables
         final String mtn = ct + "onCreate() ";
 
-        L.i(mtn +"is BackgroundService running: "+ isMyServiceRunning(BackgroundService.class));
+        L.i(mtn + "is BackgroundService running: " + isMyServiceRunning(BackgroundService.class));
     }
 
     @Override
@@ -1498,7 +1574,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         });
 
         // handler back pressed
-        handlerBackPressed("onViewCreated", mView);
+//        handlerBackPressed("onViewCreated", mView);
     }
 
     @Override
@@ -1506,7 +1582,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         super.onHiddenChanged(hidden);
 
         // when visible
-        if (!hidden) handlerBackPressed("onHiddenChanged", getView());
+//        if (!hidden) handlerBackPressed("onHiddenChanged", getView());
     }
 
     public void handlerBackPressed(String tag, View view) {

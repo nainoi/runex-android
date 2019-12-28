@@ -131,6 +131,23 @@ public class GoogleMapUtils {
         return calculateTwoCoordinates(from, to);
     }
 
+    public void redrawPolyline() {
+        // prepare usage variables
+        final int color = Color.parseColor(Configs.GoogleMap.Polyline.COLOR);
+        Polyline polyline = mMap.addPolyline(new PolylineOptions()
+                .clickable(true)
+                .width(10)
+                .add(points.toArray(new LatLng[points.size()])));
+//                .add(new LatLng(from.latitude, from.longitude),
+//                        new LatLng(to.latitude, to.longitude)));
+        polyline.setColor(color);
+
+        // gone last polyline
+        if (mLastPolyline != null) mLastPolyline.remove();
+
+        // keep last polyline
+        mLastPolyline = polyline;
+    }
     public void addPolyline(xLocation from, xLocation to) {
         // start point
         if (points.size() <= 0) points.add(new LatLng(from.latitude, from.longitude));
@@ -139,9 +156,9 @@ public class GoogleMapUtils {
         points.add(new LatLng(to.latitude, to.longitude));
 
         // prepare usage variables
-        final float polyWidth = mMap.getCameraPosition().zoom % 3 == 0
-                ? mMap.getCameraPosition().zoom / 3
-                : 5;
+//        final float polyWidth = mMap.getCameraPosition().zoom % 3 == 0
+//                ? mMap.getCameraPosition().zoom / 3
+//                : 5;
         final int color = Color.parseColor(Configs.GoogleMap.Polyline.COLOR);
         Polyline polyline = mMap.addPolyline(new PolylineOptions()
                 .clickable(true)

@@ -30,6 +30,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
         this.events = events;
         this.mListener = listener;
+
     }
 
     @NonNull
