@@ -97,10 +97,12 @@ public class BackgroundService extends Service {
     };
 
     // explicit variables
-    private final double FIXED_MAX_ACCURACY = 40;
+    private final double LOWEST_VALUE = -9999;
+    private final double FIXED_MAX_ACCURACY = 50;
     private final double FIXED_MIN_ACCURACY = 15;
     private final double FIXED_GPS_ACQUIRING = 1;
     private double AVG_ACCURACY = FIXED_MAX_ACCURACY;
+    private double FOUND_MAX_ACCURACY = LOWEST_VALUE;
     private double TOTAL_VALUE_ACCURACY = 0;
     private double MIN_ACCURACY = FIXED_MIN_ACCURACY;
     private boolean GPS_ACQUIRED = false;
@@ -193,12 +195,12 @@ public class BackgroundService extends Service {
             @Override
             public void onLocationResult(LocationResult locationResult) {
                 // on paused
-                if( onRecordPaused ) return;
+                if (onRecordPaused) return;
 
                 // location is not ready
                 if (locationResult == null) {
                     // logs
-                    L.e(mtn +"location-result["+ locationResult +"] is not ready.");
+                    L.e(mtn + "location-result[" + locationResult + "] is not ready.");
 
                     // exit from this process
                     return;
@@ -209,25 +211,29 @@ public class BackgroundService extends Service {
                     // location is null
                     if (location == null) {
                         // log
-                        L.e(mtn +"location is null.");
+                        L.e(mtn + "location is null.");
                         // exit from this process
                         return;
                     }
 
                     // debug
-//                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()));
+                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()
+                            , AVG_ACCURACY));
 
                     // really useless location
-                    if( location.getAccuracy() > FIXED_MAX_ACCURACY ) return;
+                    if (location.getAccuracy() > FIXED_MAX_ACCURACY) return;
 
                     // keep average accuracy
-                    AVG_ACCURACY = findAvgAccuracy( location.getAccuracy());
+                    AVG_ACCURACY = findAvgAccuracy(location.getAccuracy());
 
                     // debug
-//                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), AVG_ACCURACY));
+                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), AVG_ACCURACY));
 
                     // useless location
-                    if( location.getAccuracy() > AVG_ACCURACY ) return;
+                    if (location.getAccuracy() > AVG_ACCURACY) return;
+                    // found max accuracy
+                    if (FOUND_MAX_ACCURACY < location.getAccuracy())
+                        FOUND_MAX_ACCURACY = location.getAccuracy();
 
                     // calculate average accuracy
                     TOTAL_VALUE_ACCURACY += AVG_ACCURACY;
@@ -276,46 +282,61 @@ public class BackgroundService extends Service {
                     // difference distance
                     final double differenceDist = recorderUtils.differenceDistance(xLoc, lastLocation);
 
-                    // should add distance
-                    if (differenceDist > 0.005) {
-                        // keep point
-                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+                    // debug
+                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()
+                            , AVG_ACCURACY));
 
-                        // update distance
-                        recorderUtils.addDistance(differenceDist);
+                    // almost the same position
+                    if (differenceDist < 0.006) return;
+                    // into area
+                    if (differenceDist * 1000 <= location.getAccuracy()) return;
+                    // risk accuracy and into FIXED_MAX_ACCURACY
+                    // shouldn't calculate
+                    if (location.getAccuracy() >= FOUND_MAX_ACCURACY && differenceDist * 1000 <= FIXED_MAX_ACCURACY) {
+                        // FOUND_MAX_ACCURACY to LOWEST_VALUE
+                        FOUND_MAX_ACCURACY = AVG_ACCURACY;
 
-                        // broadcast location
-                        // prepare usage variables
-                        Intent i = new Intent();
-                        RecorderObject record = new RecorderObject();
-                        BroadcastObject broadcastObject = new BroadcastObject();
+                        // exit from this process
+                        return;
+                    }
 
-                        //--> record props
-                        record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
-                        record.xLocLast = lastLocation;
-                        record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
-                        record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
-                        record.durationMillis = recorderUtils.recordDurationMillis;
-                        record.paceMillis = recorderUtils.paceMillis;
-                        record.distanceKm = recorderUtils.distanceKm;
-                        record.calories = recorderUtils.calories;
-                        record.gpsAcquired = GPS_ACQUIRED;
+                    // keep point
+                    points.add(new LatLng(xLoc.latitude, xLoc.longitude));
 
-                        //--> broadcast attached object
-                        broadcastObject.broadcastType = BroadcastType.LOCATION;
-                        broadcastObject.attachedObject = record;
+                    // update distance
+                    recorderUtils.addDistance(differenceDist);
 
-                        //--> intent props
-                        i.setAction(Globals.BROADCAST_TEST);
-                        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
-                        // send broadcast
-                        sendBroadcast(i);
+                    // broadcast location
+                    // prepare usage variables
+                    Intent i = new Intent();
+                    RecorderObject record = new RecorderObject();
+                    BroadcastObject broadcastObject = new BroadcastObject();
 
-                        // update last location
-                        lastLocation = xLoc;
+                    //--> record props
+                    record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
+                    record.xLocLast = lastLocation;
+                    record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
+                    record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
+                    record.durationMillis = recorderUtils.recordDurationMillis;
+                    record.paceMillis = recorderUtils.paceMillis;
+                    record.distanceKm = recorderUtils.distanceKm;
+                    record.calories = recorderUtils.calories;
+                    record.gpsAcquired = GPS_ACQUIRED;
+
+                    //--> broadcast attached object
+                    broadcastObject.broadcastType = BroadcastType.LOCATION;
+                    broadcastObject.attachedObject = record;
+
+                    //--> intent props
+                    i.setAction(Globals.BROADCAST_TEST);
+                    i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+                    // send broadcast
+                    sendBroadcast(i);
+
+                    // update last location
+                    lastLocation = xLoc;
 
 //                        L.i(mtn + "Location accepted..");
-                    }
 
 //                    L.i(mtn + "");
 //                    L.i(mtn + "");
@@ -349,18 +370,22 @@ public class BackgroundService extends Service {
     /**
      * Feature methods
      */
-    private double findAvgAccuracy( double currentAvg ){
+    private double findAvgAccuracy(double currentAvg) {
+        // prepare usage variables
+//        final String mtn = ct +"findAvgAccuracy() ";
+
         // exit when nan
-        if( Double.isNaN( currentAvg ) ) return 0.0;
+        if (Double.isNaN(currentAvg) || acquiring_count <= 0) return currentAvg;
 
         // prepare usage variables
         final double totalAvg = TOTAL_VALUE_ACCURACY + currentAvg;
         final double avgResult = totalAvg / acquiring_count;
 
-        return Double.isNaN(avgResult) ? 0.0 : (avgResult < MIN_ACCURACY) ? MIN_ACCURACY : avgResult;
+        return Double.isNaN(avgResult) ? currentAvg : (avgResult < MIN_ACCURACY) ? MIN_ACCURACY : avgResult;
 
 
     }
+
     private void DebugUIBroadcast(xLocation location) {
         // prepare usage variables
         if (mLocationManager == null)
@@ -381,7 +406,7 @@ public class BackgroundService extends Service {
         BroadcastObject broadcastObject = new BroadcastObject();
 
         //--> debug
-        debug.xLocation = new xLocation(location.latitude, location.longitude, location.accuracy);
+        debug.xLocation = location;
         debug.isGPSEnabled = isGPSEnabled;
         debug.isNetworkEnabled = isNetworkEnabled;
         //--> broadcast

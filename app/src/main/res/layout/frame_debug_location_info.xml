@@ -98,6 +98,15 @@
                     android:textStyle="bold" />
 
                 <TextView
+                    android:id="@+id/lb_location_avg_accuracy"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:text="Avg-Accuracy: 0 Meters"
+                    android:textColor="@android:color/holo_orange_dark"
+                    android:textSize="10dp"
+                    android:textStyle="bold" />
+
+                <TextView
                     android:id="@+id/lb_location_latitude"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"

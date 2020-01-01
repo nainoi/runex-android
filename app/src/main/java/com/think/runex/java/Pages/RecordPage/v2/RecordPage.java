@@ -260,12 +260,14 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                             TextView lbGPSEnabled = d.findViewById(R.id.lb_gps_enabled);
                             TextView lbNetworkEnabled = d.findViewById(R.id.lb_network_enabled);
                             TextView lbAccuracy = d.findViewById(R.id.lb_location_accuracy);
+                            TextView lbAvgAccuracy = d.findViewById(R.id.lb_location_avg_accuracy);
                             TextView lbLat = d.findViewById(R.id.lb_location_latitude);
                             TextView lbLon = d.findViewById(R.id.lb_location_longitude);
 
                             lbGPSEnabled.setText((debug.isGPSEnabled + "").toUpperCase() + "");
                             lbNetworkEnabled.setText((debug.isNetworkEnabled + "").toUpperCase() + "");
                             lbAccuracy.setText("Accuracy: " + (debug.xLocation.accuracy + "").toUpperCase() + " Meters");
+                            lbAvgAccuracy.setText("Avg-Accuracy: " + (debug.xLocation.avgAccuracy + "").toUpperCase() + " Meters");
                             lbLat.setText("Latitude: " + (debug.xLocation.latitude + "").toUpperCase() + "");
                             lbLon.setText("Longitude: " + (debug.xLocation.longitude + "").toUpperCase() + "");
 
