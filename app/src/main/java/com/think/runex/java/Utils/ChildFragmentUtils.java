@@ -68,7 +68,7 @@ public class ChildFragmentUtils extends Fragment {
         }
 
 //        if(withBackStack) t.addToBackStack(Constants.Fragment.TAG());
-        t.commit();
+        t.commitAllowingStateLoss();
 
     }
 

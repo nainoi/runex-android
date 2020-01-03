@@ -172,6 +172,14 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                             }
 
+                        } else if( action.equals(BroadcastAction.GPS_POOR_SIGNAL )) {
+                            // prepare usage variables
+                            final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
+
+                            // gps conditions
+                            if (record.gpsPoorSignal) onPoorGPSSignal();
+                            else onGPSAcquired();
+
                         } else if (action.equals(BroadcastAction.GPS_ACQUIRING)) {
                             // prepare usage variables
                             final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
@@ -751,6 +759,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // views binding
         binding(record);
 
+    }
+
+    private void onPoorGPSSignal() {
+        final View frame = getView().findViewById(R.id.frame_gps_signal);
+        final TextView lb = getView().findViewById(R.id.lb_gps_signal);
+        frame.setBackgroundColor(ContextCompat.getColor(activity, android.R.color.holo_orange_light));
+        lb.setText("POOR GPS SIGNAL");
+        lb.setTextColor(ContextCompat.getColor(activity, android.R.color.white));
+
+        frame.setVisibility(View.VISIBLE);
     }
 
     private void onGPSSignalLost() {

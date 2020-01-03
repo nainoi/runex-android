@@ -106,6 +106,7 @@ public class BackgroundService extends Service {
     private double TOTAL_VALUE_ACCURACY = 0;
     private double MIN_ACCURACY = FIXED_MIN_ACCURACY;
     private boolean GPS_ACQUIRED = false;
+    private boolean GPS_POOR_SIGNAL = false;
     private int acquiring_count = 0;
 
     @Override
@@ -217,17 +218,36 @@ public class BackgroundService extends Service {
                     }
 
                     // debug
-                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()
-                            , AVG_ACCURACY));
+//                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), location.getAccuracy()
+//                            , AVG_ACCURACY));
+
 
                     // really useless location
-                    if (location.getAccuracy() > FIXED_MAX_ACCURACY) return;
+                    if (location.getAccuracy() > FIXED_MAX_ACCURACY) {
+
+                        // update flag
+                        GPS_POOR_SIGNAL = true;
+
+                        // broadcast poor signal
+                        broadcastPoorGPSSignal();
+
+                        // exit from this process
+                        return;
+
+                    } else if (GPS_POOR_SIGNAL) {
+                        // clear flag
+                        GPS_POOR_SIGNAL = false;
+
+                        // broadcast poor signal
+                        broadcastPoorGPSSignal();
+
+                    }
 
                     // keep average accuracy
                     AVG_ACCURACY = findAvgAccuracy(location.getAccuracy());
 
                     // debug
-                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), AVG_ACCURACY));
+//                    DebugUIBroadcast(new xLocation(location.getLatitude(), location.getLongitude(), AVG_ACCURACY));
 
                     // useless location
                     if (location.getAccuracy() > AVG_ACCURACY) return;
@@ -577,6 +597,29 @@ public class BackgroundService extends Service {
             recorderUtils.pause();
 
         } else L.e(mtn + "recorder[" + recorderUtils + "] is not ready.");
+    }
+
+    private void broadcastPoorGPSSignal() {
+        // prepare usage variables
+        Intent i = new Intent();
+        BroadcastObject broadcastObject = new BroadcastObject();
+        RecorderObject recorder = new RecorderObject();
+
+        //--> update props
+        recorder.gpsPoorSignal = GPS_POOR_SIGNAL;
+
+        //--> broadcast
+        broadcastObject.broadcastType = BroadcastType.ACTIONS;
+        broadcastObject.broadcastAction = BroadcastAction.GPS_POOR_SIGNAL;
+        broadcastObject.attachedObject = recorder;
+
+        //--> intent props
+        i.setAction(Globals.BROADCAST_TEST);
+        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+
+        // send broadcast
+        sendBroadcast(i);
+
     }
 
     private void broadcastConditions(BroadcastObject broadcast) {

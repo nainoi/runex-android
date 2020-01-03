@@ -18,6 +18,7 @@ public class RecorderObject implements Serializable {
     public xLocation xLocCurrent;
     public xLocation xLocLast;
     public boolean gpsAcquired = false;
+    public boolean gpsPoorSignal = false;
     public boolean forceAction = false;
 
     public void setMapPreviewImage(Bitmap mapPreviewImage) {

@@ -125,7 +125,7 @@ public class BridgeFile extends xActivity {
             // display stated fragment
             getSupportFragmentManager().beginTransaction()
                     .show( mMainPage )
-                    .commit();
+                    .commitAllowingStateLoss();
 
         }
 
@@ -156,7 +156,8 @@ public class BridgeFile extends xActivity {
 
         super.onSaveInstanceState(outState);
 
-    }    @Override
+    }
+    @Override
     protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
 
