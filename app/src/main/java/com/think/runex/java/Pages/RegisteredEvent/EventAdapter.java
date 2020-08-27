@@ -1,17 +1,12 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
 import android.view.LayoutInflater;
-import android.view.View;
 import android.view.ViewGroup;
-
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.jozzee.android.core.utility.Logger;
 import com.think.runex.R;
 import com.think.runex.java.Models.MultiObject;
 import com.think.runex.java.Pages.onItemClick;
-import com.think.runex.java.Utils.L;
 import com.think.runex.java.ViewHolders.VHEmpty;
 import com.think.runex.java.ViewHolders.VHEvent;
 

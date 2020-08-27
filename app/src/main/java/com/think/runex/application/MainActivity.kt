@@ -8,23 +8,19 @@ import androidx.lifecycle.Observer
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.connection.NetworkStatus
 import com.jozzee.android.core.fragment.FragmentContainer
-import com.jozzee.android.core.fragment.fragmentBackStackEntryCount
+import com.jozzee.android.core.fragment.fragmentBackStackCount
 import com.jozzee.android.core.fragment.replaceFragment
-import com.jozzee.android.core.getConnectivityManager
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.utility.Logger
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.common.fadeIn
 import com.think.runex.common.getCurrentNightMode
 import com.think.runex.java.Activities.BridgeFile
-import com.think.runex.java.Activities.LoginActivity
 import com.think.runex.java.App.App
 import com.think.runex.java.App.AppEntity
-import com.think.runex.java.Constants.Globals
 import com.think.runex.java.Utils.ActivityUtils
 import com.think.runex.java.Utils.L
-import com.think.runex.ui.MainScreen
 import com.think.runex.ui.SplashScreen
 import com.think.runex.utility.LocalManager
 
@@ -51,7 +47,7 @@ class MainActivity : AppCompatActivity() {
         LocalManager.getInstance().initialLanguage()
 
         //Listener network connection.
-        NetworkMonitor(getConnectivityManager()).observe(this, Observer(::onNetworkChanged))
+        NetworkMonitor(this).observe(this, Observer(::onNetworkChanged))
 
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
@@ -73,7 +69,7 @@ class MainActivity : AppCompatActivity() {
             // exit from this page
             finish()
 
-        } else replaceFragment(SplashScreen(), fadeIn(), clearStack = true, addToBackStack = false)
+        } else replaceFragment(SplashScreen(), fadeIn(), clearFragment = true, addToBackStack = false)
 
 
     }
@@ -85,8 +81,8 @@ class MainActivity : AppCompatActivity() {
         }
     }
 
-    override fun onOptionsItemSelected(item: MenuItem?): Boolean {
-        if (item?.itemId == android.R.id.home && fragmentBackStackEntryCount() > 0) {
+    override fun onOptionsItemSelected(item: MenuItem): Boolean {
+        if (item.itemId == android.R.id.home && fragmentBackStackCount() > 0) {
             onBackPressed()
             return true
         }

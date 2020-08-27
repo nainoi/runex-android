@@ -4,14 +4,11 @@ package com.think.runex.ui
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
-import androidx.lifecycle.ViewModelProviders
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jozzee.android.core.ui.hideKeyboard
-import com.jozzee.android.core.ui.setScreenTouchable
+import com.jozzee.android.core.touch.setScreenTouchable
+import com.jozzee.android.core.view.hideKeyboard
 import com.think.runex.R
 import com.think.runex.application.MainActivity
-import com.think.runex.feature.auth.AuthViewModel
-import com.think.runex.utility.InjectorUtils
 
 open class ScreenFragment : Fragment() {
 
@@ -89,7 +86,7 @@ open class ScreenFragment : Fragment() {
             return
         }
 
-        MaterialAlertDialogBuilder(context).apply {
+        MaterialAlertDialogBuilder(requireContext()).apply {
             title?.let {
                 setTitle(it)
             }

@@ -2,7 +2,7 @@ package com.think.runex.common
 
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import com.jozzee.android.core.resource.getDimen
+import com.jozzee.android.core.resource.getDimension
 import com.squareup.picasso.MemoryPolicy
 import com.squareup.picasso.Picasso
 import com.think.runex.R
@@ -28,7 +28,7 @@ fun ImageView.loadEventImage(url: String,
                     error(defaultImage)
                 }
             }
-            .transform(RoundedCornersTransformation(getDimen(R.dimen.space_8dp), 0))
+            .transform(RoundedCornersTransformation(getDimension(R.dimen.space_8dp), 0))
             .apply {
                 if (skipMemoryCache) {
                     memoryPolicy(MemoryPolicy.NO_CACHE)

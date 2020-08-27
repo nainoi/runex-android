@@ -1,6 +1,6 @@
 package com.think.runex.common
 
-import com.jozzee.android.core.utility.FragmentAnimations
+import com.jozzee.android.core.fragment.FragmentAnimations
 import com.think.runex.R
 
 fun fadeIn() = FragmentAnimations(enter = R.anim.fade_in, exit = R.anim.fade_out,

@@ -11,10 +11,9 @@ import androidx.lifecycle.ViewModelProviders
 import androidx.lifecycle.lifecycleScope
 import com.facebook.internal.CallbackManagerImpl
 import com.jozzee.android.core.fragment.replaceFragment
-
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.ui.content
-import com.jozzee.android.core.utility.Logger
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
+import com.jozzee.android.core.view.content
 import com.think.runex.R
 import com.think.runex.common.fadeIn
 import com.think.runex.feature.auth.AuthViewModel
@@ -40,7 +39,7 @@ import java.lang.Exception
 class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
     // explicit variables
     private val authViewModel: AuthViewModel by lazy {
-        ViewModelProviders.of(this, InjectorUtils.provideAuthViewModelFactory(context!!)).get(AuthViewModel::class.java)
+        ViewModelProviders.of(this, InjectorUtils.provideAuthViewModelFactory(requireContext())).get(AuthViewModel::class.java)
     }
     private val socialLoginManger: SocialLoginManger by lazy { SocialLoginManger() }
 
@@ -103,7 +102,7 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
 
     private fun performLogin() = viewLifecycleOwner.lifecycleScope.launch {
         authViewModel.login(edt_email.content(), edt_password.content())?.also { profile ->
-            replaceFragment(MainScreen(), fadeIn(), clearStack = true, addToBackStack = false)
+            replaceFragment(MainScreen(), fadeIn(), clearFragment = true, addToBackStack = false)
 
         }
     }
@@ -112,9 +111,8 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
         return true
     }
 
-    private fun resultCallback(){
-        activity!!.setResult(Activity.RESULT_OK)
-
+    private fun resultCallback() {
+        requireActivity().setResult(Activity.RESULT_OK)
     }
 
     //  Interface Methods
@@ -145,10 +143,10 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
 //        replaceFragment(MainScreen(), fadeIn(), clearStack = true, addToBackStack = false)
 
         // activity result
-        activity!!.setResult( Activity.RESULT_OK );
+        requireActivity().setResult(Activity.RESULT_OK);
 
         // exit from this process
-        activity!!.finish();
+        requireActivity().finish()
 
         // result
 //        resultCallback()

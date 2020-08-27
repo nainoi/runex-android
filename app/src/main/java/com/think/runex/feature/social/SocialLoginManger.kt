@@ -5,7 +5,6 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
-import android.widget.Toast
 import androidx.fragment.app.Fragment
 import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
@@ -17,12 +16,10 @@ import com.google.android.gms.auth.api.signin.GoogleSignInClient
 import com.google.android.gms.auth.api.signin.GoogleSignInOptions
 import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.utility.Logger
-import com.think.runex.R
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 import com.think.runex.feature.user.UserProvider
 import com.think.runex.java.Constants.Constants
-import kotlinx.android.synthetic.main._list_item_event.*
 import java.lang.Exception
 
 class SocialLoginManger {
@@ -115,7 +112,7 @@ class SocialLoginManger {
     }
 
     fun loginWithGoogle(fragment: Fragment) {
-        fragment.startActivityForResult(getGoogleSignInClient(fragment.context!!)?.signInIntent, RC_GOOGLE_LOGIN)
+        fragment.startActivityForResult(getGoogleSignInClient(fragment.requireContext())?.signInIntent, RC_GOOGLE_LOGIN)
     }
 
     fun loginWithGoogle(activity: Activity) {

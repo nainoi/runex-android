@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
+import androidx.security.crypto.MasterKey
 import androidx.security.crypto.MasterKeys
 import com.think.runex.common.toJson
 import com.think.runex.common.toObject
@@ -17,9 +18,10 @@ import com.think.runex.utility.LocalManager.Companion.KEY_EN
 import com.think.runex.utility.LocalManager.Companion.KEY_LANGUAGE
 
 fun Context.getAppPreference(): SharedPreferences {
-    return EncryptedSharedPreferences.create(PREFERENCES_NAME,
-            MasterKeys.getOrCreate(MasterKeys.AES256_GCM_SPEC),
-            this,
+    val masterKey = MasterKey.Builder(this, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+            .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+            .build()
+    return EncryptedSharedPreferences.create(this, PREFERENCES_NAME, masterKey,
             EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
             EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
 }

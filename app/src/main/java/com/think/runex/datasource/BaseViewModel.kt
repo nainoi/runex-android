@@ -2,12 +2,9 @@ package com.think.runex.datasource
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.utility.Logger
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers.IO
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.Job
 import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 

@@ -12,7 +12,6 @@ import androidx.appcompat.widget.Toolbar
 import androidx.fragment.app.Fragment
 import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDrawable
-import com.jozzee.android.core.resource.getStrings
 
 fun Fragment.getActionBar(): ActionBar? = (activity as AppCompatActivity).supportActionBar
 
@@ -21,7 +20,7 @@ fun Fragment.initialToolbar(toolbar: Toolbar,
                             @ColorRes titleColor: Int? = null,
                             @DrawableRes homeButton: Int? = null) {
 
-    val titleString: String? = if (title != null) getStrings(title) else null
+    val titleString: String? = if (title != null) getString(title) else null
     val titleColorInt: Int? = if (titleColor != null) getColor(titleColor) else null
     val iconHome: Drawable? = if (homeButton != null) getDrawable(homeButton) else null
     initialToolbar(toolbar, titleString, titleColorInt, iconHome)

@@ -9,11 +9,10 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import androidx.lifecycle.Observer
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.ui.showToast
-import com.jozzee.android.core.utility.Logger
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 
 import com.think.runex.R
 import com.think.runex.feature.event.EventViewModel
@@ -23,8 +22,7 @@ import kotlinx.android.synthetic.main.screen_home.*
 class HomeScreen : Fragment() {
 
     private val eventViewModel: EventViewModel by lazy {
-        ViewModelProviders.of(this, InjectorUtils.provideEventListViewModelFactory())
-                .get(EventViewModel::class.java)
+        ViewModelProvider(this, InjectorUtils.provideEventListViewModelFactory()).get(EventViewModel::class.java)
     }
 
     private val eventsAdapter: EventsAdapter by lazy { EventsAdapter() }

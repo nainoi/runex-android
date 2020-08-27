@@ -3,7 +3,7 @@ package com.think.runex.feature.auth
 import com.github.kittinunf.fuel.core.ResponseDeserializable
 import com.google.gson.Gson
 import com.google.gson.annotations.SerializedName
-import com.jozzee.android.core.convertor.toTimeMillis
+import com.jozzee.android.core.datetime.toTimeMillis
 
 data class Token(
         @SerializedName("token") var token: String = "",

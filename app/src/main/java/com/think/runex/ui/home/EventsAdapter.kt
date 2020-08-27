@@ -6,7 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jozzee.android.core.ui.setVisible
+import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
 import com.think.runex.common.displayFormat
 import com.think.runex.common.loadEventImage

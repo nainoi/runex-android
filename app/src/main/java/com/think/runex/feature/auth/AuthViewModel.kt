@@ -1,8 +1,8 @@
 package com.think.runex.feature.auth
 
 import androidx.lifecycle.viewModelScope
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.utility.Logger
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 import com.think.runex.datasource.BaseViewModel
 import com.think.runex.datasource.Result
 import com.think.runex.feature.user.Profile

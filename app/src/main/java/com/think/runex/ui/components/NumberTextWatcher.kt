@@ -3,7 +3,7 @@ package com.think.runex.ui.components
 import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
-import com.jozzee.android.core.convertor.toIntNum
+import com.jozzee.android.core.text.toIntOrZero
 import com.think.runex.common.displayFormat
 
 class NumberTextWatcher(var maxNumberLength: Int,
@@ -27,7 +27,7 @@ class NumberTextWatcher(var maxNumberLength: Int,
 
         var newNumber: String
         newNumber = if (numberSet[0].length > maxNumberLength) numberSet[0].substring(0, maxNumberLength) else numberSet[0]
-        newNumber = newNumber.toIntNum().displayFormat()
+        newNumber = newNumber.toIntOrZero().displayFormat()
 
         if (numberSet.size > 1 || text.contains(".")) {
             newNumber += "."

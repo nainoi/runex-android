@@ -1,9 +1,6 @@
 package com.think.runex.common
 
 import com.github.kittinunf.fuel.core.FuelError
-import com.github.kittinunf.fuel.core.Request
-import com.github.kittinunf.fuel.core.Response
-import com.jozzee.android.core.utility.Logger
 import com.think.runex.config.KEY_MESSAGE
 import org.json.JSONException
 import org.json.JSONObject

@@ -8,8 +8,8 @@ import android.view.View
 import android.view.ViewGroup
 import com.jozzee.android.core.fragment.replaceChildFragment
 import com.jozzee.android.core.fragment.replaceFragment
-import com.jozzee.android.core.simpleName
-import com.jozzee.android.core.utility.Logger
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 
 import com.think.runex.R
 import com.think.runex.ui.home.HomeScreen
