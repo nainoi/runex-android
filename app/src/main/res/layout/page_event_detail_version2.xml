@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:tools="http://schemas.android.com/tools"
     android:background="@android:color/white"
     android:clickable="true">
 
@@ -23,89 +23,136 @@
             <!-- Frame content version 2 -->
             <LinearLayout
                 android:id="@+id/frame_contents"
-                android:orientation="vertical"
                 android:layout_width="match_parent"
-                android:background="@drawable/background_gray_borders_with_soft_rounded_corners"
-                android:padding="4dp"
-                android:layout_margin="12dp"
                 android:layout_height="wrap_content"
-                android:layout_below="@id/frame_toolbar">
+                android:layout_below="@id/frame_toolbar"
+                android:layout_margin="12dp"
+                android:background="@drawable/background_gray_borders_with_soft_rounded_corners"
+                android:orientation="vertical"
+                android:padding="4dp">
 
-                <include android:id="@+id/vh_event"
+                <include
+                    android:id="@+id/vh_event"
                     layout="@layout/list_item_event"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content" />
 
                 <TextView
                     android:id="@+id/v_total_running_distance"
-                    android:text="ระยะสะสม"
-                    android:layout_marginLeft="8dp"
-                    android:textColor="@color/materialBlack"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="8dp"/>
+                    android:layout_marginLeft="8dp"
+                    android:layout_marginTop="8dp"
+                    android:text="ระยะสะสม"
+                    android:textColor="@color/materialBlack" />
 
                 <LinearLayout
                     android:id="@+id/frame_distance"
-                    android:orientation="horizontal"
-                    android:layout_marginTop="-6dp"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="-6dp"
+                    android:orientation="horizontal">
 
                     <TextView
                         android:id="@+id/lb_total_running_distance"
-                        android:text="0.00"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
                         android:layout_marginLeft="8dp"
-                        android:textStyle="bold"
+                        android:text="0.00"
                         android:textColor="@color/materialBlack"
                         android:textSize="@dimen/textParagraphH1"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:textStyle="bold" />
 
                     <TextView
                         android:id="@+id/lb_distance_unit"
-                        android:text="กม."
-                        android:layout_marginLeft="4dp"
-                        android:textColor="@color/materialBlack"
-                        android:textSize="@dimen/textSmall"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="4dp"
+                        android:text="กม."
+                        android:textColor="@color/materialBlack"
+                        android:textSize="@dimen/textSmall" />
 
                 </LinearLayout>
 
             </LinearLayout>
+
+            <RelativeLayout
+                android:id="@+id/view_leader_board_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/frame_contents"
+                android:layout_marginHorizontal="12dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:minHeight="@dimen/space_48dp">
+
+                <ImageView
+                    android:id="@+id/leader_board_icon"
+                    android:layout_width="@dimen/space_40dp"
+                    android:layout_height="@dimen/space_40dp"
+                    android:layout_centerVertical="true"
+                    android:src="@drawable/ic_leader_board" />
+
+                <TextView
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginHorizontal="@dimen/space_16dp"
+                    android:layout_toEndOf="@+id/leader_board_icon"
+                    android:text="View Leaderboard"
+                    android:textColor="@color/materialBlack"
+                    android:textSize="@dimen/text_body_2" />
+
+                <ImageView
+                    android:id="@+id/next_icon"
+                    android:layout_width="@dimen/space_24dp"
+                    android:layout_height="@dimen/space_24dp"
+                    android:layout_alignParentEnd="true"
+                    android:layout_centerVertical="true"
+                    android:adjustViewBounds="true"
+                    android:src="@drawable/ic_navigate_next" />
+            </RelativeLayout>
+
+            <View
+                android:id="@+id/underline_view_leader_board_button"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:layout_below="@+id/view_leader_board_button"
+                android:layout_marginHorizontal="@dimen/space_12dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:background="@color/line" />
 
             <!-- Frame recycler view records -->
             <androidx.cardview.widget.CardView
                 android:id="@+id/card_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:layout_below="@+id/frame_contents"
+                android:layout_below="@+id/underline_view_leader_board_button"
+                android:layout_marginHorizontal="12dp"
+                android:layout_marginBottom="4dp"
                 android:background="@android:color/white"
                 app:cardCornerRadius="8dp"
-                app:cardElevation="0dp"
-                android:layout_marginBottom="4dp"
-                android:layout_marginHorizontal="12dp">
+                app:cardElevation="0dp">
 
                 <androidx.recyclerview.widget.RecyclerView
                     android:id="@+id/recycler_view"
-                    tools:listitem="@layout/list_item_record"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    tools:listitem="@layout/list_item_record" />
 
             </androidx.cardview.widget.CardView>
 
             <!-- Frame content -->
             <RelativeLayout
-                android:visibility="gone"
-                android:layout_below="@+id/frame_toolbar"
                 android:id="@+id/frame_container"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
+                android:layout_below="@+id/frame_toolbar"
                 android:background="@android:color/white"
                 android:clickable="true"
                 android:orientation="vertical"
-                android:padding="16dp">
+                android:padding="16dp"
+                android:visibility="gone">
 
                 <!-- Frame total running distance-->
                 <FrameLayout
@@ -170,9 +217,9 @@
                     android:id="@+id/frame_event_detail"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:visibility="gone"
                     android:layout_marginBottom="28dp"
-                    android:orientation="horizontal">
+                    android:orientation="horizontal"
+                    android:visibility="gone">
 
                     <androidx.cardview.widget.CardView
                         android:layout_width="wrap_content"
@@ -216,15 +263,17 @@
                         android:scaleType="centerCrop"
                         android:src="@drawable/ic_record" />
 
+
                 </LinearLayout>
 
             </RelativeLayout>
 
             <!-- Frame toolbar -->
-            <include layout="@layout/frame_toolbar"
+            <include
                 android:id="@+id/frame_toolbar"
+                layout="@layout/frame_toolbar"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content" />
 
         </RelativeLayout>
 

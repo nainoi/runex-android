@@ -8,6 +8,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -51,7 +52,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class EventDetailPage extends xFragment implements View.OnClickListener
-    , SwipeRefreshLayout.OnRefreshListener {
+        , SwipeRefreshLayout.OnRefreshListener {
 
     /**
      * Main variables
@@ -76,15 +77,18 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     private AppCompatImageButton btnHistory;
     private RecyclerView recyclerView;
     private SwipeRefreshLayout refreshLayout;
+    private RelativeLayout viewLeaderBoardButton;
     // views
     private RecyclerView recordList;
     //--> toolbar
     private xToolbar toolbar;
 
-    /** Implement methods */
+    /**
+     * Implement methods
+     */
     @Override
     public void onRefresh() {
-        if( ON_NETWORKING ) return;
+        if (ON_NETWORKING) return;
 
         // update flag
         ON_NETWORKING = true;
@@ -103,7 +107,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         // init
         ActivityUtils.newInstance(activity).fullScreen();
 
-        if( mEvent == null ) return v;
+        if (mEvent == null) return v;
 
         // prepare usage variables
         EventObject.DataBean.EventBean evtVal = mEvent.getEvent();
@@ -123,9 +127,13 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         toolbar = new xToolbar(v.findViewById(R.id.frame_toolbar)) {
             @Override
             public void onClick(View view) {
-                switch(view.getId()){
-                    case R.id.toolbar_navigation_button: activity.onBackPressed(); break;
-                    case R.id.toolbar_options_button: toRecordPage(); break;
+                switch (view.getId()) {
+                    case R.id.toolbar_navigation_button:
+                        activity.onBackPressed();
+                        break;
+                    case R.id.toolbar_options_button:
+                        toRecordPage();
+                        break;
 
                 }
             }
@@ -147,7 +155,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             props.titleLabel = mEventName;
             //--> views
             //--> option button
-            if(!mEvent.getEvent().isInapp()) {
+            if (!mEvent.getEvent().isInapp()) {
                 toolbar.setImageOptionIcon(R.drawable.ic_add);
                 toolbar.setOptionButtonColorFilter(R.color.orange);
 
@@ -184,14 +192,16 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         return builder.create();
 
     }
-    private void removeItem(int position){
-        adapter.getList().remove( position );
-        adapter.notifyItemRemoved( position );
+
+    private void removeItem(int position) {
+        adapter.getList().remove(position);
+        adapter.notifyItemRemoved(position);
     }
+
     // recycler view props
-    private void recyclerViewProps(){
+    private void recyclerViewProps() {
         // prepare usage variables
-        adapter = new RecordAdapter(true,new onItemClick() {
+        adapter = new RecordAdapter(true, new onItemClick() {
             @Override
             public void onItemClicked(int position) {
 
@@ -199,9 +209,9 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {
 
-                        if( DialogInterface.BUTTON_POSITIVE == i ){
+                        if (DialogInterface.BUTTON_POSITIVE == i) {
                             // display progress dialog
-                            refreshLayout.setRefreshing( true );
+                            refreshLayout.setRefreshing(true);
 
                             // update flag
                             ON_NETWORKING = true;
@@ -218,14 +228,14 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         });
 
         //--> update props
-        recyclerView.setLayoutManager( new LinearLayoutManager( activity ));
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
         recyclerView.setAdapter(adapter);
     }
 
     // event view holder
-    private void eventViewHolder(View v){
+    private void eventViewHolder(View v) {
         // prepare usage variables
-        View vh = v.findViewById( R.id.vh_event );
+        View vh = v.findViewById(R.id.vh_event);
         EventObject.DataBean evt = mEvent;
         EventObject.DataBean.EventBean evtVal = evt.getEvent();
         TextView _lbEventName = vh.findViewById(R.id.lb_event_name);
@@ -233,12 +243,13 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         ImageView imgCover = vh.findViewById(R.id.view_cover);
 
         // binding
-        _lbEventName.setText((evtVal.getName() +"").trim() );
-        _lbEventType.setText( (evtVal.getCategory().getName() +"").toUpperCase() );
+        _lbEventName.setText((evtVal.getName() + "").trim());
+        _lbEventType.setText((evtVal.getCategory().getName() + "").toUpperCase());
 
         //--> image
-        Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover() ).into( imgCover );
+        Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover()).into(imgCover);
     }
+
     // view matching
     private void viewMatching(View v) {
         eventImage = v.findViewById(R.id.event_image);
@@ -250,40 +261,43 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         recyclerView = v.findViewById(R.id.recycler_view);
         refreshLayout = v.findViewById(R.id.refresh_layout);
 
+        viewLeaderBoardButton = v.findViewById(R.id.view_leader_board_button);
+
     }
 
     // view event listener
     private void viewEventListener() {
-        refreshLayout.setOnRefreshListener( this );
+        refreshLayout.setOnRefreshListener(this);
         btnAddActivity.setOnClickListener(this);
         btnHistory.setOnClickListener(this);
+        viewLeaderBoardButton.setOnClickListener(this);
     }
 
     /**
      * API methods
      */
-    private void apiDeleteEventHistory(String eventId, String historyId, int position){
+    private void apiDeleteEventHistory(String eventId, String historyId, int position) {
         // prepare usage variables
-        final String mtn = ct +"apiDeleteEventHistory() ";
+        final String mtn = ct + "apiDeleteEventHistory() ";
 
         // fire
         new DeleteEventHistoryService(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                L.i(mtn +"response-code: "+ response.responseCode);
-                L.i(mtn +"response-json: "+ response.jsonString);
+                L.i(mtn + "response-code: " + response.responseCode);
+                L.i(mtn + "response-json: " + response.jsonString);
 
-                if( response.responseCode == HttpURLConnection.HTTP_OK ){
+                if (response.responseCode == HttpURLConnection.HTTP_OK) {
                     // toast
                     Toast.makeText(activity, "ลบกิจกรรมสำเร็จ", Toast.LENGTH_SHORT).show();
 
                     // item removed notify
-                    removeItem( position );
+                    removeItem(position);
 
                 }
 
                 // hide progress bar
-                refreshLayout.setRefreshing( false );
+                refreshLayout.setRefreshing(false);
 
                 // update flag
                 ON_NETWORKING = false;
@@ -295,11 +309,11 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 
             @Override
             public void onFailure(xResponse response) {
-                L.i(mtn +"response-code: "+ response.responseCode);
-                L.i(mtn +"response-json: "+ response.jsonString);
+                L.i(mtn + "response-code: " + response.responseCode);
+                L.i(mtn + "response-json: " + response.jsonString);
 
                 // hide progress bar
-                refreshLayout.setRefreshing( false );
+                refreshLayout.setRefreshing(false);
 
                 // update flag
                 ON_NETWORKING = false;
@@ -307,6 +321,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             }
         }).doIt(eventId, historyId);
     }
+
     private void apiGetEventDetail(String eventId) {
         // prepare usage variables
         final String mtn = ct + "apiGetEventDetail() ";
@@ -323,7 +338,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                     EventDetailObject.DataBean db = rhis.getData();
 
                     // update total distance
-                    lbTotalDistance.setText(""+ Globals.DCM_2.format(db.getTotal_distance()));
+                    lbTotalDistance.setText("" + Globals.DCM_2.format(db.getTotal_distance()));
 
                     //Keep activity record list for EventRecordHistoryPage
                     adapter.submitList(db.getActivity_info());
@@ -334,7 +349,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                 }
 
                 // hide progress dialog
-                refreshLayout.setRefreshing( false );
+                refreshLayout.setRefreshing(false);
 
                 // clear flag
                 ON_NETWORKING = false;
@@ -346,7 +361,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                 L.e(mtn + "err-response: " + response.jsonString);
 
                 // hide progress dialog
-                refreshLayout.setRefreshing( false );
+                refreshLayout.setRefreshing(false);
 
                 // clear flag
                 ON_NETWORKING = false;
@@ -416,6 +431,8 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 
         } else if (v.getId() == R.id.btn_history) {
             toRecordPage();
+        } else if (v.getId() == R.id.view_leader_board_button) {
+            toLeaderBoardPage();
         }
     }
 
@@ -423,10 +440,10 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     private void toRecordPage() {
         // prepare usage variables
         View v = new View(getActivity());
-        v.setId( R.id.btn_add_activity );
+        v.setId(R.id.btn_add_activity);
 
         // by pass
-        onClick( v );
+        onClick(v);
 //
 //        if (adapter.getItemCount() == 0) {
 //            Toast.makeText(getContext(), R.string.activity_record_empty, Toast.LENGTH_SHORT).show();
@@ -441,5 +458,18 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 //
 //        // go to record page
 //        ChildFragmentUtils.newInstance(this).addChildFragment(R.id.display_fragment_frame, page);
+    }
+
+    private void toLeaderBoardPage() {
+        // prepare usage variables
+        final String mtn = ct + "toLeaderBoardPage() ";
+        try {
+            // prepare usage variables
+            final LeaderBoardPage page = new LeaderBoardPage();
+            // go to specified page
+            FragmentUtils.newInstance(activity).addFragment(activity.containerId, page, true);
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
+        }
     }
 }
