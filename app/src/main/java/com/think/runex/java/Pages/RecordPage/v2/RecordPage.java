@@ -9,7 +9,6 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
-import android.content.IntentSender;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
@@ -31,23 +30,12 @@ import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
 
-import com.google.android.gms.common.api.ApiException;
-import com.google.android.gms.common.api.ResolvableApiException;
-import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.location.LocationSettingsRequest;
-import com.google.android.gms.location.LocationSettingsResponse;
-import com.google.android.gms.location.LocationSettingsStatusCodes;
-import com.google.android.gms.location.SettingsClient;
 import com.google.android.gms.maps.CameraUpdateFactory;
 import com.google.android.gms.maps.GoogleMap;
 import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnCanceledListener;
-import com.google.android.gms.tasks.OnFailureListener;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
@@ -64,7 +52,7 @@ import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.DebugUIObject;
 import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RealmPointObject;
-import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
 import com.think.runex.java.Pages.SharePage;
@@ -111,7 +99,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private GoogleMapUtils mMapUtils;
     private GoogleMap mMap;
     private xLocation mLastLocation;
-    private RecorderObject currentRecorder;
+    private RealmRecorderObject currentRecorder;
     private Realm realm;
 
     private BroadcastReceiver testBroadcastReceiver = new BroadcastReceiver() {
@@ -133,7 +121,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                     // conditions
                     if (broadcastType.equals(BroadcastType.RECORDING) && isMapReady()) {
                         // prepare usage variables
-                        final RecorderObject recorder = (RecorderObject) broadcastObj.attachedObject;
+                        final RealmRecorderObject recorder = (RealmRecorderObject) broadcastObj.attachedObject;
 
                         // update props
                         currentRecorder = recorder;
@@ -146,7 +134,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                     } else if (broadcastType.equals(BroadcastType.LOCATION) && isMapReady()) {
                         // prepare usage variables
-                        final RecorderObject recorder = (RecorderObject) broadcastObj.attachedObject;
+                        final RealmRecorderObject recorder = (RealmRecorderObject) broadcastObj.attachedObject;
 
                         // tracking
                         mMapUtils.tracking(recorder.xLocCurrent);
@@ -178,9 +166,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                             }
 
-                        } else if( action.equals(BroadcastAction.GPS_POOR_SIGNAL )) {
+                        } else if (action.equals(BroadcastAction.GPS_POOR_SIGNAL)) {
                             // prepare usage variables
-                            final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
+                            final RealmRecorderObject record = (RealmRecorderObject) broadcastObj.attachedObject;
 
                             // gps conditions
                             if (record.gpsPoorSignal) onPoorGPSSignal();
@@ -188,7 +176,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         } else if (action.equals(BroadcastAction.GPS_ACQUIRING)) {
                             // prepare usage variables
-                            final RecorderObject record = (RecorderObject) broadcastObj.attachedObject;
+                            final RealmRecorderObject record = (RealmRecorderObject) broadcastObj.attachedObject;
 
                             // gps conditions
                             if (record.gpsAcquired) onGPSAcquired();
@@ -199,7 +187,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                         } else if (action.equals(BroadcastAction.UI_UPDATE)) {
                             // prepare usage variables
                             final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
-                            final RecorderObject record = (RecorderObject) info.attachedObject;
+                            final RealmRecorderObject record = (RealmRecorderObject) info.attachedObject;
 
                             // record is not ready
                             if (record == null) {
@@ -239,7 +227,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                         } else if (action.equals(BroadcastAction.GET_BACKGROUND_SERVICE_INFO)) {
                             // prepare usage variables
                             final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
-                            final RecorderObject record = (currentRecorder = (RecorderObject) info.attachedObject);
+                            final RealmRecorderObject record = (currentRecorder = (RealmRecorderObject) info.attachedObject);
 
                             L.i(mtn + " * * * background-service info * * * ");
                             L.i(mtn + "record > is pause: " + info.isRecordPaused);
@@ -471,7 +459,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 stopService();
 
                                 // binding views
-                                binding(new RecorderObject());
+                                binding(new RealmRecorderObject());
 
                             } else {
                                 // reset service
@@ -481,7 +469,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 stopService();
 
                                 // binding views
-                                binding(new RecorderObject());
+                                binding(new RealmRecorderObject());
 
                                 // to begin
                                 toBegin(true);
@@ -709,7 +697,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void shouldRedrawPolyline() {
         // prepare usage variables
-        final String mtn = ct +"shouldRedrawPolyline() ";
+        final String mtn = ct + "shouldRedrawPolyline() ";
         // should display summary record
         AppEntity appEntity;
 
@@ -730,8 +718,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
             }
 
-        } catch ( Exception e ){
-            L.e(mtn +"Err: "+ e.getMessage());
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
 
         }
     }
@@ -749,7 +737,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         }
     }
 
-    private void displayOnStarted(RecorderObject record) {
+    private void displayOnStarted(RealmRecorderObject record) {
         // views binding
         if (record != null) {
             binding(record);
@@ -762,7 +750,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void displayOnPaused(RecorderObject record) {
+    private void displayOnPaused(RealmRecorderObject record) {
         // display resume & stop states
         // anim
         animScaleOut();
@@ -835,12 +823,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
                     @Override
                     public void onSnapshotReady(Bitmap bitmap) {
-
-                        // update props
-                        currentRecorder.setMapPreviewImage(bitmap);
-
                         // go to share page
-                        toSharePage(currentRecorder);
+                        toSharePage(currentRecorder,bitmap);
 
                         // reverse-size map frame
                         frameMap.overrideRequestLayout(1.1);
@@ -851,7 +835,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         });
     }
 
-    private void zoomOnce(RecorderObject recorder) {
+    private void zoomOnce(RealmRecorderObject recorder) {
         // prepare usage variables
         final String mtn = ct + "zoomOnce() ";
 
@@ -969,12 +953,13 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    private void toSharePage(RecorderObject recorderObject) {
+    private void toSharePage(RealmRecorderObject recorderObject, Bitmap previewImage) {
         // prepare usage variables
         SharePage page = new SharePage();
 
         //update props
         page.setRecorderObject(recorderObject);
+        page.setPreviewMapImage(previewImage);
 
         // to page
         ChildFragmentUtils.newInstance(this).addChildFragment(CONTAINER_ID, page);
@@ -1007,7 +992,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 }));
     }
 
-    private void bindingSummary(RecorderObject recorder) {
+    private void bindingSummary(RealmRecorderObject recorder) {
         inputDisplayTime.setText(recorder.displayRecordAsTime);
         inputDistance.setText(Globals.DCM_2.format(recorder.distanceKm));
         inputPaceDisplayTime.setText(recorder.displayPaceAsTime);
@@ -1015,7 +1000,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void binding(RecorderObject recorder) {
+    private void binding(RealmRecorderObject recorder) {
         lbTime.setText(recorder.displayRecordAsTime);
         lbDistance.setText(Globals.DCM_2.format(recorder.distanceKm));
         lbPace.setText(recorder.displayPaceAsTime);
@@ -1063,7 +1048,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void displaySummaryFrame(RecorderObject recorder) {
+    private void displaySummaryFrame(RealmRecorderObject recorder) {
         // update flag
         mOnDisplaySummary = true;
 

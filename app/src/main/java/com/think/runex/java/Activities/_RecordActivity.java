@@ -1,6 +1,7 @@
 package com.think.runex.java.Activities;
 
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.AlertDialog;
 import android.content.BroadcastReceiver;
@@ -39,7 +40,7 @@ import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;
-import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
 import com.think.runex.java.Pages.SuccessfullySubmitRunningResultPage;
@@ -294,7 +295,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 paused();
 
                 // prepare recording object
-                RecorderObject recorderObj = new RecorderObject();
+                RealmRecorderObject recorderObj = new RealmRecorderObject();
                 recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
                 recorderObj.setDurationMillis(mRecorderUtils.recordDurationMillis);
                 recorderObj.setDisplayRecordAsTime(mRecorderUtils.mRecordDisplayTime);
@@ -348,6 +349,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         stopService(new Intent(this, BackgroundService.class));
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // prepare usage variables
@@ -608,7 +610,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         }
     }
 
-    private void bindingSummary(RecorderObject recorder) {
+    private void bindingSummary(RealmRecorderObject recorder) {
         inputDisplayTime.setText(recorder.displayRecordAsTime);
         inputDistance.setText(Globals.DCM.format(recorder.distanceKm) + "km");
         inputPaceDisplayTime.setText(recorder.displayPaceAsTime);
@@ -667,7 +669,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
 
     }
 
-    private void displaySummaryFrame(RecorderObject recorder) {
+    private void displaySummaryFrame(RealmRecorderObject recorder) {
         // binding views summary
         bindingSummary(recorder);
 

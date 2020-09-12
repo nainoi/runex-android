@@ -26,7 +26,7 @@ import com.facebook.share.widget.ShareDialog;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
-import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.L;
@@ -41,8 +41,9 @@ public class SharePage extends xFragment implements View.OnClickListener {
     private final String ct = "SharePage->";
 
     // instance variables
-    private RecorderObject recorderObject;
+    private RealmRecorderObject recorderObject;
     private CallbackManager callbackManager;
+    private Bitmap previewMapImage = null;
 
     // explicit variables
     private final int SHARE_TO_FACEBOOK = 1001;
@@ -77,10 +78,10 @@ public class SharePage extends xFragment implements View.OnClickListener {
         super.onViewCreated(view, savedInstanceState);
 
         // exit from this page
-        if( recorderObject == null ){
+        if (recorderObject == null) {
             // exit from this page
             getFragmentManager().beginTransaction()
-                    .remove( this )
+                    .remove(this)
                     .commit();
 
             // exit from this process
@@ -189,16 +190,17 @@ public class SharePage extends xFragment implements View.OnClickListener {
 
     // binding
     private void binding() {
-        final String mtn = ct +"binding() ";
+        final String mtn = ct + "binding() ";
         // labels
         lbDistance.setText(Globals.DCM_2.format(recorderObject.distanceKm) + " กม.");
         lbDuration.setText(DateTimeUtils.toTimeFormat(recorderObject.durationMillis));
 
-        L.i(mtn +"recorder-object: "+ Globals.GSON.toJson( recorderObject ));
+        L.i(mtn + "recorder-object: " + Globals.GSON.toJson(recorderObject));
 
         // image bitmap
-        previewImage.setImageBitmap(recorderObject.mapPreviewImage);
-
+        if (previewMapImage != null) {
+            previewImage.setImageBitmap(previewMapImage);
+        }
     }
 
     // view event listener
@@ -223,8 +225,13 @@ public class SharePage extends xFragment implements View.OnClickListener {
     /**
      * Setter
      */
-    public SharePage setRecorderObject(RecorderObject recorderObject) {
+    public SharePage setRecorderObject(RealmRecorderObject recorderObject) {
         this.recorderObject = recorderObject;
+        return this;
+    }
+
+    public SharePage setPreviewMapImage(Bitmap previewMapImage) {
+        this.previewMapImage = previewMapImage;
         return this;
     }
 
@@ -243,7 +250,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
         boolean allGranted = true;
 
         for (int a = 0; a < grantResults.length; a++) {
-            L.i("AAA: "+ grantResults[a]);
+            L.i("AAA: " + grantResults[a]);
 
             if (grantResults[a] != PackageManager.PERMISSION_GRANTED) {
                 allGranted = false;
@@ -260,5 +267,14 @@ public class SharePage extends xFragment implements View.OnClickListener {
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
         callbackManager.onActivityResult(requestCode, resultCode, data);
+    }
+
+    @Override
+    public void onDestroy() {
+        if (previewMapImage != null) {
+            previewMapImage.recycle();
+            previewMapImage = null;
+        }
+        super.onDestroy();
     }
 }

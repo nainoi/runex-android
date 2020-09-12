@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages.RecordPage;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -42,7 +43,7 @@ import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.GPSFileRecordObject;
-import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
 import com.think.runex.java.Pages.SharePage;
@@ -224,10 +225,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                             public void onSnapshotReady(Bitmap bitmap) {
 
                                 // prepare usage variables
-                                RecorderObject recorderObject = getRecorderObject();
-
-                                // update props
-                                recorderObject.setMapPreviewImage(bitmap);
+                                RealmRecorderObject recorderObject = getRecorderObject();
 
                                 // go to share page
                                 toSharePage(recorderObject);
@@ -312,7 +310,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                             // distance condition
                             if (mRecorderUtils.mRecordDistanceKm > 0) {
                                 // prepare recording object
-                                RecorderObject recorderObj = getRecorderObject();
+                                RealmRecorderObject recorderObj = getRecorderObject();
 
                                 // zoom to fit
                                 mMapUtils.zoomToFit();
@@ -366,6 +364,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // prepare usage variables
@@ -543,7 +542,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Feature methods
      */
-    private void toSharePage(RecorderObject recorderObject) {
+    private void toSharePage(RealmRecorderObject recorderObject) {
         // prepare usage variables
         SharePage page = new SharePage();
 
@@ -647,7 +646,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         }
     }
 
-    private void bindingSummary(RecorderObject recorder) {
+    private void bindingSummary(RealmRecorderObject recorder) {
         inputDisplayTime.setText(recorder.displayRecordAsTime);
         inputDistance.setText(Globals.DCM_2.format(recorder.distanceKm));
         inputPaceDisplayTime.setText(recorder.displayPaceAsTime);
@@ -702,7 +701,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void displaySummaryFrame(RecorderObject recorder) {
+    private void displaySummaryFrame(RealmRecorderObject recorder) {
         // binding views summary
         bindingSummary(recorder);
 
@@ -1118,9 +1117,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * Getrer
      */
-    private RecorderObject getRecorderObject() {
+    private RealmRecorderObject getRecorderObject() {
         // prepare recording object
-        RecorderObject recorderObj = new RecorderObject();
+        RealmRecorderObject recorderObj = new RealmRecorderObject();
         recorderObj.setDistanceKm(mRecorderUtils.mRecordDistanceKm);
         recorderObj.setDurationMillis(mRecorderUtils.recordDurationMillis);
         recorderObj.setDisplayRecordAsTime(mRecorderUtils.mRecordDisplayTime);

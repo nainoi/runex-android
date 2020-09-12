@@ -22,7 +22,7 @@ import androidx.annotation.Nullable;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
-import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Services.SubmitRunningResultService;
 import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
@@ -44,7 +44,7 @@ public class SendRunningResultPage extends xFragment
     private final String ct = "SendRunningResultPage->";
 
     // instance variables
-    private RecorderObject mRecorderObject = null;
+    private RealmRecorderObject mRecorderObject = null;
     // explicit variables
     private Calendar mCalendar = Calendar.getInstance();
     private long mSubmitTimestamp = System.currentTimeMillis();
@@ -193,7 +193,7 @@ public class SendRunningResultPage extends xFragment
     /**
      * Setter
      */
-    public SendRunningResultPage setRecorder(RecorderObject recorder) {
+    public SendRunningResultPage setRecorder(RealmRecorderObject recorder) {
         this.mRecorderObject = recorder;
         return this;
     }

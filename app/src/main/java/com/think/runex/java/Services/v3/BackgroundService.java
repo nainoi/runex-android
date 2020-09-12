@@ -19,21 +19,16 @@ import android.os.Build;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.IBinder;
-import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
-import android.widget.Toast;
 
 import androidx.core.app.NotificationCompat;
 
 import com.google.android.gms.location.FusedLocationProviderClient;
 import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
-import com.google.android.gms.location.LocationResult;
-import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
 import com.think.runex.java.Activities.BridgeFile;
 import com.think.runex.java.Constants.BroadcastAction;
@@ -43,10 +38,9 @@ import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.DebugUIObject;
 import com.think.runex.java.Models.RealmPointObject;
-import com.think.runex.java.Models.RecorderObject;
+import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 import com.think.runex.java.Utils.Recorder.v2.RecorderUtils;
 
@@ -65,7 +59,7 @@ public class BackgroundService extends Service {
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
     private xLocation lastLocation = null;
-    private RecorderObject currentRecorder = null;
+    private RealmRecorderObject currentRecorder = null;
     //private List<LatLng> points = new ArrayList<>();
     //--> Flags
     private boolean onRecordPaused = false;
@@ -138,7 +132,7 @@ public class BackgroundService extends Service {
                 // prepare usage variables
                 Intent i = new Intent();
                 BroadcastObject broadcastObject = new BroadcastObject();
-                RecorderObject record = new RecorderObject();
+                RealmRecorderObject record = new RealmRecorderObject();
 
                 //--> record props
                 record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
@@ -577,7 +571,7 @@ public class BackgroundService extends Service {
             // broadcast location
             // prepare usage variables
             Intent i = new Intent();
-            RecorderObject record = new RecorderObject();
+            RealmRecorderObject record = new RealmRecorderObject();
             BroadcastObject broadcastObject = new BroadcastObject();
 
             //--> record props
@@ -635,7 +629,7 @@ public class BackgroundService extends Service {
                 // prepare usage variables
                 Intent i = new Intent();
                 BroadcastObject broadcastObject = new BroadcastObject();
-                RecorderObject recorder = new RecorderObject();
+                RealmRecorderObject recorder = new RealmRecorderObject();
                 boolean _gpsAcquiring = GPS_ACQUIRED;
 
                 //--> update props
@@ -874,7 +868,7 @@ public class BackgroundService extends Service {
         return pendingIntent;
     }
 
-    private BackgroundServiceInfoObject serviceInfoObject(RecorderObject recorder) {
+    private BackgroundServiceInfoObject serviceInfoObject(RealmRecorderObject recorder) {
         // prepare usage variables
         BackgroundServiceInfoObject info = new BackgroundServiceInfoObject();
 
