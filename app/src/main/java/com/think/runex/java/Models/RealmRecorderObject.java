@@ -27,23 +27,99 @@ public class RealmRecorderObject extends RealmObject implements Serializable {
 
     }
 
-    public void setDisplayPaceAsTime(String displayPaceAsTime) {
-        this.displayPaceAsTime = displayPaceAsTime;
-    }
-
-    public void setDisplayRecordAsTime(String displayRecordAsTime) {
-        this.displayRecordAsTime = displayRecordAsTime;
-    }
-
-    public void setCalories(double calories) {
-        this.calories = calories;
+    public double getDistanceKm() {
+        return distanceKm;
     }
 
     public void setDistanceKm(double distanceKm) {
         this.distanceKm = distanceKm;
     }
 
+    public long getDurationMillis() {
+        return durationMillis;
+    }
+
     public void setDurationMillis(long durationMillis) {
         this.durationMillis = durationMillis;
+    }
+
+    public long getPaceMillis() {
+        return paceMillis;
+    }
+
+    public void setPaceMillis(long paceMillis) {
+        this.paceMillis = paceMillis;
+    }
+
+    public String getDisplayRecordAsTime() {
+        return displayRecordAsTime;
+    }
+
+    public void setDisplayRecordAsTime(String displayRecordAsTime) {
+        this.displayRecordAsTime = displayRecordAsTime;
+    }
+
+    public String getDisplayPaceAsTime() {
+        return displayPaceAsTime;
+    }
+
+    public void setDisplayPaceAsTime(String displayPaceAsTime) {
+        this.displayPaceAsTime = displayPaceAsTime;
+    }
+
+    public double getCalories() {
+        return calories;
+    }
+
+    public void setCalories(double calories) {
+        this.calories = calories;
+    }
+
+    public xLocation getxLoc() {
+        return xLoc;
+    }
+
+    public void setxLoc(xLocation xLoc) {
+        this.xLoc = xLoc;
+    }
+
+    public xLocation getxLocCurrent() {
+        return xLocCurrent;
+    }
+
+    public void setxLocCurrent(xLocation xLocCurrent) {
+        this.xLocCurrent = xLocCurrent;
+    }
+
+    public xLocation getxLocLast() {
+        return xLocLast;
+    }
+
+    public void setxLocLast(xLocation xLocLast) {
+        this.xLocLast = xLocLast;
+    }
+
+    public boolean isGpsAcquired() {
+        return gpsAcquired;
+    }
+
+    public void setGpsAcquired(boolean gpsAcquired) {
+        this.gpsAcquired = gpsAcquired;
+    }
+
+    public boolean isGpsPoorSignal() {
+        return gpsPoorSignal;
+    }
+
+    public void setGpsPoorSignal(boolean gpsPoorSignal) {
+        this.gpsPoorSignal = gpsPoorSignal;
+    }
+
+    public boolean isForceAction() {
+        return forceAction;
+    }
+
+    public void setForceAction(boolean forceAction) {
+        this.forceAction = forceAction;
     }
 }
