@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages.RecordPage.v2;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.ActivityManager;
 import android.app.AlertDialog;
@@ -62,6 +63,7 @@ import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.DebugUIObject;
 import com.think.runex.java.Models.GPSFileRecordObject;
+import com.think.runex.java.Models.RealmPointObject;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
@@ -92,6 +94,8 @@ import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
+import io.realm.Realm;
+
 public class RecordPage extends xFragment implements OnMapReadyCallback
         , View.OnClickListener
         , OnConfirmEventsListener {
@@ -108,6 +112,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private GoogleMap mMap;
     private xLocation mLastLocation;
     private RecorderObject currentRecorder;
+    private Realm realm;
+
     private BroadcastReceiver testBroadcastReceiver = new BroadcastReceiver() {
         // prepare usage variables
         final String mtn = ct + "testBroadcastReceiver() ";
@@ -155,7 +161,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         if (action.equals(BroadcastAction.INITIAL) && isMapReady()) {
                             // update all points
-                            mMapUtils.points.addAll(Globals.POINTS);
+                            mMapUtils.points.addAll(getAllPoint());
 
                             // prepare usage variables
                             final List<LatLng> points = mMapUtils.points;
@@ -569,6 +575,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onMapReady(GoogleMap googleMap) {
         // prepare usage variables
@@ -638,6 +645,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     @Nullable
     @Override
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        realm = Realm.getDefaultInstance();
+
         mView = inflater.inflate(R.layout.activity_record, container, false);
 
         // views matching
@@ -682,7 +691,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // keep temporary recorder
         AppEntity appEntity = App.instance(activity).getAppEntity();
         appEntity.temporaryRecorder = currentRecorder;
-        appEntity.temporaryPoints = mMapUtils.points;
+        //appEntity.temporaryPoints = mMapUtils.points;
         //--> commit
         App.instance(activity).save(appEntity);
     }
@@ -692,7 +701,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         final AppEntity appEntity = App.instance(activity).getAppEntity();
         //--> update props
         appEntity.temporaryRecorder = null;
-        appEntity.temporaryPoints = null;
+        //appEntity.temporaryPoints = null;
+        clearPointsInDatabase();
         //--> commit
         App.instance(activity).save(appEntity);
     }
@@ -704,10 +714,11 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         AppEntity appEntity;
 
         try {
-            if (((appEntity = App.instance(activity).getAppEntity()).temporaryPoints) != null) {
+            List<LatLng> points = getAllPoint();
+            if (points.size() > 0) {
                 if (mMapUtils != null) {
                     // update props
-                    mMapUtils.points = appEntity.temporaryPoints;
+                    mMapUtils.points = points;
 
                     // redraw polyline
                     mMapUtils.redrawPolyline();
@@ -1243,7 +1254,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         final double recordPace = paceAsMin(currentRecorder.paceMillis);
 
         request.setActivity_type(Globals.ACTIVITY_RUN);
-        request.setCalory(0);
+        request.setCalory(currentRecorder.calories);
         request.setDistance(currentRecorder.distanceKm);
         request.setCaption("");
         request.setImage_path("");
@@ -1695,6 +1706,31 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         }
 
         return 0;
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        if (realm != null) {
+            //clearPointsInDatabase();
+            realm.close();
+        }
+    }
+
+    private List<LatLng> getAllPoint() {
+        ArrayList<LatLng> latLngs = new ArrayList<>();
+        List<RealmPointObject> points = realm.copyFromRealm(realm.where(RealmPointObject.class).findAll());
+        for (RealmPointObject point : points) {
+            latLngs.add(new LatLng(point.getLatitude(), point.getLongitude()));
+        }
+        return latLngs;
+    }
+
+    private void clearPointsInDatabase() {
+        realm.beginTransaction();
+        realm.delete(RealmPointObject.class);
+        realm.commitTransaction();
+        Log.e("Jozzee", "clearPointsInDatabase");
     }
 
 }

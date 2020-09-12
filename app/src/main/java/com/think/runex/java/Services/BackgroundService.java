@@ -1,5 +1,6 @@
 package com.think.runex.java.Services;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -68,6 +69,7 @@ public class BackgroundService extends Service {
         }, 1000);
     }
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();

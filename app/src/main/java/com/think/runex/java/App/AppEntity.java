@@ -15,7 +15,7 @@ public class AppEntity {
     public TokenObject token = new TokenObject();
     public UserObject user = new UserObject();
     public RecorderObject temporaryRecorder = null;
-    public List<LatLng> temporaryPoints = null;
+    //public List<LatLng> temporaryPoints = null;
 
     public AppEntity setUser( UserObject user ){
         this.user = user;

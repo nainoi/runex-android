@@ -27,7 +27,7 @@ public class Globals {
     public static final int FIXED_SCREEN_WIDTH = 1024;
 
     //--> Points
-    public static List<LatLng> POINTS;
+    //public static List<LatLng> POINTS;
     //--> Platform
     public static final String PLATFORM = "android";
 

@@ -1,5 +1,6 @@
 package com.think.runex.java.Services.v2;
 
+import android.annotation.SuppressLint;
 import android.app.Notification;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -18,6 +19,7 @@ import android.os.Looper;
 import android.text.Spannable;
 import android.text.SpannableString;
 import android.text.style.StyleSpan;
+import android.util.Log;
 
 import androidx.core.app.NotificationCompat;
 
@@ -27,7 +29,6 @@ import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.android.gms.tasks.OnSuccessListener;
 import com.think.runex.R;
 import com.think.runex.java.Activities.BridgeFile;
 import com.think.runex.java.Constants.BroadcastAction;
@@ -36,6 +37,7 @@ import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.DebugUIObject;
+import com.think.runex.java.Models.RealmPointObject;
 import com.think.runex.java.Models.RecorderObject;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
@@ -44,6 +46,9 @@ import com.think.runex.java.Utils.Recorder.v2.RecorderUtils;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import io.realm.Realm;
+import io.realm.RealmResults;
 
 public class BackgroundService extends Service {
     private final String ct = "BackgroundService->";
@@ -55,7 +60,7 @@ public class BackgroundService extends Service {
     LocationCallback mLocationCallback;
     private xLocation lastLocation = null;
     private RecorderObject currentRecorder = null;
-    private List<LatLng> points = new ArrayList<>();
+    //private List<LatLng> points = new ArrayList<>();
     //--> Flags
     private boolean onRecordPaused = false;
     private boolean onRecordStarted = false;
@@ -65,6 +70,9 @@ public class BackgroundService extends Service {
     private NotificationManager notificationManager;
     //--> Recorder
     private RecorderUtils recorderUtils;
+
+    private Realm realm;
+
     //--> broadcast receiver
     private BroadcastReceiver broadcastReceiver = new BroadcastReceiver() {
         // prepare usage variables
@@ -109,10 +117,13 @@ public class BackgroundService extends Service {
     private boolean GPS_POOR_SIGNAL = false;
     private int acquiring_count = 0;
 
+    @SuppressLint("MissingPermission")
     @Override
     public void onCreate() {
         super.onCreate();
         final String mtn = ct + "onCreate() ";
+
+        realm = Realm.getDefaultInstance();
 
         // register broadcast
         registerBroadcast();
@@ -293,7 +304,9 @@ public class BackgroundService extends Service {
                         lastLocation = xLoc;
 
                         // keep point
-                        points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+                        //TODO("Change to Realm")
+                        //points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+                        insertPointsToDatabase(xLoc.latitude, xLoc.longitude);
 
                         // exit from this process
                         return;
@@ -321,7 +334,9 @@ public class BackgroundService extends Service {
                     }
 
                     // keep point
-                    points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+                    //TODO("Change to Realm")
+                    //points.add(new LatLng(xLoc.latitude, xLoc.longitude));
+                    insertPointsToDatabase(xLoc.latitude, xLoc.longitude);
 
                     // update distance
                     recorderUtils.addDistance(differenceDist);
@@ -385,7 +400,6 @@ public class BackgroundService extends Service {
         alertGPSAcquiring(true);
 
     }
-
 
     /**
      * Feature methods
@@ -479,6 +493,7 @@ public class BackgroundService extends Service {
         }
 
         try {
+            @SuppressLint("RestrictedApi")
             NotificationCompat.Action actionButton = notificationBuilder.mActions.get(0);
 
             // job must started
@@ -634,10 +649,11 @@ public class BackgroundService extends Service {
 
             // prepare usage variables
             // create points instance
-            Globals.POINTS = new ArrayList<>();
+            //Globals.POINTS = new ArrayList<>();
 
             //--> flush all points
-            Globals.POINTS.addAll(points);
+            //TODO("Change to Realm")
+            //Globals.POINTS.addAll(getAllPoint());
 
             // prepare usage variables
             Intent i = new Intent();
@@ -676,7 +692,9 @@ public class BackgroundService extends Service {
                 onRecordPaused = true;
 
                 // clear props
-                points.clear();
+                //TODO("Change to Realm")
+                //points.clear();
+                clearPointsInDatabase();
                 //--> last location
                 lastLocation = null;
                 //--> current record
@@ -815,6 +833,11 @@ public class BackgroundService extends Service {
     public void onDestroy() {
         onDestroy = true;
 
+        if (realm != null) {
+            //clearPointsInDatabase();
+            realm.close();
+        }
+
         // unregister broadcast
         unregisterBroadcast();
 
@@ -918,4 +941,34 @@ public class BackgroundService extends Service {
                 displayKm);
 
     }
+
+    private void insertPointsToDatabase(Double latitude, Double longitude) {
+        if (realm == null) {
+            return;
+        }
+        realm.beginTransaction();
+        RealmPointObject point = realm.createObject(RealmPointObject.class);
+        point.setLatitude(latitude);
+        point.setLongitude(longitude);
+        realm.commitTransaction();
+        Log.e("Jozzee", "insertPointsToDatabase: " + latitude + ", " + longitude);
+    }
+
+    private void clearPointsInDatabase() {
+        realm.beginTransaction();
+        realm.delete(RealmPointObject.class);
+        realm.commitTransaction();
+        Log.e("Jozzee", "clearPointsInDatabase");
+    }
+
+    private List<LatLng> getAllPoint() {
+        ArrayList<LatLng> latLngs = new ArrayList<>();
+        List<RealmPointObject> points = realm.copyFromRealm(realm.where(RealmPointObject.class).findAll());
+        for (RealmPointObject point : points) {
+            latLngs.add(new LatLng(point.getLatitude(), point.getLongitude()));
+        }
+        return latLngs;
+    }
+
+
 }
