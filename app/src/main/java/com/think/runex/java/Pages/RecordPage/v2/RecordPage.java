@@ -678,7 +678,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private void keepTemporaryRecorder() {
         // keep temporary recorder
         AppEntity appEntity = App.instance(activity).getAppEntity();
-        appEntity.temporaryRecorder = currentRecorder;
+        //appEntity.temporaryRecorder = currentRecorder;
         //appEntity.temporaryPoints = mMapUtils.points;
         //--> commit
         App.instance(activity).save(appEntity);
@@ -688,9 +688,10 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // clear temporary recorder
         final AppEntity appEntity = App.instance(activity).getAppEntity();
         //--> update props
-        appEntity.temporaryRecorder = null;
+        //appEntity.temporaryRecorder = null;
         //appEntity.temporaryPoints = null;
         clearPointsInDatabase();
+        clearCurrentRecorderObject();
         //--> commit
         App.instance(activity).save(appEntity);
     }
@@ -727,12 +728,13 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private void shouldShowSummaryFrame() {
         // should display summary record
         AppEntity appEntity;
-        if (((appEntity = App.instance(activity).getAppEntity()).temporaryRecorder) != null) {
+        RealmRecorderObject recorderObject = getCurrentRecorderObject();
+        if (recorderObject != null) {
             // update current recorder object
-            currentRecorder = appEntity.temporaryRecorder;
+            currentRecorder = recorderObject;
 
             // display
-            displaySummaryFrame(appEntity.temporaryRecorder);
+            displaySummaryFrame(currentRecorder);
 
         }
     }
@@ -824,7 +826,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                     @Override
                     public void onSnapshotReady(Bitmap bitmap) {
                         // go to share page
-                        toSharePage(currentRecorder,bitmap);
+                        toSharePage(currentRecorder, bitmap);
 
                         // reverse-size map frame
                         frameMap.overrideRequestLayout(1.1);
@@ -1718,4 +1720,20 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         Log.e("Jozzee", "clearPointsInDatabase");
     }
 
+    private RealmRecorderObject getCurrentRecorderObject() {
+        if (realm == null) {
+            return null;
+        }
+        return realm.where(RealmRecorderObject.class).findFirst();
+    }
+
+
+    private void clearCurrentRecorderObject() {
+        if (realm == null) {
+            return;
+        }
+        realm.beginTransaction();
+        realm.delete(RealmRecorderObject.class);
+        realm.commitTransaction();
+    }
 }

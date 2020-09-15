@@ -10,7 +10,7 @@ public class AppEntity {
     public boolean isLoggedIn = false;
     public TokenObject token = new TokenObject();
     public UserObject user = new UserObject();
-    public RealmRecorderObject temporaryRecorder = null;
+    //public RealmRecorderObject temporaryRecorder = null;
     //public List<LatLng> temporaryPoints = null;
 
     public AppEntity setUser( UserObject user ){

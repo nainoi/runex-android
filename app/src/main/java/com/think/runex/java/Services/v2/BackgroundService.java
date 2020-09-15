@@ -58,7 +58,7 @@ public class BackgroundService extends Service {
     LocationRequest mLocationRequest;
     LocationCallback mLocationCallback;
     private xLocation lastLocation = null;
-    private RealmRecorderObject currentRecorder = null;
+    //private RealmRecorderObject currentRecorder = null;
     //private List<LatLng> points = new ArrayList<>();
     //--> Flags
     private boolean onRecordPaused = false;
@@ -152,9 +152,11 @@ public class BackgroundService extends Service {
                         ? new xLocation(lastLocation.latitude, lastLocation.longitude, lastLocation.accuracy)
                         : null;
                 record.gpsAcquired = GPS_ACQUIRED;
+                //currentRecorder = record;
+                updateCurrentRecorderObject(record);
 
                 //--> broadcast props
-                broadcastObject.attachedObject = (currentRecorder = record);
+                broadcastObject.attachedObject = record;
                 broadcastObject.broadcastType = BroadcastType.RECORDING;
 
                 //--> intent props
@@ -697,7 +699,8 @@ public class BackgroundService extends Service {
                 //--> last location
                 lastLocation = null;
                 //--> current record
-                currentRecorder = null;
+                //currentRecorder = null;
+                clearCurrentRecorderObject();
 
                 // reset recorder
                 recorderUtils.reset();
@@ -712,7 +715,7 @@ public class BackgroundService extends Service {
             //--> update props
             broadcastObject.broadcastType = BroadcastType.ACTIONS;
             broadcastObject.broadcastAction = BroadcastAction.GET_BACKGROUND_SERVICE_INFO;
-            broadcastObject.attachedObject = serviceInfoObject(currentRecorder);
+            broadcastObject.attachedObject = serviceInfoObject(getCurrentRecorderObject());
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -733,7 +736,7 @@ public class BackgroundService extends Service {
             //--> broadcast props
             broadcastObject.broadcastType = BroadcastType.ACTIONS;
             broadcastObject.broadcastAction = BroadcastAction.UI_UPDATE;
-            broadcastObject.attachedObject = serviceInfoObject(currentRecorder);
+            broadcastObject.attachedObject = serviceInfoObject(getCurrentRecorderObject());
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -969,5 +972,57 @@ public class BackgroundService extends Service {
         return latLngs;
     }
 
+    private RealmRecorderObject getCurrentRecorderObject() {
+        if (realm == null) {
+            return null;
+        }
+        return realm.where(RealmRecorderObject.class).findFirst();
+    }
+
+    private void updateCurrentRecorderObject(RealmRecorderObject recorderObject) {
+        Log.e("Jozzee", "updateCurrentRecorderObject Before");
+        Realm realm = Realm.getDefaultInstance();
+        realm.beginTransaction();
+        RealmRecorderObject recorder = realm.where(RealmRecorderObject.class).findFirst();
+        if (recorder == null) {
+            recorder = realm.createObject(RealmRecorderObject.class);
+        }
+        recorder.setDistanceKm(recorderObject.distanceKm);
+        recorder.setDurationMillis(recorderObject.durationMillis);
+        recorder.setPaceMillis(recorderObject.paceMillis);
+        recorder.setDisplayRecordAsTime(recorderObject.displayRecordAsTime);
+        recorder.setDisplayPaceAsTime(recorderObject.displayPaceAsTime);
+        recorder.setCalories(recorderObject.calories);
+        if (recorderObject.xLoc != null) {
+            recorder.setxLoc(realm.copyToRealm(recorderObject.xLoc));
+        }
+        if (recorderObject.xLocCurrent != null) {
+            recorder.setxLocCurrent(realm.copyToRealm(recorderObject.xLocCurrent));
+        }
+        if (recorderObject.xLocLast != null) {
+            recorder.setxLocLast(realm.copyToRealm(recorderObject.xLocLast));
+        }
+        recorder.setGpsAcquired(recorderObject.gpsAcquired);
+        recorder.setGpsPoorSignal(recorderObject.gpsPoorSignal);
+        recorder.setForceAction(recorderObject.forceAction);
+
+        Log.e("Jozzee", "updateCurrentRecorderObject After");
+        Log.e("Jozzee", "distanceKm: "+recorderObject.distanceKm);
+        Log.e("Jozzee", "paceMillis: "+recorderObject.paceMillis);
+        Log.e("Jozzee", "displayRecordAsTime: "+recorderObject.displayRecordAsTime);
+        Log.e("Jozzee", "displayPaceAsTime: "+recorderObject.displayPaceAsTime);
+        Log.e("Jozzee", "calories: "+recorderObject.calories);
+        realm.commitTransaction();
+        realm.close();
+    }
+
+    private void clearCurrentRecorderObject() {
+        if (realm == null) {
+            return;
+        }
+        realm.beginTransaction();
+        realm.delete(RealmRecorderObject.class);
+        realm.commitTransaction();
+    }
 
 }
