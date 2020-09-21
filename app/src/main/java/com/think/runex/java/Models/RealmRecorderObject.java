@@ -1,14 +1,25 @@
 package com.think.runex.java.Models;
 
-import android.graphics.Bitmap;
-
+import android.os.Parcel;
+import android.os.Parcelable;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
-
-import java.io.Serializable;
 
 import io.realm.RealmObject;
 
-public class RealmRecorderObject extends RealmObject implements Serializable {
+public class RealmRecorderObject extends RealmObject implements Parcelable {
+
+    public static final Creator<RealmRecorderObject> CREATOR = new Creator<RealmRecorderObject>() {
+        @Override
+        public RealmRecorderObject createFromParcel(Parcel in) {
+            return new RealmRecorderObject(in);
+        }
+
+        @Override
+        public RealmRecorderObject[] newArray(int size) {
+            return new RealmRecorderObject[size];
+        }
+    };
+
     public double distanceKm = 0.0;
     public long durationMillis = 0L;
     public long paceMillis = 0L;
@@ -24,7 +35,42 @@ public class RealmRecorderObject extends RealmObject implements Serializable {
     public boolean forceAction = false;
 
     public RealmRecorderObject() {
+    }
 
+    protected RealmRecorderObject(Parcel in) {
+        distanceKm = in.readDouble();
+        durationMillis = in.readLong();
+        paceMillis = in.readLong();
+        displayRecordAsTime = in.readString();
+        displayPaceAsTime = in.readString();
+        calories = in.readDouble();
+        xLoc = in.readParcelable(xLocation.class.getClassLoader());
+        xLocCurrent = in.readParcelable(xLocation.class.getClassLoader());
+        xLocLast = in.readParcelable(xLocation.class.getClassLoader());
+        gpsAcquired = in.readByte() != 0;
+        gpsPoorSignal = in.readByte() != 0;
+        forceAction = in.readByte() != 0;
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        dest.writeDouble(distanceKm);
+        dest.writeLong(durationMillis);
+        dest.writeLong(paceMillis);
+        dest.writeString(displayRecordAsTime);
+        dest.writeString(displayPaceAsTime);
+        dest.writeDouble(calories);
+        dest.writeParcelable(xLoc, flags);
+        dest.writeParcelable(xLocCurrent, flags);
+        dest.writeParcelable(xLocLast, flags);
+        dest.writeByte((byte) (gpsAcquired ? 1 : 0));
+        dest.writeByte((byte) (gpsPoorSignal ? 1 : 0));
+        dest.writeByte((byte) (forceAction ? 1 : 0));
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
     }
 
     public double getDistanceKm() {

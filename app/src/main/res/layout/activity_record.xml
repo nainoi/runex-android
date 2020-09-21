@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@android:color/white">
@@ -23,69 +24,70 @@
                 android:layout_width="match_parent"
                 android:layout_height="match_parent" />
 
-            <include layout="@layout/frame_debug_location_info"
-                android:visibility="gone"
+            <include
                 android:id="@+id/frame_debug"
-                android:layout_margin="28dp"
+                layout="@layout/frame_debug_location_info"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"/>
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:visibility="gone" />
 
             <ImageView
                 android:id="@+id/preview_image"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
             <LinearLayout
                 android:id="@+id/frame_logo"
-                android:weightSum="1"
-                android:visibility="invisible"
-                android:gravity="center_horizontal"
-                android:layout_gravity="bottom"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:gravity="center_horizontal"
+                android:visibility="invisible"
+                android:weightSum="1">
 
                 <ImageView
-                    android:layout_gravity="center_horizontal"
                     android:layout_width="0dp"
-                    android:layout_weight="0.3"
-                    android:layout_marginBottom="16dp"
                     android:layout_height="wrap_content"
-                    android:src="@drawable/ic_logo_large"/>
+                    android:layout_gravity="center_horizontal"
+                    android:layout_marginBottom="16dp"
+                    android:layout_weight="0.3"
+                    android:src="@drawable/ic_logo_large" />
 
             </LinearLayout>
 
             <LinearLayout
                 android:id="@+id/frame_change_background_image"
-                android:visibility="gone"
-                android:layout_gravity="bottom|center_horizontal"
                 android:layout_width="wrap_content"
-                android:orientation="horizontal"
-                android:paddingVertical="2dp"
-                android:paddingHorizontal="8dp"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom|center_horizontal"
                 android:layout_marginBottom="8dp"
                 android:background="@drawable/background_change_background_image_button"
-                android:layout_height="wrap_content">
+                android:orientation="horizontal"
+                android:paddingHorizontal="8dp"
+                android:paddingVertical="2dp"
+                android:visibility="gone">
 
                 <ImageView
                     android:id="@+id/v_change_bgimage"
-                    android:src="@android:drawable/ic_menu_camera"
                     android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
+                    android:layout_height="match_parent"
+                    android:src="@android:drawable/ic_menu_camera" />
 
                 <TextView
                     android:id="@+id/lb_change_bgimage"
+                    android:layout_width="wrap_content"
+                    android:layout_height="match_parent"
                     android:gravity="center_vertical"
                     android:text="เปลี่ยนรูปพื้นหลัง"
-                    android:textColor="@android:color/white"
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"/>
+                    android:textColor="@android:color/white" />
 
             </LinearLayout>
 
             <LinearLayout
-                android:visibility="gone"
                 android:layout_width="wrap_content"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:visibility="gone">
 
                 <Button
                     android:id="@+id/btnWriteGPSFile"
@@ -94,30 +96,30 @@
                     android:text="write" />
 
                 <Button
-                    android:layout_marginLeft="8dp"
                     android:id="@+id/btnReadGPSFile"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
                     android:text="read" />
 
             </LinearLayout>
 
             <!-- Frame gps acquiring -->
             <FrameLayout
-                android:paddingVertical="8dp"
                 android:id="@+id/frame_gps_signal"
-                android:visibility="invisible"
-                android:background="@android:color/holo_green_light"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_green_light"
+                android:paddingVertical="8dp"
+                android:visibility="invisible">
 
                 <TextView
                     android:id="@+id/lb_gps_signal"
-                    android:text="GPS ACQUIRED"
-                    android:layout_gravity="center"
-                    android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="GPS ACQUIRED"
+                    android:textColor="@android:color/white" />
 
             </FrameLayout>
 
@@ -126,49 +128,49 @@
         <!-- Record -->
         <ScrollView
             android:id="@+id/scroll_frame_recording"
-            android:fillViewport="true"
-            android:layout_below="@+id/frame_map"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/frame_map"
+            android:fillViewport="true">
 
             <LinearLayout
                 android:id="@+id/frame_recording"
-                android:orientation="vertical"
-                android:gravity="center"
-                android:padding="8dp"
-                android:visibility="invisible"
-                android:background="@android:color/white"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent">
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:visibility="invisible">
 
                 <!-- Record information -->
                 <LinearLayout
                     android:id="@+id/frame_recording_info"
-                    android:orientation="vertical"
-                    android:padding="8dp"
-                    android:background="@android:color/white"
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content">
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="8dp">
 
                     <!-- Distance -->
                     <TextView
                         android:id="@+id/v_distance"
-                        android:textSize="16dp"
-                        android:text="ระยะทาง (km.)"
-                        android:includeFontPadding="false"
-                        android:gravity="center"
-                        android:textColor="@android:color/darker_gray"
                         android:layout_width="match_parent"
-                        android:layout_height="wrap_content"/>
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="ระยะทาง (km.)"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16dp" />
 
                     <TextView
                         android:id="@+id/lb_distance"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:text="0.00"
+                        android:gravity="center"
                         android:includeFontPadding="false"
                         android:maxLines="1"
-                        android:gravity="center"
+                        android:text="0.00"
                         android:textColor="@android:color/black"
                         android:textSize="@dimen/textRecordTime"
                         android:textStyle="bold" />
@@ -227,14 +229,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="Pace (min/km)"
-                                android:textColor="@android:color/darker_gray"/>
+                                android:textColor="@android:color/darker_gray" />
 
                             <TextView
                                 android:id="@+id/lb_pace"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="00:00:00"
                                 android:maxLines="1"
+                                android:text="00:00:00"
                                 android:textColor="@color/orange"
                                 android:textSize="18dp" />
 
@@ -256,14 +258,14 @@
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
                                 android:text="แคลอรี่"
-                                android:textColor="@android:color/darker_gray"/>
+                                android:textColor="@android:color/darker_gray" />
 
                             <TextView
                                 android:id="@+id/lb_calories"
                                 android:layout_width="wrap_content"
                                 android:layout_height="wrap_content"
-                                android:text="0.0"
                                 android:maxLines="1"
+                                android:text="0.0"
                                 android:textColor="@color/orange"
                                 android:textSize="18dp" />
 
@@ -276,19 +278,19 @@
                 <LinearLayout
                     android:id="@+id/frame_controller_buttons"
                     android:layout_width="match_parent"
-                    android:orientation="horizontal"
+                    android:layout_height="wrap_content"
                     android:layout_alignParentBottom="true"
                     android:layout_marginBottom="8dp"
                     android:gravity="center"
-                    android:layout_height="wrap_content">
+                    android:orientation="horizontal">
 
                     <!-- Record button-->
                     <LinearLayout
                         android:id="@+id/frame_recording_feature_button"
-                        android:orientation="vertical"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
 
                         <!-- Record icon -->
                         <FrameLayout
@@ -300,45 +302,45 @@
                                 android:id="@+id/btn_start"
                                 android:layout_width="75dp"
                                 android:layout_height="75dp"
+                                android:background="@drawable/view_circle_orange"
                                 android:gravity="center"
                                 android:text=""
                                 android:textColor="@android:color/white"
                                 android:textSize="20dp"
-                                android:background="@drawable/view_circle_orange"
                                 android:textStyle="bold" />
 
                             <ImageView
                                 android:id="@+id/ic_recording_state"
-                                android:src="@drawable/ic_play"
-                                android:tint="@android:color/white"
-                                android:padding="4dp"
                                 android:layout_width="35dp"
+                                android:layout_height="35dp"
                                 android:layout_gravity="center"
-                                android:layout_height="35dp"/>
+                                android:padding="4dp"
+                                android:src="@drawable/ic_play"
+                                app:tint="@android:color/white" />
 
                         </FrameLayout>
 
                         <TextView
                             android:id="@+id/lb_recording_state_description"
-                            android:text="@string/start_recording"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/background_recording_state_description"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/start_recording" />
 
                     </LinearLayout>
 
                     <!-- Stop & submit result -->
                     <LinearLayout
                         android:id="@+id/frame_stop_and_submit"
-                        android:visibility="invisible"
-                        android:layout_marginLeft="8dp"
-                        android:orientation="vertical"
-                        android:gravity="center"
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
 
                         <!-- Stop icon -->
                         <FrameLayout
@@ -350,35 +352,34 @@
                                 android:id="@+id/btn_pause"
                                 android:layout_width="75dp"
                                 android:layout_height="75dp"
+                                android:background="@drawable/view_circle_black"
                                 android:gravity="center"
                                 android:text=""
                                 android:textColor="@android:color/white"
                                 android:textSize="20dp"
-                                android:background="@drawable/view_circle_black"
                                 android:textStyle="bold" />
 
                             <ImageView
                                 android:id="@+id/ic_stop_state"
                                 android:layout_width="25dp"
-                                android:padding="4dp"
-                                android:background="@drawable/ic_stop"
+                                android:layout_height="25dp"
                                 android:layout_gravity="center"
-                                android:layout_height="25dp"/>
+                                android:background="@drawable/ic_stop"
+                                android:padding="4dp" />
 
                         </FrameLayout>
 
                         <TextView
                             android:id="@+id/lb_stop_state_description"
-                            android:text="@string/finish_recording"
-                            android:paddingHorizontal="8dp"
-                            android:paddingVertical="2dp"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
                             android:layout_marginTop="8dp"
                             android:background="@drawable/background_recording_state_description"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"/>
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/finish_recording" />
 
                     </LinearLayout>
-
 
 
                 </LinearLayout>
@@ -390,32 +391,32 @@
         <!-- Summary -->
         <FrameLayout
             android:id="@+id/inherit_frame_summary"
-            android:layout_below="@+id/frame_map"
-            android:background="@android:color/white"
             android:layout_width="match_parent"
-            android:layout_height="match_parent">
+            android:layout_height="match_parent"
+            android:layout_below="@+id/frame_map"
+            android:background="@android:color/white">
 
             <include
                 android:id="@+id/frame_summary"
                 layout="@layout/frame_record_summary"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent"/>
+                android:layout_height="match_parent" />
 
         </FrameLayout>
 
         <LinearLayout
             android:id="@+id/frame_labs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
             android:orientation="vertical"
             android:padding="2dp"
-            android:visibility="gone"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
+            android:visibility="gone">
 
             <TextView
                 android:id="@+id/lab_accuracy"
-                android:text="accuracy: 0"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:text="accuracy: 0"
                 android:textColor="@android:color/black"
                 android:textSize="8dp" />
 
@@ -439,7 +440,7 @@
             android:layout_width="?attr/actionBarSize"
             android:layout_height="match_parent"
             android:src="@drawable/ic_close"
-            android:tint="@color/orange" />
+            app:tint="@color/orange" />
 
         <ImageView
             android:id="@+id/btn_share"
@@ -447,7 +448,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:src="@drawable/ic_share_android"
-            android:tint="@color/orange" />
+            app:tint="@color/orange" />
 
     </FrameLayout>
 

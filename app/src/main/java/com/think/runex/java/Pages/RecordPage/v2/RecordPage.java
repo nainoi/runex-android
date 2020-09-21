@@ -111,17 +111,18 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             try {
 
                 // prepare usage variables
-                Serializable serializable = intent.getSerializableExtra(Globals.SERIALIZABLE);
-
+                BroadcastObject broadcastObj = intent.getParcelableExtra(Globals.SERIALIZABLE);
+                if (broadcastObj == null) {
+                    return;
+                }
                 try {
                     // prepare usage variables
-                    BroadcastObject broadcastObj = (BroadcastObject) serializable;
                     BroadcastType broadcastType = broadcastObj.broadcastType;
 
                     // conditions
                     if (broadcastType.equals(BroadcastType.RECORDING) && isMapReady()) {
                         // prepare usage variables
-                        final RealmRecorderObject recorder = (RealmRecorderObject) broadcastObj.attachedObject;
+                        final RealmRecorderObject recorder = broadcastObj.recorderObject;
 
                         // update props
                         currentRecorder = recorder;
@@ -134,7 +135,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                     } else if (broadcastType.equals(BroadcastType.LOCATION) && isMapReady()) {
                         // prepare usage variables
-                        final RealmRecorderObject recorder = (RealmRecorderObject) broadcastObj.attachedObject;
+                        final RealmRecorderObject recorder = broadcastObj.recorderObject;
 
                         // tracking
                         mMapUtils.tracking(recorder.xLocCurrent);
@@ -168,7 +169,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         } else if (action.equals(BroadcastAction.GPS_POOR_SIGNAL)) {
                             // prepare usage variables
-                            final RealmRecorderObject record = (RealmRecorderObject) broadcastObj.attachedObject;
+                            final RealmRecorderObject record = broadcastObj.recorderObject;
 
                             // gps conditions
                             if (record.gpsPoorSignal) onPoorGPSSignal();
@@ -176,7 +177,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         } else if (action.equals(BroadcastAction.GPS_ACQUIRING)) {
                             // prepare usage variables
-                            final RealmRecorderObject record = (RealmRecorderObject) broadcastObj.attachedObject;
+                            final RealmRecorderObject record = broadcastObj.recorderObject;
 
                             // gps conditions
                             if (record.gpsAcquired) onGPSAcquired();
@@ -186,8 +187,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         } else if (action.equals(BroadcastAction.UI_UPDATE)) {
                             // prepare usage variables
-                            final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
-                            final RealmRecorderObject record = (RealmRecorderObject) info.attachedObject;
+                            final BackgroundServiceInfoObject info = broadcastObj.serviceInfoObject;
+                            final RealmRecorderObject record = info.recorderObject;
 
                             // record is not ready
                             if (record == null) {
@@ -226,8 +227,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         } else if (action.equals(BroadcastAction.GET_BACKGROUND_SERVICE_INFO)) {
                             // prepare usage variables
-                            final BackgroundServiceInfoObject info = (BackgroundServiceInfoObject) broadcastObj.attachedObject;
-                            final RealmRecorderObject record = (currentRecorder = (RealmRecorderObject) info.attachedObject);
+                            final BackgroundServiceInfoObject info = broadcastObj.serviceInfoObject;
+                            final RealmRecorderObject record = (currentRecorder = info.recorderObject);
 
                             L.i(mtn + " * * * background-service info * * * ");
                             L.i(mtn + "record > is pause: " + info.isRecordPaused);
@@ -252,7 +253,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                         } else if (action.equals(BroadcastAction.UI_DEBUG_UPDATE)) {
                             // prepare usage variables
-                            final DebugUIObject debug = (DebugUIObject) broadcastObj.attachedObject;
+                            final DebugUIObject debug = broadcastObj.debugUIObject;
 
                             L.i(mtn + " * * * debug * * * ");
                             L.i(mtn + "debug-object: " + Globals.GSON.toJson(debug));
@@ -662,7 +663,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
             // broadcast
             activity.sendBroadcast(i);
-
+            return mView;
         }
 
         // does user exits from
@@ -1717,7 +1718,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         realm.beginTransaction();
         realm.delete(RealmPointObject.class);
         realm.commitTransaction();
-        Log.e("Jozzee", "clearPointsInDatabase");
     }
 
     private RealmRecorderObject getCurrentRecorderObject() {

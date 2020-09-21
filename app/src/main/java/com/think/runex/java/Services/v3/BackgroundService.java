@@ -147,7 +147,7 @@ public class BackgroundService extends Service {
                 record.gpsAcquired = GPS_ACQUIRED;
 
                 //--> broadcast props
-                broadcastObject.attachedObject = (currentRecorder = record);
+                broadcastObject.recorderObject = (currentRecorder = record);
                 broadcastObject.broadcastType = BroadcastType.RECORDING;
 
                 //--> intent props
@@ -383,7 +383,7 @@ public class BackgroundService extends Service {
         //--> broadcast
         broadcastObject.broadcastType = BroadcastType.ACTIONS;
         broadcastObject.broadcastAction = BroadcastAction.UI_DEBUG_UPDATE;
-        broadcastObject.attachedObject = debug;
+        broadcastObject.debugUIObject = debug;
 
         //--> intent props
         i.setAction(Globals.BROADCAST_TEST);
@@ -421,7 +421,7 @@ public class BackgroundService extends Service {
                         //--> broadcast
                         broadcastObject.broadcastType = BroadcastType.ACTIONS;
                         broadcastObject.broadcastAction = BroadcastAction.UI_DEBUG_UPDATE;
-                        broadcastObject.attachedObject = debug;
+                        broadcastObject.debugUIObject = debug;
 
                         //--> intent props
                         i.setAction(Globals.BROADCAST_TEST);
@@ -587,7 +587,7 @@ public class BackgroundService extends Service {
 
             //--> broadcast attached object
             broadcastObject.broadcastType = BroadcastType.LOCATION;
-            broadcastObject.attachedObject = record;
+            broadcastObject.recorderObject = record;
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -638,7 +638,7 @@ public class BackgroundService extends Service {
                 //--> broadcast
                 broadcastObject.broadcastType = BroadcastType.ACTIONS;
                 broadcastObject.broadcastAction = BroadcastAction.GPS_ACQUIRING;
-                broadcastObject.attachedObject = recorder;
+                broadcastObject.recorderObject = recorder;
 
                 //--> intent props
                 i.setAction(Globals.BROADCAST_TEST);
@@ -775,7 +775,7 @@ public class BackgroundService extends Service {
             //--> update props
             broadcastObject.broadcastType = BroadcastType.ACTIONS;
             broadcastObject.broadcastAction = BroadcastAction.GET_BACKGROUND_SERVICE_INFO;
-            broadcastObject.attachedObject = serviceInfoObject(currentRecorder);
+            broadcastObject.serviceInfoObject = serviceInfoObject(currentRecorder);
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -796,7 +796,7 @@ public class BackgroundService extends Service {
             //--> broadcast props
             broadcastObject.broadcastType = BroadcastType.ACTIONS;
             broadcastObject.broadcastAction = BroadcastAction.UI_UPDATE;
-            broadcastObject.attachedObject = serviceInfoObject(currentRecorder);
+            broadcastObject.serviceInfoObject = serviceInfoObject(currentRecorder);
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -875,7 +875,7 @@ public class BackgroundService extends Service {
         // update props
         info.isRecordPaused = onRecordPaused;
         info.isRecordStarted = onRecordStarted;
-        info.attachedObject = recorder;
+        info.recorderObject = recorder;
 
         return info;
     }

@@ -81,7 +81,7 @@ public class BackgroundService extends Service {
         public void onReceive(Context context, Intent intent) {
             try {
                 // prepare usage variables
-                final BroadcastObject broadcast = (BroadcastObject) intent.getSerializableExtra(Globals.SERIALIZABLE);
+                final BroadcastObject broadcast = intent.getParcelableExtra(Globals.SERIALIZABLE);
 
                 // broadcast null
                 if (broadcast == null) {
@@ -156,7 +156,7 @@ public class BackgroundService extends Service {
                 updateCurrentRecorderObject(record);
 
                 //--> broadcast props
-                broadcastObject.attachedObject = record;
+                broadcastObject.recorderObject = record;
                 broadcastObject.broadcastType = BroadcastType.RECORDING;
 
                 //--> intent props
@@ -361,7 +361,7 @@ public class BackgroundService extends Service {
 
                     //--> broadcast attached object
                     broadcastObject.broadcastType = BroadcastType.LOCATION;
-                    broadcastObject.attachedObject = record;
+                    broadcastObject.recorderObject = record;
 
                     //--> intent props
                     i.setAction(Globals.BROADCAST_TEST);
@@ -447,7 +447,7 @@ public class BackgroundService extends Service {
         //--> broadcast
         broadcastObject.broadcastType = BroadcastType.ACTIONS;
         broadcastObject.broadcastAction = BroadcastAction.UI_DEBUG_UPDATE;
-        broadcastObject.attachedObject = debug;
+        broadcastObject.debugUIObject = debug;
 
         //--> intent props
         i.setAction(Globals.BROADCAST_TEST);
@@ -554,7 +554,7 @@ public class BackgroundService extends Service {
                 //--> broadcast
                 broadcastObject.broadcastType = BroadcastType.ACTIONS;
                 broadcastObject.broadcastAction = BroadcastAction.GPS_ACQUIRING;
-                broadcastObject.attachedObject = recorder;
+                broadcastObject.recorderObject = recorder;
 
                 //--> intent props
                 i.setAction(Globals.BROADCAST_TEST);
@@ -627,7 +627,7 @@ public class BackgroundService extends Service {
         //--> broadcast
         broadcastObject.broadcastType = BroadcastType.ACTIONS;
         broadcastObject.broadcastAction = BroadcastAction.GPS_POOR_SIGNAL;
-        broadcastObject.attachedObject = recorder;
+        broadcastObject.recorderObject = recorder;
 
         //--> intent props
         i.setAction(Globals.BROADCAST_TEST);
@@ -715,7 +715,7 @@ public class BackgroundService extends Service {
             //--> update props
             broadcastObject.broadcastType = BroadcastType.ACTIONS;
             broadcastObject.broadcastAction = BroadcastAction.GET_BACKGROUND_SERVICE_INFO;
-            broadcastObject.attachedObject = serviceInfoObject(getCurrentRecorderObject());
+            broadcastObject.serviceInfoObject = serviceInfoObject(getCurrentRecorderObject());
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -736,7 +736,7 @@ public class BackgroundService extends Service {
             //--> broadcast props
             broadcastObject.broadcastType = BroadcastType.ACTIONS;
             broadcastObject.broadcastAction = BroadcastAction.UI_UPDATE;
-            broadcastObject.attachedObject = serviceInfoObject(getCurrentRecorderObject());
+            broadcastObject.serviceInfoObject = serviceInfoObject(getCurrentRecorderObject());
 
             //--> intent props
             i.setAction(Globals.BROADCAST_TEST);
@@ -818,7 +818,7 @@ public class BackgroundService extends Service {
         // update props
         info.isRecordPaused = onRecordPaused;
         info.isRecordStarted = onRecordStarted;
-        info.attachedObject = recorder;
+        info.recorderObject = recorder;
 
         return info;
     }
@@ -953,14 +953,12 @@ public class BackgroundService extends Service {
         point.setLatitude(latitude);
         point.setLongitude(longitude);
         realm.commitTransaction();
-        Log.e("Jozzee", "insertPointsToDatabase: " + latitude + ", " + longitude);
     }
 
     private void clearPointsInDatabase() {
         realm.beginTransaction();
         realm.delete(RealmPointObject.class);
         realm.commitTransaction();
-        Log.e("Jozzee", "clearPointsInDatabase");
     }
 
     private List<LatLng> getAllPoint() {
@@ -980,7 +978,6 @@ public class BackgroundService extends Service {
     }
 
     private void updateCurrentRecorderObject(RealmRecorderObject recorderObject) {
-        Log.e("Jozzee", "updateCurrentRecorderObject Before");
         Realm realm = Realm.getDefaultInstance();
         realm.beginTransaction();
         RealmRecorderObject recorder = realm.where(RealmRecorderObject.class).findFirst();
@@ -1006,12 +1003,12 @@ public class BackgroundService extends Service {
         recorder.setGpsPoorSignal(recorderObject.gpsPoorSignal);
         recorder.setForceAction(recorderObject.forceAction);
 
-        Log.e("Jozzee", "updateCurrentRecorderObject After");
-        Log.e("Jozzee", "distanceKm: "+recorderObject.distanceKm);
-        Log.e("Jozzee", "paceMillis: "+recorderObject.paceMillis);
-        Log.e("Jozzee", "displayRecordAsTime: "+recorderObject.displayRecordAsTime);
-        Log.e("Jozzee", "displayPaceAsTime: "+recorderObject.displayPaceAsTime);
-        Log.e("Jozzee", "calories: "+recorderObject.calories);
+//        Log.e("Jozzee", "updateCurrentRecorderObject After");
+//        Log.e("Jozzee", "distanceKm: "+recorderObject.distanceKm);
+//        Log.e("Jozzee", "paceMillis: "+recorderObject.paceMillis);
+//        Log.e("Jozzee", "displayRecordAsTime: "+recorderObject.displayRecordAsTime);
+//        Log.e("Jozzee", "displayPaceAsTime: "+recorderObject.displayPaceAsTime);
+//        Log.e("Jozzee", "calories: "+recorderObject.calories);
         realm.commitTransaction();
         realm.close();
     }
