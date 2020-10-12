@@ -21,6 +21,10 @@ const val KEY_MESSAGE = "msg"
 const val KEY_NIGHT_MODE = "night_mode"
 const val KEY_STATUS_CODE = "code"
 const val KEY_VERSION = "version"
+/**
+ * Shared preferences name
+ */
+const val PREFERENCE_NAME = "app_preference"
 
 /**
  * Date time format
@@ -38,6 +42,12 @@ const val ERROR_NETWORK_UNREACHABLE = 482
 const val ERROR_JSON_FORMAT = 483
 const val ERR_UNKNOWN = 999
 
+/**
+ * Notification chanel id and request code
+ */
+const val NOTIFICATION_REQUEST_CODE = 0
 
+const val NOTIFICATION_CHANEL_ID_DEFAULT = "default"
+const val NOTIFICATION_ID_DEFAULT = 0
 
 
