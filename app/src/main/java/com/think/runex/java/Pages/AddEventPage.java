@@ -56,8 +56,8 @@ import java.util.Objects;
 import java.util.TimeZone;
 
 import static androidx.core.content.FileProvider.getUriForFile;
-import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
 
 public class AddEventPage extends xFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     /**

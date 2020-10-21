@@ -8,7 +8,8 @@ import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.Locale;
 
-import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
+
 
 public class ActivityInfoBean implements Parcelable {
     /**
