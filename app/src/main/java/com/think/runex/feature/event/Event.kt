@@ -1,7 +1,7 @@
 package com.think.runex.feature.event
 
 import com.google.gson.annotations.SerializedName
-import com.think.runex.datasource.remote.ApiUrl
+import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.product.Product
 import com.think.runex.feature.running.Category
 import com.think.runex.feature.ticket.Ticket
@@ -27,5 +27,5 @@ data class Event(
         @SerializedName("created_time") var createdAt: String = "",
         @SerializedName("updated_time") var updatedAt: String = "") {
 
-    fun coverImage(): String = if (coverImage.isNotBlank()) "${ApiUrl.getBaseUrl()}$coverImage" else ""
+    fun coverImage(): String = if (coverImage.isNotBlank()) "${ApiConfig.BASE_URL}$coverImage" else ""
 }

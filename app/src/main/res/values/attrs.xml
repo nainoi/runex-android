@@ -1,4 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <declare-styleable name="AspectRatioImageView">
+        <attr name="ratioWidth" format="float" />
+        <attr name="ratioHeight" format="float" />
+    </declare-styleable>
+
 </resources>

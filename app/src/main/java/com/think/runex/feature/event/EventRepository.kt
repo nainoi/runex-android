@@ -6,7 +6,7 @@ import com.github.kittinunf.fuel.gson.gsonDeserializer
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.util.Logger
 import com.think.runex.common.getErrorMessage
-import com.think.runex.config.ERR_NO_INTERNET_CONNECTION
+import com.think.runex.util.ERR_NO_INTERNET_CONNECTION
 import com.think.runex.datasource.Result
 
 class EventRepository {

@@ -1,12 +1,10 @@
 package com.think.runex.feature.auth
 
-import com.think.runex.datasource.remote.ApiUrl
+import com.think.runex.datasource.api.ApiConfig
 
 class AuthUrl {
     companion object {
-
-        val REGISTER_PATH = "${ApiUrl.getBaseUrl()}/api/${ApiUrl.API_VERSION}/user/ep"
-
-        val LOGIN_PATH = "${ApiUrl.getBaseUrl()}/api/${ApiUrl.API_VERSION}/user/login"
+        const val SCHEME = "runex"
+        const val WEB_LOGIN_URL = "${ApiConfig.AUTH_URL}/login?device=android"
     }
 }

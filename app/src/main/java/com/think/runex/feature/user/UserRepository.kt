@@ -5,5 +5,5 @@ import com.think.runex.datasource.Result
 
 class UserRepository(private val remoteDataSource: UserRemoteDataSource) {
 
-    suspend fun getProfile(): Result<Profile> = remoteDataSource.getProfile()
+    suspend fun getProfile(): Result<UserInfo> = remoteDataSource.getProfile()
 }

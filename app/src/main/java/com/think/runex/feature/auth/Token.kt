@@ -17,6 +17,11 @@ data class Token(
         false -> 0
     }
 
+    fun convertToAccessToken() = AccessToken().apply {
+        this.accessToken = token
+        this.tokenType = tokenType
+    }
+
     class Deserializer : ResponseDeserializable<Token> {
         override fun deserialize(content: String): Token = Gson().fromJson(content, Token::class.java)
     }

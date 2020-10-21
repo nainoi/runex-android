@@ -2,24 +2,35 @@ package com.think.runex.feature.auth
 
 class TokenManager {
     companion object {
-        private var token: String = ""
         private var tokenType: String = ""
-        private var expiresIn: Long = 0
 
-        fun isAlive(): Boolean =  (System.currentTimeMillis() / 1000 < expiresIn) && token != "" && tokenType != ""
+        var accessToken: String = ""
+            private set
+            get() {
+                if (field.isBlank()) return field
+                return "$tokenType $field"
+            }
 
-        fun bearerToken(): String = "$tokenType $token"
+        var refreshToken: String = ""
+            private set
 
-        fun updateToken(token: String, tokenType: String, expiresIn: Long) {
-            this.token = token
-            this.tokenType = tokenType
-            this.expiresIn = expiresIn
+        var expiresIn: Long = 0
+            private set
+
+        fun isAlive(): Boolean = accessToken.isNotBlank()
+
+        fun updateToken(accessToken: AccessToken) {
+            this.tokenType = accessToken.tokenType
+            this.accessToken = accessToken.accessToken
+            this.refreshToken = accessToken.refreshToken
+            this.expiresIn = accessToken.expiresIn
         }
 
         fun clearToken() {
-            this.token = ""
-            this.tokenType = ""
-            this.expiresIn = 0
+            tokenType = ""
+            accessToken = ""
+            refreshToken = ""
+            expiresIn = 0
         }
     }
 }

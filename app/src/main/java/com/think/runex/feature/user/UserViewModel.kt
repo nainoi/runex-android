@@ -9,7 +9,7 @@ import kotlinx.coroutines.launch
 
 class UserViewModel(private val userRepo: UserRepository) : BaseViewModel() {
 
-    val profile: MutableLiveData<Profile> by lazy { MutableLiveData<Profile>() }
+    val profile: MutableLiveData<UserInfo> by lazy { MutableLiveData<UserInfo>() }
 
     fun getProfile() {
         viewModelScope.launch(IO) {
@@ -21,7 +21,7 @@ class UserViewModel(private val userRepo: UserRepository) : BaseViewModel() {
         }
     }
 
-    private fun postProfileData(profile: Profile?) = viewModelScope.launch(Main) {
+    private fun postProfileData(profile: UserInfo?) = viewModelScope.launch(Main) {
         this@UserViewModel.profile.value = profile
     }
 }

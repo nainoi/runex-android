@@ -1,87 +1,85 @@
 package com.think.runex.feature.auth
 
+import android.content.SharedPreferences
+import androidx.core.content.edit
 import com.github.kittinunf.fuel.Fuel
 import com.github.kittinunf.fuel.core.extensions.authentication
 import com.github.kittinunf.fuel.coroutines.awaitObjectResult
 import com.github.kittinunf.fuel.gson.gsonDeserializer
-import com.github.kittinunf.fuel.gson.jsonBody
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.util.Logger
 import com.think.runex.common.getErrorMessage
-import com.think.runex.config.ERR_NO_INTERNET_CONNECTION
+import com.think.runex.common.toJson
+import com.think.runex.common.toObject
+import com.think.runex.util.ERR_NO_INTERNET_CONNECTION
 import com.think.runex.datasource.Result
-import com.think.runex.feature.user.Profile
+import com.think.runex.datasource.api.RemoteDataSource
+import com.think.runex.feature.auth.request.LoginCodeRequest
+import com.think.runex.feature.user.UserInfo
 import com.think.runex.feature.user.UserUrl
+import com.think.runex.util.KEY_ACCESS_TOKEN
 
 
-class AuthRepository(private val localDataSource: AuthLocalDataSource) {
+class AuthRepository(
+        private val api: AuthApi,
+        private val preferences: SharedPreferences) : RemoteDataSource() {
 
-    fun getAccessToken() = localDataSource.getAccessToken()
-
-    fun setAccessToken(accessToken: Token) = localDataSource.setAccessToken(accessToken)
-
-
-    suspend fun register(body: RegisterRequest): Result<Token> {
-        if (NetworkMonitor.isConnected.not()) {
-            return Result.error(ERR_NO_INTERNET_CONNECTION, "No Internet Connection")
-        }
-
-        return Fuel.post(AuthUrl.REGISTER_PATH)
-                .jsonBody(body)
-                .response { request, response, _ ->
-                    if (Logger.isLogging) {
-                        println(request)
-                        println(response)
-                    }
-                }
-                .awaitObjectResult(Token.Deserializer())
-                .fold(success = { token ->
-                    Result.success(token)
-                }, failure = { error ->
-                    Result.error(error.response.statusCode, error.getErrorMessage())
-                })
+    fun getLocalAccessToken(): AccessToken {
+        return preferences.getString(KEY_ACCESS_TOKEN, "")
+                .toObject(AccessToken::class.java) ?: AccessToken()
     }
 
-    suspend fun login(body: LoginRequest): Result<Token> {
-        if (NetworkMonitor.isConnected.not()) {
-            return Result.error(ERR_NO_INTERNET_CONNECTION, "No Internet Connection")
+    fun setLocalAccessToken(accessToken: AccessToken) {
+        preferences.edit {
+            putString(KEY_ACCESS_TOKEN, accessToken.toJson())
         }
-
-        return Fuel.post(AuthUrl.LOGIN_PATH)
-                .jsonBody(body)
-                .response { request, response, _ ->
-                    if (Logger.isLogging) {
-                        println(request)
-                        println(response)
-                    }
-                }
-                .awaitObjectResult(Token.Deserializer())
-                .fold(success = { token ->
-                    Result.success(token)
-                }, failure = { error ->
-                    Result.error(error.response.statusCode, error.getErrorMessage())
-                })
     }
+//
+//    suspend fun loginCode(body: LoginCodeRequest): Result<AccessToken> {
+//        if (NetworkMonitor.isConnected.not()) {
+//            return Result.error(ERR_NO_INTERNET_CONNECTION, "No Internet Connection")
+//        }
+//
+//        val params = listOf("code" to body.code, "grant_type" to body.grantType)
+//        return Fuel.post(AuthUrl.TOKEN_PATH, params)
+//                //.jsonBody(body)
+//                .response { request, response, _ ->
+//                    if (Logger.isLogging) {
+//                        println(request)
+//                        println(response)
+//                    }
+//                }
+//                .awaitObjectResult(AccessToken.Deserializer())
+//                .fold(success = { accessToken ->
+//                    Result.success(accessToken, null)
+//                }, failure = { error ->
+//                    Result.error(error.response.statusCode, error.getErrorMessage())
+//                })
+//    }
 
-    suspend fun getProfile(): Result<Profile> {
-        if (NetworkMonitor.isConnected.not()) {
-            return Result.error(ERR_NO_INTERNET_CONNECTION, "No Internet Connection")
-        }
+    suspend fun loginWithCode(body: LoginCodeRequest): Result<AccessToken> = calls(api.authorizationWithCodeAsync(body))
 
-        return Fuel.get(UserUrl.PROFILE_PATH)
-                .authentication()
-                .bearer(TokenManager.bearerToken())
-                .response { request, response, _ ->
-                    if (Logger.isLogging) {
-                        println(request)
-                        println(response)
-                    }
-                }
-                .awaitObjectResult(gsonDeserializer<Result<Profile>>())
-                .fold(success = {
-                    it
-                }, failure = { error ->
-                    Result.error(error.response.statusCode, error.getErrorMessage())
-                })
-    }
+    suspend fun userInfo(): Result<UserInfo> = call(api.getUserInfoAsync())
+
+//    suspend fun getProfile(): Result<UserInfo> {
+//        if (NetworkMonitor.isConnected.not()) {
+//            return Result.error(ERR_NO_INTERNET_CONNECTION, "No Internet Connection")
+//        }
+//
+//        return Fuel.get(UserUrl.PROFILE_PATH)
+//                .authentication()
+//                .bearer(TokenManager.accessToken)
+//                .response { request, response, _ ->
+//                    if (Logger.isLogging) {
+//                        println(request)
+//                        println(response)
+//                    }
+//                }
+//                .awaitObjectResult(gsonDeserializer<Result<UserInfo>>())
+//                .fold(success = {
+//                    it
+//                }, failure = { error ->
+//                    Result.error(error.response.statusCode, error.getErrorMessage())
+//                })
+//    }
 }
