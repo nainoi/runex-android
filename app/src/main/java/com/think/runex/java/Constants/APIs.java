@@ -1,8 +1,8 @@
 package com.think.runex.java.Constants;
 
 public enum APIs {
-    DOMAIN("https://runex.co:3006"),
-//    DOMAIN("http://farmme.in.th:3006"),
+    DOMAIN("https://runex-api.thinkdev.app"), //For dev
+    //DOMAIN("https://api.runex.co"),//For Production
 
     //--> A
     ADD_HISTORY(DOMAIN.VAL +"/api/v1/runhistory/add"),
