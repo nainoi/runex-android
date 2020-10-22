@@ -9,6 +9,7 @@ const val PREFERENCES_NAME = "app_preferences"
  * Global Variable
  */
 const val ANDROID = "android"
+const val APP_SCHEME = "runex"
 
 
 /**
@@ -41,7 +42,7 @@ const val ERR_NO_INTERNET_CONNECTION = 480
 const val ERR_SOCKET_EXCEPTION = 481
 const val ERROR_NETWORK_UNREACHABLE = 482
 const val ERROR_JSON_FORMAT = 483
-const val ERR_NO_STATUS_CODE= 999
+const val ERR_NO_STATUS_CODE = 999
 
 
 

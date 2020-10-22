@@ -15,12 +15,14 @@ import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.getViewModel
+import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.*
 import com.think.runex.java.App.App
 import com.think.runex.java.App.AppEntity
 import com.think.runex.java.Models.TokenObject
 import com.think.runex.java.Models.UserObject
 import com.think.runex.ui.base.BaseActivity
+import com.think.runex.util.APP_SCHEME
 import com.think.runex.util.AppPreference
 import com.think.runex.util.KEY_MESSAGE
 import com.think.runex.util.launch
@@ -58,7 +60,7 @@ class LoginActivity : BaseActivity() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 request?.url?.also { uri ->
-                    if (uri.scheme == AuthUrl.SCHEME) {
+                    if (uri.scheme == APP_SCHEME) {
                         val parameters = request.url?.getQueryParameters("code")
                         if (parameters?.isNotEmpty() == true) {
                             performLogin(parameters[0])
@@ -70,7 +72,7 @@ class LoginActivity : BaseActivity() {
                 return super.shouldOverrideUrlLoading(view, request)
             }
         }
-        web_view.loadUrl(AuthUrl.WEB_LOGIN_URL)
+        web_view.loadUrl("${ApiConfig.AUTH_URL}/login?device=android")
     }
 
 
