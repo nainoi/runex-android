@@ -1,20 +1,27 @@
 package com.think.runex.java.Pages;
 
+import android.annotation.SuppressLint;
+import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
+import android.provider.MediaStore;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageButton;
 import android.widget.ImageView;
+import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.load.DecodeFormat;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
 import com.facebook.FacebookException;
@@ -31,6 +38,7 @@ import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.PermissionUtils;
+import com.think.runex.util.GlideApp;
 
 import java.io.File;
 
@@ -44,10 +52,11 @@ public class SharePage extends xFragment implements View.OnClickListener {
     private RealmRecorderObject recorderObject;
     private CallbackManager callbackManager;
     private Bitmap previewMapImage = null;
-
+    private Uri customImageUri = null;
     // explicit variables
     private final int SHARE_TO_FACEBOOK = 1001;
     private final int SAVE_TO_DEVICE = 1002;
+    private final int ADD_PHOTO = 1003;
     private int lastAction = 0;
 
     // views
@@ -57,6 +66,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
     //--> buttons
     private View btnShareToFacebook;
     private View btnSaveToDevice;
+    private ImageButton addPhotoButton;
 
     // implements
     @Override
@@ -69,6 +79,15 @@ public class SharePage extends xFragment implements View.OnClickListener {
             case R.id.btn_save_to_device:
                 lastAction = SAVE_TO_DEVICE;
                 saveToDevice();
+                break;
+            case R.id.btn_add_image:
+                if (customImageUri == null) {
+                    intentToGallery();
+                } else {
+                    customImageUri = null;
+                    addPhotoButton.setImageResource(R.drawable.ic_add_image);
+                    updateImage();
+                }
                 break;
         }
     }
@@ -137,7 +156,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
         if (!requestPermissions()) return;
 
         // snap and save as file
-        DeviceUtils.instance(activity).takeScreenshot(activity, R.id.frame_full_view_display);
+        DeviceUtils.instance(activity).takeScreenshot2(activity, R.id.frame_full_view_display);
 
         // toast
         Toast.makeText(activity, "บันทึกสำเร็จ", Toast.LENGTH_SHORT).show();
@@ -152,7 +171,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
 
         // prepare usage variables
         ShareDialog shareDialog = new ShareDialog(this);
-        File file = DeviceUtils.instance(activity).takeScreenshot(activity, R.id.frame_full_view_display);
+        File file = DeviceUtils.instance(activity).takeScreenshot2(activity, R.id.frame_full_view_display);
         Bitmap bitmap = BitmapFactory.decodeFile(file.getPath());
         SharePhoto photo = new SharePhoto.Builder()
                 .setBitmap(bitmap)
@@ -188,6 +207,16 @@ public class SharePage extends xFragment implements View.OnClickListener {
 
     }
 
+    @SuppressLint("IntentReset")
+    private void intentToGallery() {
+        if (!requestPermissions()) return;
+        Intent intent = new Intent(Intent.ACTION_PICK);
+        intent.setType("*/*");
+        intent.putExtra(Intent.EXTRA_MIME_TYPES, new String[]{"image/jpg", "image/jpeg", "image/png"});
+        intent.setData(MediaStore.Images.Media.EXTERNAL_CONTENT_URI);
+        startActivityForResult(Intent.createChooser(intent, "เลือกรูปภาพ"), ADD_PHOTO);
+    }
+
     // binding
     private void binding() {
         final String mtn = ct + "binding() ";
@@ -207,7 +236,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
     private void viewEventListener() {
         btnSaveToDevice.setOnClickListener(this);
         btnShareToFacebook.setOnClickListener(this);
-
+        addPhotoButton.setOnClickListener(this);
     }
 
     /**
@@ -217,9 +246,11 @@ public class SharePage extends xFragment implements View.OnClickListener {
         lbDistance = v.findViewById(R.id.lb_distance);
         lbDuration = v.findViewById(R.id.lb_duration);
         previewImage = v.findViewById(R.id.preview_image);
+        //customPreviewImage = v.findViewById(R.id.custom_preview_image);
         //--> buttons
         btnSaveToDevice = v.findViewById(R.id.btn_save_to_device);
         btnShareToFacebook = v.findViewById(R.id.btn_share_to_facebook);
+        addPhotoButton = v.findViewById(R.id.btn_add_image);
     }
 
     /**
@@ -245,6 +276,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
         callbackManager = CallbackManager.Factory.create();
     }
 
+
     @Override
     public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
         boolean allGranted = true;
@@ -265,8 +297,35 @@ public class SharePage extends xFragment implements View.OnClickListener {
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
-        super.onActivityResult(requestCode, resultCode, data);
-        callbackManager.onActivityResult(requestCode, resultCode, data);
+        if (requestCode == ADD_PHOTO) {
+            if (resultCode == Activity.RESULT_OK && data != null && data.getData() != null) {
+                customImageUri = data.getData();
+                updateImage();
+            }
+        } else {
+            super.onActivityResult(requestCode, resultCode, data);
+            callbackManager.onActivityResult(requestCode, resultCode, data);
+        }
+    }
+
+    private void updateImage() {
+        if (customImageUri != null) {
+            addPhotoButton.setImageResource(R.drawable.ic_remove_image);
+            previewImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
+            GlideApp.with(previewImage)
+                    .load(customImageUri)
+                    .format(DecodeFormat.PREFER_ARGB_8888)
+                    .centerCrop()
+                    .into(previewImage)
+                    .clearOnDetach();
+        } else {
+            addPhotoButton.setImageResource(R.drawable.ic_add_image);
+            // image bitmap
+            if (previewMapImage != null) {
+                previewImage.setScaleType(ImageView.ScaleType.FIT_XY);
+                previewImage.setImageBitmap(previewMapImage);
+            }
+        }
     }
 
     @Override
