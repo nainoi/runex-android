@@ -164,7 +164,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private View frameRecording;
 
     private TextView btnStart;
-    private TextView btnSaveWithoutSubmitResult;
+    //private TextView btnSaveWithoutSubmitResult;
     private View btnStopAndSubmit;
     private ImageView previewImage;
     //--> Read/Write GPS file
@@ -239,16 +239,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 });
 
                 break;
-            case R.id.btn_save_without_submit_result:
-                if (onNetwork) return;
-
-                // update flag
-                onNetwork = true;
-
-                // save record without submit
-                apiSaveRecord(null);
-
-                break;
+//            case R.id.btn_save_without_submit_result:
+//                if (onNetwork) return;
+//
+//                // update flag
+//                onNetwork = true;
+//
+//                // save record without submit
+//                apiSaveRecord(null);
+//
+//                break;
 
             case R.id.btn_submit_result:
 
@@ -511,7 +511,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void afterShare() {
         btnSubmit.setVisibility(View.VISIBLE);
-        btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
+        //btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
 
         // gone preview
         previewImage.setImageResource(0);
@@ -520,7 +520,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void beforeShare() {
         btnSubmit.setVisibility(View.GONE);
-        btnSaveWithoutSubmitResult.setVisibility(View.GONE);
+        //btnSaveWithoutSubmitResult.setVisibility(View.GONE);
 
     }
 
@@ -978,7 +978,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         btnStart.setOnClickListener(this);
         btnStopAndSubmit.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
-        btnSaveWithoutSubmitResult.setOnClickListener(this);
+        //btnSaveWithoutSubmitResult.setOnClickListener(this);
         frameChangeBgImage.setOnClickListener(this);
 
         //--> Frame share
@@ -1063,7 +1063,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         lbRecordingState = v.findViewById(R.id.lb_recording_state_description);
         btnStart = v.findViewById(R.id.btn_start);
         btnStopAndSubmit = v.findViewById(R.id.frame_stop_and_submit);
-        btnSaveWithoutSubmitResult = v.findViewById(R.id.btn_save_without_submit_result);
+        //btnSaveWithoutSubmitResult = v.findViewById(R.id.btn_save_without_submit_result);
         icRecordState = v.findViewById(R.id.ic_recording_state);
 
         //--> Record gps file

@@ -72,7 +72,9 @@ open class RemoteDataSource {
 
         if (stringBody?.isJsonFormat() == true) {
             val jsonObject = Gson().fromJson(stringBody, JsonElement::class.java).asJsonObject
-            if (jsonObject.has(KEY_ERROR)) {
+            if (jsonObject.has(KEY_MESSAGE)) {
+                return jsonObject.get(KEY_MESSAGE).asString
+            } else if (jsonObject.has(KEY_ERROR)) {
                 return jsonObject.get(KEY_ERROR).asString
             }
         }

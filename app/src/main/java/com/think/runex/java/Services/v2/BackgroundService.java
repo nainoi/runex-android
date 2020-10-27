@@ -293,6 +293,7 @@ public class BackgroundService extends Service {
                     }
 
                     // accepted location
+                    location.getAltitude();
                     xLocation xLoc = new xLocation(location.getLatitude(), location.getLongitude()
                             , location.getAccuracy());
 
@@ -307,7 +308,7 @@ public class BackgroundService extends Service {
                         // keep point
                         //TODO("Change to Realm")
                         //points.add(new LatLng(xLoc.latitude, xLoc.longitude));
-                        insertPointsToDatabase(xLoc.latitude, xLoc.longitude);
+                        insertPointsToDatabase(xLoc.latitude, xLoc.longitude, xLoc.accuracy);
 
                         // exit from this process
                         return;
@@ -337,7 +338,7 @@ public class BackgroundService extends Service {
                     // keep point
                     //TODO("Change to Realm")
                     //points.add(new LatLng(xLoc.latitude, xLoc.longitude));
-                    insertPointsToDatabase(xLoc.latitude, xLoc.longitude);
+                    insertPointsToDatabase(xLoc.latitude, xLoc.longitude, xLoc.accuracy);
 
                     // update distance
                     recorderUtils.addDistance(differenceDist);
@@ -349,7 +350,7 @@ public class BackgroundService extends Service {
                     BroadcastObject broadcastObject = new BroadcastObject();
 
                     //--> record props
-                    record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude);
+                    record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude, xLoc.accuracy, xLoc.avgAccuracy);
                     record.xLocLast = lastLocation;
                     record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
                     record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
@@ -944,7 +945,7 @@ public class BackgroundService extends Service {
 
     }
 
-    private void insertPointsToDatabase(Double latitude, Double longitude) {
+    private void insertPointsToDatabase(Double latitude, Double longitude, Double altitude) {
         if (realm == null) {
             return;
         }
@@ -952,6 +953,8 @@ public class BackgroundService extends Service {
         RealmPointObject point = realm.createObject(RealmPointObject.class);
         point.setLatitude(latitude);
         point.setLongitude(longitude);
+        point.setAltitude(altitude);
+        point.setTimestamp(System.currentTimeMillis());
         realm.commitTransaction();
     }
 

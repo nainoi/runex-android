@@ -29,6 +29,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
             TokenManager.clearToken()
         }
     }
+
     suspend fun loginWithCode(context: Context, code: String): Result<AccessToken>? = withContext(IO) {
         val loginResult = repo.loginWithCode(LoginCodeRequest(code))
         if (loginResult.isSuccessful().not()) {
@@ -60,12 +61,8 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         //Set access token
         val appEntity: AppEntity = App.instance(context).appEntity
         appEntity.setToken(TokenObject().apply {
-            val time = (System.currentTimeMillis() + ((accessToken?.expiresIn ?: 0) * 1000))
-            expire = time.dateTimeFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            Log.e("Jozzee", "accessToken?.expiresIn: ${accessToken?.expiresIn}")
-            Log.e("Jozzee", "Current: ${System.currentTimeMillis()}")
-            Log.e("Jozzee", "Time: $time")
-            Log.e("Jozzee", "Time: $expire")
+            expire = (System.currentTimeMillis() + ((accessToken?.expiresIn ?: 0) * 1000))
+                    .dateTimeFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
             token = accessToken?.accessToken ?: ""
             code = 200
         })

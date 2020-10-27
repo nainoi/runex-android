@@ -86,7 +86,7 @@ class LoginActivity : BaseActivity() {
         when (result?.isSuccessful() == true) {
             true -> setResult(RESULT_OK)
             false -> setResult(RESULT_CANCELED, Intent().apply {
-                putExtra(KEY_MESSAGE, result?.errorMessage() ?: "")
+                putExtra(KEY_MESSAGE, result?.message ?: "")
             })
         }
         finish()
