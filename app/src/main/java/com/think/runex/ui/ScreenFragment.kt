@@ -8,7 +8,6 @@ import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jozzee.android.core.touch.setScreenTouchable
 import com.jozzee.android.core.view.hideKeyboard
 import com.think.runex.R
-import com.think.runex.application.MainActivity
 
 open class ScreenFragment : Fragment() {
 
@@ -60,19 +59,6 @@ open class ScreenFragment : Fragment() {
     override fun onDestroy() {
         Runtime.getRuntime().gc()
         super.onDestroy()
-    }
-
-    fun isBackPressedEnabled(): Boolean {
-        if (activity != null && activity is MainActivity) {
-            return (activity as MainActivity).isBackPressedEnabled()
-        }
-        return true
-    }
-
-    fun setBackPressedEnabled(isBackPressed: Boolean) {
-        if (activity != null && activity is MainActivity) {
-            (activity as MainActivity).setBackPressedEnabled(isBackPressed)
-        }
     }
 
     fun showAlertDialog(title: String? = null, message: String,

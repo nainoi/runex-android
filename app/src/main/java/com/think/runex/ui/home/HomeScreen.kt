@@ -1,7 +1,6 @@
 package com.think.runex.ui.home
 
 
-import android.content.Intent
 import android.os.Bundle
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
@@ -16,13 +15,13 @@ import com.jozzee.android.core.util.simpleName
 
 import com.think.runex.R
 import com.think.runex.feature.event.EventViewModel
-import com.think.runex.utility.InjectorUtils
+import com.think.runex.feature.event.EventViewModelFactory
 import kotlinx.android.synthetic.main.screen_home.*
 
 class HomeScreen : Fragment() {
 
     private val eventViewModel: EventViewModel by lazy {
-        ViewModelProvider(this, InjectorUtils.provideEventListViewModelFactory()).get(EventViewModel::class.java)
+        ViewModelProvider(this, EventViewModelFactory()).get(EventViewModel::class.java)
     }
 
     private val eventsAdapter: EventsAdapter by lazy { EventsAdapter() }

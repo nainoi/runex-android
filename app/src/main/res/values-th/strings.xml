@@ -1,6 +1,8 @@
 <resources>
     <!-- A -->
     <string name="app_name">RUNEX</string>
+    <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
+    <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
 
     <string name="activity">กิจกรรม</string>
     <string name="activity_record">บันทึกกิจกรรม</string>
@@ -39,6 +41,7 @@
     <string name="free">ฟรี</string>
 
     <!-- G -->
+    <string name="get_started">เริ่มใช้งาน</string>
 
     <!-- H -->
 

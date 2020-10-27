@@ -52,7 +52,7 @@
                     android:layout_gravity="center_horizontal"
                     android:layout_marginBottom="16dp"
                     android:layout_weight="0.3"
-                    android:src="@drawable/ic_logo_large" />
+                    android:src="@mipmap/im_app_logo" />
 
             </LinearLayout>
 

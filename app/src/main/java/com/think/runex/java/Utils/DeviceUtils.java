@@ -17,11 +17,15 @@ import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 
 import java.io.File;
+import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
+import java.io.IOException;
 import java.util.Date;
 
 public class DeviceUtils {
-    /** Main variables */
+    /**
+     * Main variables
+     */
     private final String ct = "DeviceUtils->";
 
     // instance
@@ -30,14 +34,19 @@ public class DeviceUtils {
     private Point DISPLAY_SCREEN = null;
 
     // singleton
-    private DeviceUtils( Context context){ this.context = context; }
-    public static DeviceUtils instance(Context context){
-        return (ins == null) ? ins = new DeviceUtils( context ) : ins;
+    private DeviceUtils(Context context) {
+        this.context = context;
     }
 
-    /** Feature methods */
-    public Point getDisplaySize(){
-        if( DISPLAY_SCREEN != null ) return DISPLAY_SCREEN;
+    public static DeviceUtils instance(Context context) {
+        return (ins == null) ? ins = new DeviceUtils(context) : ins;
+    }
+
+    /**
+     * Feature methods
+     */
+    public Point getDisplaySize() {
+        if (DISPLAY_SCREEN != null) return DISPLAY_SCREEN;
 
         // get display screen size
         WindowManager wm = (WindowManager) context
@@ -54,33 +63,38 @@ public class DeviceUtils {
     }
 
 
-    public void openImagePicker(Activity activity, int requestCode ) {
+    public void openImagePicker(Activity activity, int requestCode) {
         _openImagePicker(activity, requestCode);
 
     }
-    public void openImagePicker(Fragment fragment, int requestCode ){
+
+    public void openImagePicker(Fragment fragment, int requestCode) {
         _openImagePicker(fragment, requestCode);
     }
-    private void _openImagePicker(Object host, int requestCode){
+
+    private void _openImagePicker(Object host, int requestCode) {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
 
-        if( host instanceof Activity) (((Activity)host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
-        else if(host instanceof Fragment) (((Fragment)host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
+        if (host instanceof Activity)
+            (((Activity) host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
+        else if (host instanceof Fragment)
+            (((Fragment) host)).startActivityForResult(Intent.createChooser(intent, "Select Picture"), requestCode);
     }
 
-    public boolean isDirectoryExists(String dir){
+    public boolean isDirectoryExists(String dir) {
         File file = new File(dir);
-        if( !file.exists() ){
+        if (!file.exists()) {
             file.mkdirs();
 
         }
         return true;
     }
-    public File saveFileFromBitmap(Bitmap bitmap, String destinationPath){
+
+    public File saveFileFromBitmap(Bitmap bitmap, String destinationPath) {
         // prepare usage variables
-        final String mtn = ct +"saveFileFromBitmap() ";
+        final String mtn = ct + "saveFileFromBitmap() ";
 
         try {
             // create file temporary
@@ -95,24 +109,60 @@ public class DeviceUtils {
 
             return file;
 
-        } catch ( Exception e ){
-            L.e(mtn +"Err: "+ e.getMessage());
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
         }
 
         return null;
     }
+
+    public File takeScreenshot2(Context context, int viewId) {
+        File outputFile = null;
+        FileOutputStream outputStream = null;
+        try {
+            final String fileName = System.currentTimeMillis() + "";
+            outputFile = new File(Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_DOWNLOADS) + "/RUNEX");
+            if (!outputFile.exists()) {
+                outputFile.mkdirs();
+            }
+            outputFile = new File(outputFile + "/" + fileName + ".jpg");
+            outputStream = new FileOutputStream(outputFile);
+
+            // create bitmap screen capture
+            View frame = ((Activity) context).getWindow().getDecorView()
+                    .getRootView();
+            View root = frame.findViewById(viewId);
+            root.setDrawingCacheEnabled(true);
+
+            // create bitmap
+            Bitmap bitmap = Bitmap.createBitmap(root.getDrawingCache());
+            //--> drawing a cache
+            root.setDrawingCacheEnabled(false);
+            bitmap.compress(Bitmap.CompressFormat.JPEG, 100, outputStream);
+
+
+            //--> flush and close stream writing
+            outputStream.flush();
+            outputStream.close();
+            bitmap.recycle();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        return outputFile;
+    }
+
     public File takeScreenshot(Context context, int viewId) {
         // prepare usage variables
-        final String mtn = ct +"takeScreenshot() ";
-        final String fileName = System.currentTimeMillis() +"";
+        final String mtn = ct + "takeScreenshot() ";
+        final String fileName = System.currentTimeMillis() + "";
 
         try {
             // prepare usage variables
-            final String dir = Environment.getExternalStorageDirectory() +"/RUNEX";
-            isDirectoryExists( dir );
+            final String dir = Environment.getExternalStorageDirectory() + "/RUNEX";
+            isDirectoryExists(dir);
 
             // path
-            final String path = dir +"/"+ fileName +".jpg";
+            final String path = dir + "/" + fileName + ".jpg";
 
             // create bitmap screen capture
             View frame = ((Activity) context).getWindow().getDecorView()
@@ -129,7 +179,7 @@ public class DeviceUtils {
             return saveFileFromBitmap(bitmap, path);
 
         } catch (Throwable e) {
-            L.e(mtn +"Err: "+ e.getMessage());
+            L.e(mtn + "Err: " + e.getMessage());
 
         }
 

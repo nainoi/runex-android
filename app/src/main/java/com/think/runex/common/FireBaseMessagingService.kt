@@ -15,9 +15,9 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.jozzee.android.core.util.Logger
 import com.think.runex.R
-import com.think.runex.config.NOTIFICATION_CHANEL_ID_DEFAULT
-import com.think.runex.config.NOTIFICATION_ID_DEFAULT
-import com.think.runex.config.NOTIFICATION_REQUEST_CODE
+import com.think.runex.util.NOTIFICATION_CHANEL_ID_DEFAULT
+import com.think.runex.util.NOTIFICATION_ID_DEFAULT
+import com.think.runex.util.NOTIFICATION_REQUEST_CODE
 
 class FireBaseMessagingService : FirebaseMessagingService() {
     companion object {

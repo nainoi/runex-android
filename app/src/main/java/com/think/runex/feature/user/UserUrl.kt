@@ -1,9 +1,9 @@
 package com.think.runex.feature.user
 
-import com.think.runex.datasource.remote.ApiUrl
+import com.think.runex.datasource.api.ApiConfig
 
 class UserUrl {
-    companion object{
-        val PROFILE_PATH = "${ApiUrl.getBaseUrl()}/api/${ApiUrl.API_VERSION}/user"
+    companion object {
+        const val PROFILE_PATH = "${ApiConfig.BASE_URL}/api/${ApiConfig.API_VERSION}/user"
     }
 }

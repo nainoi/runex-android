@@ -7,16 +7,15 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProviders
+import androidx.lifecycle.ViewModelProvider
 import androidx.lifecycle.lifecycleScope
 import com.facebook.internal.CallbackManagerImpl
-import com.jozzee.android.core.fragment.replaceFragment
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.jozzee.android.core.view.content
 import com.think.runex.R
-import com.think.runex.common.fadeIn
+import com.think.runex.feature.auth.AuthRepository
 import com.think.runex.feature.auth.AuthViewModel
+import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.feature.social.SocialLoginListener
 import com.think.runex.feature.social.SocialLoginManger
 import com.think.runex.feature.social.SocialLoginManger.Companion.RC_GOOGLE_LOGIN
@@ -31,7 +30,7 @@ import com.think.runex.java.Utils.Network.NetworkUtils
 import com.think.runex.java.Utils.Network.Request.rqLogin
 import com.think.runex.java.Utils.Network.Response.xResponse
 import com.think.runex.java.Utils.Network.onNetworkCallback
-import com.think.runex.utility.InjectorUtils
+import com.think.runex.util.AppPreference
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
@@ -39,9 +38,10 @@ import java.lang.Exception
 class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
     // explicit variables
     private val authViewModel: AuthViewModel by lazy {
-        ViewModelProviders.of(this, InjectorUtils.provideAuthViewModelFactory(requireContext())).get(AuthViewModel::class.java)
+        ViewModelProvider(this, AuthViewModelFactory(requireContext())).get(AuthViewModel::class.java)
     }
     private val socialLoginManger: SocialLoginManger by lazy { SocialLoginManger() }
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -101,10 +101,10 @@ class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
     }
 
     private fun performLogin() = viewLifecycleOwner.lifecycleScope.launch {
-        authViewModel.login(edt_email.content(), edt_password.content())?.also { profile ->
-            replaceFragment(MainScreen(), fadeIn(), clearFragment = true, addToBackStack = false)
-
-        }
+//        authViewModel.login(edt_email.content(), edt_password.content())?.also { profile ->
+//            replaceFragment(MainScreen(), fadeIn(), clearFragment = true, addToBackStack = false)
+//
+//        }
     }
 
     private fun isDataValid(): Boolean {

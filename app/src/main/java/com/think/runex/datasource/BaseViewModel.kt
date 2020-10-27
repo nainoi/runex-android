@@ -4,8 +4,8 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
+import com.think.runex.util.cancelJobs
 import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.cancelChildren
 import kotlinx.coroutines.launch
 
 open class BaseViewModel : ViewModel() {
@@ -24,12 +24,8 @@ open class BaseViewModel : ViewModel() {
         }
     }
 
-    fun cancelJob() {
-        viewModelScope.coroutineContext.cancelChildren()
-    }
-
     override fun onCleared() {
-        cancelJob()
+        cancelJobs()
         Logger.warning(simpleName(), "$this is Cleared")
         super.onCleared()
     }

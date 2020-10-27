@@ -1,5 +1,7 @@
 package com.think.runex.java.Models;
 
+import android.text.TextUtils;
+
 import com.google.gson.annotations.SerializedName;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
@@ -9,7 +11,7 @@ import com.think.runex.java.Utils.L;
 
 import java.net.HttpURLConnection;
 
-public class TokenObject{
+public class TokenObject {
     // prepare usage variables
     private final String ct = "TokenObject->";
     /**
@@ -36,10 +38,10 @@ public class TokenObject{
         L.i(mtn + "//---> Is Token Alive");
         L.i(mtn + "expire-timestamp: " + expired);
         L.i(mtn + "current-timestamp: " + current);
-        L.i(mtn + "remaining as second: " + ((expired - current) / 1000));
+        L.i(mtn + "remaining as second: " + ((expired - current)));
         L.i(mtn + "");
 
-        return current <= expired;
+        return !TextUtils.isEmpty(token);
     }
 
     public void printInfo() {

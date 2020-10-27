@@ -7,9 +7,10 @@ import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.google.android.datatransport.runtime.scheduling.SchedulingConfigModule_ConfigFactory.config
 import com.think.runex.common.UiMode.Companion.KEY_UI_MODE
-import com.think.runex.config.KEY_FIREBASE_TOKEN
-import com.think.runex.config.PREFERENCE_NAME
+import com.think.runex.util.KEY_FIREBASE_TOKEN
+import com.think.runex.util.PREFERENCE_NAME
 import java.util.*
 
 object AppPreference {

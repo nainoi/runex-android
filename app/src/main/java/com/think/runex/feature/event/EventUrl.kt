@@ -1,10 +1,10 @@
 package com.think.runex.feature.event
 
-import com.think.runex.datasource.remote.ApiUrl
+import com.think.runex.datasource.api.ApiConfig
 
 class EventUrl {
     companion object {
-        val ALL_EVENT_PATH = "${ApiUrl.getBaseUrl()}/api/{${ApiUrl.API_VERSION}}/event/all"
-        val ALL_EVENT_BY_STATUS_PATH = "${ApiUrl.getBaseUrl()}/api/{${ApiUrl.API_VERSION}}/event/all"
+        const val ALL_EVENT_PATH = "${ApiConfig.BASE_URL}/api/{${ApiConfig.API_VERSION}}/event/all"
+        const val ALL_EVENT_BY_STATUS_PATH = "${ApiConfig.BASE_URL}/api/{${ApiConfig.API_VERSION}}/event/all"
     }
 }
