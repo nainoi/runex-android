@@ -136,7 +136,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
     private View frameRecording;
 
     private TextView btnStart;
-    private TextView btnSaveWithoutSubmitResult;
+    //private TextView btnSaveWithoutSubmitResult;
     private View btnStopAndSubmit;
     private ImageView previewImage;
     //--> Toolbar
@@ -242,16 +242,16 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
 //                afterShare();
 
                 break;
-            case R.id.btn_save_without_submit_result:
-                if( onNetwork ) return;
-
-                // update flag
-                onNetwork = true;
-
-                // save record without submit
-                apiSaveRecord(false);
-
-                break;
+//            case R.id.btn_save_without_submit_result:
+//                if( onNetwork ) return;
+//
+//                // update flag
+//                onNetwork = true;
+//
+//                // save record without submit
+//                apiSaveRecord(false);
+//
+//                break;
 
             case R.id.btn_submit_result:
 
@@ -480,7 +480,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
      */
     private void afterShare(){
         btnSubmit.setVisibility(View.VISIBLE);
-        btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
+        //btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
 
         // gone preview
         previewImage.setImageResource( 0 );
@@ -488,7 +488,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
     }
     private void beforeShare(){
         btnSubmit.setVisibility(View.GONE);
-        btnSaveWithoutSubmitResult.setVisibility(View.GONE);
+        //btnSaveWithoutSubmitResult.setVisibility(View.GONE);
 
     }
     private void shareWithFacebook(){
@@ -934,7 +934,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         btnStart.setOnClickListener(this);
         btnStopAndSubmit.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
-        btnSaveWithoutSubmitResult.setOnClickListener(this);
+        //btnSaveWithoutSubmitResult.setOnClickListener(this);
         frameChangeBgImage.setOnClickListener(this);
 
         //--> Frame share
@@ -958,7 +958,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
         lbRecordingState = findViewById(R.id.lb_recording_state_description);
         btnStart = findViewById(R.id.btn_start);
         btnStopAndSubmit = findViewById(R.id.frame_stop_and_submit);
-        btnSaveWithoutSubmitResult = findViewById(R.id.btn_save_without_submit_result);
+        //btnSaveWithoutSubmitResult = findViewById(R.id.btn_save_without_submit_result);
         icRecordState = findViewById(R.id.ic_recording_state);
 
         //--> Frame map

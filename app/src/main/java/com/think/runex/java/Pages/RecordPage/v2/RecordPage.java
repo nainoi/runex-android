@@ -36,6 +36,7 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
+import com.google.gson.Gson;
 import com.think.runex.R;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
@@ -69,9 +70,11 @@ import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Location.LocationUtils;
 import com.think.runex.java.Utils.Network.Request.rqAddRunningHistory;
+import com.think.runex.java.Utils.Network.Request.rqAddWorkOutsHistory;
 import com.think.runex.java.Utils.Network.Request.rqSubmitMultiEvents;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.AddHistoryService;
+import com.think.runex.java.Utils.Network.Services.AddWorkOutsService;
 import com.think.runex.java.Utils.Network.Services.SubmitMultiEventsService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
@@ -325,7 +328,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private View frameRecording;
 
     private TextView btnStart;
-    private TextView btnSaveWithoutSubmitResult;
+    //private TextView btnSaveWithoutSubmitResult;
     private View btnStopAndSubmit;
     private ImageView previewImage;
     //--> Read/Write GPS file
@@ -372,16 +375,16 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 share();
 
                 break;
-            case R.id.btn_save_without_submit_result:
-                if (onNetwork) return;
-
-                // update flag
-                onNetwork = true;
-
-                // save record without submit
-                apiSaveRecord(null);
-
-                break;
+//            case R.id.btn_save_without_submit_result:
+//                if (onNetwork) return;
+//
+//                // update flag
+//                onNetwork = true;
+//
+//                // save record without submit
+//                apiSaveRecord(null);
+//
+//                break;
 
             case R.id.btn_submit_result:
 
@@ -461,6 +464,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                                 // binding views
                                 binding(new RealmRecorderObject());
+
+                                apiWorkOuts();
 
                             } else {
                                 // reset service
@@ -925,7 +930,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void afterShare() {
         btnSubmit.setVisibility(View.VISIBLE);
-        btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
+        //btnSaveWithoutSubmitResult.setVisibility(View.VISIBLE);
 
         // gone preview
         previewImage.setImageResource(0);
@@ -934,7 +939,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void beforeShare() {
         btnSubmit.setVisibility(View.GONE);
-        btnSaveWithoutSubmitResult.setVisibility(View.GONE);
+        //btnSaveWithoutSubmitResult.setVisibility(View.GONE);
 
     }
 
@@ -1241,6 +1246,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         final double recordTime = recTimeAsMin(currentRecorder.durationMillis);
         final double recordPace = paceAsMin(currentRecorder.paceMillis);
 
+
         request.setActivity_type(Globals.ACTIVITY_RUN);
         request.setCalory(currentRecorder.calories);
         request.setDistance(currentRecorder.distanceKm);
@@ -1291,6 +1297,66 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         }).doIt(request);
     }
 
+    private void apiWorkOuts() {
+        final String mtn = ct + "apiWorkOuts() ";
+        final rqAddWorkOutsHistory request = new rqAddWorkOutsHistory();
+
+        final double recordTime = recTimeAsSec(currentRecorder.durationMillis);
+        final double recordPace = paceAsMin(currentRecorder.paceMillis);
+
+        //request.setActivity_type(Globals.ACTIVITY_RUN);
+        request.setCalory(currentRecorder.calories);
+        request.setCaption("");
+        request.setDistance(currentRecorder.distanceKm);
+        request.setDuration(recordTime);
+        request.setTime_string(currentRecorder.displayRecordAsTime);
+
+        List<RealmPointObject> locations = realm.copyFromRealm(realm.where(RealmPointObject.class).findAll());
+        if (locations.size() > 0) {
+            String startDateTime = locations.get(0).getTimestamp();
+            String endDateTime = locations.get(locations.size() - 1).getTimestamp();
+
+            request.setStart_date(startDateTime);
+            request.setWorkout_date(startDateTime);
+            request.setEnd_date(endDateTime);
+        }
+
+        request.setLocations(locations);
+        request.setPace(recordPace);
+
+        new AddWorkOutsService(activity, new onNetworkCallback() {
+            @Override
+            public void onSuccess(xResponse response) {
+                L.i(mtn + "successfully");
+                L.i(mtn + "response: " + response.jsonString);
+
+                // clear flag
+                onNetwork = false;
+
+                // successfully submit result
+                // to begin step
+                //toBegin();
+
+                // prepare usage variables
+                xTalk x = new xTalk();
+                x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+
+                // on result
+                onResult(x);
+            }
+
+            @Override
+            public void onFailure(xResponse response) {
+                L.i(mtn + "failure");
+                L.i(mtn + "response: " + response.jsonString);
+
+                // clear flag
+                onNetwork = false;
+
+            }
+        }).doIt(request);
+    }
+
     @Override
     public void onConfirmEvents(String[] selectedEvents) {
         //TODO("Send distance from event id")
@@ -1335,7 +1401,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         btnStart.setOnClickListener(this);
         btnStopAndSubmit.setOnClickListener(this);
         btnSubmit.setOnClickListener(this);
-        btnSaveWithoutSubmitResult.setOnClickListener(this);
+        //btnSaveWithoutSubmitResult.setOnClickListener(this);
         frameChangeBgImage.setOnClickListener(this);
 
         //--> Frame share
@@ -1420,7 +1486,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         lbRecordingState = v.findViewById(R.id.lb_recording_state_description);
         btnStart = v.findViewById(R.id.btn_start);
         btnStopAndSubmit = v.findViewById(R.id.frame_stop_and_submit);
-        btnSaveWithoutSubmitResult = v.findViewById(R.id.btn_save_without_submit_result);
+        //btnSaveWithoutSubmitResult = v.findViewById(R.id.btn_save_without_submit_result);
         icRecordState = v.findViewById(R.id.ic_recording_state);
 
         //--> Record gps file
@@ -1676,6 +1742,30 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         return 0;
     }
 
+    /**
+     * Micro methods
+     */
+    public long recTimeAsSec(long recordDurationMillis) {
+        // prepare usage variables
+        final String mtn = ct + "recTimeAsSec() ";
+
+        try {
+            long toSec = recordDurationMillis / 1000;
+
+
+            L.i(mtn + "record time: " + recordDurationMillis);
+            L.i(String.format(mtn + "record time as sec: " + toSec + ""));
+
+            return toSec;
+
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
+
+        }
+
+        return 0;
+    }
+
     public double paceAsMin(long paceMillis) {
         // prepare usage variables
         final String mtn = ct + "paceAsMin() ";
@@ -1695,6 +1785,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
         return 0;
     }
+
 
     @Override
     public void onDestroyView() {

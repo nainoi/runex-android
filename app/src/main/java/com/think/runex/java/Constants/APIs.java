@@ -5,10 +5,11 @@ public enum APIs {
     //DOMAIN("https://api.runex.co"),//For Production
 
     //--> A
-    ADD_HISTORY(DOMAIN.VAL +"/api/v1/runhistory/add"),
+    ADD_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/add"),
+    ADD_WORKOUTS(DOMAIN.VAL + "/api/v2/workout"),
 
     //--> D
-    DELETE_EVENT_HISTORY(DOMAIN.VAL +"/api/v1/activity/deleteActivity/%s/%s"), ///v1/activity/deleteActivity/{event_id}/{act_id}
+    DELETE_EVENT_HISTORY(DOMAIN.VAL + "/api/v1/activity/deleteActivity/%s/%s"), ///v1/activity/deleteActivity/{event_id}/{act_id}
 
     //--> G
     GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v1/activity/getByEvent2/%s"), //{event_id}
@@ -24,12 +25,12 @@ public enum APIs {
     MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),
 
     //--> R
-    REGISTER_USER( DOMAIN.VAL+ "/api/v1/user/ep"),
+    REGISTER_USER(DOMAIN.VAL + "/api/v1/user/ep"),
 
     //--> S
-    SOCIALS_LOGIN(DOMAIN.VAL +"/api/v1/user/pd"),
+    SOCIALS_LOGIN(DOMAIN.VAL + "/api/v1/user/pd"),
     SUBMIT_MULTI_EVENTS(DOMAIN.VAL + "/api/v1/activity/multiadd"),
-    SUBMIT_RUNNING_RESULT(DOMAIN.VAL +"/api/v1/activity/add"),
+    SUBMIT_RUNNING_RESULT(DOMAIN.VAL + "/api/v1/activity/add"),
     ;
 
     public final String VAL;

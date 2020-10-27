@@ -31,7 +31,7 @@ const val PREFERENCE_NAME = "app_preference"
 /**
  * Date time format
  */
-const val SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss.SSS'Z'"
+const val SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
 
 /**

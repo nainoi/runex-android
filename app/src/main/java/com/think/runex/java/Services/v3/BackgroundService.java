@@ -322,9 +322,9 @@ public class BackgroundService extends Service {
     /**
      * Feature methods
      */
-    private void updateNotifyContent(){
+    private void updateNotifyContent() {
         // prepare usage variables
-        final String mtn = ct +"updateNotifyContent() ";
+        final String mtn = ct + "updateNotifyContent() ";
 
         if (notificationBuilder != null) {
             try {
@@ -332,11 +332,11 @@ public class BackgroundService extends Service {
                 String displayTime = recorderUtils.displayRecordAsTime;
                 String stringContent = stringPattern(displayTime, Globals.DCM_2.format(recorderUtils.distanceKm));
 
-                stringContent += " accuracy: "+ ((lastLocation != null )
-                        ? lastLocation.accuracy +"" : "0");
+                stringContent += " accuracy: " + ((lastLocation != null)
+                        ? lastLocation.accuracy + "" : "0");
 
                 // update props
-                notificationBuilder.setContentText(stringContent );
+                notificationBuilder.setContentText(stringContent);
 
                 // update notify
                 notificationManager.notify(NOTIF_ID, notificationBuilder.build());
@@ -348,6 +348,7 @@ public class BackgroundService extends Service {
 
         }
     }
+
     private void initialLocationManager() {
         // prepare usage variables
         final String mtn = ct + "initialLocationManager() ";
@@ -549,7 +550,7 @@ public class BackgroundService extends Service {
             // keep point
             //TODO("Change to Realm")
             //points.add(new LatLng(xLoc.latitude, xLoc.longitude));
-            insertPointsToDatabase(xLoc.latitude, xLoc.longitude);
+            insertPointsToDatabase(xLoc.latitude, xLoc.longitude, xLoc.accuracy);
 
             // exit from this process
             return;
@@ -563,7 +564,7 @@ public class BackgroundService extends Service {
             // keep point
             //TODO("Change to Realm")
             //points.add(new LatLng(xLoc.latitude, xLoc.longitude));
-            insertPointsToDatabase(xLoc.latitude, xLoc.longitude);
+            insertPointsToDatabase(xLoc.latitude, xLoc.longitude, xLoc.accuracy);
 
             // update distance
             recorderUtils.addDistance(differenceDist);
@@ -1000,7 +1001,8 @@ public class BackgroundService extends Service {
                 displayKm);
 
     }
-    private void insertPointsToDatabase(Double latitude, Double longitude) {
+
+    private void insertPointsToDatabase(Double latitude, Double longitude, Double altitude) {
         if (realm == null) {
             return;
         }
@@ -1008,6 +1010,8 @@ public class BackgroundService extends Service {
         RealmPointObject point = realm.createObject(RealmPointObject.class);
         point.setLatitude(latitude);
         point.setLongitude(longitude);
+        point.setAltitude(altitude);
+        point.setTimestamp(System.currentTimeMillis());
         realm.commitTransaction();
     }
 

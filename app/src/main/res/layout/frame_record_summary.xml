@@ -168,19 +168,19 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-        <TextView
-            android:id="@+id/btn_save_without_submit_result"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_gravity="center"
-            android:minHeight="0dp"
-            android:paddingHorizontal="26dp"
-            android:paddingTop="8dp"
-            android:paddingBottom="16dp"
-            android:layout_marginVertical="8dp"
-            android:text="บันทึกไม่ส่งผล"
-            android:textColor="@color/materialBlack"
-            android:textSize="@dimen/textSmall" />
+<!--        <TextView-->
+<!--            android:id="@+id/btn_save_without_submit_result"-->
+<!--            android:layout_width="wrap_content"-->
+<!--            android:layout_height="wrap_content"-->
+<!--            android:layout_gravity="center"-->
+<!--            android:minHeight="0dp"-->
+<!--            android:paddingHorizontal="26dp"-->
+<!--            android:paddingTop="8dp"-->
+<!--            android:paddingBottom="16dp"-->
+<!--            android:layout_marginVertical="8dp"-->
+<!--            android:text="บันทึกไม่ส่งผล"-->
+<!--            android:textColor="@color/materialBlack"-->
+<!--            android:textSize="@dimen/textSmall" />-->
 
     </LinearLayout>
 
