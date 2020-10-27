@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
@@ -18,9 +19,9 @@ public class GetProfileService extends xRequest {
         super(activity, networkCallback);
     }
 
-    public void doIt(){
-        final String mtn = ct +"doIt() ";
-        if( !appEntity.token.isAlive() ){
+    public void doIt() {
+        final String mtn = ct + "doIt() ";
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -29,12 +30,12 @@ public class GetProfileService extends xRequest {
         }
 
         // prepare usage variables
-        final NetworkUtils nw = NetworkUtils.newInstance( activity );
+        final NetworkUtils nw = NetworkUtils.newInstance(activity);
         final NetworkProps props = new NetworkProps();
 
         //--> props
-        props.setUrl( APIs.GET_USER_PROFILE.VAL);
-        props.addHeader(Globals.HEADER_AUTHORIZATION, Globals.TOKEN_TYPE +" "+ appEntity.token.getToken());
+        props.setUrl(APIs.GET_USER_PROFILE.VAL);
+        props.addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.Companion.getAccessToken());
 
         //--> fire
         nw.get(props, networkCallback);

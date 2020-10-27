@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
@@ -33,9 +35,12 @@ import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
 import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.MainActivity;
+import com.think.runex.util.AppPreference;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+
+import static com.think.runex.util.ConstantsKt.KEY_ACCESS_TOKEN;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,
@@ -67,12 +72,12 @@ public class ProfilePage extends xFragment implements
      */
     @Override
     public xFragment onResult(xTalk xTalk) {
-        if( xTalk.requestCode == Globals.RC_REFRESH && isAdded()){
+        if (xTalk.requestCode == Globals.RC_REFRESH && isAdded()) {
             // condition
-            if( ON_NETWORKING ) return null;
+            if (ON_NETWORKING) return null;
 
             // display progress dialog
-            refreshLayout.setRefreshing( true );
+            refreshLayout.setRefreshing(true);
 
             // request on refresh
             onRefresh();
@@ -130,8 +135,8 @@ public class ProfilePage extends xFragment implements
         // view binding
         viewBinding(App.instance(activity).getAppEntity().user);
 
-       // recycler view props
-       recyclerViewProps();
+        // recycler view props
+        recyclerViewProps();
 
         return v;
     }
@@ -163,8 +168,8 @@ public class ProfilePage extends xFragment implements
                         try {
                             recordAdapter.submitList(mRunningHist.getActivity_info(), 7);
 
-                        } catch ( Exception e ){
-                            L.e(mtn +"Err: "+ e.getMessage());
+                        } catch (Exception e) {
+                            L.e(mtn + "Err: " + e.getMessage());
 
                         }
 
@@ -213,7 +218,7 @@ public class ProfilePage extends xFragment implements
         new LogoutService(getActivity(), new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                if (response.responseCode == HttpURLConnection.HTTP_OK) {
+                if (response.responseCode == HttpURLConnection.HTTP_OK || response.responseCode == HttpURLConnection.HTTP_ACCEPTED) {
 
                     // update flag
                     ON_NETWORKING = false;
@@ -222,6 +227,8 @@ public class ProfilePage extends xFragment implements
                     mDialog.dismiss();
 
                     // sign out and sign in
+                    TokenManager.Companion.clearToken();
+                    AppPreference.INSTANCE.createPreference(activity).edit().remove(KEY_ACCESS_TOKEN).apply();
                     App.instance(activity)
                             .clear()
                             .serveLoginPage(ProfilePage.this, Globals.RC_NEED_LOGIN);
@@ -296,15 +303,17 @@ public class ProfilePage extends xFragment implements
         }
     }
 
-    /** Recycler view props */
-    private void recyclerViewProps(){
+    /**
+     * Recycler view props
+     */
+    private void recyclerViewProps() {
         // prepare usage variables
-        final String mtn = ct +"recyclerViewProps() ";
-        recordAdapter = new RecordAdapter(false,null);
+        final String mtn = ct + "recyclerViewProps() ";
+        recordAdapter = new RecordAdapter(false, null);
 
         // update props
-        recyclerView.setLayoutManager( new LinearLayoutManager( activity ));
-        recyclerView.setAdapter( recordAdapter );
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setAdapter(recordAdapter);
 
     }
 
@@ -346,7 +355,7 @@ public class ProfilePage extends xFragment implements
             mOnLoginHasChanged = false;
 
             // condition
-            if( ON_NETWORKING ) return;
+            if (ON_NETWORKING) return;
 
             // update flag
             ON_NETWORKING = true;
@@ -358,7 +367,7 @@ public class ProfilePage extends xFragment implements
 
             try {
                 // total distance
-                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) +" km");
+                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) + " km");
 
             } catch (Exception e) {
                 L.e(mtn + "Err: " + e.getMessage());

@@ -18,7 +18,7 @@ public enum APIs {
 
     //--> L
     LOGIN(DOMAIN.VAL + "/api/v1/user/login"),
-    LOGOUT(DOMAIN.VAL + "/api/v1/user/logout"),
+    LOGOUT(DOMAIN.VAL + "/api/v2/logout"),
 
     //--> M
     MY_ACTIVE_REGISTERED_EVENT(DOMAIN.VAL + "/api/v1/register/myRegEventActivate"),

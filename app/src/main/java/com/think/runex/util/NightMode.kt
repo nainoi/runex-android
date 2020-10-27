@@ -29,7 +29,8 @@ class NightMode {
         }
 
         fun getNightMode(context: Context): Int? {
-            return AppPreference.createPreferenceNotEncrypt(context).getInt(KEY_NIGHT_MODE, 0)
+            //TODO("Default night mode is no")
+            return AppPreference.createPreferenceNotEncrypt(context).getInt(KEY_NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_NO)
         }
 
         fun isNightMode(context: Context): Boolean {

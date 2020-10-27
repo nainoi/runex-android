@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.Network.NetworkProps;
@@ -19,7 +20,7 @@ public class GetRunningHistory extends xRequest {
 
     public void doIt() {
         final String mtn = ct + "doIt() ";
-        if (!appEntity.token.isAlive()) {
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -33,7 +34,7 @@ public class GetRunningHistory extends xRequest {
 
         //--> props
         props.setUrl(APIs.MY_RUNNING_HISTORY.VAL);
-        props.addHeader(Globals.HEADER_AUTHORIZATION, Globals.TOKEN_TYPE + " " + appEntity.token.getToken());
+        props.addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.Companion.getAccessToken());
 
         //--> fire
         nw.get(props, networkCallback);

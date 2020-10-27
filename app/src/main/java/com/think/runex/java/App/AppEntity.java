@@ -7,8 +7,7 @@ import com.think.runex.java.Models.UserObject;
 public class AppEntity {
     private final String ct = "AppEntity->";
 
-    public boolean isLoggedIn = false;
-    public TokenObject token = new TokenObject();
+
     public UserObject user = new UserObject();
     //public RealmRecorderObject temporaryRecorder = null;
     //public List<LatLng> temporaryPoints = null;
@@ -17,14 +16,4 @@ public class AppEntity {
         this.user = user;
         return this;
     }
-
-    public AppEntity setToken( TokenObject token ){
-        this.token = token;
-        return this;
-    }
-    public AppEntity setLoggedIn(boolean loggedIn) {
-        isLoggedIn = loggedIn;
-        return this;
-    }
-
 }

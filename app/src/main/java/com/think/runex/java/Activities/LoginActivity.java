@@ -342,11 +342,6 @@ public class LoginActivity extends FragmentActivity implements
                     final AppEntity appEntity = App.instance(LoginActivity.this).getAppEntity();
                     final TokenObject token = Globals.GSON.fromJson(jsonString, TokenObject.class);
 
-                    // update token
-                    appEntity.setToken(token);
-                    //--> confirm user has logged in
-                    appEntity.setLoggedIn(true);
-
                     // commit
                     updateAppEntity(appEntity);
 
@@ -409,11 +404,6 @@ public class LoginActivity extends FragmentActivity implements
                     final AppEntity appEntity = App.instance(LoginActivity.this).getAppEntity();
                     final TokenObject token = Globals.GSON.fromJson(jsonString, TokenObject.class);
                     L.i(mtn + "onSuccess: " + jsonString);
-
-                    // update token
-                    appEntity.setToken(token);
-                    //--> confirm user has logged in
-                    appEntity.setLoggedIn(true);
 
                     // commit
                     updateAppEntity(appEntity);

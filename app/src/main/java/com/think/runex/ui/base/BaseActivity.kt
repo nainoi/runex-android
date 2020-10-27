@@ -9,6 +9,7 @@ import com.jozzee.android.core.fragment.FragmentAnimations
 import com.jozzee.android.core.fragment.FragmentContainer
 import com.jozzee.android.core.fragment.replaceFragment
 import com.think.runex.util.Localization
+import com.think.runex.util.NightMode
 
 open class BaseActivity : AppCompatActivity() {
 
@@ -18,7 +19,7 @@ open class BaseActivity : AppCompatActivity() {
     override fun attachBaseContext(newBase: Context?) {
         //TODO("Set language with ui mode")
         //super.attachBaseContext(UiMode.applyUiMode(Localization.applyLanguageContext(newBase)))
-        super.attachBaseContext(Localization.applyLanguage(newBase))
+        super.attachBaseContext(NightMode.applyNightMode(Localization.applyLanguage(newBase)))
     }
 
     /**

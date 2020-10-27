@@ -13,6 +13,7 @@ import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
 import com.think.runex.R;
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.APIs;
@@ -33,7 +34,9 @@ import com.think.runex.ui.LoginScreen;
 
 public class MyEventPage extends xFragment implements onNetworkCallback, View.OnClickListener {
 
-    /** Main variables */
+    /**
+     * Main variables
+     */
     private final String ct = "MyEventPage->";
 
     // instance variables
@@ -49,11 +52,13 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     // views
     private View btnSubmit;
 
-    /** Implement methods */
+    /**
+     * Implement methods
+     */
     @Override
     public xFragment onResult(xTalk talk) {
 
-        if( isAdded() ) {
+        if (isAdded()) {
             // xtalk refresh
             xTalk x = new xTalk();
             x.requestCode = Globals.RC_REFRESH;
@@ -65,37 +70,38 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
 
         return this;
     }
+
     @Override
     public void onSuccess(xResponse rsp) {
         // prepaer usage variables
-        final String mtn = ct +"onSuccess() ";
+        final String mtn = ct + "onSuccess() ";
 
-        L.i(mtn +"jsonString: "+ rsp.jsonString);
+        L.i(mtn + "jsonString: " + rsp.jsonString);
     }
 
     @Override
     public void onFailure(xResponse rsp) {
         // prepaer usage variables
-        final String mtn = ct +"onSuccess() ";
+        final String mtn = ct + "onSuccess() ";
 
-        L.e(mtn +"jsonString: "+ rsp.jsonString);
+        L.e(mtn + "jsonString: " + rsp.jsonString);
 
     }
 
     @Override
     public void onClick(View view) {
         // prepare usage variables
-        final String mtn = ct +"onClick() ";
+        final String mtn = ct + "onClick() ";
 
-        if( ON_LOADING ){
+        if (ON_LOADING) {
             // log
-            L.i(mtn +"on loading["+ ON_LOADING +"] prevent on click.");
+            L.i(mtn + "on loading[" + ON_LOADING + "] prevent on click.");
 
             // exit from this process
             return;
         }
 
-        if (mApp.getAppEntity().isLoggedIn){
+        if (TokenManager.Companion.isAlive()) {
 
         } else mApp.serveLoginPage(getActivity(), Globals.RC_LOGIN_WITH_EMAIL);
     }
@@ -109,7 +115,7 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         mChildFragment = ChildFragmentUtils.newInstance(this);
 
         // matching views
-        matchingView( v );
+        matchingView(v);
 
         // view event listener
         viewEventListener();
@@ -120,21 +126,25 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         return v;
     }
 
-    /** Feature methods */
-    private void summaryPage(){
+    /**
+     * Feature methods
+     */
+    private void summaryPage() {
         mChildFragment.addChildFragment(SUMMARY_PAGE_CONTAINER_ID, pageRegisteredEvent);
 
     }
 
-    /** View event listener */
-    private void viewEventListener(){
+    /**
+     * View event listener
+     */
+    private void viewEventListener() {
         // prepare usage variables
-        final String mtn = ct +"viewEventListener() ";
+        final String mtn = ct + "viewEventListener() ";
 
         btnSubmit.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                L.i(mtn +"clear app entity");
+                L.i(mtn + "clear app entity");
 
                 // logout
                 App.instance(getActivity()).clear();
@@ -147,8 +157,10 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
     }
 
     /** API methods */
-    /** Matching views */
-    private void matchingView( View v ){
+    /**
+     * Matching views
+     */
+    private void matchingView(View v) {
         btnSubmit = v.findViewById(R.id.submit_result_frame);
     }
 
@@ -160,20 +172,22 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         super.onSaveInstanceState(outState);
     }
 
-    /** Life cycle */
+    /**
+     * Life cycle
+     */
 
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
 
-        mApp = App.instance( getActivity() );
+        mApp = App.instance(getActivity());
 
-        if( savedInstanceState == null ) {
+        if (savedInstanceState == null) {
             pageRegisteredEvent = new RegisteredEventsPage().setPriority(Priority.PARENT);
 
         } else {
-            pageRegisteredEvent = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_REGISTERED_EVENT );
+            pageRegisteredEvent = (xFragment) getChildFragmentManager().getFragment(savedInstanceState, PAGE_REGISTERED_EVENT);
 
         }
     }
@@ -183,12 +197,12 @@ public class MyEventPage extends xFragment implements onNetworkCallback, View.On
         super.onActivityResult(requestCode, resultCode, data);
 
         // prepare usage variables
-        final String mtn = ct +"onActivityResult() ";
-        final String resultCodeName = Globals.mapActivityResult( resultCode );
+        final String mtn = ct + "onActivityResult() ";
+        final String resultCodeName = Globals.mapActivityResult(resultCode);
 
-        L.i(mtn +"result: "+ resultCodeName);
+        L.i(mtn + "result: " + resultCodeName);
 
-        if( requestCode == Globals.RC_NEED_LOGIN ){
+        if (requestCode == Globals.RC_NEED_LOGIN) {
             summaryPage();
 
         }

@@ -10,7 +10,7 @@ class AuthViewModelFactory(private val context: Context) : ViewModelProvider.New
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
         return AuthViewModel(AuthRepository(
-                ApiService().provideService(AuthApi::class.java),
+                ApiService().provideService(context, AuthApi::class.java),
                 AppPreference.createPreference(context))) as T
     }
 }

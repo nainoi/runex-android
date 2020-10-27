@@ -1,6 +1,7 @@
 package com.think.runex.java.Utils.Network.Request;
 
 import android.app.Activity;
+import android.util.Log;
 
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;

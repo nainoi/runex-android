@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.think.runex.R;
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Customize.Fragment.xFragment;
@@ -89,7 +90,7 @@ public class LeaderBoardPage extends xFragment {
 
         AppEntity appEntity = App.instance(getActivity()).getAppEntity();
         HashMap<String, String> extraHeaders = new HashMap<String, String>();
-        extraHeaders.put("token", appEntity.token.getToken());
+        extraHeaders.put("token", TokenManager.Companion.getAccessToken().replace("Bearer ", ""));
 
         webView.loadUrl("https://runex-leaderboard.thinkdev.app", extraHeaders);
     }

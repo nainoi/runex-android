@@ -35,11 +35,11 @@ public class TokenObject {
         final long current = System.currentTimeMillis() / 1000;
         final long expired = getExpiredLong();
 
-        L.i(mtn + "//---> Is Token Alive");
-        L.i(mtn + "expire-timestamp: " + expired);
-        L.i(mtn + "current-timestamp: " + current);
-        L.i(mtn + "remaining as second: " + ((expired - current)));
-        L.i(mtn + "");
+        L.i(mtn + "//---> Is Token Alive: "+(!TextUtils.isEmpty(token)));
+        //L.i(mtn + "expire-timestamp: " + expired);
+        //L.i(mtn + "current-timestamp: " + current);
+        //L.i(mtn + "remaining as second: " + ((expired - current)));
+        //L.i(mtn + "");
 
         return !TextUtils.isEmpty(token);
     }
