@@ -10,6 +10,7 @@ import androidx.fragment.app.Fragment;
 
 import com.think.runex.java.Activities.LoginActivity;
 import com.think.runex.java.Constants.Globals;
+import com.think.runex.ui.MainActivity;
 import com.think.runex.util.AppPreference;
 
 public class App {
@@ -72,7 +73,7 @@ public class App {
     }
 
     public App serveLoginPage(Fragment fragment, int requestCode) {
-        Intent i = new Intent(fragment.getActivity(), LoginActivity.class);
+        Intent i = new Intent(fragment.getActivity(), MainActivity.class);
         fragment.startActivityForResult(i, requestCode);
         return this;
     }

@@ -70,7 +70,7 @@ public class rqAddWorkOutsHistory {
     private double calory = 0.0;
     private String caption = "";
     private double distance = 0.0;
-    private double duration = 0.0;
+    private long duration = 0;
     private String time_string = "";
     private String end_date = "";
     private Boolean is_sync = false;
@@ -125,7 +125,7 @@ public class rqAddWorkOutsHistory {
         return duration;
     }
 
-    public void setDuration(double duration) {
+    public void setDuration(long duration) {
         this.duration = duration;
     }
 

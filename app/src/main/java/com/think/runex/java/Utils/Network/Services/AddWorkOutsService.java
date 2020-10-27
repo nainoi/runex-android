@@ -31,7 +31,7 @@ public class AddWorkOutsService extends xRequest {
         final NetworkProps props = new NetworkProps();
 
         //--> props
-        props.setUrl(APIs.ADD_WORKOUTS.VAL);
+        props.setUrl(APIs.ADD_WORKOUT.VAL);
         props.setJsonAsObject(request);
         props.addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.Companion.getAccessToken());
 

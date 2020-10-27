@@ -3,32 +3,20 @@ package com.think.runex.ui
 import android.annotation.SuppressLint
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
-import android.webkit.WebResourceRequest
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import androidx.lifecycle.lifecycleScope
-import com.jozzee.android.core.datetime.dateTimeFormat
+import android.webkit.*
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.auth.*
-import com.think.runex.java.App.App
-import com.think.runex.java.App.AppEntity
-import com.think.runex.java.Models.TokenObject
-import com.think.runex.java.Models.UserObject
+import com.think.runex.feature.auth.AuthViewModel
+import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.util.APP_SCHEME
-import com.think.runex.util.AppPreference
 import com.think.runex.util.KEY_MESSAGE
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_login2.*
-import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.withContext
 
 class LoginActivity : BaseActivity() {
 
@@ -90,6 +78,17 @@ class LoginActivity : BaseActivity() {
             })
         }
         finish()
+    }
+
+    override fun onDestroy() {
+        WebStorage.getInstance().deleteAllData()
+        CookieManager.getInstance().removeAllCookies(null)
+        CookieManager.getInstance().flush()
+        web_view?.clearCache(true)
+        web_view?.clearFormData()
+        web_view?.clearHistory()
+        web_view?.clearSslPreferences()
+        super.onDestroy()
     }
 }
 

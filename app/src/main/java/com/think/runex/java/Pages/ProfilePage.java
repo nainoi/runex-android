@@ -229,10 +229,15 @@ public class ProfilePage extends xFragment implements
                     // sign out and sign in
                     TokenManager.Companion.clearToken();
                     AppPreference.INSTANCE.createPreference(activity).edit().remove(KEY_ACCESS_TOKEN).apply();
-                    App.instance(activity)
-                            .clear()
-                            .serveLoginPage(ProfilePage.this, Globals.RC_NEED_LOGIN);
 
+                    //Start new ManActivity
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    activity.finish();
+//                    App.instance(activity)
+//                            .clear()
+//                            .serveLoginPage(ProfilePage.this, Globals.RC_NEED_LOGIN);
 
                 }
 
