@@ -4,13 +4,11 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -26,12 +24,13 @@ import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
-import com.think.runex.java.Models.RunningHistoryObject;
+import com.think.runex.java.Models.WorkoutObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
+import com.think.runex.java.Utils.Network.Services.GetWorkouts;
 import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.MainActivity;
@@ -52,7 +51,7 @@ public class ProfilePage extends xFragment implements
 
     // instance variables
     private AlertDialog mDialog;
-    private RunningHistoryObject.DataBean mRunningHist;
+    private WorkoutObject.DataBean mRunningHist;
     private RecordAdapter recordAdapter;
 
     // explicit variables
@@ -117,7 +116,7 @@ public class ProfilePage extends xFragment implements
     @Override
     public void onRefresh() {
         // get running history
-        apiGetRunningHistory();
+        apiGetWorkouts();
 
     }
 
@@ -144,26 +143,26 @@ public class ProfilePage extends xFragment implements
     /**
      * API methods
      */
-    private void apiGetRunningHistory() {
+    private void apiGetWorkouts() {
         // prepare usage variables
         final String mtn = ct + "apiGetRunningHistory() ";
 
-        new GetRunningHistory(activity, new onNetworkCallback() {
+        new GetWorkouts(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "response: " + response.jsonString);
 
                 try {
                     // convert to running history object
-                    RunningHistoryObject rhis = Globals.GSON.fromJson(response.jsonString, RunningHistoryObject.class);
+                    WorkoutObject rhis = Globals.GSON.fromJson(response.jsonString, WorkoutObject.class);
 
                     // prepare usage variables
                     double totalDistance = 0.0;
 
                     // condition
-                    if (rhis.getData().size() > 0) {
+                    if (rhis.getData().getActivity_info().size() > 0) {
                         // update props
-                        totalDistance = (mRunningHist = rhis.getData().get(0)).getTotal_distance();
+                        totalDistance = (mRunningHist = rhis.getData()).getTotal_distance();
 
                         try {
                             recordAdapter.submitList(mRunningHist.getActivity_info(), 7);
@@ -366,7 +365,7 @@ public class ProfilePage extends xFragment implements
             ON_NETWORKING = true;
 
             // get my profile
-            apiGetRunningHistory();
+            apiGetWorkouts();
 
         } else {
 

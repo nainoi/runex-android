@@ -4,8 +4,13 @@ import android.os.Parcel;
 import android.os.Parcelable;
 import android.util.Log;
 
+import com.think.runex.java.App.Configs;
+import com.think.runex.java.Utils.DateTime.DateTimeUtils;
+
+import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.List;
 import java.util.Locale;
 
 import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
@@ -23,37 +28,60 @@ public class ActivityInfoBean implements Parcelable {
      */
 
     private String id;
-    private double distance;
-    private String img_url;
+    private String activity_type;
+    private String app;
+    private String ref_id;
+    private double calory;
     private String caption;
-    private String activity_date;
-    private String created_at;
-    private String updated_at;
-    //--> custom date
-    private String custom_display_date = "-";
+    private double distance;
+    private double pace;
+    private int duration;
+    private String time_string;
+    private String start_date;
+    private String end_date;
+    private String workout_date;
+    private int net_elevation_gain;
+    private boolean is_sync;
+    private List<RealmPointObject> locations;
 
     public ActivityInfoBean() {
     }
 
     protected ActivityInfoBean(Parcel in) {
         id = in.readString();
-        distance = in.readDouble();
-        img_url = in.readString();
+        activity_type = in.readString();
+        app = in.readString();
+        ref_id = in.readString();
+        calory = in.readDouble();
         caption = in.readString();
-        activity_date = in.readString();
-        created_at = in.readString();
-        updated_at = in.readString();
+        distance = in.readDouble();
+        pace = in.readDouble();
+        duration = in.readInt();
+        time_string = in.readString();
+        start_date = in.readString();
+        end_date = in.readString();
+        workout_date = in.readString();
+        net_elevation_gain = in.readInt();
+        is_sync = in.readByte() != 0;
     }
 
     @Override
     public void writeToParcel(Parcel dest, int flags) {
         dest.writeString(id);
-        dest.writeDouble(distance);
-        dest.writeString(img_url);
+        dest.writeString(activity_type);
+        dest.writeString(app);
+        dest.writeString(ref_id);
+        dest.writeDouble(calory);
         dest.writeString(caption);
-        dest.writeString(activity_date);
-        dest.writeString(created_at);
-        dest.writeString(updated_at);
+        dest.writeDouble(distance);
+        dest.writeDouble(pace);
+        dest.writeInt(duration);
+        dest.writeString(time_string);
+        dest.writeString(start_date);
+        dest.writeString(end_date);
+        dest.writeString(workout_date);
+        dest.writeInt(net_elevation_gain);
+        dest.writeByte((byte) (is_sync ? 1 : 0));
     }
 
     @Override
@@ -73,14 +101,6 @@ public class ActivityInfoBean implements Parcelable {
         }
     };
 
-    public String getCustom_display_date() {
-        return custom_display_date;
-    }
-
-    public void setCustom_display_date(String custom_display_date) {
-        this.custom_display_date = custom_display_date;
-    }
-
     public String getId() {
         return id;
     }
@@ -89,20 +109,36 @@ public class ActivityInfoBean implements Parcelable {
         this.id = id;
     }
 
-    public double getDistance() {
-        return distance;
+    public String getActivity_type() {
+        return activity_type;
     }
 
-    public void setDistance(double distance) {
-        this.distance = distance;
+    public void setActivity_type(String activity_type) {
+        this.activity_type = activity_type;
     }
 
-    public String getImg_url() {
-        return img_url;
+    public String getApp() {
+        return app;
     }
 
-    public void setImg_url(String img_url) {
-        this.img_url = img_url;
+    public void setApp(String app) {
+        this.app = app;
+    }
+
+    public String getRef_id() {
+        return ref_id;
+    }
+
+    public void setRef_id(String ref_id) {
+        this.ref_id = ref_id;
+    }
+
+    public double getCalory() {
+        return calory;
+    }
+
+    public void setCalory(double calory) {
+        this.calory = calory;
     }
 
     public String getCaption() {
@@ -113,49 +149,110 @@ public class ActivityInfoBean implements Parcelable {
         this.caption = caption;
     }
 
-    public String getActivity_date() {
-        return activity_date;
+    public double getDistance() {
+        return distance;
     }
 
-    public void setActivity_date(String activity_date) {
-        this.activity_date = activity_date;
+    public void setDistance(double distance) {
+        this.distance = distance;
     }
 
-    public String getCreated_at() {
-        return created_at;
+    public double getPace() {
+        return pace;
     }
 
-    public void setCreated_at(String created_at) {
-        this.created_at = created_at;
+    public void setPace(double pace) {
+        this.pace = pace;
     }
 
-    public String getUpdated_at() {
-        return updated_at;
+    public int getDuration() {
+        return duration;
     }
 
-    public void setUpdated_at(String updated_at) {
-        this.updated_at = updated_at;
+    public void setDuration(int duration) {
+        this.duration = duration;
     }
 
-    public String getActivityDate() {
-        if (activity_date == null || activity_date.length() == 0) return activity_date;
+    public String getTime_string() {
+        return time_string;
+    }
+
+    public void setTime_string(String time_string) {
+        this.time_string = time_string;
+    }
+
+    public String getStart_date() {
+        return start_date;
+    }
+
+    public void setStart_date(String start_date) {
+        this.start_date = start_date;
+    }
+
+    public String getEnd_date() {
+        return end_date;
+    }
+
+    public void setEnd_date(String end_date) {
+        this.end_date = end_date;
+    }
+
+    public String getWorkout_date() {
+        return workout_date;
+    }
+
+    public String getWorkoutDate() {
+        String changedDateTime = workout_date;
         try {
-            int lastIndex = activity_date.lastIndexOf(":");
-            String activityDate = activity_date.substring(0, lastIndex);
-            String serverPattern = "yyyy-MM-dd'T'HH:mm";
-
-            Date date = new SimpleDateFormat(serverPattern, Locale.getDefault()).parse(activityDate);
+            SimpleDateFormat sdf = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT, Locale.getDefault());
+            Date date = sdf.parse(workout_date);
             if (date != null) {
-                return new SimpleDateFormat(DISPLAY_DATE_FORMAT, Locale.getDefault()).format(date);
-            } else {
-                return activityDate;
+                changedDateTime = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME, Locale.getDefault()).format(date);
             }
         } catch (Throwable error) {
-            error.printStackTrace();
-            return activity_date;
+            try {
+                error.printStackTrace();
+                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Locale.getDefault());
+                Date date = null;
+
+                date = sdf.parse(workout_date);
+
+                if (date != null) {
+                    changedDateTime = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME, Locale.getDefault()).format(date);
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+            }
         }
+        return changedDateTime;
 
     }
 
+    public void setWorkout_date(String workout_date) {
+        this.workout_date = workout_date;
+    }
 
+    public int getNet_elevation_gain() {
+        return net_elevation_gain;
+    }
+
+    public void setNet_elevation_gain(int net_elevation_gain) {
+        this.net_elevation_gain = net_elevation_gain;
+    }
+
+    public boolean isIs_sync() {
+        return is_sync;
+    }
+
+    public void setIs_sync(boolean is_sync) {
+        this.is_sync = is_sync;
+    }
+
+    public List<RealmPointObject> getLocations() {
+        return locations;
+    }
+
+    public void setLocations(List<RealmPointObject> locations) {
+        this.locations = locations;
+    }
 }

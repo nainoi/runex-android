@@ -1,5 +1,8 @@
 package com.think.runex.java.Utils.DateTime;
 
+import android.location.Location;
+import android.text.TextUtils;
+
 import com.think.runex.java.App.Configs;
 import com.think.runex.java.Utils.L;
 
@@ -8,6 +11,7 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class DateTimeUtils {
     /**
@@ -26,8 +30,8 @@ public class DateTimeUtils {
                 ? "" : ((hour < 10 ? "0" + hour : hour + "")) + ":") +*/
 
                 (hour < 10 ? "0" + hour : hour + "") + ":" +
-                (min < 10 ? "0" + min : min + "") + ":" +
-                (sec < 10 ? "0" + sec : sec);
+                        (min < 10 ? "0" + min : min + "") + ":" +
+                        (sec < 10 ? "0" + sec : sec);
     }
 
     public static DisplayDateTimeObject stringToDate(String strDate, String format) {
@@ -96,6 +100,24 @@ public class DateTimeUtils {
         }
 
         return null;
+    }
+
+    public static  String dateTimeFormat(String dateTime, String fromPattern, String toPattern) {
+        if (TextUtils.isEmpty(dateTime)) {
+            return dateTime;
+        }
+
+        String changedDateTime = "";
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(fromPattern, Locale.getDefault());
+            Date date = sdf.parse(dateTime);
+            if (date != null) {
+                changedDateTime = new SimpleDateFormat(toPattern, Locale.getDefault()).format(date);
+            }
+        } catch (Throwable error) {
+            error.printStackTrace();
+        }
+        return changedDateTime;
     }
 
 }

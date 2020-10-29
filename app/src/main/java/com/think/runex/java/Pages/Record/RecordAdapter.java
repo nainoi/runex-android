@@ -54,8 +54,8 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
 
                 for (int b = a; b < list.size(); b++) {
 
-                    if (Globals.SDF_TOKEN.parse(list.get(a).getActivity_date())
-                            .before(Globals.SDF_TOKEN.parse(list.get( b ).getActivity_date())
+                    if (Globals.SDF_TOKEN.parse(list.get(a).getWorkout_date())
+                            .before(Globals.SDF_TOKEN.parse(list.get( b ).getWorkout_date())
 
                     )) {
 
@@ -84,7 +84,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
             final ActivityInfoBean data = list.get( a );
 
             try {
-                final Date d = Globals.SDF_TOKEN.parse(data.getActivity_date());
+                final Date d = Globals.SDF_TOKEN.parse(data.getWorkout_date());
 
                 // update props
                 calendar.setTimeInMillis(d.getTime());
@@ -94,7 +94,7 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
                 String displayDatetime = Globals.SDF_DISPLAY_FULL_DATE_TIME.format(calendar.getTime());
 
                 // update props
-                data.setCustom_display_date( displayDatetime );
+                //data.setCustom_display_date( displayDatetime );
 
             } catch ( Exception e ){
                 L.e(mtn +"Err: "+ e.getMessage());

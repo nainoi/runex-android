@@ -48,7 +48,7 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         String mtn = ct +"bind() ";
 
         lbDistance.setText(distance );
-        lbDate.setText( data.getCustom_display_date() );
+        lbDate.setText( data.getWorkoutDate() );
         lbCaption.setText(data.getCaption());
 
         if( needEditor ) {

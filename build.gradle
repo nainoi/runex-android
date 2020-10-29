@@ -14,6 +14,7 @@ buildscript {
         classpath 'com.google.gms:google-services:4.3.4'
         classpath 'com.android.tools.build:gradle:4.1.0'
         classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlin_version"
+        //classpath 'com.google.firebase:firebase-crashlytics-gradle:2.3.0'
 
         //Realm database
         classpath "io.realm:realm-gradle-plugin:7.1.0-SNAPSHOT"
