@@ -3,7 +3,9 @@ package com.think.runex.ui.base
 import android.view.animation.Animation
 import android.view.animation.AnimationUtils
 import androidx.fragment.app.Fragment
+import androidx.fragment.app.FragmentManager
 import com.bumptech.glide.Glide
+import com.jozzee.android.core.fragment.*
 import com.jozzee.android.core.touch.setScreenTouchable
 import com.jozzee.android.core.view.hideKeyboard
 
@@ -52,5 +54,28 @@ open class BaseScreen : Fragment() {
         Glide.get(requireContext()).bitmapPool.clearMemory()
         Glide.get(requireContext()).clearMemory()
         super.onDestroy()
+    }
+
+    open fun addFragment(fragment: Fragment,
+                         animations: FragmentAnimations? = null,
+                         hidePrevious: Int = fragmentCount(),
+                         tag: String? = null) {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).addFragment(fragment, animations, hidePrevious, tag)
+        } else {
+            addFragment(fragment, animations, FragmentContainer.id, hidePrevious, tag)
+        }
+    }
+
+    open fun replaceFragment(fragment: Fragment,
+                             animations: FragmentAnimations? = null,
+                             addToBackStack: Boolean = true,
+                             clearFragment: Boolean = false,
+                             tag: String? = null) {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).replaceFragment(fragment, animations, addToBackStack, clearFragment, tag)
+        } else {
+            replaceFragment(fragment, animations, FragmentContainer.id, addToBackStack, clearFragment, tag)
+        }
     }
 }

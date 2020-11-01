@@ -2,12 +2,10 @@ package com.think.runex.ui.home
 
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import androidx.lifecycle.Observer
 import androidx.lifecycle.ViewModelProvider
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.util.Logger
@@ -16,18 +14,20 @@ import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
 import com.think.runex.feature.event.EventViewModel
 import com.think.runex.feature.event.EventViewModelFactory
-import kotlinx.android.synthetic.main.screen_home.*
+import com.think.runex.ui.base.BaseScreen
+import com.think.runex.util.launch
+import kotlinx.android.synthetic.main.screen_all_events.*
 
-class HomeScreen : Fragment() {
+class AllEventsScreen : BaseScreen() {
 
     private val eventViewModel: EventViewModel by lazy {
-        ViewModelProvider(this, EventViewModelFactory()).get(EventViewModel::class.java)
+        ViewModelProvider(this, EventViewModelFactory(requireContext())).get(EventViewModel::class.java)
     }
 
     private val eventsAdapter: EventsAdapter by lazy { EventsAdapter() }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_home, container, false)
+        return inflater.inflate(R.layout.screen_all_events, container, false)
     }
 
 
@@ -37,10 +37,14 @@ class HomeScreen : Fragment() {
         setupComponents()
         subscribeUi()
 
-        eventViewModel.getAllEvents()
+        //Get event list
+        launch {
+            val eventList = eventViewModel.getAllEvent()
+            eventsAdapter.submitList(eventList)
+        }
     }
 
-    private fun onClick(){
+    private fun onClick() {
         Toast.makeText(context, R.string.app_name, Toast.LENGTH_SHORT).show()
 
         // prepare usage variables
@@ -59,23 +63,12 @@ class HomeScreen : Fragment() {
     private fun subscribeUi() {
         eventsAdapter.setOnItemClick { position, eventId -> onClick() }
 
-        eventViewModel.allEvents.observe(viewLifecycleOwner, Observer { eventList ->
-            if (view == null) {
-                return@Observer
-            }
-            eventsAdapter.submitList(eventList)
-        })
-
         eventViewModel.setOnHandleError { statusCode, message ->
             Logger.error(simpleName(), "Error: $statusCode, message: $message")
         }
 
     }
 
-    override fun onDestroyView() {
-        eventViewModel.allEvents.removeObservers(viewLifecycleOwner)
-        super.onDestroyView()
-    }
 
     override fun onDestroy() {
         event_list?.recycledViewPool?.clear()

@@ -1,4 +1,4 @@
-package com.think.runex.ui
+package com.think.runex.ui.component
 
 import android.content.Context
 import android.util.AttributeSet
@@ -6,6 +6,7 @@ import androidx.appcompat.widget.AppCompatImageView
 import com.think.runex.R
 import kotlin.math.min
 
+//TODO("Ratio width and height not working when [ratioHeight] more than [ratioWidth]")
 class AspectRatioImageView @JvmOverloads constructor(
         context: Context,
         attrs: AttributeSet? = null,
@@ -43,12 +44,25 @@ class AspectRatioImageView @JvmOverloads constructor(
             val minSize = min(measuredWidth, measuredHeight)
             setMeasuredDimension(minSize, minSize)
         } else {
-            if (ratioWidth >= ratioHeight) {
-                val factor = (widthSize / ratioWidth).toInt()
-                heightSize = (factor * ratioHeight).toInt()
-            } else {
-                val factor = (heightSize / ratioHeight).toInt()
-                widthSize = (factor * ratioWidth).toInt()
+            val maxWidth = when {
+                widthSize == 0 -> heightSize
+                heightSize == 0 -> widthSize
+                else -> if (widthSize <= heightSize) widthSize else heightSize
+            }
+
+            when {
+                ratioWidth > ratioHeight -> {
+                    widthSize = maxWidth
+                    heightSize = ((maxWidth / ratioWidth) * ratioHeight).toInt()
+                }
+                ratioWidth < ratioHeight -> {
+                    widthSize = ((maxWidth / ratioHeight) * ratioWidth).toInt()
+                    heightSize = maxWidth
+                }
+                else -> {
+                    widthSize = maxWidth
+                    heightSize = maxWidth
+                }
             }
             setMeasuredDimension(widthSize, heightSize)
         }

@@ -1,4 +1,4 @@
-package com.think.runex.ui.components
+package com.think.runex.ui.component
 
 import android.text.Editable
 import android.text.TextWatcher

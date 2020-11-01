@@ -12,7 +12,7 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 
 import com.think.runex.R
-import com.think.runex.ui.home.HomeScreen
+import com.think.runex.ui.home.AllEventsScreen
 import kotlinx.android.synthetic.main.screen_main.*
 
 class MainScreen : Fragment() {
@@ -55,11 +55,9 @@ class MainScreen : Fragment() {
     private fun updateScreen(itemId: Int) {
         //val lightStatusBar = (activity as AppCompatActivity).getCurrentNightMode() != AppCompatDelegate.MODE_NIGHT_YES
         when (itemId) {
-            R.id.menu_home -> replaceChildFragment(R.id.navigation_host_fragment, HomeScreen())
+            R.id.menu_home -> replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen())
             R.id.menu_my_events -> replaceChildFragment(R.id.navigation_host_fragment, MyEventsScreen())
             R.id.menu_record -> replaceFragment(RecordScreen())
-            R.id.menu_challenges -> replaceChildFragment(R.id.navigation_host_fragment, ChallengesScreen())
-            R.id.menu_runex_sync -> replaceChildFragment(R.id.navigation_host_fragment, RunexConnectScreen())
         }
     }
 }

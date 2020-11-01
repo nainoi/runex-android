@@ -14,6 +14,7 @@ import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.util.APP_SCHEME
+import com.think.runex.util.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.util.KEY_MESSAGE
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_login2.*
@@ -38,7 +39,7 @@ class LoginActivity : BaseActivity() {
             cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
             //Set face user agent for google sign in.
-            userAgentString = "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
+            userAgentString = FACE_USER_AGENT_FOR_WEB_VIEW
         }
         web_view.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {

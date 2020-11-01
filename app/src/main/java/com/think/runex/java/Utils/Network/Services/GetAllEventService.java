@@ -10,11 +10,14 @@ import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.xRequest;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
-public class GetRunningHistory extends xRequest {
-    /** Main variables */
-    private final String ct = "GetRunningHistory->";
+public class GetAllEventService extends xRequest {
+    /**
+     * Main variables
+     */
+    private final String ct = "GetAllEventService->";
 
-    public GetRunningHistory(Activity activity, onNetworkCallback networkCallback) {
+
+    public GetAllEventService(Activity activity, onNetworkCallback networkCallback) {
         super(activity, networkCallback);
     }
 
@@ -33,7 +36,7 @@ public class GetRunningHistory extends xRequest {
         final NetworkProps props = new NetworkProps();
 
         //--> props
-        props.setUrl(APIs.MY_RUNNING_HISTORY.VAL);
+        props.setUrl(APIs.GET_ALL_EVENT.VAL);
         props.addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.Companion.getAccessToken());
 
         //--> fire

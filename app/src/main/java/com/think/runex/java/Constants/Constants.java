@@ -1,10 +1,6 @@
 package com.think.runex.java.Constants;
 
-import com.think.runex.feature.event.Event;
-
-import java.util.ArrayList;
 import java.util.Date;
-import java.util.List;
 
 public enum Constants {
     TAG("KT_PJ");

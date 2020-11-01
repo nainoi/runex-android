@@ -2,68 +2,101 @@ package com.think.runex.common
 
 import android.graphics.drawable.Drawable
 import android.widget.TextView
-import androidx.annotation.ColorInt
-import androidx.annotation.ColorRes
-import androidx.annotation.DrawableRes
-import androidx.annotation.StringRes
+import androidx.annotation.*
 import androidx.appcompat.app.ActionBar
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.widget.Toolbar
+import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
-import com.jozzee.android.core.resource.getColor
-import com.jozzee.android.core.resource.getDrawable
+import androidx.fragment.app.FragmentActivity
+import com.think.runex.R
 
-fun Fragment.getActionBar(): ActionBar? = (activity as AppCompatActivity).supportActionBar
-
-fun Fragment.initialToolbar(toolbar: Toolbar,
-                            @StringRes title: Int? = null,
-                            @ColorRes titleColor: Int? = null,
-                            @DrawableRes homeButton: Int? = null) {
-
-    val titleString: String? = if (title != null) getString(title) else null
-    val titleColorInt: Int? = if (titleColor != null) getColor(titleColor) else null
-    val iconHome: Drawable? = if (homeButton != null) getDrawable(homeButton) else null
-    initialToolbar(toolbar, titleString, titleColorInt, iconHome)
+fun FragmentActivity.setupToolbar(toolbar: Toolbar) {
+    if (isDestroyed || isFinishing) return
+    (this as AppCompatActivity).setSupportActionBar(toolbar)
 }
 
-fun Fragment.initialToolbar(toolbar: Toolbar,
-                            title: String? = null,
-                            @ColorInt titleColor: Int? = null,
-                            homeButton: Drawable? = null) {
-    if (activity == null || view == null) return
+fun FragmentActivity.setupToolbar(toolbar: Toolbar,
+                                  @StringRes title: Int? = null,
+                                  @DrawableRes homeButton: Int? = null,
+                                  @StyleRes titleTextAppearance: Int? = null) {
+    if (isDestroyed || isFinishing) return
+    val titleText: String? = if (title != null) getString(title) else null
+    val homeDrawable: Drawable? = if (homeButton != null) ContextCompat.getDrawable(this, homeButton) else null
+    setupToolbar(toolbar, titleText, homeDrawable, titleTextAppearance)
+}
 
-    (activity as AppCompatActivity).setSupportActionBar(toolbar)
-    setToolbarTitle(title, titleColor /*,toolbar.findViewById(R.id.toolbar_title)*/)
+fun FragmentActivity.setupToolbar(toolbar: Toolbar,
+                                  title: String? = null,
+                                  homeButton: Drawable? = null,
+                                  @StyleRes titleTextAppearance: Int? = null) {
+    if (isDestroyed || isFinishing) return
+    (this as AppCompatActivity).setSupportActionBar(toolbar)
+    setToolbarTitle(title, toolbar.findViewById(R.id.toolbar_title), titleTextAppearance)
     setToolbarHomeButton(homeButton)
 }
 
-fun Fragment.setToolbarHomeButton(homeButton: Drawable? = null) = getActionBar()?.run {
-    if (activity == null || view == null) return@run
-    setHomeButtonEnabled(homeButton != null)
-    setDisplayHomeAsUpEnabled(homeButton != null)
-    setHomeAsUpIndicator(homeButton)
+fun FragmentActivity.setToolbarHomeButton(homeButton: Drawable? = null) {
+    if (isDestroyed || isFinishing) return
+    (this as AppCompatActivity).supportActionBar?.also { actionBar ->
+        actionBar.setHomeButtonEnabled(homeButton != null)
+        actionBar.setDisplayHomeAsUpEnabled(homeButton != null)
+        actionBar.setHomeAsUpIndicator(homeButton)
+    }
 }
 
-/**
- * Support custom title such as toolbar that have a center title.
- * but if not have custom title will be use title from action bar.
- */
-fun Fragment.setToolbarTitle(title: String?,
-                             @ColorInt titleColor: Int? = null,
-                             customTextViewTitle: TextView? = null) = getActionBar()?.run {
-    if (activity == null || view == null) return@run
-    when (customTextViewTitle != null) {
-        true -> {
-            this.setDisplayShowTitleEnabled(false)
-            this.title = ""
-            customTextViewTitle.text = title ?: ""
-            titleColor?.also {
-                customTextViewTitle.setTextColor(it)
+fun FragmentActivity.setToolbarTitle(title: String?,
+                                     customTitle: TextView? = null,
+                                     @StyleRes titleTextAppearance: Int? = null) {
+    if (isDestroyed || isFinishing) return
+    (this as AppCompatActivity).supportActionBar?.also { actionBar ->
+        if (customTitle != null) {
+            actionBar.setDisplayShowTitleEnabled(false)
+            actionBar.title = ""
+
+            customTitle.text = title ?: ""
+            if (titleTextAppearance != null) {
+                customTitle.setTextAppearance(titleTextAppearance)
             }
-        }
-        false -> {
-            this.setDisplayShowTitleEnabled(title != null)
-            this.title = title ?: ""
+        } else {
+            actionBar.setDisplayShowTitleEnabled(title?.isNotBlank() == true)
+            actionBar.title = title ?: ""
         }
     }
+}
+
+
+fun Fragment.getActionBar(): ActionBar? = (activity as AppCompatActivity).supportActionBar
+
+fun Fragment.setupToolbar(toolbar: Toolbar) {
+    if (view == null || isAdded.not()) return
+    activity?.setupToolbar(toolbar)
+}
+
+fun Fragment.setupToolbar(toolbar: Toolbar,
+                          @StringRes title: Int? = null,
+                          @DrawableRes homeButton: Int? = null,
+                          @StyleRes titleTextAppearance: Int? = null) {
+    if (activity == null || view == null) return
+    activity?.setupToolbar(toolbar, title, homeButton, titleTextAppearance)
+}
+
+fun Fragment.setupToolbar(toolbar: Toolbar,
+                          title: String? = null,
+                          homeButton: Drawable? = null,
+                          @StyleRes titleTextAppearance: Int? = null) {
+    if (activity == null || view == null) return
+    activity?.setupToolbar(toolbar, title, homeButton, titleTextAppearance)
+}
+
+fun Fragment.setToolbarHomeButton(homeButton: Drawable? = null) = getActionBar()?.also { actionBar ->
+    if (activity == null || view == null) return@also
+    activity?.setToolbarHomeButton(homeButton)
+}
+
+fun Fragment.setToolbarTitle(title: String?,
+                             customTitle: TextView? = null,
+                             @StyleRes titleTextAppearance: Int? = null) {
+    if (activity == null || view == null) return
+    activity?.setToolbarTitle(title, customTitle, titleTextAppearance)
 }

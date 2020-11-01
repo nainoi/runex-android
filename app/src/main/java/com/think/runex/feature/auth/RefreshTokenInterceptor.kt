@@ -43,7 +43,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
 
             if (response.code == 401 || response.code == 444) {
                 response.close()
-                Log.w("RefreshTokenInterceptor", "Code: ${response.code} Auto refresh token!!")
+                //Log.w("RefreshTokenInterceptor", "Code: ${response.code} Auto refresh token!!")
                 val body = RefreshTokenRequest(TokenManager.accessToken, TokenManager.refreshToken)
                 val refreshTokenRequest = Request.Builder()
                         .url(ApiConfig.REFRESH_TOKEN_URL)
@@ -52,7 +52,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                 val refreshTokenResponse = chain.proceed(refreshTokenRequest)
                 if (refreshTokenResponse.code == 200) {
                     refreshTokenResponse.body?.string()?.also { bodyString ->
-                        Log.w("RefreshTokenInterceptor", "Refresh token response: $bodyString")
+                        //Log.w("RefreshTokenInterceptor", "Refresh token response: $bodyString")
                         if (bodyString.isJsonFormat()) {
                             val jsonObject = Gson().fromJson(bodyString, JsonElement::class.java).asJsonObject
                             if (jsonObject.has(KEY_DATA)) {
@@ -61,8 +61,8 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                                 val refreshTokenText = tokenObject.get("refresh_token").asString
                                         ?: ""
                                 if (accessTokenText.isNotBlank() && refreshTokenText.isNotBlank()) {
-                                    Log.e("RefreshTokenInterceptor", "Access token: $accessTokenText")
-                                    Log.e("RefreshTokenInterceptor", "Refresh token: $refreshTokenText")
+                                    //Log.e("RefreshTokenInterceptor", "Access token: $accessTokenText")
+                                    //Log.e("RefreshTokenInterceptor", "Refresh token: $refreshTokenText")
                                     val accessToken = AccessToken(accessTokenText, refreshTokenText)
                                     //Update token for kotlin
                                     TokenManager.updateToken(accessToken)

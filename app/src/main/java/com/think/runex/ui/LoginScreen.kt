@@ -13,6 +13,7 @@ import com.facebook.internal.CallbackManagerImpl
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
+import com.think.runex.common.getViewModel
 import com.think.runex.feature.auth.AuthRepository
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
@@ -30,21 +31,22 @@ import com.think.runex.java.Utils.Network.NetworkUtils
 import com.think.runex.java.Utils.Network.Request.rqLogin
 import com.think.runex.java.Utils.Network.Response.xResponse
 import com.think.runex.java.Utils.Network.onNetworkCallback
+import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.AppPreference
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.launch
 import java.lang.Exception
 
-class LoginScreen : ScreenFragment(), SocialLoginListener, onNetworkCallback {
-    // explicit variables
-    private val authViewModel: AuthViewModel by lazy {
-        ViewModelProvider(this, AuthViewModelFactory(requireContext())).get(AuthViewModel::class.java)
-    }
+class LoginScreen : BaseScreen(), SocialLoginListener, onNetworkCallback {
+
+    private lateinit var authViewModel: AuthViewModel
     private val socialLoginManger: SocialLoginManger by lazy { SocialLoginManger() }
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        authViewModel = getViewModel(AuthViewModel::class.java, AuthViewModelFactory(requireContext()))
 
         //Initial social login manage.
         socialLoginManger.setSocialLoginListener(this)

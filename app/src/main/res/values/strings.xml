@@ -11,6 +11,8 @@
     <string name="activity_record">บันทึกกิจกรรม</string>
     <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
 
+    <string name="all_event">งานวิ่งทั้งหมด</string>
+
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
 
@@ -20,6 +22,7 @@
     <string name="challenges">ชาเลนจ์</string>
 
     <!-- D -->
+    <string name="detail">รายละเอียด</string>
     <string name="delete">ลบ</string>
     <string name="distance">ระยะทาง</string>
     <string name="distance_kg">ระยะทาง (กม.)</string>
@@ -34,6 +37,7 @@
     <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
     <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="events">อีเว้นท์</string>
+    <string name="event_date">วันที่จัดงาน</string>
 
     <!-- F -->
     <string name="finish_recording">จบการจับเวลา</string>
@@ -85,13 +89,14 @@
     <!-- R -->
     <string name="record">บันทึก</string>
     <string name="register">สมัครสมาชิก</string>
+    <string name="register_date">รับสมัคร</string>
+    <string name="register_event">สมัครงาวิ่ง</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>
     <string name="running_date">Running date</string>
 
     <!-- S -->
-    <string name="u250">·</string>
     <string name="select_image">Select Image</string>
     <string name="setting">Setting</string>
     <string name="start_recording">เริ่มจับเวลา</string>
@@ -114,6 +119,8 @@
     <!-- Y -->
 
     <!-- Z -->
+
+    <string name="u250">·</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

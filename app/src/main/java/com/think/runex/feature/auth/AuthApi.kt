@@ -14,6 +14,6 @@ interface AuthApi {
     @POST("https://auth.runex.co/v1/oauth2/token")
     fun authorizationWithCodeAsync(@Body body: LoginCodeRequest): Deferred<AccessToken>
 
-    @GET("user")
+    @GET("/api/${ApiConfig.API_VERSION}/user")
     fun getUserInfoAsync(@Header(KEY_AUTH) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
 }

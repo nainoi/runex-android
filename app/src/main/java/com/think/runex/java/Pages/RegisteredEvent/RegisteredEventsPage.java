@@ -1,6 +1,5 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
-import android.content.Context;
 import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
@@ -21,11 +20,9 @@ import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
-import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Customize.Fragment.xFragment;
-import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
 import com.think.runex.java.Models.UserObject;

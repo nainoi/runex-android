@@ -10,11 +10,11 @@ import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.xRequest;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
-public class GetWorkouts extends xRequest {
+public class GetWorkoutsService extends xRequest {
     /** Main variables */
     private final String ct = "GetWorkouts->";
 
-    public GetWorkouts(Activity activity, onNetworkCallback networkCallback) {
+    public GetWorkoutsService(Activity activity, onNetworkCallback networkCallback) {
         super(activity, networkCallback);
     }
 

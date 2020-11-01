@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:fillViewport="true"
     android:orientation="vertical"
-    tools:context=".ui.home.HomeScreen">
+    tools:context=".ui.home.AllEventsScreen">
 
     <RelativeLayout
         android:id="@+id/content_container"
@@ -43,7 +43,6 @@
 
             <com.google.android.material.button.MaterialButton
                 android:id="@+id/btn_price"
-                style="@style/ButtonPrice.Free"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/imv_app_logo"
@@ -115,7 +114,7 @@
             android:layout_height="match_parent"
             android:layout_below="@+id/tv_latest_event_topic"
             android:overScrollMode="never"
-            tools:listitem="@layout/_list_item_event" />
+            tools:listitem="@layout/list_item_event_java" />
 
     </RelativeLayout>
 </androidx.core.widget.NestedScrollView>

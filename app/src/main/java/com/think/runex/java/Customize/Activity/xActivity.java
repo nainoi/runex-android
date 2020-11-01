@@ -1,17 +1,21 @@
 package com.think.runex.java.Customize.Activity;
 
+import android.content.Context;
 import android.os.Bundle;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
+import androidx.appcompat.app.AppCompatActivity;
 import androidx.fragment.app.FragmentActivity;
 
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
+import com.think.runex.util.Localization;
+import com.think.runex.util.NightMode;
 
-public class xActivity extends FragmentActivity implements xActivityHandler {
+public class xActivity extends AppCompatActivity implements xActivityHandler {
     /**
      * Main variables
      */
@@ -28,10 +32,17 @@ public class xActivity extends FragmentActivity implements xActivityHandler {
             // prepare usage variables
             xFragment fragment = (xFragment) getSupportFragmentManager().getFragments().get(a);
 
-            if(fragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
+            if (fragment.getChildFragmentManager().getBackStackEntryCount() > 0) {
                 fragment.getChildFragmentManager().popBackStackImmediate();
             }
         }
+    }
+
+    @Override
+    protected void attachBaseContext(Context newBase) {
+        Context newContext = NightMode.Companion.applyNightMode(newBase);
+        newContext = Localization.Companion.applyLanguage(newContext);
+        super.attachBaseContext(newContext);
     }
 
     @Override
@@ -50,10 +61,11 @@ public class xActivity extends FragmentActivity implements xActivityHandler {
     /**
      * Setter
      */
-    public xActivity preventFromBackPressed( boolean b){
+    public xActivity preventFromBackPressed(boolean b) {
         preventFromBackPressed = b;
         return this;
     }
+
     public xActivity setFragmentContainerId(int containerId) {
         this.containerId = containerId;
         return this;

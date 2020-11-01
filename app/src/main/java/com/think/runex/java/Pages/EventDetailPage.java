@@ -2,7 +2,6 @@ package com.think.runex.java.Pages;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -23,7 +22,6 @@ import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Constants.xAction;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
@@ -32,24 +30,17 @@ import com.think.runex.java.Customize.Views.Toolbar.xToolbarProps;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
 import com.think.runex.java.Models.EventObject;
-import com.think.runex.java.Models.ActivityInfoBean;
-import com.think.runex.java.Models.MultiObject;
-import com.think.runex.java.Pages.Record.EventRecordHistoryPage;
 import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.ActivityUtils;
-import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.DeleteEventHistoryService;
 import com.think.runex.java.Utils.Network.Services.GetEventDetailService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
-import com.think.runex.java.ViewHolders.VHEvent;
 
 
 import java.net.HttpURLConnection;
-import java.util.ArrayList;
-import java.util.List;
 
 public class EventDetailPage extends xFragment implements View.OnClickListener
         , SwipeRefreshLayout.OnRefreshListener {

@@ -29,8 +29,7 @@ import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
-import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
-import com.think.runex.java.Utils.Network.Services.GetWorkouts;
+import com.think.runex.java.Utils.Network.Services.GetWorkoutsService;
 import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.MainActivity;
@@ -147,7 +146,9 @@ public class ProfilePage extends xFragment implements
         // prepare usage variables
         final String mtn = ct + "apiGetRunningHistory() ";
 
-        new GetWorkouts(activity, new onNetworkCallback() {
+        ON_NETWORKING = true;
+
+        new GetWorkoutsService(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "response: " + response.jsonString);
