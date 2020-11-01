@@ -18,7 +18,7 @@ const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 4.1.1; Gal
  */
 const val KEY_AUTH = "Authorization"
 const val KEY_ACCESS_TOKEN = "accessToken"
-const val KEY_EVENT_ID = "event_id"
+const val KEY_EVENT = "event"
 const val KEY_ERROR = "error"
 const val KEY_DATA = "data"
 const val KEY_FIREBASE_TOKEN = "firebaseToken"

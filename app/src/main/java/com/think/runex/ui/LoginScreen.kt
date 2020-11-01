@@ -14,7 +14,6 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
 import com.think.runex.common.getViewModel
-import com.think.runex.feature.auth.AuthRepository
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.feature.social.SocialLoginListener
@@ -46,7 +45,7 @@ class LoginScreen : BaseScreen(), SocialLoginListener, onNetworkCallback {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel = getViewModel(AuthViewModel::class.java, AuthViewModelFactory(requireContext()))
+        authViewModel = getViewModel(AuthViewModelFactory(requireContext()))
 
         //Initial social login manage.
         socialLoginManger.setSocialLoginListener(this)

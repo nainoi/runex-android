@@ -8,6 +8,10 @@
     <color name="backgroundSecondary">#F5F7F9</color>
     <color name="backgroundSurface">#EDF1F5</color>
 
+    <color name="colorDisable">#9A9A9A</color>
+    <color name="colorDisableSecondary">#EAEAEA</color>
+    <color name="colorSkeleton">#EEEEEE</color>
+
     <color name="textColorPrimary">#000000</color>
     <color name="textColorSecondary">#55595C</color>
     <color name="textColorHint">#66323B45</color>

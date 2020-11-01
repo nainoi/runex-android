@@ -12,16 +12,16 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 
 import com.think.runex.R
-import com.think.runex.feature.event.EventViewModel
-import com.think.runex.feature.event.EventViewModelFactory
+import com.think.runex.feature.event.AllEventsViewModel
+import com.think.runex.feature.event.AllEventsViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_all_events.*
 
 class AllEventsScreen : BaseScreen() {
 
-    private val eventViewModel: EventViewModel by lazy {
-        ViewModelProvider(this, EventViewModelFactory(requireContext())).get(EventViewModel::class.java)
+    private val eventViewModel: AllEventsViewModel by lazy {
+        ViewModelProvider(this, AllEventsViewModelFactory(requireContext())).get(AllEventsViewModel::class.java)
     }
 
     private val eventsAdapter: EventsAdapter by lazy { EventsAdapter() }

@@ -26,7 +26,7 @@ class LoginActivity : BaseActivity() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel = getViewModel(AuthViewModel::class.java, AuthViewModelFactory(this))
+        authViewModel = getViewModel(AuthViewModelFactory(this))
 
         setContentView(R.layout.activity_login2)
         setupComponents()

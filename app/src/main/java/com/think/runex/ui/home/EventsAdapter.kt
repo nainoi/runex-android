@@ -16,9 +16,9 @@ import kotlinx.android.synthetic.main.list_item_event.view.*
 
 class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
-    private var onItemClick: ((position: Int, eventId: String) -> Unit)? = null
+    private var onItemClick: ((position: Int, event: Event) -> Unit)? = null
 
-    fun setOnItemClick(block: (position: Int, eventId: String) -> Unit) {
+    fun setOnItemClick(block: (position: Int, event: Event) -> Unit) {
         onItemClick = block
     }
 
@@ -46,16 +46,17 @@ class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDif
                     .inflate(R.layout.list_item_event, parent, false))
         }
 
-        fun bind(data: Event, onItemClick: ((position: Int, eventId: String) -> Unit)? = null) {
-            Log.e("Jozzee","data: ${data.toJson()}")
-            itemView.event_image?.loadEventsImage(data.coverImage())
-            itemView.event_name_label?.text = data.name
-            itemView.event_category_label?.text = data.category ?: ""
-            itemView.event_date_label?.text = data.eventPeriod(requireContext())
-            itemView.register_date_label?.text = data.registerPeriod(requireContext())
+        fun bind(data: Event?, onItemClick: ((position: Int, event: Event) -> Unit)? = null) {
+            itemView.event_image?.loadEventsImage(data?.coverImage())
+            itemView.event_name_label?.text = data?.name ?: ""
+            itemView.event_category_label?.text = data?.category ?: ""
+            itemView.event_date_label?.text = data?.eventPeriod(requireContext()) ?: ""
+            itemView.register_date_label?.text = data?.registerPeriod(requireContext()) ?: ""
 
             itemView.list_item_event?.setOnClickListener {
-                onItemClick?.invoke(adapterPosition, data.id)
+                data?.also {
+                    onItemClick?.invoke(adapterPosition, it)
+                }
             }
         }
     }

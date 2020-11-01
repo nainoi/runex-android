@@ -5,7 +5,6 @@ import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.view.MenuItem
-import android.webkit.WebResourceRequest
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
@@ -14,38 +13,49 @@ import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
+import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.util.KEY_EVENT_ID
+import com.think.runex.feature.event.EventViewModel
+import com.think.runex.feature.event.EventViewModelFactory
+import com.think.runex.feature.event.model.Event
+import com.think.runex.util.KEY_EVENT
+import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_event_preview.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class EventPreviewActivity : AppCompatActivity() {
 
-    private var eventId: String = ""
+    private lateinit var viewModel: EventViewModel
+    private var event: Event? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         initialValue()
-        setStatusBarColor(Color.TRANSPARENT, true)
         setContentView(R.layout.activity_event_preview)
-        setupToolbar(toolbar, R.string.detail, R.mipmap.ic_back)
         setupComponents()
         subscribeUi()
 
         //Load event preview
         progress_bar?.visible()
-        web_view.loadUrl("${ApiConfig.EVENT_PREVIEW_URL}/$eventId")
+        web_view.loadUrl("${ApiConfig.EVENT_PREVIEW_URL}/${event?.id}")
+
+        //Check is registered event
+        checkRegisteredEvent()
     }
 
     private fun initialValue() {
+        viewModel = getViewModel(EventViewModelFactory(this))
+
         //Get event id from intent
-        eventId = intent?.getStringExtra(KEY_EVENT_ID) ?: ""
+        event = intent?.getParcelableExtra(KEY_EVENT)
     }
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupComponents() {
+        setStatusBarColor(Color.TRANSPARENT, true)
+        setupToolbar(toolbar, R.string.detail, R.mipmap.ic_back)
 
         //Setup view view
         web_view?.settings?.apply {
@@ -59,11 +69,24 @@ class EventPreviewActivity : AppCompatActivity() {
                 progress_bar?.gone()
             }
         }
+
+        //Set register button if event not free
+        if (event?.isFree == true) {
+            register_button.isEnabled = true
+        }
+
     }
 
     private fun subscribeUi() {
         register_button.setOnClickListener {
 
+        }
+    }
+
+    private fun checkRegisteredEvent() = launch {
+        val isRegistered = viewModel.isRegisteredEvent(event?.id ?: "")
+        if (isRegistered) {
+            register_button.isEnabled = false
         }
     }
 

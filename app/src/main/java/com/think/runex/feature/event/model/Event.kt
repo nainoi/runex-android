@@ -1,6 +1,8 @@
 package com.think.runex.feature.event.model
 
 import android.content.Context
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.R
@@ -35,8 +37,77 @@ data class Event(
         @SerializedName("post_end_date") var postEndDate: String = "",
         @SerializedName("partner") var partner: Partner? = null,
         @SerializedName("created_time") var createdAt: String = "",
-        @SerializedName("updated_time") var updatedAt: String = "") {
+        @SerializedName("updated_time") var updatedAt: String = "") : Parcelable {
 
+    companion object CREATOR : Parcelable.Creator<Event> {
+        override fun createFromParcel(parcel: Parcel): Event {
+            return Event(parcel)
+        }
+
+        override fun newArray(size: Int): Array<Event?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.createTypedArrayList(EventCoverThumbnailImage),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.createTypedArrayList(Ticket),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readByte() != 0.toByte(),
+            parcel.readByte() != 0.toByte(),
+            parcel.readString() ?: "",
+            parcel.readParcelable(Partner::class.java.classLoader),
+            parcel.readString() ?: "",
+            parcel.readString() ?: "")
+
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(id)
+        parcel.writeString(name)
+        parcel.writeString(description)
+        parcel.writeString(body)
+        parcel.writeString(coverImage)
+        parcel.writeTypedList(coverThumbnailImages)
+        parcel.writeString(category)
+        parcel.writeString(slug)
+        parcel.writeTypedList(ticket)
+        parcel.writeString(ownerId)
+        parcel.writeString(status)
+        parcel.writeString(location)
+        parcel.writeString(receiveLocation)
+        parcel.writeByte(if (isActive) 1 else 0)
+        parcel.writeByte(if (isFree) 1 else 0)
+        parcel.writeString(startRegisterDate)
+        parcel.writeString(endRegisterDate)
+        parcel.writeString(startEventDate)
+        parcel.writeString(endEventDate)
+        parcel.writeByte(if (isInApp) 1 else 0)
+        parcel.writeByte(if (isPost) 1 else 0)
+        parcel.writeString(postEndDate)
+        parcel.writeParcelable(partner, flags)
+        parcel.writeString(createdAt)
+        parcel.writeString(updatedAt)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
 
     fun coverImage(): String = if (coverImage.isNotBlank()) "${ApiConfig.BASE_URL}$coverImage" else ""
 
