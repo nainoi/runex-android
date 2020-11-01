@@ -72,6 +72,7 @@ dependencies {
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-viewmodel-ktx:2.2.0'
     implementation 'androidx.lifecycle:lifecycle-runtime-ktx:2.3.0-beta01'
+    implementation 'androidx.legacy:legacy-support-v4:1.0.0'
     //Alternately - if using Java8, use the following instead of lifecycle-compiler
     kapt 'androidx.lifecycle:lifecycle-common-java8:2.2.0'
 

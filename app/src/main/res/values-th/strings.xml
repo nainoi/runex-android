@@ -20,6 +20,8 @@
     <string name="cancel">ยกเลิก</string>
     <string name="close">ปิด</string>
     <string name="challenges">ชาเลนจ์</string>
+    <string name="confirm">ยืนยัน</string>
+    <string name="confirm_register">ยืนยันการสมัคร</string>
 
     <!-- D -->
     <string name="detail">รายละเอียด</string>
@@ -72,6 +74,7 @@
     <string name="my_events">อีเว้นท์ของฉัน</string>
 
     <!-- N -->
+    <string name="notification_display_info">Run %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
     <string name="note">จดบันทึก</string>
@@ -85,6 +88,7 @@
     <string name="password">รหัสผ่าน</string>
     <string name="password_required">กรุณาระบุรหัสผ่าน</string>
     <string name="profile">ข้อมูลส่วนตัว</string>
+    <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>

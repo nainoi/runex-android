@@ -4,6 +4,7 @@ import android.annotation.SuppressLint
 import android.graphics.Color
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
+import android.util.Log
 import android.view.MenuItem
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -12,6 +13,7 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
+import com.jozzee.android.core.view.showDialog
 import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
@@ -25,7 +27,7 @@ import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_event_preview.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class EventPreviewActivity : AppCompatActivity() {
+class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
 
     private lateinit var viewModel: EventViewModel
     private var event: Event? = null
@@ -79,7 +81,11 @@ class EventPreviewActivity : AppCompatActivity() {
 
     private fun subscribeUi() {
         register_button.setOnClickListener {
-
+            //TODO(Force enable to register when partner name is 'KAO' for now.")
+            if (event?.partner?.partnerName == "KAO") {
+                Log.e("Jozzee", "showDialog")
+                showDialog(RegisterEventWithEBIBDialog())
+            }
         }
     }
 
@@ -88,6 +94,10 @@ class EventPreviewActivity : AppCompatActivity() {
         if (isRegistered) {
             register_button.isEnabled = false
         }
+    }
+
+    override fun onEBIBSpecified(ebib: String) {
+        //
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {
