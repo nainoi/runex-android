@@ -21,15 +21,18 @@ import kotlinx.android.synthetic.main.activity_login2.*
 
 class LoginActivity : BaseActivity() {
 
-    private lateinit var authViewModel: AuthViewModel
+    private lateinit var viewModel: AuthViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-
-        authViewModel = getViewModel(AuthViewModelFactory(this))
-
+        initialValue()
         setContentView(R.layout.activity_login2)
         setupComponents()
+        subscribeUi()
+    }
+
+    private fun initialValue() {
+        viewModel = getViewModel(AuthViewModelFactory(this))
     }
 
     @SuppressLint("SetJavaScriptEnabled")
@@ -64,11 +67,15 @@ class LoginActivity : BaseActivity() {
         web_view.loadUrl("${ApiConfig.AUTH_URL}/login?device=android")
     }
 
+    private fun subscribeUi() {
+        viewModel.setOnHandleError(::errorHandler)
+    }
+
 
     private fun performLogin(code: String) = launch {
         progress_bar?.visible()
         web_view?.inVisible()
-        val result = authViewModel.loginWithCode(this@LoginActivity, code)
+        val result = viewModel.loginWithCode(this@LoginActivity, code)
         progress_bar?.gone()
 
         //Set result to MainActivity and finish

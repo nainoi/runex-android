@@ -52,10 +52,10 @@ class RegisterEventWithEBIBDialog : BaseDialog() {
         }
 
         rootView.positive_button?.setOnClickListener {
-            rootView.ebib_input.content().also { ebib ->
-                when (ebib.isNotBlank()) {
+            rootView.ebib_input.content().also { eBib ->
+                when (eBib.isNotBlank()) {
                     true -> {
-                        getOnEBIBSpecifiedListener()?.onEBIBSpecified(ebib)
+                        getOnEBIBSpecifiedListener()?.onEBIBSpecified(eBib)
                         dismissAllowingStateLoss()
                     }
                     false -> showToast(R.string.please_specify_your_ebib)
@@ -75,7 +75,7 @@ class RegisterEventWithEBIBDialog : BaseDialog() {
     }
 
     interface OnEBIBSpecifiedListener {
-        fun onEBIBSpecified(ebib: String)
+        fun onEBIBSpecified(eBib: String)
     }
 
 }

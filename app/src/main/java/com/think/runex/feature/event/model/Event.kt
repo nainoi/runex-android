@@ -7,7 +7,6 @@ import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.R
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.product.Product
 import com.think.runex.feature.ticket.Ticket
 import com.think.runex.util.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.util.SERVER_DATE_TIME_FORMAT
@@ -15,9 +14,9 @@ import com.think.runex.util.SERVER_DATE_TIME_FORMAT
 data class Event(
         @SerializedName("id") var id: String = "",
         @SerializedName("name") var name: String = "",
-        @SerializedName("description") var description: String = "",
-        @SerializedName("body") var body: String = "",
-        @SerializedName("cover") var coverImage: String = "",
+        @SerializedName("description") var description: String? = null,
+        @SerializedName("body") var body: String? = null,
+        @SerializedName("cover") var coverImage: String? = null,
         @SerializedName("cover_thumb") var coverThumbnailImages: List<EventCoverThumbnailImage>? = null,
         @SerializedName("category") var category: String? = null,
         @SerializedName("slug") var slug: String? = null,
@@ -34,10 +33,10 @@ data class Event(
         @SerializedName("end_event") var endEventDate: String = "",
         @SerializedName("inapp") var isInApp: Boolean = false,
         @SerializedName("is_post") var isPost: Boolean = false,
-        @SerializedName("post_end_date") var postEndDate: String = "",
+        @SerializedName("post_end_date") var postEndDate: String? = null,
         @SerializedName("partner") var partner: Partner? = null,
-        @SerializedName("created_time") var createdAt: String = "",
-        @SerializedName("updated_time") var updatedAt: String = "") : Parcelable {
+        @SerializedName("created_time") var createdTime: String? = null,
+        @SerializedName("updated_time") var updatedTime: String? = null) : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Event> {
         override fun createFromParcel(parcel: Parcel): Event {
@@ -52,9 +51,9 @@ data class Event(
     constructor(parcel: Parcel) : this(
             parcel.readString() ?: "",
             parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.createTypedArrayList(EventCoverThumbnailImage),
             parcel.readString(),
             parcel.readString(),
@@ -71,10 +70,10 @@ data class Event(
             parcel.readString() ?: "",
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
-            parcel.readString() ?: "",
+            parcel.readString(),
             parcel.readParcelable(Partner::class.java.classLoader),
-            parcel.readString() ?: "",
-            parcel.readString() ?: "")
+            parcel.readString(),
+            parcel.readString())
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -101,15 +100,15 @@ data class Event(
         parcel.writeByte(if (isPost) 1 else 0)
         parcel.writeString(postEndDate)
         parcel.writeParcelable(partner, flags)
-        parcel.writeString(createdAt)
-        parcel.writeString(updatedAt)
+        parcel.writeString(createdTime)
+        parcel.writeString(updatedTime)
     }
 
     override fun describeContents(): Int {
         return 0
     }
 
-    fun coverImage(): String = if (coverImage.isNotBlank()) "${ApiConfig.BASE_URL}$coverImage" else ""
+    fun coverImage(): String = if (coverImage?.isNotBlank() == true) "${ApiConfig.BASE_URL}$coverImage" else ""
 
     fun eventPeriod(context: Context): String {
         return "${context.getString(R.string.event_date)} " +

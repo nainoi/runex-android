@@ -20,6 +20,9 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.datasource.api.ApiConfig;
+import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xAction;
@@ -51,7 +54,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     private final String ct = "EventDetailPage->";
 
     // instance variables
-    private EventObject.DataBean mEvent;
+    private RegisteredEvent mEvent;
     private RecordAdapter adapter;
 
     // explicit variables
@@ -100,13 +103,16 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 
         if (mEvent == null) return v;
 
-        // prepare usage variables
-        EventObject.DataBean.EventBean evtVal = mEvent.getEvent();
-
         // update props
-        mEventProfile = APIs.DOMAIN.VAL + evtVal.getCover();
-        mEventName = evtVal.getName();
-        mEventId = mEvent.getEvent_id();
+        mEventId = mEvent.getEventId();
+        if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
+            RegisteredEventInfo evtVal = mEvent.getRegisterInfoList().get(0);
+            if (evtVal.getEvent() != null) {
+                mEventProfile = ApiConfig.BASE_URL + evtVal.getEvent().getCoverImage();
+                mEventName = evtVal.getEvent().getName();
+            }
+        }
+
 
         // view matching
         viewMatching(v);
@@ -146,12 +152,17 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             props.titleLabel = mEventName;
             //--> views
             //--> option button
-            if (!mEvent.getEvent().isInapp()) {
-                toolbar.setImageOptionIcon(R.drawable.ic_add);
-                toolbar.setOptionButtonColorFilter(R.color.orange);
+            if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
+                if (mEvent.getRegisterInfoList().get(0).getEvent() != null) {
+                    if (!mEvent.getRegisterInfoList().get(0).getEvent().isInApp()) {
+                        toolbar.setImageOptionIcon(R.drawable.ic_add);
+                        toolbar.setOptionButtonColorFilter(R.color.orange);
 
-                // hide toolbar option button
-            } else toolbar.toolbarOptionButton.gone();
+                        // hide toolbar option button
+                    } else toolbar.toolbarOptionButton.gone();
+                }
+            }
+
             //--> navigate button
             toolbar.setNavigationButtonColorFilter(R.color.orange);
             toolbar.toolbarTitleIcon.gone();
@@ -227,18 +238,21 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     private void eventViewHolder(View v) {
         // prepare usage variables
         View vh = v.findViewById(R.id.vh_event);
-        EventObject.DataBean evt = mEvent;
-        EventObject.DataBean.EventBean evtVal = evt.getEvent();
-        TextView _lbEventName = vh.findViewById(R.id.lb_event_name);
-        TextView _lbEventType = vh.findViewById(R.id.lb_event_type);
-        ImageView imgCover = vh.findViewById(R.id.view_cover);
+        if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
+            RegisteredEventInfo evtVal = mEvent.getRegisterInfoList().get(0);
+            if (evtVal.getEvent() != null) {
+                TextView _lbEventName = vh.findViewById(R.id.lb_event_name);
+                TextView _lbEventType = vh.findViewById(R.id.lb_event_type);
+                ImageView imgCover = vh.findViewById(R.id.view_cover);
 
-        // binding
-        _lbEventName.setText((evtVal.getName() + "").trim());
-        _lbEventType.setText((evtVal.getCategory().getName() + "").toUpperCase());
+                // binding
+                _lbEventName.setText(evtVal.getEvent().getName());
+                _lbEventType.setText((evtVal.getEvent().getCategory()));
 
-        //--> image
-        Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover()).into(imgCover);
+                //--> image
+                Picasso.get().load(ApiConfig.BASE_URL + evtVal.getEvent().getCoverImage()).into(imgCover);
+            }
+        }
     }
 
     // view matching
@@ -332,7 +346,9 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                     lbTotalDistance.setText("" + Globals.DCM_2.format(db.getTotal_distance()));
 
                     //Keep activity record list for EventRecordHistoryPage
-                    adapter.submitList(db.getActivity_info());
+                    if (db.getActivity_info() != null) {
+                        adapter.submitList(db.getActivity_info());
+                    }
 
                 } catch (Exception e) {
                     L.e(mtn + "Err: " + e.getMessage());
@@ -364,7 +380,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     /**
      * Setter
      */
-    public xFragment setEvent(EventObject.DataBean event) {
+    public xFragment setEvent(RegisteredEvent event) {
         mEvent = event;
 
         return this;

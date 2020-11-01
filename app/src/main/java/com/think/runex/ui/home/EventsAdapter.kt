@@ -1,6 +1,5 @@
 package com.think.runex.ui.home
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,7 +9,6 @@ import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.loadEventsImage
 import com.think.runex.common.requireContext
-import com.think.runex.common.toJson
 import com.think.runex.feature.event.model.Event
 import kotlinx.android.synthetic.main.list_item_event.view.*
 

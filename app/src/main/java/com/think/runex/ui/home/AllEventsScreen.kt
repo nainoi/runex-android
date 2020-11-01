@@ -39,7 +39,7 @@ class AllEventsScreen : BaseScreen() {
 
         //Get event list
         launch {
-            val eventList = eventViewModel.getAllEvent()
+            val eventList = eventViewModel.getAllEvents()
             eventsAdapter.submitList(eventList)
         }
     }

@@ -21,6 +21,8 @@ import com.think.runex.java.Activities.BridgeFile
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.util.KEY_MESSAGE
 import com.think.runex.util.RC_LOGIN
+import com.think.runex.util.launch
+import kotlinx.coroutines.delay
 
 class MainActivity : BaseActivity() {
 
@@ -43,8 +45,11 @@ class MainActivity : BaseActivity() {
         mainFragmentContainerId = R.id.main_fragment_container
 
         if (savedInstanceState == null) {
-            authViewModel.initialToken()
-            setupScreen()
+            launch {
+                delay(100)
+                authViewModel.initialToken()
+                setupScreen()
+            }
         }
     }
 

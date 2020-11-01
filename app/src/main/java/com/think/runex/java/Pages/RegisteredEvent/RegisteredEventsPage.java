@@ -1,6 +1,7 @@
 package com.think.runex.java.Pages.RegisteredEvent;
 
 import android.content.Intent;
+import android.graphics.drawable.Drawable;
 import android.net.Uri;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -11,13 +12,17 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
+import com.google.gson.JsonObject;
+import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.feature.event.model.registered.RegisteredEvent;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
@@ -25,6 +30,7 @@ import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.EventObject;
 import com.think.runex.java.Models.MultiObject;
+import com.think.runex.java.Models.RegisteredEventObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.EventDetailPage;
 import com.think.runex.java.Pages.onItemClick;
@@ -36,7 +42,9 @@ import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetRegisteredEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
+import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration;
 
+import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -55,7 +63,7 @@ public class RegisteredEventsPage extends xFragment implements
     // instance variables
     private ChildFragmentUtils mChildFragmentUtils;
     private EventAdapter eventAdapter;
-    private List<MultiObject> events = new ArrayList<>();
+    private List<RegisteredEvent> events = new ArrayList<>();
 
     // explicit variables
     private boolean ON_REFRESH = false;
@@ -162,66 +170,32 @@ public class RegisteredEventsPage extends xFragment implements
             // prepare usage variables
             final String jsonString = xrsp.jsonString;
 
+
             // logs
             L.i(mtn + "JSONResult: " + jsonString);
 
             // prepare usage variables
-            final EventObject rsp = GSON.fromJson(jsonString, EventObject.class);
-            final List<MultiObject> mlList = new ArrayList<>();
-
-            L.i(mtn + "");
-            L.i(mtn + "");
-            L.i(mtn + "* * * Event Amount(" + rsp.getData().size() + ") * * *");
-            for (int a = 0; a < rsp.getData().size(); a++) {
-                // prepare usage variables
-                EventObject.DataBean evt = rsp.getData().get(a);
-                EventObject.DataBean.EventBean evtVal = evt.getEvent();
-                MultiObject ml = new MultiObject();
-                DisplayDateTimeObject start = DateTimeUtils.stringToDate(evtVal.getStart_reg());
-                DisplayDateTimeObject end = DateTimeUtils.stringToDate(evtVal.getEnd_reg());
-
-                // update props
-                //--> evt val
-                evtVal.setCustomRegDuration(start.Day + " " + start.shortMonth
-                        + " - " + end.Day + " " + end.shortMonth + " " + end.year);
-                evtVal.setCustomPaymentColor(Payment.match(evt.getStatus()));
-
-                //--> multi object
-                ml.setAttachedObject(evt);
-                ml.setLayoutTypeId(0);
-
-                // keep object
-                mlList.add(ml);
-                // divider
-                mlList.add(new MultiObject().setLayoutTypeId(1));
-
-                // logs
-                L.i(mtn + "Name[" + a + "]: " + evt.getEvent().getName());
-
-            }
-            L.i(mtn + "");
+            final RegisteredEventObject object = GSON.fromJson(jsonString, RegisteredEventObject.class);
 
 
-            // on refresh
-            if (ON_REFRESH) {
-                // clear all item
-                events.clear();
+//            Type registeredEventType = new TypeToken<List<RegisteredEvent>>() {
+//            }.getType();
+//            List<RegisteredEvent> mlList = GSON.fromJson(jsonString, registeredEventType);
 
-            }
-
+            events.clear();
             // add all items
-            events.addAll(mlList);
+            if (object.getData() != null) {
+                events.addAll(object.getData());
+            }
 
             // notify data has changed
             if (ON_REFRESH) {
                 // clear flag
                 this.ON_REFRESH = false;
+            }
 
-                // notify data has change
-                eventAdapter.notifyDataSetChanged();
-
-                // notify insert item
-            } else eventAdapter.notifyItemRangeInserted(0, rsp.getData().size());
+            // notify data has change
+            eventAdapter.notifyDataSetChanged();
 
             // gone progress dialog
             refreshLayout.setRefreshing(false);
@@ -238,7 +212,7 @@ public class RegisteredEventsPage extends xFragment implements
     @Override
     public void onFailure(xResponse xResponse) {
         // prepare usage variables
-        final String mtn = ct +"onFailure() ";
+        final String mtn = ct + "onFailure() ";
 
         try {
             Toast.makeText(getActivity(), "Fail", Toast.LENGTH_SHORT).show();
@@ -249,8 +223,8 @@ public class RegisteredEventsPage extends xFragment implements
             // gone progress
             refreshLayout.setRefreshing(false);
 
-        } catch ( Exception e ){
-            L.e(mtn +"Err: "+ e.getMessage());
+        } catch (Exception e) {
+            L.e(mtn + "Err: " + e.getMessage());
         }
 
     }
@@ -276,7 +250,7 @@ public class RegisteredEventsPage extends xFragment implements
             @Override
             public void onItemClicked(int position) {
                 // exit from this process
-                if( ON_REFRESH ) return;
+                if (ON_REFRESH) return;
 
                 // prepare usage variables
                 final String mtn = ct + "onItemClick() ";
@@ -287,7 +261,7 @@ public class RegisteredEventsPage extends xFragment implements
                     final EventDetailPage page = new EventDetailPage();
 
                     // update props
-                    page.setEvent((EventObject.DataBean) events.get(position).getAttachedObject());
+                    page.setEvent(events.get(position));
 
                     // go to specified page
 
@@ -380,6 +354,8 @@ public class RegisteredEventsPage extends xFragment implements
      */
     private void recyclerViewProps() {
         recyclerView.setLayoutManager(new LinearLayoutManager(getActivity()));
+        Drawable lineSeparator = ContextCompat.getDrawable(requireContext(), R.drawable.line_separator_list_item);
+        recyclerView.addItemDecoration(new LineSeparatorItemDecoration(lineSeparator, false, true, RecyclerView.VERTICAL));
         recyclerView.setAdapter(eventAdapter);
     }
 

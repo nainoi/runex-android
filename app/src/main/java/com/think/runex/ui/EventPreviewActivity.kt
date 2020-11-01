@@ -2,9 +2,7 @@ package com.think.runex.ui
 
 import android.annotation.SuppressLint
 import android.graphics.Color
-import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import android.webkit.WebSettings
 import android.webkit.WebView
@@ -22,12 +20,14 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.event.EventViewModel
 import com.think.runex.feature.event.EventViewModelFactory
 import com.think.runex.feature.event.model.Event
+import com.think.runex.ui.base.BaseActivity
 import com.think.runex.util.KEY_EVENT
+import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_event_preview.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
+class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
 
     private lateinit var viewModel: EventViewModel
     private var event: Event? = null
@@ -40,11 +40,9 @@ class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.On
         subscribeUi()
 
         //Load event preview
+        register_button?.isEnabled = false
         progress_bar?.visible()
         web_view.loadUrl("${ApiConfig.EVENT_PREVIEW_URL}/${event?.id}")
-
-        //Check is registered event
-        checkRegisteredEvent()
     }
 
     private fun initialValue() {
@@ -56,7 +54,7 @@ class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.On
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupComponents() {
-        setStatusBarColor(Color.TRANSPARENT, true)
+        setStatusBarColor(Color.TRANSPARENT, NightMode.isNightMode(this).not())
         setupToolbar(toolbar, R.string.detail, R.mipmap.ic_back)
 
         //Setup view view
@@ -69,6 +67,8 @@ class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.On
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 progress_bar?.gone()
+                //After load event web view finish will check is registered event api.
+                checkRegisteredEvent()
             }
         }
 
@@ -76,14 +76,14 @@ class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.On
         if (event?.isFree == true) {
             register_button.isEnabled = true
         }
-
     }
 
     private fun subscribeUi() {
+        viewModel.setOnHandleError(::errorHandler)
+
         register_button.setOnClickListener {
             //TODO(Force enable to register when partner name is 'KAO' for now.")
             if (event?.partner?.partnerName == "KAO") {
-                Log.e("Jozzee", "showDialog")
                 showDialog(RegisterEventWithEBIBDialog())
             }
         }
@@ -91,13 +91,22 @@ class EventPreviewActivity : AppCompatActivity(), RegisterEventWithEBIBDialog.On
 
     private fun checkRegisteredEvent() = launch {
         val isRegistered = viewModel.isRegisteredEvent(event?.id ?: "")
-        if (isRegistered) {
-            register_button.isEnabled = false
-        }
+        register_button.isEnabled = isRegistered.not()
     }
 
-    override fun onEBIBSpecified(ebib: String) {
-        //
+    override fun onEBIBSpecified(eBib: String) {
+        performRegisterEvent(eBib)
+    }
+
+    private fun performRegisterEvent(eBib: String) = launch {
+        event?.also { event ->
+            showProgressDialog(getString(R.string.register_event))
+            val isSuccess = viewModel.registerEventWithKoa(event, eBib)
+            hideProgressDialog()
+            if (isSuccess) {
+                finish()
+            }
+        }
     }
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean {

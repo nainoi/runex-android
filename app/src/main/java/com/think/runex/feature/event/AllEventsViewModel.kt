@@ -7,8 +7,8 @@ import kotlinx.coroutines.withContext
 
 class AllEventsViewModel(private val repo: EventRepository) : BaseViewModel() {
 
-    suspend fun getAllEvent(): List<Event>? = withContext(IO) {
-        val result = repo.getAllEvent()
+    suspend fun getAllEvents(): List<Event>? = withContext(IO) {
+        val result = repo.getAllEvents()
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }

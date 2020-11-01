@@ -22,6 +22,7 @@
     <string name="challenges">ชาเลนจ์</string>
     <string name="confirm">ยืนยัน</string>
     <string name="confirm_register">ยืนยันการสมัคร</string>
+    <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
 
     <!-- D -->
     <string name="detail">รายละเอียด</string>
@@ -45,6 +46,7 @@
     <string name="finish_recording">จบการจับเวลา</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>
     <string name="free">ฟรี</string>
+    <string name="failed">ล้มเหลว</string>
 
     <!-- G -->
     <string name="get_started">เริ่มใช้งาน</string>
@@ -88,12 +90,13 @@
     <string name="password_required">กรุณาระบุรหัสผ่าน</string>
     <string name="profile">ข้อมูลส่วนตัว</string>
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
+    <string name="please_login">กรุณาเข้าสู่ระบบ</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>
     <string name="register">สมัครสมาชิก</string>
     <string name="register_date">รับสมัคร</string>
-    <string name="register_event">สมัครงาวิ่ง</string>
+    <string name="register_event">สมัครงานวิ่ง</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>
@@ -105,6 +108,7 @@
     <string name="start_recording">เริ่มจับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>
+    <string name="success">สำเร็จ</string>
 
     <!-- T -->
     <string name="time">เวลา</string>
@@ -116,6 +120,8 @@
 
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>
+    <string name="waiting_for_approve">รอการตรวจสอบ</string>
+    <string name="waiting_for_payment">รอชำระเงิน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
     <string name="pause_recording">พักจับเวลา</string>
 

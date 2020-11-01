@@ -8,8 +8,13 @@ data class Partner(
         @SerializedName("partner_id") var partnerId: String = "",
         @SerializedName("partner_name") var partnerName: String = "",
         @SerializedName("slug") var slug: String = "",
-        @SerializedName("ref_event_key") var refEventKey: String = "",
-        @SerializedName("ref_activity_key") var refActivityKey: String = "") : Parcelable {
+        @SerializedName("ref_event_key") var refEventKey: String? = null,
+        @SerializedName("ref_activity_key") var refActivityKey: String? = null,
+        @SerializedName("ref_event_value") var refEventValue: String? = null,
+        @SerializedName("ref_activity_value") var refActivityValue: String? = null,
+        @SerializedName("ref_phone_value") var refPhoneValue: String? = null,
+
+        ) : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Partner> {
         override fun createFromParcel(parcel: Parcel): Partner {
@@ -26,6 +31,9 @@ data class Partner(
             parcel.readString() ?: "",
             parcel.readString() ?: "",
             parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
             parcel.readString() ?: "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -34,6 +42,9 @@ data class Partner(
         parcel.writeString(slug)
         parcel.writeString(refEventKey)
         parcel.writeString(refActivityKey)
+        parcel.writeString(refEventValue)
+        parcel.writeString(refActivityValue)
+        parcel.writeString(refPhoneValue)
     }
 
     override fun describeContents(): Int {
