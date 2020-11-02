@@ -12,7 +12,6 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.google.android.material.textview.MaterialTextView;
 import com.think.runex.R;
 import com.think.runex.java.Models.ActiveRegisteredEventObject;
-import com.think.runex.java.Models.RegEventsObject;
 
 public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
 

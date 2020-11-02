@@ -4,7 +4,7 @@ import com.think.runex.feature.event.model.registered.RegisteredEvent;
 
 import java.util.List;
 
-public class RegisteredEventObject {
+public class RegisteredEventsObject {
 
     private int code;
     private String msg;

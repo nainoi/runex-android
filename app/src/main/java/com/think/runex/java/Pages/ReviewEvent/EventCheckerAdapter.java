@@ -6,7 +6,6 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.java.Models.ActiveRegisteredEventObject;
-import com.think.runex.java.Models.RegEventsObject;
 
 import java.util.ArrayList;
 import java.util.List;

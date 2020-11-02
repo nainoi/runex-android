@@ -7,7 +7,6 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Models.ActivityInfoBean;
-import com.think.runex.java.Models.RegEventsObject;
 import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.L;
 

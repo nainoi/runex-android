@@ -1,36 +1,25 @@
-package com.think.runex.java.Pages;
+package com.think.runex.java.Pages.RegisteredEvent;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
-import androidx.fragment.app.Fragment;
 
 import com.think.runex.R;
 import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.App.App;
-import com.think.runex.java.App.Configs;
-import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
-import com.think.runex.java.Pages.RegisteredEvent.RegisteredEventsPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
-import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
-import com.think.runex.java.Utils.Network.NetworkProps;
-import com.think.runex.java.Utils.Network.NetworkUtils;
-import com.think.runex.java.Utils.Network.Request.rqLogin;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
-import com.think.runex.ui.LoginScreen;
 
 public class MyEventPage extends xFragment implements onNetworkCallback, View.OnClickListener {
 

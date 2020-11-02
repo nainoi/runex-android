@@ -25,6 +25,7 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Pages.RecordPage.v2.RecordPage;
+import com.think.runex.java.Pages.RegisteredEvent.MyEventPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
 

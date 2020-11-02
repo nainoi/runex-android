@@ -17,8 +17,6 @@ import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
-import com.google.gson.JsonObject;
-import com.google.gson.reflect.TypeToken;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
@@ -26,17 +24,12 @@ import com.think.runex.feature.event.model.registered.RegisteredEvent;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Constants.Payment;
 import com.think.runex.java.Customize.Fragment.xFragment;
-import com.think.runex.java.Models.EventObject;
-import com.think.runex.java.Models.MultiObject;
-import com.think.runex.java.Models.RegisteredEventObject;
+import com.think.runex.java.Models.RegisteredEventsObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.EventDetailPage;
 import com.think.runex.java.Pages.onItemClick;
 import com.think.runex.java.Utils.ChildFragmentUtils;
-import com.think.runex.java.Utils.DateTime.DateTimeUtils;
-import com.think.runex.java.Utils.DateTime.DisplayDateTimeObject;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
@@ -44,7 +37,6 @@ import com.think.runex.java.Utils.Network.Services.GetRegisteredEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration;
 
-import java.lang.reflect.Type;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
@@ -175,7 +167,7 @@ public class RegisteredEventsPage extends xFragment implements
             L.i(mtn + "JSONResult: " + jsonString);
 
             // prepare usage variables
-            final RegisteredEventObject object = GSON.fromJson(jsonString, RegisteredEventObject.class);
+            final RegisteredEventsObject object = GSON.fromJson(jsonString, RegisteredEventsObject.class);
 
 
 //            Type registeredEventType = new TypeToken<List<RegisteredEvent>>() {
