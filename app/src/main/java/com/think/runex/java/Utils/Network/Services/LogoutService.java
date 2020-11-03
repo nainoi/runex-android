@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
@@ -18,7 +19,7 @@ public class LogoutService extends xRequest {
 
     public void doIt(){
         // validate token
-        if (!appEntity.token.isAlive()) {
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -34,9 +35,9 @@ public class LogoutService extends xRequest {
         //--> update props
         props.setUrl(APIs.LOGOUT.VAL);
         //--> headers
-        props.addHeader("Authorization", "Bearer "+ appEntity.token.getToken());
+        props.addHeader("Authorization", TokenManager.Companion.getAccessToken());
 
         // request
-        nu.get(props, networkCallback);
+        nu.postJSON(props, networkCallback);
     }
 }

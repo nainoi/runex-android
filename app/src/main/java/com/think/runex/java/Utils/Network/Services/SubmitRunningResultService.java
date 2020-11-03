@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
@@ -18,9 +19,9 @@ public class SubmitRunningResultService extends xRequest {
         super(activity, networkCallback);
     }
 
-    public void doIt(rqSubmitRunningResult request){
+    public void doIt(rqSubmitRunningResult request) {
         // validate token
-        if( !appEntity.token.isAlive() ){
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -29,23 +30,23 @@ public class SubmitRunningResultService extends xRequest {
         }
 
         // prepare usage variables
-        final String mtn = ct +"doIt() ";
-        NetworkUtils nu = NetworkUtils.newInstance( activity );
-        String submitDate = Globals.SDF.format( request.activity_date ).toString();
+        final String mtn = ct + "doIt() ";
+        NetworkUtils nu = NetworkUtils.newInstance(activity);
+        String submitDate = Globals.SDF.format(request.activity_date).toString();
         NetworkProps props = new NetworkProps();
 
         //--> update props
-        props.setUrl( APIs.SUBMIT_RUNNING_RESULT.VAL );
-        props.addMultiParts("distance", request.distance +"");
+        props.setUrl(APIs.SUBMIT_RUNNING_RESULT.VAL);
+        props.addMultiParts("distance", request.distance + "");
         props.addMultiParts("activity_date", submitDate);
         props.addMultiParts("activity_type", request.activity_type);
         props.addMultiParts("event_id", request.event_id);
         //--> headers
-        props.addHeader("Authorization", "Bearer "+ appEntity.token.getToken());
+        props.addHeader("Authorization", TokenManager.Companion.getAccessToken());
 
-        L.i(mtn +"Bearer "+ appEntity.token.getToken());
+        L.i(mtn + "Bearer " + TokenManager.Companion.getAccessToken());
 
         // request 
-        nu.postFormData( props, networkCallback );
+        nu.postFormData(props, networkCallback);
     }
 }

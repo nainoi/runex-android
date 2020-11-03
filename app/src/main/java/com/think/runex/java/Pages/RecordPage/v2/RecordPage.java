@@ -1301,7 +1301,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         final String mtn = ct + "apiWorkOuts() ";
         final rqAddWorkOutsHistory request = new rqAddWorkOutsHistory();
 
-        final double recordTime = recTimeAsSec(currentRecorder.durationMillis);
+        final long recordTime = recTimeAsSec(currentRecorder.durationMillis);
         final double recordPace = paceAsMin(currentRecorder.paceMillis);
 
         //request.setActivity_type(Globals.ACTIVITY_RUN);

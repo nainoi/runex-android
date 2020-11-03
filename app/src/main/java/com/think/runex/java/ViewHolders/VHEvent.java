@@ -1,25 +1,22 @@
 package com.think.runex.java.ViewHolders;
 
-import android.content.Context;
-import android.graphics.Color;
+
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
+import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.java.Constants.APIs;
-import com.think.runex.java.Constants.Payment;
-import com.think.runex.java.Models.EventObject;
-import com.think.runex.java.Models.MultiObject;
+import com.think.runex.datasource.api.ApiConfig;
+import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
+import com.think.runex.feature.payment.PaymentStatus;
 import com.think.runex.java.Pages.onItemClick;
-import com.think.runex.java.Utils.L;
 
 public class VHEvent extends RecyclerView.ViewHolder {
     // views
@@ -41,37 +38,40 @@ public class VHEvent extends RecyclerView.ViewHolder {
         imgCover = v.findViewById(R.id.view_cover);
     }
 
-    public static VHEvent create(ViewGroup parent){
-        return new VHEvent(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event, parent, false));
+    public static VHEvent create(ViewGroup parent) {
+        return new VHEvent(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event_java, parent, false));
     }
 
-    public void bind(MultiObject ml, onItemClick listener){
+    public void bind(RegisteredEventInfo data, onItemClick listener) {
         // prepare usage variables
-        EventObject.DataBean evt = (EventObject.DataBean)ml.getAttachedObject();
-        EventObject.DataBean.EventBean evtVal = evt.getEvent();
-        Payment payment =  evtVal.getCustomPaymentColor();
+        //EventObject.DataBean evt = (EventObject.DataBean)ml.getAttachedObject();
+        //EventObject.DataBean.EventBean evtVal = evt.getEvent();
+        //Payment payment =  evtVal.getCustomPaymentColor();
 
         // binding
-        lbEventName.setText( (evtVal.getName() +"").trim() );
-        lbEventType.setText( (evtVal.getCategory().getName() +"").toUpperCase() );
-        lbStartReg.setText(evtVal.getCustomRegDuration());
+        if (data.getEvent() != null) {
+            lbEventName.setText(data.getEvent().getName());
+            lbEventType.setText(data.getEvent().getCategory());
+            lbStartReg.setText(data.getEvent().registerPeriod(itemView.getContext()));
+            //--> image
+            Picasso.get().load(ApiConfig.BASE_URL + data.getEvent().getCoverImage()).into(imgCover);
+        }
         //--> billing
-        lbEventBill.setText( payment.DESC );
-        lbEventBill.setTextColor(Color.parseColor("#"+ payment.COLOR_HEX) );
-        //--> image
-        Picasso.get().load(APIs.DOMAIN.VAL + evtVal.getCover() ).into( imgCover );
+        lbEventBill.setText(PaymentStatus.INSTANCE.getPaymentStatusText(itemView.getContext(), data.getPaymentStatus()));
+        lbEventBill.setTextColor(ContextCompat.getColor(itemView.getContext(), PaymentStatus.INSTANCE.getPaymentStatusColor(data.getPaymentStatus())));
+
         //--> event
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // exit from this process
-                if( !payment.equals( Payment.PAYMENT_SUCCESS)) return;
+                if (!data.getPaymentStatus().equals(PaymentStatus.SUCCESS)) return;
 
                 // exit from this process
-                if( listener == null ) return;
+                if (listener == null) return;
 
                 // event listener
-                listener.onItemClicked( getAdapterPosition() );
+                listener.onItemClicked(getAdapterPosition());
 
             }
         });

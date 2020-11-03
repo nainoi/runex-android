@@ -6,18 +6,17 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
-import com.think.runex.common.displayFormat
-import com.think.runex.common.loadEventImage
-import com.think.runex.feature.event.Event
-import kotlinx.android.synthetic.main._list_item_event.view.*
+import com.think.runex.common.loadEventsImage
+import com.think.runex.common.requireContext
+import com.think.runex.feature.event.model.Event
+import kotlinx.android.synthetic.main.list_item_event.view.*
 
 class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
-    private var onItemClick: ((position: Int, eventId: String) -> Unit)? = null
+    private var onItemClick: ((position: Int, event: Event) -> Unit)? = null
 
-    fun setOnItemClick(block: (position: Int, eventId: String) -> Unit) {
+    fun setOnItemClick(block: (position: Int, event: Event) -> Unit) {
         onItemClick = block
     }
 
@@ -42,25 +41,20 @@ class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDif
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout._list_item_event, parent, false))
+                    .inflate(R.layout.list_item_event, parent, false))
         }
 
-        fun bind(data: Event, onItemClick: ((position: Int, eventId: String) -> Unit)? = null) {
-            itemView.imv_event?.loadEventImage(data.coverImage())
-            itemView.tv_event_name.text = data.name
-            itemView.tv_event_description.text = data.description
-            itemView.tv_event_description.setVisible(data.description.isNotBlank())
-            itemView.tv_event_time.text = data.startEvent
+        fun bind(data: Event?, onItemClick: ((position: Int, event: Event) -> Unit)? = null) {
+            itemView.event_image?.loadEventsImage(data?.coverImage())
+            itemView.event_name_label?.text = data?.name ?: ""
+            itemView.event_category_label?.text = data?.category ?: ""
+            itemView.event_date_label?.text = data?.eventPeriod(requireContext()) ?: ""
+            itemView.register_date_label?.text = data?.registerPeriod(requireContext()) ?: ""
 
-            when (data.ticket?.isNotEmpty() == true) {
-                true -> itemView.btn_price.text = ("$${(data.ticket?.get(0)?.price
-                        ?: 0f).displayFormat()}")
-                false -> itemView.btn_price.text = ("$0.00")
-            }
-
-            //Set on click item
-            itemView.setOnClickListener {
-                onItemClick?.invoke(adapterPosition, data.id)
+            itemView.list_item_event?.setOnClickListener {
+                data?.also {
+                    onItemClick?.invoke(adapterPosition, it)
+                }
             }
         }
     }

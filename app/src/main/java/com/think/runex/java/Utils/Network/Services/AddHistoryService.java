@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.Network.NetworkProps;
@@ -18,11 +19,11 @@ public class AddHistoryService extends xRequest {
         super(activity, networkCallback);
     }
 
-    public void doIt(rqAddRunningHistory request){
+    public void doIt(rqAddRunningHistory request) {
         // prepare usage variables
-        final String mtn = ct +"doIt() ";
+        final String mtn = ct + "doIt() ";
 
-        if( !appEntity.token.isAlive() ){
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -31,13 +32,13 @@ public class AddHistoryService extends xRequest {
         }
 
         // prepare usage variables
-        final NetworkUtils nw = NetworkUtils.newInstance( activity );
+        final NetworkUtils nw = NetworkUtils.newInstance(activity);
         final NetworkProps props = new NetworkProps();
 
         //--> props
-        props.setUrl( APIs.ADD_HISTORY.VAL);
-        props.setJsonAsObject( request );
-        props.addHeader(Globals.HEADER_AUTHORIZATION, Globals.TOKEN_TYPE +" "+ appEntity.token.getToken());
+        props.setUrl(APIs.ADD_HISTORY.VAL);
+        props.setJsonAsObject(request);
+        props.addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.Companion.getAccessToken());
 
         //--> fire
         nw.postJSON(props, networkCallback);

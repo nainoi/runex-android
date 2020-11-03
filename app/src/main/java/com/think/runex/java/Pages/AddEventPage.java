@@ -4,7 +4,6 @@ import android.Manifest;
 import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.app.DatePickerDialog;
-import android.content.Context;
 import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
@@ -25,13 +24,11 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.widget.AppCompatButton;
-import androidx.core.content.FileProvider;
 import androidx.exifinterface.media.ExifInterface;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.textfield.TextInputEditText;
 import com.squareup.picasso.Picasso;
-import com.think.runex.BuildConfig;
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xAction;
@@ -45,17 +42,15 @@ import com.think.runex.java.Utils.Network.Services.AddEventActivityService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.UriUtils;
-import com.think.runex.ui.components.NumberTextWatcher;
+import com.think.runex.ui.component.NumberTextWatcher;
 
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.Locale;
-import java.util.Objects;
 import java.util.TimeZone;
 
-import static androidx.core.content.FileProvider.getUriForFile;
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
 import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
 

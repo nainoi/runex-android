@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkMultipartProps;
@@ -21,7 +22,7 @@ public class AddEventActivityService extends xRequest {
         // prepare usage variables
         final String mtn = ct + "doIt() ";
 
-        if (!appEntity.token.isAlive()) {
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -44,9 +45,9 @@ public class AddEventActivityService extends xRequest {
         props.addFormDataPart("activity_type", activityType);
 
         //--> headers
-        props.addHeader("Authorization", "Bearer " + appEntity.token.getToken());
+        props.addHeader("Authorization", TokenManager.Companion.getAccessToken());
 
-        L.i(mtn + "Bearer " + appEntity.token.getToken());
+        L.i(mtn + TokenManager.Companion.getAccessToken());
 
         // request
         nw.postMultiPath(props, networkCallback);

@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.Network.NetworkProps;
@@ -15,7 +16,7 @@ public class GetEventDetailService extends xRequest {
     }
 
     public void doIt(String eventId){
-        if (!appEntity.token.isAlive()) {
+        if (!TokenManager.Companion.isAlive()) {
             // callback
             networkCallback.onSuccess(unauthorized());
 
@@ -29,7 +30,7 @@ public class GetEventDetailService extends xRequest {
 
         //--> props
         props.setUrl(String.format(APIs.GET_EVENT_DETAIL.VAL, eventId));
-        props.addHeader(Globals.HEADER_AUTHORIZATION, Globals.TOKEN_TYPE + " " + appEntity.token.getToken());
+        props.addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.Companion.getAccessToken());
 
         //--> fire
         nw.get(props, networkCallback);

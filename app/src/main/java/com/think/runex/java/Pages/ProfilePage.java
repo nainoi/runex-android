@@ -9,7 +9,6 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -20,22 +19,26 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
-import com.think.runex.java.Models.RunningHistoryObject;
+import com.think.runex.java.Models.WorkoutObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.Record.RecordAdapter;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
-import com.think.runex.java.Utils.Network.Services.GetRunningHistory;
+import com.think.runex.java.Utils.Network.Services.GetWorkoutsService;
 import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.MainActivity;
+import com.think.runex.util.AppPreference;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+
+import static com.think.runex.util.ConstantsKt.KEY_ACCESS_TOKEN;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,
@@ -47,7 +50,7 @@ public class ProfilePage extends xFragment implements
 
     // instance variables
     private AlertDialog mDialog;
-    private RunningHistoryObject.DataBean mRunningHist;
+    private WorkoutObject.DataBean mRunningHist;
     private RecordAdapter recordAdapter;
 
     // explicit variables
@@ -67,12 +70,12 @@ public class ProfilePage extends xFragment implements
      */
     @Override
     public xFragment onResult(xTalk xTalk) {
-        if( xTalk.requestCode == Globals.RC_REFRESH && isAdded()){
+        if (xTalk.requestCode == Globals.RC_REFRESH && isAdded()) {
             // condition
-            if( ON_NETWORKING ) return null;
+            if (ON_NETWORKING) return null;
 
             // display progress dialog
-            refreshLayout.setRefreshing( true );
+            refreshLayout.setRefreshing(true);
 
             // request on refresh
             onRefresh();
@@ -112,7 +115,7 @@ public class ProfilePage extends xFragment implements
     @Override
     public void onRefresh() {
         // get running history
-        apiGetRunningHistory();
+        apiGetWorkouts();
 
     }
 
@@ -130,8 +133,8 @@ public class ProfilePage extends xFragment implements
         // view binding
         viewBinding(App.instance(activity).getAppEntity().user);
 
-       // recycler view props
-       recyclerViewProps();
+        // recycler view props
+        recyclerViewProps();
 
         return v;
     }
@@ -139,32 +142,34 @@ public class ProfilePage extends xFragment implements
     /**
      * API methods
      */
-    private void apiGetRunningHistory() {
+    private void apiGetWorkouts() {
         // prepare usage variables
         final String mtn = ct + "apiGetRunningHistory() ";
 
-        new GetRunningHistory(activity, new onNetworkCallback() {
+        ON_NETWORKING = true;
+
+        new GetWorkoutsService(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "response: " + response.jsonString);
 
                 try {
                     // convert to running history object
-                    RunningHistoryObject rhis = Globals.GSON.fromJson(response.jsonString, RunningHistoryObject.class);
+                    WorkoutObject rhis = Globals.GSON.fromJson(response.jsonString, WorkoutObject.class);
 
                     // prepare usage variables
                     double totalDistance = 0.0;
 
                     // condition
-                    if (rhis.getData().size() > 0) {
+                    if (rhis.getData().getActivity_info().size() > 0) {
                         // update props
-                        totalDistance = (mRunningHist = rhis.getData().get(0)).getTotal_distance();
+                        totalDistance = (mRunningHist = rhis.getData()).getTotal_distance();
 
                         try {
                             recordAdapter.submitList(mRunningHist.getActivity_info(), 7);
 
-                        } catch ( Exception e ){
-                            L.e(mtn +"Err: "+ e.getMessage());
+                        } catch (Exception e) {
+                            L.e(mtn + "Err: " + e.getMessage());
 
                         }
 
@@ -213,7 +218,7 @@ public class ProfilePage extends xFragment implements
         new LogoutService(getActivity(), new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
-                if (response.responseCode == HttpURLConnection.HTTP_OK) {
+                if (response.responseCode == HttpURLConnection.HTTP_OK || response.responseCode == HttpURLConnection.HTTP_ACCEPTED) {
 
                     // update flag
                     ON_NETWORKING = false;
@@ -222,10 +227,17 @@ public class ProfilePage extends xFragment implements
                     mDialog.dismiss();
 
                     // sign out and sign in
-                    App.instance(activity)
-                            .clear()
-                            .serveLoginPage(ProfilePage.this, Globals.RC_NEED_LOGIN);
+                    TokenManager.Companion.clearToken();
+                    AppPreference.INSTANCE.createPreference(activity).edit().remove(KEY_ACCESS_TOKEN).apply();
 
+                    //Start new ManActivity
+                    Intent intent = new Intent(activity, MainActivity.class);
+                    intent.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK | Intent.FLAG_ACTIVITY_CLEAR_TASK);
+                    startActivity(intent);
+                    activity.finish();
+//                    App.instance(activity)
+//                            .clear()
+//                            .serveLoginPage(ProfilePage.this, Globals.RC_NEED_LOGIN);
 
                 }
 
@@ -296,15 +308,17 @@ public class ProfilePage extends xFragment implements
         }
     }
 
-    /** Recycler view props */
-    private void recyclerViewProps(){
+    /**
+     * Recycler view props
+     */
+    private void recyclerViewProps() {
         // prepare usage variables
-        final String mtn = ct +"recyclerViewProps() ";
-        recordAdapter = new RecordAdapter(false,null);
+        final String mtn = ct + "recyclerViewProps() ";
+        recordAdapter = new RecordAdapter(false, null);
 
         // update props
-        recyclerView.setLayoutManager( new LinearLayoutManager( activity ));
-        recyclerView.setAdapter( recordAdapter );
+        recyclerView.setLayoutManager(new LinearLayoutManager(activity));
+        recyclerView.setAdapter(recordAdapter);
 
     }
 
@@ -346,19 +360,19 @@ public class ProfilePage extends xFragment implements
             mOnLoginHasChanged = false;
 
             // condition
-            if( ON_NETWORKING ) return;
+            if (ON_NETWORKING) return;
 
             // update flag
             ON_NETWORKING = true;
 
             // get my profile
-            apiGetRunningHistory();
+            apiGetWorkouts();
 
         } else {
 
             try {
                 // total distance
-                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) +" km");
+                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) + " km");
 
             } catch (Exception e) {
                 L.e(mtn + "Err: " + e.getMessage());

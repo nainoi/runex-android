@@ -3,9 +3,12 @@ package com.think.runex.java.Utils.Network;
 import android.app.Activity;
 
 import com.google.gson.Gson;
+import com.think.runex.feature.auth.RefreshTokenInterceptor;
+import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
+import com.think.runex.util.AppPreference;
 
 import java.net.HttpURLConnection;
 import java.util.concurrent.TimeUnit;
@@ -342,6 +345,7 @@ public class NetworkUtils {
                 .writeTimeout(30, TimeUnit.SECONDS)
                 .readTimeout(30, TimeUnit.SECONDS)
                 .addInterceptor(logging)
+                .addInterceptor(new RefreshTokenInterceptor(activity))
                 .build();
     }
 

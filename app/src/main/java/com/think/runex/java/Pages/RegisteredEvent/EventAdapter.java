@@ -2,25 +2,29 @@ package com.think.runex.java.Pages.RegisteredEvent;
 
 import android.view.LayoutInflater;
 import android.view.ViewGroup;
+
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
+
 import com.think.runex.R;
-import com.think.runex.java.Models.MultiObject;
+import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
 import com.think.runex.java.Pages.onItemClick;
-import com.think.runex.java.ViewHolders.VHEmpty;
 import com.think.runex.java.ViewHolders.VHEvent;
 
 import java.util.List;
 
 public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> {
-    /** Main variables */
+    /**
+     * Main variables
+     */
     private final String ct = "EventAdapter->";
 
     // instance variables
     private onItemClick mListener;
-    private List<MultiObject> events;
+    private List<RegisteredEvent> events;
 
-    public EventAdapter(List<MultiObject> events, onItemClick listener) {
+    public EventAdapter(List<RegisteredEvent> events, onItemClick listener) {
         super();
 
         this.events = events;
@@ -31,24 +35,19 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     @NonNull
     @Override
     public RecyclerView.ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        if( viewType == 0 ){
-            return new VHEvent(LayoutInflater.from( parent.getContext() ).inflate(R.layout.list_item_event, parent, false));
-
-        } else return new VHEmpty(LayoutInflater.from( parent.getContext() ).inflate(R.layout.list_item_event_divider, parent, false));
-
+        return new VHEvent(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event_java, parent, false));
     }
 
-    @Override
-    public int getItemViewType(int position) {
-        return events.get( position ).getLayoutTypeId();
-    }
 
     @Override
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
-        if( getItemViewType(position) == 0 ){
-            VHEvent vh = ((VHEvent)holder);
-            vh.bind( events.get( position), mListener);
+        if (getItemViewType(position) == 0) {
+            VHEvent vh = ((VHEvent) holder);
 
+            if (events.get(position) != null && events.get(position).getRegisterInfoList() != null && events.get(position).getRegisterInfoList().size() > 0) {
+                RegisteredEventInfo data = events.get(position).getRegisterInfoList().get(0);
+                vh.bind(data, mListener);
+            }
         }
     }
 

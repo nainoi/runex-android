@@ -93,7 +93,7 @@
 
                 <TextView
                     android:id="@+id/btn_date"
-                    style="@style/TextField"
+                    style="@style/TextInput"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/edt_distance"
@@ -105,7 +105,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/btn_submit"
-                    style="@style/ButtonAccent"
+                    style="@style/Button.Primary"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/edt_note"
@@ -116,7 +116,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_note"
-                    style="@style/TextField.Note"
+                    style="@style/TextInput.Note"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/btn_date"
@@ -127,7 +127,7 @@
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/edt_distance"
-                    style="@style/TextField.Distance"
+                    style="@style/TextInput.Distance"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/btn_add_image"

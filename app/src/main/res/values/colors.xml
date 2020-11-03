@@ -8,6 +8,10 @@
     <color name="backgroundSecondary">#F5F7F9</color>
     <color name="backgroundSurface">#EDF1F5</color>
 
+    <color name="colorDisable">#9A9A9A</color>
+    <color name="colorDisableSecondary">#EAEAEA</color>
+    <color name="colorSkeleton">#EEEEEE</color>
+
     <color name="textColorPrimary">#000000</color>
     <color name="textColorSecondary">#55595C</color>
     <color name="textColorHint">#66323B45</color>
@@ -28,6 +32,7 @@
     <color name="borderInput">#B3A8B6C8</color>
     <color name="facebookColor">#3C67B8</color>
 
+
     <color name="orange">#FA6400</color>
     <color name="orange_light">#FFCAAD</color>
     <color name="orangeDark">#C03100</color>
@@ -36,4 +41,8 @@
     <color name="softGrayAlpha">#B2F0F0F0</color>
     <color name="materialBlack">#46494B</color>
     <color name="blackAlpha">#9E000000</color>
+
+    <color name="paymentStatusWaitingForApprove">#F7B500</color>
+    <color name="paymentStatusWaiting">#494E52</color>
+    <color name="paymentStatusSuccess">#5EB503</color>
 </resources>

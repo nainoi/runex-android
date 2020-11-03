@@ -2,37 +2,26 @@ package com.think.runex.common
 
 import android.widget.ImageView
 import androidx.annotation.DrawableRes
-import com.jozzee.android.core.resource.getDimension
-import com.squareup.picasso.MemoryPolicy
-import com.squareup.picasso.Picasso
-import com.think.runex.R
-import jp.wasabeef.picasso.transformations.RoundedCornersTransformation
+import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.engine.DiskCacheStrategy
+import com.bumptech.glide.request.RequestOptions
+import com.think.runex.util.GlideApp
 
-fun ImageView.loadEventImage(url: String,
-                             @DrawableRes defaultImage: Int? = null,
-                             skipMemoryCache: Boolean = false) {
+fun ImageView.loadEventsImage(url: String?,
+                              @DrawableRes defaultImage: Int? = null) {
 
-    if (url.isBlank()) {
+    if (url.isNullOrBlank()) {
         if (defaultImage != null) {
             this.setImageResource(defaultImage)
         }
         return
     }
-    Picasso.get()
+    GlideApp.with(this)
             .load(url)
-            .apply {
-                if (defaultImage != null) {
-                    placeholder(defaultImage)
-                }
-                if (defaultImage != null) {
-                    error(defaultImage)
-                }
-            }
-            .transform(RoundedCornersTransformation(getDimension(R.dimen.space_8dp), 0))
-            .apply {
-                if (skipMemoryCache) {
-                    memoryPolicy(MemoryPolicy.NO_CACHE)
-                }
-            }
+            .format(DecodeFormat.PREFER_ARGB_8888)
+            .centerCrop()
+            .apply(RequestOptions.overrideOf(width, height))
+            .diskCacheStrategy(DiskCacheStrategy.NONE)
             .into(this)
+            .clearOnDetach()
 }

@@ -11,11 +11,12 @@ class TokenManager {
                 return "$tokenType $field"
             }
 
+
         var refreshToken: String = ""
             private set
 
-        var expiresIn: Long = 0
-            private set
+        //var expiresIn: Long = 0
+        //    private set
 
         fun isAlive(): Boolean = accessToken.isNotBlank()
 
@@ -23,14 +24,14 @@ class TokenManager {
             this.tokenType = accessToken.tokenType
             this.accessToken = accessToken.accessToken
             this.refreshToken = accessToken.refreshToken
-            this.expiresIn = accessToken.expiresIn
+            //this.expiresIn = accessToken.expiresIn
         }
 
         fun clearToken() {
             tokenType = ""
             accessToken = ""
             refreshToken = ""
-            expiresIn = 0
+            //expiresIn = 0
         }
     }
 }

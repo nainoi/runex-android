@@ -1,5 +1,6 @@
 package com.think.runex.java.Pages;
 
+import android.annotation.SuppressLint;
 import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
@@ -24,6 +25,7 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Pages.RecordPage.v2.RecordPage;
+import com.think.runex.java.Pages.RegisteredEvent.MyEventPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
 
@@ -34,8 +36,9 @@ public class MainPage extends xFragment {
     private final String ct = "MainPage->";
 
     // instance variables
-    private xFragment pageRecord;
+    private xFragment pageAllEvent;
     private xFragment pageMyEvent;
+    private xFragment pageRecord;
     private xFragment pageProfile;
 
     // explicit variables
@@ -49,6 +52,39 @@ public class MainPage extends xFragment {
 
     // views
     private BottomNavigationView bottomNavigationView;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+
+        // update props
+        setChildContainerId(CHILD_CONTAINER_ID);
+
+        if (savedInstanceState == null) {
+            // init pages
+            pageAllEvent = new AllEventsPage();
+            pageMyEvent = new MyEventPage();
+            pageRecord = getRecordPage();
+            pageProfile = new ProfilePage().setPriority(Priority.PARENT);
+
+        } else {
+            if ((pageRecord = (xFragment) getChildFragmentManager().getFragment(savedInstanceState, PAGE_RECORD)) == null) {
+                pageRecord = getRecordPage();
+
+            }
+
+            if ((pageMyEvent = (xFragment) getChildFragmentManager().getFragment(savedInstanceState, PAGE_MY_EVENT)) == null) {
+                pageMyEvent = new MyEventPage();
+
+            }
+
+            if ((pageProfile = (xFragment) getChildFragmentManager().getFragment(savedInstanceState, PAGE_PROFILE)) == null) {
+                pageProfile = new ProfilePage().setPriority(Priority.PARENT);
+
+            }
+
+        }
+    }
 
     @Nullable
     @Override
@@ -66,6 +102,28 @@ public class MainPage extends xFragment {
 
         return v;
     }
+
+    @Override
+    public void onResume() {
+        super.onResume();
+
+        // same position
+        if (bottomNavigationView.getSelectedItemId() == mCurrentItemId) return;
+
+        // update screen
+        updateScreen(bottomNavigationView.getSelectedItemId());
+//
+//        // perform select
+//        bottomNavigationView.setSelectedItemId(R.id.menu_profile);
+    }
+
+    /**
+     * Matching view
+     */
+    private void matchingView(View v) {
+        bottomNavigationView = v.findViewById(R.id.bottom_navigation);
+    }
+
 
     /**
      * Feature methods
@@ -109,6 +167,7 @@ public class MainPage extends xFragment {
 
     }
 
+    @SuppressLint("NonConstantResourceId")
     private boolean updateScreen(int itemId) {
         // prepare usage variables
         boolean onSelected = true;
@@ -120,6 +179,10 @@ public class MainPage extends xFragment {
         ChildFragmentUtils childFragmentUtils = ChildFragmentUtils.newInstance(this);
 
         switch (itemId) {
+            case R.id.menu_home:
+                childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageAllEvent);
+                mCurrentFragment = pageAllEvent;
+                break;
             case R.id.menu_my_events:
                 childFragmentUtils.addChildFragment(CHILD_CONTAINER_ID, pageMyEvent);
                 mCurrentFragment = pageMyEvent;
@@ -164,14 +227,9 @@ public class MainPage extends xFragment {
     }
 
     /**
-     * Matching view
+     * Getter
      */
-    private void matchingView(View v) {
-        bottomNavigationView = v.findViewById(R.id.bottom_navigation);
-    }
-
-    /** Getter */
-    private xFragment getRecordPage(){
+    private xFragment getRecordPage() {
         return new RecordPage().setPriority(Priority.PARENT).setFragmentHandler(new xFragmentHandler() {
             // prepare usage variables
             final String mtn = ct + "pageRecord() ";
@@ -210,51 +268,6 @@ public class MainPage extends xFragment {
         super.onSaveInstanceState(outState);
     }
 
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-
-        // update props
-        setChildContainerId(CHILD_CONTAINER_ID);
-
-        if( savedInstanceState == null ) {
-            // init pages
-            pageMyEvent = new MyEventPage();
-            pageRecord = getRecordPage();
-            pageProfile = new ProfilePage().setPriority(Priority.PARENT);
-
-        } else {
-            if((pageRecord = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_RECORD)) == null){
-                pageRecord = getRecordPage();
-
-            }
-
-            if( (pageMyEvent = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_MY_EVENT)) == null ){
-                pageMyEvent = new MyEventPage();
-
-            }
-
-            if( (pageProfile = (xFragment)getChildFragmentManager().getFragment(savedInstanceState, PAGE_PROFILE)) == null ){
-                pageProfile = new ProfilePage().setPriority(Priority.PARENT);
-
-            }
-
-        }
-    }
-
-    @Override
-    public void onResume() {
-        super.onResume();
-
-        // same position
-        if (bottomNavigationView.getSelectedItemId() == mCurrentItemId) return;
-
-        // update screen
-        updateScreen(bottomNavigationView.getSelectedItemId());
-//
-//        // perform select
-//        bottomNavigationView.setSelectedItemId(R.id.menu_profile);
-    }
 
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {

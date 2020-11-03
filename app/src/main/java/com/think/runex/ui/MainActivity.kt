@@ -21,6 +21,8 @@ import com.think.runex.java.Activities.BridgeFile
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.util.KEY_MESSAGE
 import com.think.runex.util.RC_LOGIN
+import com.think.runex.util.launch
+import kotlinx.coroutines.delay
 
 class MainActivity : BaseActivity() {
 
@@ -36,26 +38,25 @@ class MainActivity : BaseActivity() {
         NetworkMonitor(this).observe(this, Observer(::onNetworkChanged))
 
         //Create view model
-        authViewModel = getViewModel(AuthViewModel::class.java, AuthViewModelFactory(this))
+        authViewModel = getViewModel(AuthViewModelFactory(this))
 
         //Setup main fragment container and screen
         setContentView(R.layout.activity_main)
         mainFragmentContainerId = R.id.main_fragment_container
 
         if (savedInstanceState == null) {
-            authViewModel.initialToken()
-            setupScreen()
+            launch {
+                delay(100)
+                authViewModel.initialToken()
+                setupScreen()
+            }
         }
     }
 
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
             true -> goToHomePageWithJavaStyle()
-            false -> replaceFragment(fragment = OnBoardingScreen(),
-                    containerViewId = R.id.main_fragment_container,
-                    animations = fadeIn(),
-                    clearFragment = true,
-                    addToBackStack = false)
+            false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = true, clearFragment = false)
         }
     }
 

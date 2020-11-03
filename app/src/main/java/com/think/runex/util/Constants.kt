@@ -10,6 +10,7 @@ const val PREFERENCES_NAME = "app_preferences"
  */
 const val ANDROID = "android"
 const val APP_SCHEME = "runex"
+const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
 
 
 /**
@@ -17,6 +18,7 @@ const val APP_SCHEME = "runex"
  */
 const val KEY_AUTH = "Authorization"
 const val KEY_ACCESS_TOKEN = "accessToken"
+const val KEY_EVENT = "event"
 const val KEY_ERROR = "error"
 const val KEY_DATA = "data"
 const val KEY_FIREBASE_TOKEN = "firebaseToken"
@@ -32,7 +34,9 @@ const val PREFERENCE_NAME = "app_preference"
  * Date time format
  */
 const val SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
+
 const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
+const val DISPLAY_DATE_FORMAT_SHOT_MONTH = "dd MMM yyyy"
 
 /**
  * Request Code

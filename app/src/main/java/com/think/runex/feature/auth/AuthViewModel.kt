@@ -57,18 +57,6 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     }
 
     private fun setTokenAndUserForJavaCode(context: Context, accessToken: AccessToken?, userInfo: UserInfo?) {
-
-        //Set access token
-        val appEntity: AppEntity = App.instance(context).appEntity
-        appEntity.setToken(TokenObject().apply {
-            expire = (System.currentTimeMillis() + ((accessToken?.expiresIn ?: 0) * 1000))
-                    .dateTimeFormat("yyyy-MM-dd'T'HH:mm:ss'Z'")
-            token = accessToken?.accessToken ?: ""
-            code = 200
-        })
-        appEntity.setLoggedIn(true)
-        App.instance(context).save(appEntity)
-
         //Set User Info
         val userObject = UserObject()
         userObject.data.apply {
@@ -100,7 +88,8 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
                 }
             }
         }
-
+        //Set access token
+        val appEntity: AppEntity = App.instance(context).appEntity
         appEntity.setUser(userObject)
         App.instance(context).save(appEntity)
     }

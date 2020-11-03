@@ -6,8 +6,8 @@
     <!-- Default Font Style -->
     <dimen name="text_over_line">10sp</dimen>
     <dimen name="text_caption">12sp</dimen>        <!-- (Caption) -->
-    <dimen name="text_body_2">14sp</dimen>           <!-- (Body1, Menu, Button) -->
-    <dimen name="text_body">16sp</dimen>         <!-- (Subheading) -->
+    <dimen name="text_body">14sp</dimen>           <!-- (Body1, Menu, Button) -->
+    <dimen name="text_body_2">16sp</dimen>         <!-- (Subheading) -->
     <dimen name="text_sub_title">18sp</dimen>      <!-- (SubTitle) -->
     <dimen name="text_title">20sp</dimen>          <!-- (Title) -->
     <dimen name="text_headline">24sp</dimen>       <!-- (Headline) -->
@@ -77,7 +77,7 @@
     <dimen name="social_button_space_vertical">16dp</dimen>
 
     <!-- Event -->
-    <dimen name="event_image_width">96dp</dimen>
+    <dimen name="event_image_width">172dp</dimen>
     <dimen name="event_image_height">128dp</dimen>
 
     <!-- Add Distance -->

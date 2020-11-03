@@ -6,23 +6,27 @@ public enum APIs {
 
     //--> A
     ADD_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/add"),
-    ADD_WORKOUTS(DOMAIN.VAL + "/api/v2/workout"),
+    ADD_WORKOUT(DOMAIN.VAL + "/api/v2/workout"),
 
     //--> D
     DELETE_EVENT_HISTORY(DOMAIN.VAL + "/api/v1/activity/deleteActivity/%s/%s"), ///v1/activity/deleteActivity/{event_id}/{act_id}
 
+    //--> E
+    GET_ALL_EVENT(DOMAIN.VAL + "/api/v2/event/active"),
+
     //--> G
     GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v1/activity/getByEvent2/%s"), //{event_id}
-    GET_REGISTERED_EVENT(DOMAIN.VAL + "/api/v1/register/myRegEvent"),
+    GET_REGISTERED_EVENT(DOMAIN.VAL + "/api/v2/register/myRegEvent"),
     GET_USER_PROFILE(DOMAIN.VAL + "/api/v1/user"),
 
     //--> L
     LOGIN(DOMAIN.VAL + "/api/v1/user/login"),
-    LOGOUT(DOMAIN.VAL + "/api/v1/user/logout"),
+    LOGOUT(DOMAIN.VAL + "/api/v2/logout"),
 
     //--> M
     MY_ACTIVE_REGISTERED_EVENT(DOMAIN.VAL + "/api/v1/register/myRegEventActivate"),
     MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),
+    MY_WORKOUTS(DOMAIN.VAL + "/api/v2/workouts"),
 
     //--> R
     REGISTER_USER(DOMAIN.VAL + "/api/v1/user/ep"),

@@ -1,0 +1,67 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:padding="@dimen/space_24dp"
+    tools:context=".ui.RegisterEventWithEBIBDialog">
+
+    <TextView
+        android:id="@+id/title_label"
+        style="@style/AppAlertDialog.TitleTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_centerHorizontal="true"
+        android:text="@string/confirm_register" />
+
+    <TextView
+        android:id="@+id/message_label"
+        style="@style/AppAlertDialog.BodyTextStyle"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/title_label"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:text="@string/please_specify_your_ebib" />
+
+    <com.google.android.material.textfield.TextInputEditText
+        android:id="@+id/ebib_input"
+        style="@style/TextInput"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/message_label"
+        android:layout_marginTop="@dimen/space_24dp"
+        android:imeOptions="actionDone" />
+
+    <View
+        android:id="@+id/guideline_center_horizontal"
+        android:layout_width="0dp"
+        android:layout_height="0dp"
+        android:layout_centerHorizontal="true" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/negative_button"
+        style="@style/Button.BorderGrey"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ebib_input"
+        android:layout_marginTop="@dimen/space_24dp"
+        android:layout_marginEnd="@dimen/space_8dp"
+        android:layout_toStartOf="@+id/guideline_center_horizontal"
+        android:minHeight="@dimen/space_40dp"
+        android:text="@string/cancel" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/positive_button"
+        style="@style/Button.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/ebib_input"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="26dp"
+        android:layout_toEndOf="@+id/guideline_center_horizontal"
+        android:minHeight="@dimen/space_40dp"
+        android:text="@string/ok" />
+
+</RelativeLayout>

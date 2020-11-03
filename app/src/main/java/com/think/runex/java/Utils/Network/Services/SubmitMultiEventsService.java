@@ -2,6 +2,7 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
+import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
@@ -29,7 +30,7 @@ public class SubmitMultiEventsService extends xRequest {
         //--> props
         props.setUrl( APIs.SUBMIT_MULTI_EVENTS.VAL);
         //--> headers
-        props.addHeader("Authorization", "Bearer "+ appEntity.token.getToken());
+        props.addHeader("Authorization", TokenManager.Companion.getAccessToken());
         props.addHeader("Content-Type", "application/json");
         props.addMultiParts("calory", request.calory +"");
         props.addMultiParts("distance", request.distance +"");

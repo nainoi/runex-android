@@ -11,6 +11,8 @@
     <string name="activity_record">บันทึกกิจกรรม</string>
     <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
 
+    <string name="all_event">งานวิ่งทั้งหมด</string>
+
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
 
@@ -18,8 +20,12 @@
     <string name="cancel">ยกเลิก</string>
     <string name="close">ปิด</string>
     <string name="challenges">ชาเลนจ์</string>
+    <string name="confirm">ยืนยัน</string>
+    <string name="confirm_register">ยืนยันการสมัคร</string>
+    <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
 
     <!-- D -->
+    <string name="detail">รายละเอียด</string>
     <string name="delete">ลบ</string>
     <string name="distance">ระยะทาง</string>
     <string name="distance_kg">ระยะทาง (กม.)</string>
@@ -34,11 +40,13 @@
     <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
     <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="events">อีเว้นท์</string>
+    <string name="event_date">วันที่จัดงาน</string>
 
     <!-- F -->
     <string name="finish_recording">จบการจับเวลา</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>
     <string name="free">ฟรี</string>
+    <string name="failed">ล้มเหลว</string>
 
     <!-- G -->
     <string name="get_started">เริ่มใช้งาน</string>
@@ -81,22 +89,26 @@
     <string name="password">รหัสผ่าน</string>
     <string name="password_required">กรุณาระบุรหัสผ่าน</string>
     <string name="profile">ข้อมูลส่วนตัว</string>
+    <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
+    <string name="please_login">กรุณาเข้าสู่ระบบ</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>
     <string name="register">สมัครสมาชิก</string>
+    <string name="register_date">รับสมัคร</string>
+    <string name="register_event">สมัครงานวิ่ง</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>
     <string name="running_date">Running date</string>
 
     <!-- S -->
-    <string name="u250">·</string>
     <string name="select_image">Select Image</string>
     <string name="setting">Setting</string>
     <string name="start_recording">เริ่มจับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>
+    <string name="success">สำเร็จ</string>
 
     <!-- T -->
     <string name="time">เวลา</string>
@@ -108,12 +120,16 @@
 
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>
+    <string name="waiting_for_approve">รอการตรวจสอบ</string>
+    <string name="waiting_for_payment">รอชำระเงิน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
     <string name="pause_recording">พักจับเวลา</string>
 
     <!-- Y -->
 
     <!-- Z -->
+
+    <string name="u250">·</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>
