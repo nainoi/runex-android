@@ -471,6 +471,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         try {
             // prepare usage variables
             final LeaderBoardPage page = new LeaderBoardPage();
+            page.setEventID(mEventId);
             // go to specified page
             FragmentUtils.newInstance(activity).addFragment(activity.containerId, page, true);
         } catch (Exception e) {

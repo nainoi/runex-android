@@ -3,7 +3,7 @@ package com.think.runex.util
 /**
  * Shared preferences name
  */
-const val PREFERENCES_NAME = "app_preferences"
+const val PREFERENCES_NAME = "app_preference"
 
 /**
  * Global Variable
@@ -26,6 +26,7 @@ const val KEY_MESSAGE = "msg"
 const val KEY_STATUS_CODE = "code"
 const val KEY_VERSION = "version"
 
+
 /**
  * Date time format
  */
@@ -38,6 +39,13 @@ const val DISPLAY_DATE_FORMAT_SHOT_MONTH = "dd MMM yyyy"
  * Request Code
  */
 const val RC_LOGIN = 2000
+
+/**
+ * Notification chanel id and request code
+ */
+const val NOTIFICATION_CHANEL_ID_DEFAULT = "default"
+const val NOTIFICATION_ID_DEFAULT = 0
+
 
 /**
  * Error Code
