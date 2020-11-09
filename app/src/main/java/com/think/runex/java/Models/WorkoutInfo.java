@@ -2,21 +2,18 @@ package com.think.runex.java.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
-import android.util.Log;
 
+import com.google.android.gms.maps.model.LatLng;
 import com.think.runex.java.App.Configs;
-import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 
-import java.text.ParseException;
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
 
-
-public class ActivityInfoBean implements Parcelable {
+public class WorkoutInfo implements Parcelable {
     /**
      * id : 5dc02b9c874a693a72ef612e
      * distance : 0.01
@@ -44,10 +41,11 @@ public class ActivityInfoBean implements Parcelable {
     private boolean is_sync;
     private List<RealmPointObject> locations;
 
-    public ActivityInfoBean() {
+    public WorkoutInfo() {
     }
 
-    protected ActivityInfoBean(Parcel in) {
+
+    protected WorkoutInfo(Parcel in) {
         id = in.readString();
         activity_type = in.readString();
         app = in.readString();
@@ -63,6 +61,7 @@ public class ActivityInfoBean implements Parcelable {
         workout_date = in.readString();
         net_elevation_gain = in.readInt();
         is_sync = in.readByte() != 0;
+        locations = in.createTypedArrayList(RealmPointObject.CREATOR);
     }
 
     @Override
@@ -82,6 +81,7 @@ public class ActivityInfoBean implements Parcelable {
         dest.writeString(workout_date);
         dest.writeInt(net_elevation_gain);
         dest.writeByte((byte) (is_sync ? 1 : 0));
+        dest.writeTypedList(locations);
     }
 
     @Override
@@ -89,15 +89,15 @@ public class ActivityInfoBean implements Parcelable {
         return 0;
     }
 
-    public static final Creator<ActivityInfoBean> CREATOR = new Creator<ActivityInfoBean>() {
+    public static final Creator<WorkoutInfo> CREATOR = new Creator<WorkoutInfo>() {
         @Override
-        public ActivityInfoBean createFromParcel(Parcel in) {
-            return new ActivityInfoBean(in);
+        public WorkoutInfo createFromParcel(Parcel in) {
+            return new WorkoutInfo(in);
         }
 
         @Override
-        public ActivityInfoBean[] newArray(int size) {
-            return new ActivityInfoBean[size];
+        public WorkoutInfo[] newArray(int size) {
+            return new WorkoutInfo[size];
         }
     };
 
@@ -202,6 +202,9 @@ public class ActivityInfoBean implements Parcelable {
     }
 
     public String getWorkoutDate() {
+        if (workout_date == null) {
+            return "";
+        }
         String changedDateTime = workout_date;
         try {
             SimpleDateFormat sdf = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT, Locale.getDefault());
@@ -220,7 +223,7 @@ public class ActivityInfoBean implements Parcelable {
                 if (date != null) {
                     changedDateTime = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME, Locale.getDefault()).format(date);
                 }
-            } catch (ParseException e) {
+            } catch (Throwable e) {
                 e.printStackTrace();
             }
         }
@@ -254,5 +257,26 @@ public class ActivityInfoBean implements Parcelable {
 
     public void setLocations(List<RealmPointObject> locations) {
         this.locations = locations;
+    }
+
+    public List<LatLng> getLatLngList() {
+        ArrayList<LatLng> latLngList = new ArrayList<>();
+        for (RealmPointObject point : locations) {
+            latLngList.add(point.toLatLng());
+        }
+        return latLngList;
+    }
+
+    public RealmRecorderObject toRealmRecorderObject() {
+        RealmRecorderObject object = new RealmRecorderObject();
+
+        object.setDistanceKm(distance);
+        object.setDurationMillis((duration * 1000));
+        object.setPaceMillis((long) ((pace * 60) * 1000));
+        object.setDisplayRecordAsTime(time_string);
+        //object.setDisplayPaceAsTime();
+        object.setCalories(calory);
+
+        return object;
     }
 }

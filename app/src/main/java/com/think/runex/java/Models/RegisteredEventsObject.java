@@ -2,13 +2,14 @@ package com.think.runex.java.Models;
 
 import com.think.runex.feature.event.model.registered.RegisteredEvent;
 
+import java.util.ArrayList;
 import java.util.List;
 
 public class RegisteredEventsObject {
 
     private int code;
     private String msg;
-    private List<RegisteredEvent> data;
+    private ArrayList<RegisteredEvent> data;
 
     public int getCode() {
         return code;
@@ -26,11 +27,11 @@ public class RegisteredEventsObject {
         this.msg = msg;
     }
 
-    public List<RegisteredEvent> getData() {
+    public ArrayList<RegisteredEvent> getData() {
         return data;
     }
 
-    public void setData(List<RegisteredEvent> data) {
+    public void setData(ArrayList<RegisteredEvent> data) {
         this.data = data;
     }
 }

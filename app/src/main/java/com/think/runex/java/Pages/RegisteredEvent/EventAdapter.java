@@ -9,7 +9,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import com.think.runex.R;
 import com.think.runex.feature.event.model.registered.RegisteredEvent;
 import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
-import com.think.runex.java.Pages.onItemClick;
+import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.ViewHolders.VHEvent;
 
 import java.util.List;
@@ -21,10 +21,10 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     private final String ct = "EventAdapter->";
 
     // instance variables
-    private onItemClick mListener;
+    private OnItemClickListener mListener;
     private List<RegisteredEvent> events;
 
-    public EventAdapter(List<RegisteredEvent> events, onItemClick listener) {
+    public EventAdapter(List<RegisteredEvent> events, OnItemClickListener listener) {
         super();
 
         this.events = events;

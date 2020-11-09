@@ -24,7 +24,7 @@ public enum APIs {
     LOGOUT(DOMAIN.VAL + "/api/v2/logout"),
 
     //--> M
-    MY_ACTIVE_REGISTERED_EVENT(DOMAIN.VAL + "/api/v1/register/myRegEventActivate"),
+    MY_ACTIVE_REGISTERED_EVENT(DOMAIN.VAL + "/api/v2/register/myRegEventActivate"),
     MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),
     MY_WORKOUTS(DOMAIN.VAL + "/api/v2/workouts"),
 
@@ -35,7 +35,7 @@ public enum APIs {
     SOCIALS_LOGIN(DOMAIN.VAL + "/api/v1/user/pd"),
     SUBMIT_MULTI_EVENTS(DOMAIN.VAL + "/api/v1/activity/multiadd"),
     SUBMIT_RUNNING_RESULT(DOMAIN.VAL + "/api/v1/activity/add"),
-    ;
+    SUBMIT_ACTIVITIES_WORKOUT(DOMAIN.VAL + "/api/v2/activity/activitiesWorkout");
 
     public final String VAL;
 

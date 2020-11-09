@@ -5,7 +5,8 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.think.runex.java.Models.ActiveRegisteredEventObject;
+import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.java.Models.EventIdAndPartnerObject;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -13,7 +14,7 @@ import java.util.List;
 public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHolder> implements
         EventCheckerViewHolder.OnCheckedChangeListener {
 
-    private List<ActiveRegisteredEventObject.DataBean> list;
+    private List<RegisteredEvent> list;
 
     @NonNull
     @Override
@@ -32,7 +33,7 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
         return list.size();
     }
 
-    void submitList(List<ActiveRegisteredEventObject.DataBean> list) {
+    void submitList(List<RegisteredEvent> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -41,30 +42,30 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
     @Override
     public void onCheckedChanged(int position, boolean isChecked) {
         if (list != null) {
-            ActiveRegisteredEventObject.DataBean eventChecker = list.get(position);
-            if (eventChecker != null) {
-                eventChecker.setChecked(isChecked);
-                list.set(position, eventChecker);
+            RegisteredEvent event = list.get(position);
+            if (event != null) {
+                event.setChecked(isChecked);
+                list.set(position, event);
                 notifyItemChanged(position);
             }
         }
     }
 
-    public String[] getSelectedEvents() {
-        if(list == null || list.size() == 0) return new  String[0];
+    public List<EventIdAndPartnerObject> getSelectedEvents() {
+        if (list == null || list.size() == 0) return new ArrayList<>();
 
-        ArrayList<String> selectedList = new ArrayList<String>();
-        for (ActiveRegisteredEventObject.DataBean event : list) {
+        ArrayList<EventIdAndPartnerObject> selectedList = new ArrayList<>();
+        for (RegisteredEvent event : list) {
             if (event.isChecked()) {
-                selectedList.add(event.getId());
+                EventIdAndPartnerObject eventIdAndPartner = new EventIdAndPartnerObject();
+                eventIdAndPartner.setEvent_id(event.getEventId());
+                if (event.getEventInfo() != null) {
+                    eventIdAndPartner.setPartner(event.getEventInfo().getPartner());
+                }
+                selectedList.add(eventIdAndPartner);
             }
         }
 
-        String[] selectedEvents = new String[selectedList.size()];
-        for (int i = 0; i < selectedList.size(); i++) {
-            selectedEvents[i] = selectedList.get(i);
-        }
-
-        return selectedEvents;
+        return selectedList;
     }
 }

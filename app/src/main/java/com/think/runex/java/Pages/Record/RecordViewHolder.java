@@ -1,24 +1,20 @@
 package com.think.runex.java.Pages.Record;
 
-import android.content.pm.ActivityInfo;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.R;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Models.ActivityInfoBean;
-import com.think.runex.java.Pages.onItemClick;
-import com.think.runex.java.Utils.L;
+import com.think.runex.java.Models.WorkoutInfo;
+import com.think.runex.java.Pages.OnItemClickListener;
 
 import java.util.Calendar;
-import java.util.Date;
 
 public class RecordViewHolder extends RecyclerView.ViewHolder {
     private String ct = "RecordViewHolder->";
@@ -43,26 +39,39 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
         return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record, parent, false));
     }
 
-    public void bind(ActivityInfoBean data, boolean needEditor, onItemClick onItemClick) {
+    public void bind(WorkoutInfo data,
+                     OnItemClickListener onItemClick,
+                     boolean canDelete,
+                     WorkoutsAdapter.OnDeleteRecordListener onDeleteRecord) {
         String distance = Globals.DCM_2.format(data.getDistance()) + " " + lbDistance.getContext().getString(R.string.km);
-        String mtn = ct +"bind() ";
+        String mtn = ct + "bind() ";
 
-        lbDistance.setText(distance );
-        lbDate.setText( data.getWorkoutDate() );
+        lbDistance.setText(distance);
+        lbDate.setText(data.getWorkoutDate());
         lbCaption.setText(data.getCaption());
 
-        if( needEditor ) {
+        rootView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (onItemClick != null) {
+                    onItemClick.onItemClicked(getAdapterPosition());
+                }
+            }
+        });
+
+        if (canDelete) {
             btnDel.setOnClickListener(new View.OnClickListener() {
                 @Override
                 public void onClick(View view) {
-                    if (onItemClick != null) {
+                    if (onDeleteRecord != null) {
                         // callback
-                        onItemClick.onItemClicked(getAdapterPosition());
+                        onDeleteRecord.onDeleteRecord(getAdapterPosition());
                     }
                 }
             });
-
-        } else btnDel.setVisibility(View.GONE);
+        } else {
+            btnDel.setVisibility(View.GONE);
+        }
 
     }
 

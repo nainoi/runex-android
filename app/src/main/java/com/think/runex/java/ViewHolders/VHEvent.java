@@ -16,7 +16,7 @@ import com.think.runex.R;
 import com.think.runex.datasource.api.ApiConfig;
 import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
 import com.think.runex.feature.payment.PaymentStatus;
-import com.think.runex.java.Pages.onItemClick;
+import com.think.runex.java.Pages.OnItemClickListener;
 
 public class VHEvent extends RecyclerView.ViewHolder {
     // views
@@ -42,7 +42,7 @@ public class VHEvent extends RecyclerView.ViewHolder {
         return new VHEvent(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event_java, parent, false));
     }
 
-    public void bind(RegisteredEventInfo data, onItemClick listener) {
+    public void bind(RegisteredEventInfo data, OnItemClickListener listener) {
         // prepare usage variables
         //EventObject.DataBean evt = (EventObject.DataBean)ml.getAttachedObject();
         //EventObject.DataBean.EventBean evtVal = evt.getEvent();

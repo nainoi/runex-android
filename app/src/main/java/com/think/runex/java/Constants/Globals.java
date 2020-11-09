@@ -60,6 +60,7 @@ public class Globals {
 
     //--> Permission request code
     public static final int RC_PERMISSION = 3101;
+    public static final int RC_PERMISSION_SAVE_FILE = 3102;
 
     //--> Intent actions
     public static final int RC_PICK_IMAGE = 4100;

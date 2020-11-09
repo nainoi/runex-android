@@ -16,14 +16,18 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.think.runex.R;
-import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Models.ActiveRegisteredEventObject;
+import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.java.Models.EventIdAndPartnerObject;
+import com.think.runex.java.Models.RegisteredEventsObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Services.GetMyActiveRegisteredEventService;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import java.net.HttpURLConnection;
+import java.util.List;
+
+import static com.think.runex.java.Constants.Globals.GSON;
 
 public class ActiveRegisteredEventCheckerPage extends DialogFragment implements View.OnClickListener {
 
@@ -72,7 +76,7 @@ public class ActiveRegisteredEventCheckerPage extends DialogFragment implements 
 
                 // exit frmo this page
                 fragment.getFragmentManager().beginTransaction()
-                        .remove( fragment )
+                        .remove(fragment)
                         .commit();
             }
         });
@@ -109,8 +113,8 @@ public class ActiveRegisteredEventCheckerPage extends DialogFragment implements 
 
     private void btnConfirmClick() {
         if (adapter != null) {
-            String[] selectedEvent = adapter.getSelectedEvents();
-            if (selectedEvent.length > 0) {
+            List<EventIdAndPartnerObject> selectedEvent = adapter.getSelectedEvents();
+            if (selectedEvent.size() > 0) {
                 if (getConfirmEventsListener() != null) {
                     getConfirmEventsListener().onConfirmEvents(selectedEvent);
 //                    dismissAllowingStateLoss();
@@ -124,19 +128,20 @@ public class ActiveRegisteredEventCheckerPage extends DialogFragment implements 
     /**
      * API methods
      */
+    //TODO("Update api")
     private void apiGetMyActiveRegEvent() {
         new GetMyActiveRegisteredEventService(getActivity(), new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i("json-string: " + response.jsonString);
-                ActiveRegisteredEventObject object = Globals.GSON.fromJson(response.jsonString, ActiveRegisteredEventObject.class);
+                RegisteredEventsObject object = GSON.fromJson(response.jsonString, RegisteredEventsObject.class);
+
                 if (object.getCode() == HttpURLConnection.HTTP_OK) {
                     for (int i = 0; i < object.getData().size(); i++) {
-                        ActiveRegisteredEventObject.DataBean eventChecker = object.getData().get(i);
-                        eventChecker.setChecked(true);
-                        object.getData().set(i, eventChecker);
+                        RegisteredEvent data = object.getData().get(i);
+                        data.setChecked(true);
+                        object.getData().set(i, data);
                     }
-
                     adapter.submitList(object.getData());
                 }
             }

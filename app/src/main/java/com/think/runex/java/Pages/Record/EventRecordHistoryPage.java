@@ -12,7 +12,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.R;
 import com.think.runex.java.Customize.Fragment.xFragment;
-import com.think.runex.java.Models.ActivityInfoBean;
+import com.think.runex.java.Models.WorkoutInfo;
 import com.think.runex.java.Utils.ActivityUtils;
 
 import java.util.List;
@@ -24,10 +24,10 @@ public class EventRecordHistoryPage extends xFragment {
     private final String ct = "EventRecordHistoryPage->";
 
     // instance variables
-    private List<ActivityInfoBean> records;
+    private List<WorkoutInfo> records;
 
     // explicit variables
-    private RecordAdapter adapter;
+    private WorkoutsAdapter adapter;
 
     // views
     private RecyclerView recordList;
@@ -54,7 +54,7 @@ public class EventRecordHistoryPage extends xFragment {
     }
 
     /** Setter */
-    public EventRecordHistoryPage setRecordList(List<ActivityInfoBean> recordList){
+    public EventRecordHistoryPage setRecordList(List<WorkoutInfo> recordList){
         this.records = recordList;
         return this;
     }
@@ -65,7 +65,7 @@ public class EventRecordHistoryPage extends xFragment {
     }
 
     private void setupRecyclerView() {
-        adapter = new RecordAdapter(false,null);
+        adapter = new WorkoutsAdapter(null,false,null);
         recordList.setLayoutManager(new LinearLayoutManager(activity));
         recordList.setAdapter(adapter);
     }

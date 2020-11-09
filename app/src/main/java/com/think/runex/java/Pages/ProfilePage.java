@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -24,9 +25,10 @@ import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
-import com.think.runex.java.Models.WorkoutObject;
+import com.think.runex.java.Models.WorkoutInfo;
+import com.think.runex.java.Models.WorkoutListObject;
 import com.think.runex.java.Models.UserObject;
-import com.think.runex.java.Pages.Record.RecordAdapter;
+import com.think.runex.java.Pages.Record.WorkoutsAdapter;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetWorkoutsService;
@@ -42,7 +44,7 @@ import static com.think.runex.util.ConstantsKt.KEY_ACCESS_TOKEN;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,
-        SwipeRefreshLayout.OnRefreshListener {
+        SwipeRefreshLayout.OnRefreshListener, OnItemClickListener, WorkoutsAdapter.OnDeleteRecordListener {
     /**
      * Main variables
      */
@@ -50,8 +52,8 @@ public class ProfilePage extends xFragment implements
 
     // instance variables
     private AlertDialog mDialog;
-    private WorkoutObject.DataBean mRunningHist;
-    private RecordAdapter recordAdapter;
+    private WorkoutListObject.DataBean mRunningHist;
+    private WorkoutsAdapter workoutsAdapter;
 
     // explicit variables
     private boolean mOnLoginHasChanged = false;
@@ -152,10 +154,10 @@ public class ProfilePage extends xFragment implements
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "response: " + response.jsonString);
-
+                ON_NETWORKING = false;
                 try {
                     // convert to running history object
-                    WorkoutObject rhis = Globals.GSON.fromJson(response.jsonString, WorkoutObject.class);
+                    WorkoutListObject rhis = Globals.GSON.fromJson(response.jsonString, WorkoutListObject.class);
 
                     // prepare usage variables
                     double totalDistance = 0.0;
@@ -166,7 +168,7 @@ public class ProfilePage extends xFragment implements
                         totalDistance = (mRunningHist = rhis.getData()).getTotal_distance();
 
                         try {
-                            recordAdapter.submitList(mRunningHist.getActivity_info(), 7);
+                            workoutsAdapter.submitList(mRunningHist.getActivity_info(), 7);
 
                         } catch (Exception e) {
                             L.e(mtn + "Err: " + e.getMessage());
@@ -178,7 +180,7 @@ public class ProfilePage extends xFragment implements
                         mRunningHist = null;
 
                         // clear record list
-                        recordAdapter.submitList(new ArrayList<>());
+                        workoutsAdapter.submitList(new ArrayList<>());
 
                     }
 
@@ -192,9 +194,6 @@ public class ProfilePage extends xFragment implements
 
                 // gone progress dialog
                 hideProgressDialog();
-
-                // clear flag
-                ON_NETWORKING = false;
             }
 
             @Override
@@ -215,6 +214,7 @@ public class ProfilePage extends xFragment implements
      * API methods
      */
     private void apiLogout() {
+        ON_NETWORKING = true;
         new LogoutService(getActivity(), new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
@@ -314,11 +314,25 @@ public class ProfilePage extends xFragment implements
     private void recyclerViewProps() {
         // prepare usage variables
         final String mtn = ct + "recyclerViewProps() ";
-        recordAdapter = new RecordAdapter(false, null);
+        workoutsAdapter = new WorkoutsAdapter(this, false, this);
 
         // update props
         recyclerView.setLayoutManager(new LinearLayoutManager(activity));
-        recyclerView.setAdapter(recordAdapter);
+        recyclerView.setAdapter(workoutsAdapter);
+
+    }
+
+    @Override
+    public void onItemClicked(int position) {
+        WorkoutInfo workoutInfo = workoutsAdapter.getItem(position);
+        Intent intent = new Intent(getContext(), WorkoutDetailActivity.class);
+        intent.putExtra("workoutInfo", workoutInfo);
+        startActivity(intent);
+    }
+
+
+    @Override
+    public void onDeleteRecord(int position) {
 
     }
 

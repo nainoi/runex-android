@@ -14,14 +14,15 @@
         android:orientation="vertical">
 
         <TextView
-        android:id="@+id/v_summary"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:gravity="center"
-        android:text="@string/running_summary"
-        android:textColor="@android:color/black"
-        android:textSize="20sp"
-        android:textStyle="bold" />
+            android:id="@+id/v_summary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:gravity="center"
+            android:text="@string/running_summary"
+            android:textColor="@android:color/black"
+            android:textSize="20sp"
+            android:textStyle="bold" />
 
         <LinearLayout
             android:id="@+id/frame_recording_info"
@@ -108,7 +109,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="Pace (min/km)"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textColor="@android:color/darker_gray" />
 
                     <TextView
                         android:id="@+id/lb_step"
@@ -137,7 +138,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:text="แคลอรี่"
-                        android:textColor="@android:color/darker_gray"/>
+                        android:textColor="@android:color/darker_gray" />
 
                     <TextView
                         android:id="@+id/lb_calories"
@@ -168,19 +169,19 @@
             android:textSize="18sp"
             android:textStyle="bold" />
 
-<!--        <TextView-->
-<!--            android:id="@+id/btn_save_without_submit_result"-->
-<!--            android:layout_width="wrap_content"-->
-<!--            android:layout_height="wrap_content"-->
-<!--            android:layout_gravity="center"-->
-<!--            android:minHeight="0dp"-->
-<!--            android:paddingHorizontal="26dp"-->
-<!--            android:paddingTop="8dp"-->
-<!--            android:paddingBottom="16dp"-->
-<!--            android:layout_marginVertical="8dp"-->
-<!--            android:text="บันทึกไม่ส่งผล"-->
-<!--            android:textColor="@color/materialBlack"-->
-<!--            android:textSize="@dimen/textSmall" />-->
+        <!--        <TextView-->
+        <!--            android:id="@+id/btn_save_without_submit_result"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:minHeight="0dp"-->
+        <!--            android:paddingHorizontal="26dp"-->
+        <!--            android:paddingTop="8dp"-->
+        <!--            android:paddingBottom="16dp"-->
+        <!--            android:layout_marginVertical="8dp"-->
+        <!--            android:text="บันทึกไม่ส่งผล"-->
+        <!--            android:textColor="@color/materialBlack"-->
+        <!--            android:textSize="@dimen/textSmall" />-->
 
     </LinearLayout>
 

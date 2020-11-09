@@ -1,6 +1,10 @@
 package com.think.runex.java.Models;
 
+import android.os.Parcel;
+import android.os.Parcelable;
 import android.text.TextUtils;
+
+import com.google.android.gms.maps.model.LatLng;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
@@ -11,7 +15,7 @@ import io.realm.RealmObject;
 import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
 import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
-public class RealmPointObject extends RealmObject {
+public class RealmPointObject extends RealmObject implements Parcelable {
 
     private Double altitude;
     private Double elevation_gain = 0.0;
@@ -31,6 +35,98 @@ public class RealmPointObject extends RealmObject {
         this.longitude = longitude;
         this.timestamp = dateTimeFormat(System.currentTimeMillis());
     }
+
+    protected RealmPointObject(Parcel in) {
+        if (in.readByte() == 0) {
+            altitude = null;
+        } else {
+            altitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            elevation_gain = null;
+        } else {
+            elevation_gain = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            harth_rate = null;
+        } else {
+            harth_rate = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            latitude = null;
+        } else {
+            latitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            longitude = null;
+        } else {
+            longitude = in.readDouble();
+        }
+        if (in.readByte() == 0) {
+            temp = null;
+        } else {
+            temp = in.readDouble();
+        }
+        timestamp = in.readString();
+    }
+
+    @Override
+    public void writeToParcel(Parcel dest, int flags) {
+        if (altitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(altitude);
+        }
+        if (elevation_gain == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(elevation_gain);
+        }
+        if (harth_rate == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(harth_rate);
+        }
+        if (latitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(latitude);
+        }
+        if (longitude == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(longitude);
+        }
+        if (temp == null) {
+            dest.writeByte((byte) 0);
+        } else {
+            dest.writeByte((byte) 1);
+            dest.writeDouble(temp);
+        }
+        dest.writeString(timestamp);
+    }
+
+    @Override
+    public int describeContents() {
+        return 0;
+    }
+
+    public static final Creator<RealmPointObject> CREATOR = new Creator<RealmPointObject>() {
+        @Override
+        public RealmPointObject createFromParcel(Parcel in) {
+            return new RealmPointObject(in);
+        }
+
+        @Override
+        public RealmPointObject[] newArray(int size) {
+            return new RealmPointObject[size];
+        }
+    };
 
     public Double getAltitude() {
         return altitude;
@@ -121,5 +217,9 @@ public class RealmPointObject extends RealmObject {
             error.printStackTrace();
         }
         return date;
+    }
+
+    public LatLng toLatLng() {
+        return new LatLng(latitude, longitude);
     }
 }

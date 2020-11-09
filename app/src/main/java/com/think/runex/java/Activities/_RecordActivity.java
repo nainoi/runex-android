@@ -40,6 +40,7 @@ import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;
+import com.think.runex.java.Models.EventIdAndPartnerObject;
 import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
 import com.think.runex.java.Pages.ReviewEvent.OnConfirmEventsListener;
@@ -67,6 +68,7 @@ import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 import java.io.File;
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.List;
 
 public class _RecordActivity extends xActivity implements OnMapReadyCallback
         , View.OnClickListener
@@ -262,7 +264,7 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
                 onNetwork = true;
 
                 // save record with submit
-                apiSaveRecord( true );
+                //apiSaveRecord( true );
 
                 break;
 
@@ -868,61 +870,63 @@ public class _RecordActivity extends xActivity implements OnMapReadyCallback
 
     }
 
-    private void apiSaveRecord(boolean withSubmit) {
-        // prepare usage variables
-        final String mtn = ct + "apiSaveRecord() ";
-        final rqAddRunningHistory request = new rqAddRunningHistory();
-        final double recordTime = mRecorderUtils.recTimeAsMin();
-        final double recordPace = mRecorderUtils.paceAsMin();
+//    private void apiSaveRecord(boolean withSubmit) {
+//        // prepare usage variables
+//        final String mtn = ct + "apiSaveRecord() ";
+//        final rqAddRunningHistory request = new rqAddRunningHistory();
+//        final double recordTime = mRecorderUtils.recTimeAsMin();
+//        final double recordPace = mRecorderUtils.paceAsMin();
+//
+//        request.setActivity_type(Globals.ACTIVITY_RUN);
+//        request.setCalory(0);
+//        request.setDistance(mRecorderUtils.mRecordDistanceKm);
+//        request.setCaption("");
+//        request.setImage_path("");
+//        request.setPace(recordPace);
+//        request.setTime(recordTime);
+//
+//        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
+//        new AddHistoryService(this, new onNetworkCallback() {
+//            @Override
+//            public void onSuccess(xResponse response) {
+//                L.i(mtn + "successfully");
+//                L.i(mtn + "response: " + response.jsonString);
+//
+//                // clear flag
+//                onNetwork = false;
+//
+//                // successfully submit result
+//                if( withSubmit) toReviewEventPage();
+//                else {
+//
+//                    // update activity result
+//                    setResult(Activity.RESULT_OK);
+//
+//                    // exit from this activity
+//                    finish();
+//                }
+//            }
+//
+//            @Override
+//            public void onFailure(xResponse response) {
+//                L.i(mtn + "failure");
+//                L.i(mtn + "response: " + response.jsonString);
+//
+//                // clear flag
+//                onNetwork = false;
+//            }
+//        }).doIt(request);
+//    }
 
-        request.setActivity_type(Globals.ACTIVITY_RUN);
-        request.setCalory(0);
-        request.setDistance(mRecorderUtils.mRecordDistanceKm);
-        request.setCaption("");
-        request.setImage_path("");
-        request.setPace(recordPace);
-        request.setTime(recordTime);
 
-        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
-        new AddHistoryService(this, new onNetworkCallback() {
-            @Override
-            public void onSuccess(xResponse response) {
-                L.i(mtn + "successfully");
-                L.i(mtn + "response: " + response.jsonString);
-
-                // clear flag
-                onNetwork = false;
-
-                // successfully submit result
-                if( withSubmit) toReviewEventPage();
-                else {
-
-                    // update activity result
-                    setResult(Activity.RESULT_OK);
-
-                    // exit from this activity
-                    finish();
-                }
-            }
-
-            @Override
-            public void onFailure(xResponse response) {
-                L.i(mtn + "failure");
-                L.i(mtn + "response: " + response.jsonString);
-
-                // clear flag
-                onNetwork = false;
-            }
-        }).doIt(request);
-    }
 
     @Override
-    public void onConfirmEvents(String[] selectedEvents) {
+    public void onConfirmEvents(List<EventIdAndPartnerObject> selectedEvents) {
         //TODO("Send distance from event id")
         if (selectedEvents != null) {
 
             // update multiple event
-            apiSubmitMultiEvents(selectedEvents);
+            //apiSubmitMultiEvents(selectedEvents);
 
         }
     }

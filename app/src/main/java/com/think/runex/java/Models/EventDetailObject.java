@@ -1,10 +1,6 @@
 package com.think.runex.java.Models;
 
-import android.os.Parcel;
-import android.os.Parcelable;
-
 import java.util.ArrayList;
-import java.util.List;
 
 public class EventDetailObject {
 
@@ -57,7 +53,7 @@ public class EventDetailObject {
         private String event_id;
         private String event_user;
         private double total_distance;
-        private ArrayList<ActivityInfoBean> activity_info;
+        private ArrayList<WorkoutInfo> activity_info;
 
         public String getId() {
             return id;
@@ -99,11 +95,11 @@ public class EventDetailObject {
             this.total_distance = total_distance;
         }
 
-        public ArrayList<ActivityInfoBean> getActivity_info() {
+        public ArrayList<WorkoutInfo> getActivity_info() {
             return activity_info;
         }
 
-        public void setActivity_info(ArrayList<ActivityInfoBean> activity_info) {
+        public void setActivity_info(ArrayList<WorkoutInfo> activity_info) {
             this.activity_info = activity_info;
         }
     }

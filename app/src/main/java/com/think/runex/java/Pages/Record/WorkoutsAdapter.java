@@ -6,8 +6,8 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.java.Models.ActivityInfoBean;
-import com.think.runex.java.Pages.onItemClick;
+import com.think.runex.java.Models.WorkoutInfo;
+import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.Utils.L;
 
 import java.util.ArrayList;
@@ -15,18 +15,25 @@ import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
-public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
-    /** Main variables */
+public class WorkoutsAdapter extends RecyclerView.Adapter<RecordViewHolder> {
+    /**
+     * Main variables
+     */
     private final String ct = "RecordAdapter->";
-    private List<ActivityInfoBean> list = new ArrayList<>();
-    private onItemClick onItemClickListener;
-    private boolean editor;
+    private List<WorkoutInfo> list = new ArrayList<>();
+    private boolean canDelete = false;
 
-    public RecordAdapter(boolean editor, onItemClick onItemClickListener) {
+    private OnItemClickListener onItemClickListener;
+    private OnDeleteRecordListener onDeleteRecord;
+
+    public WorkoutsAdapter(OnItemClickListener onItemClickListener,
+                           boolean canDelete,
+                           OnDeleteRecordListener onDeleteRecord) {
         super();
 
         this.onItemClickListener = onItemClickListener;
-        this.editor = editor;
+        this.canDelete = canDelete;
+        this.onDeleteRecord = onDeleteRecord;
     }
 
     @NonNull
@@ -37,50 +44,52 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
 
     @Override
     public void onBindViewHolder(@NonNull RecordViewHolder holder, int position) {
-        holder.bind(list.get(position), editor, onItemClickListener);
+        holder.bind(list.get(position), onItemClickListener, false, onDeleteRecord);
     }
 
-    /** Feature methods */
-    private void sortByDate(){
+    /**
+     * Feature methods
+     */
+    private void sortByDate() {
         // prepare usage variables
-        final String mtn = ct +"sortByDate() ";
+        final String mtn = ct + "sortByDate() ";
 
-        for( int a = 0; a < list.size(); a++){
+        for (int a = 0; a < list.size(); a++) {
             // prepare usage variables
-            final ActivityInfoBean item = list.get( a );
+            final WorkoutInfo item = list.get(a);
 
             try {
 
                 for (int b = a; b < list.size(); b++) {
 
                     if (Globals.SDF_TOKEN.parse(list.get(a).getWorkout_date())
-                            .before(Globals.SDF_TOKEN.parse(list.get( b ).getWorkout_date())
+                            .before(Globals.SDF_TOKEN.parse(list.get(b).getWorkout_date())
 
-                    )) {
+                            )) {
 
                         // swapping
-                        ActivityInfoBean obj = list.get( a );
-                        list.set(a, list.get( b ));
+                        WorkoutInfo obj = list.get(a);
+                        list.set(a, list.get(b));
                         list.set(b, obj);
 
                     }
                 }
 
-            } catch ( Exception e ){
-                L.e(mtn +"Err: "+ e.getMessage());
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
 
             }
         }
     }
 
-    private void toCustomizeDate(int addHour){
+    private void toCustomizeDate(int addHour) {
         // prepare usage variables
-        final String mtn = ct +"toCustomizeDate() ";
+        final String mtn = ct + "toCustomizeDate() ";
         final Calendar calendar = Calendar.getInstance();
 
-        for(int a = 0; a < list.size(); a++){
+        for (int a = 0; a < list.size(); a++) {
             // prepare usage variables
-            final ActivityInfoBean data = list.get( a );
+            final WorkoutInfo data = list.get(a);
 
             try {
                 final Date d = Globals.SDF_TOKEN.parse(data.getWorkout_date());
@@ -95,32 +104,39 @@ public class RecordAdapter extends RecyclerView.Adapter<RecordViewHolder> {
                 // update props
                 //data.setCustom_display_date( displayDatetime );
 
-            } catch ( Exception e ){
-                L.e(mtn +"Err: "+ e.getMessage());
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
             }
         }
     }
-    public List<ActivityInfoBean> getList(){
+
+    public List<WorkoutInfo> getList() {
         return list;
     }
+
     @Override
     public int getItemCount() {
         if (list == null) return 0;
         return list.size();
     }
 
-    public ActivityInfoBean getItem( int position ){
-        return list.get( position );
+    public WorkoutInfo getItem(int position) {
+        return list.get(position);
     }
 
-    public void submitList(List<ActivityInfoBean> list) {
+    public void submitList(List<WorkoutInfo> list) {
         this.submitList(list, 0);
     }
-    public void submitList(List<ActivityInfoBean> list, int addHour) {
+
+    public void submitList(List<WorkoutInfo> list, int addHour) {
         this.list = list;
         toCustomizeDate(addHour);
         sortByDate();
         notifyDataSetChanged();
 
+    }
+
+    public interface OnDeleteRecordListener {
+        void onDeleteRecord(int position);
     }
 }

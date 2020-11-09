@@ -31,7 +31,7 @@ import com.think.runex.java.Customize.Views.Toolbar.xToolbar;
 import com.think.runex.java.Customize.Views.Toolbar.xToolbarProps;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
-import com.think.runex.java.Pages.Record.RecordAdapter;
+import com.think.runex.java.Pages.Record.WorkoutsAdapter;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
@@ -53,7 +53,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
 
     // instance variables
     private RegisteredEvent mEvent;
-    private RecordAdapter adapter;
+    private WorkoutsAdapter adapter;
 
     // explicit variables
     private String mEventProfile = null;
@@ -201,10 +201,9 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     // recycler view props
     private void recyclerViewProps() {
         // prepare usage variables
-        adapter = new RecordAdapter(true, new onItemClick() {
+        adapter = new WorkoutsAdapter(null,true, new WorkoutsAdapter.OnDeleteRecordListener() {
             @Override
-            public void onItemClicked(int position) {
-
+            public void onDeleteRecord(int position) {
                 dialogConfirmation("ยืนยันลบกิจกรรม", "คุณต้องการลบกิจกรรมนี้ใช่หรือไม่", new DialogInterface.OnClickListener() {
                     @Override
                     public void onClick(DialogInterface dialogInterface, int i) {

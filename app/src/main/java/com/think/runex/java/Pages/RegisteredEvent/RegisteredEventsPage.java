@@ -28,7 +28,7 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.RegisteredEventsObject;
 import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.EventDetailPage;
-import com.think.runex.java.Pages.onItemClick;
+import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
@@ -238,7 +238,7 @@ public class RegisteredEventsPage extends xFragment implements
 
         // init
         mChildFragmentUtils = ChildFragmentUtils.newInstance(this);
-        eventAdapter = new EventAdapter(events, new onItemClick() {
+        eventAdapter = new EventAdapter(events, new OnItemClickListener() {
             @Override
             public void onItemClicked(int position) {
                 // exit from this process

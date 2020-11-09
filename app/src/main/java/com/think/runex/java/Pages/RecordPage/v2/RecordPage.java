@@ -9,12 +9,12 @@ import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
-import android.util.Log;
 import android.view.KeyEvent;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -36,7 +36,6 @@ import com.google.android.gms.maps.OnMapReadyCallback;
 import com.google.android.gms.maps.SupportMapFragment;
 import com.google.android.gms.maps.UiSettings;
 import com.google.android.gms.maps.model.LatLng;
-import com.google.gson.Gson;
 import com.think.runex.R;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
@@ -48,9 +47,13 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
+import com.think.runex.java.Models.WorkoutInfo;
+import com.think.runex.java.Models.WorkoutListObject;
+import com.think.runex.java.Models.WorkoutObject;
 import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.DebugUIObject;
+import com.think.runex.java.Models.EventIdAndPartnerObject;
 import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RealmPointObject;
 import com.think.runex.java.Models.RealmRecorderObject;
@@ -69,23 +72,25 @@ import com.think.runex.java.Utils.GoogleMap.GoogleMapUtils;
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Location.LocationUtils;
-import com.think.runex.java.Utils.Network.Request.rqAddRunningHistory;
 import com.think.runex.java.Utils.Network.Request.rqAddWorkOutsHistory;
+import com.think.runex.java.Utils.Network.Request.rqSubmitActivitiesWorkout;
 import com.think.runex.java.Utils.Network.Request.rqSubmitMultiEvents;
 import com.think.runex.java.Utils.Network.Response.xResponse;
-import com.think.runex.java.Utils.Network.Services.AddHistoryService;
 import com.think.runex.java.Utils.Network.Services.AddWorkOutsService;
+import com.think.runex.java.Utils.Network.Services.SubmitActivitiesWorkoutService;
 import com.think.runex.java.Utils.Network.Services.SubmitMultiEventsService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
 
+import java.io.File;
 import java.io.InputStream;
-import java.io.Serializable;
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
 import java.util.List;
 
 import io.realm.Realm;
+
+import static com.think.runex.java.Constants.Globals.RC_PERMISSION_SAVE_FILE;
 
 public class RecordPage extends xFragment implements OnMapReadyCallback
         , View.OnClickListener
@@ -104,6 +109,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     private xLocation mLastLocation;
     private RealmRecorderObject currentRecorder;
     private Realm realm;
+    private WorkoutInfo workoutInfo;
+    private List<EventIdAndPartnerObject> selectedEvents;
 
     private BroadcastReceiver testBroadcastReceiver = new BroadcastReceiver() {
         // prepare usage variables
@@ -465,7 +472,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 // binding views
                                 binding(new RealmRecorderObject());
 
-                                apiWorkOuts();
+                                apiWorkOuts(null);
 
                             } else {
                                 // reset service
@@ -1193,20 +1200,19 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     /**
      * API methods
      */
-    private void apiSubmitMultiEvents(String[] eventIds) {
+    private void apiSubmitMultiEvents(WorkoutInfo workoutInfo,
+                                      List<EventIdAndPartnerObject> selectedEvents, File file) {
         // prepare usage variables
         final String mtn = ct + "apiSubmitMultiEvents() ";
-        final rqSubmitMultiEvents request = new rqSubmitMultiEvents();
+
+        final rqSubmitActivitiesWorkout request = new rqSubmitActivitiesWorkout();
 
         // update props
-        request.setCalory(currentRecorder.calories);
-        request.setDistance(currentRecorder.distanceKm);
-        request.setTime(recTimeAsMin(currentRecorder.durationMillis));
-        request.setCaption("");
-        request.setEvent_id(eventIds);
+        request.setEvent_activity(selectedEvents);
+        request.setWorkout_info(workoutInfo);
 
         // fire
-        new SubmitMultiEventsService(activity, new onNetworkCallback() {
+        new SubmitActivitiesWorkoutService(activity, new onNetworkCallback() {
             @Override
             public void onSuccess(xResponse response) {
                 L.i(mtn + "response: " + response.jsonString);
@@ -1223,7 +1229,6 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                     // clear temporary recorder
                     clearTemporaryRecorder();
-
                 }
             }
 
@@ -1235,69 +1240,69 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
 
             }
-        }).doIt(request);
+        }).doIt(request, file);
 
     }
 
-    private void apiSaveRecord(onNetworkCallback callback) {
-        // prepare usage variables
-        final String mtn = ct + "apiSaveRecord() ";
-        final rqAddRunningHistory request = new rqAddRunningHistory();
-        final double recordTime = recTimeAsMin(currentRecorder.durationMillis);
-        final double recordPace = paceAsMin(currentRecorder.paceMillis);
+//    private void apiSaveRecord(onNetworkCallback callback) {
+//        // prepare usage variables
+//        final String mtn = ct + "apiSaveRecord() ";
+//        final rqAddRunningHistory request = new rqAddRunningHistory();
+//        final double recordTime = recTimeAsMin(currentRecorder.durationMillis);
+//        final double recordPace = paceAsMin(currentRecorder.paceMillis);
+//
+//
+//        request.setActivity_type(Globals.ACTIVITY_RUN);
+//        request.setCalory(currentRecorder.calories);
+//        request.setDistance(currentRecorder.distanceKm);
+//        request.setCaption("");
+//        request.setImage_path("");
+//        request.setPace(recordPace);
+//        request.setTime(recordTime);
+//
+//        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
+//        new AddHistoryService(activity, new onNetworkCallback() {
+//            @Override
+//            public void onSuccess(xResponse response) {
+//                L.i(mtn + "successfully");
+//                L.i(mtn + "response: " + response.jsonString);
+//
+//                if (callback == null) {
+//                    // clear temporary recorder
+//                    clearTemporaryRecorder();
+//
+//                    // clear flag
+//                    onNetwork = false;
+//
+//                    // successfully submit result
+//                    // to begin step
+//                    toBegin();
+//
+//                    // prepare usage variables
+//                    xTalk x = new xTalk();
+//                    x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+//
+//                    // on result
+//                    onResult(x);
+//
+//                } else callback.onSuccess(response);
+//            }
+//
+//            @Override
+//            public void onFailure(xResponse response) {
+//                L.i(mtn + "failure");
+//                L.i(mtn + "response: " + response.jsonString);
+//
+//                // clear flag
+//                onNetwork = false;
+//
+//                // callback
+//                if (callback != null) callback.onFailure(response);
+//            }
+//        }).doIt(request);
+//    }
 
-
-        request.setActivity_type(Globals.ACTIVITY_RUN);
-        request.setCalory(currentRecorder.calories);
-        request.setDistance(currentRecorder.distanceKm);
-        request.setCaption("");
-        request.setImage_path("");
-        request.setPace(recordPace);
-        request.setTime(recordTime);
-
-        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
-        new AddHistoryService(activity, new onNetworkCallback() {
-            @Override
-            public void onSuccess(xResponse response) {
-                L.i(mtn + "successfully");
-                L.i(mtn + "response: " + response.jsonString);
-
-                if (callback == null) {
-                    // clear temporary recorder
-                    clearTemporaryRecorder();
-
-                    // clear flag
-                    onNetwork = false;
-
-                    // successfully submit result
-                    // to begin step
-                    toBegin();
-
-                    // prepare usage variables
-                    xTalk x = new xTalk();
-                    x.requestCode = Globals.RC_TO_PROFILE_PAGE;
-
-                    // on result
-                    onResult(x);
-
-                } else callback.onSuccess(response);
-            }
-
-            @Override
-            public void onFailure(xResponse response) {
-                L.i(mtn + "failure");
-                L.i(mtn + "response: " + response.jsonString);
-
-                // clear flag
-                onNetwork = false;
-
-                // callback
-                if (callback != null) callback.onFailure(response);
-            }
-        }).doIt(request);
-    }
-
-    private void apiWorkOuts() {
+    private void apiWorkOuts(onNetworkCallback callback) {
         final String mtn = ct + "apiWorkOuts() ";
         final rqAddWorkOutsHistory request = new rqAddWorkOutsHistory();
 
@@ -1330,6 +1335,9 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 L.i(mtn + "successfully");
                 L.i(mtn + "response: " + response.jsonString);
 
+                WorkoutObject workoutObject = Globals.GSON.fromJson(response.jsonString, WorkoutObject.class);
+                workoutInfo = workoutObject.getData();
+
                 // clear flag
                 onNetwork = false;
 
@@ -1343,6 +1351,10 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                 // on result
                 onResult(x);
+
+                if (callback != null) {
+                    callback.onSuccess(response);
+                }
             }
 
             @Override
@@ -1353,12 +1365,17 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                 // clear flag
                 onNetwork = false;
 
+                // callback
+                if (callback != null) {
+                    callback.onFailure(response);
+                }
+
             }
         }).doIt(request);
     }
 
     @Override
-    public void onConfirmEvents(String[] selectedEvents) {
+    public void onConfirmEvents(List<EventIdAndPartnerObject> selectedEvents) {
         //TODO("Send distance from event id")
         // prepare usage variables
         final String mtn = ct + "onConfirmEvents() ";
@@ -1372,25 +1389,77 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         // condition
         if (selectedEvents != null) {
             L.i(mtn + "going to save record.");
+            this.selectedEvents = selectedEvents;
+            saveToDevice();
+        }
+    }
 
+    private void saveToDevice() {
+        if (!requestPermissionsWriteStoragePermission()) return;
+
+        // snap and save as file
+        File file = DeviceUtils.instance(getContext()).takeScreenshot2(getContext(), R.id.frame_map);
+
+        //xsfvsdfvsd
+        if (workoutInfo != null) {
+            apiSubmitMultiEvents(workoutInfo, selectedEvents, file);
+        } else {
             // save before submit multi events
-            apiSaveRecord(new onNetworkCallback() {
+            apiWorkOuts(new onNetworkCallback() {
                 @Override
                 public void onSuccess(xResponse response) {
-                    L.i(mtn + "going to submit multiple events.");
-
-                    // update multiple event
-                    apiSubmitMultiEvents(selectedEvents);
-
+                    WorkoutObject workoutObject = Globals.GSON.fromJson(response.jsonString, WorkoutObject.class);
+                    workoutInfo = workoutObject.getData();
+                    //L.i(mtn + "going to submit multiple events.");
+                    apiSubmitMultiEvents(workoutInfo, selectedEvents, file);
                 }
 
                 @Override
                 public void onFailure(xResponse response) {
                     // clear flag
                     mOnSubmitMultiResult = false;
-
                 }
             });
+        }
+    }
+
+    /**
+     * Feature methods
+     */
+    private boolean isGranted(String permissionName) {
+        return PermissionUtils.newInstance(this).checkPermission(permissionName);
+    }
+
+    private boolean requestPermissionsWriteStoragePermission() {
+        if (!isGranted(Globals.READ_EXTERNAL_STORAGE) || !isGranted(Globals.WRITE_EXTERNAL_STORAGE)) {
+            // request
+            PermissionUtils.newInstance(this).requestPermissions(RC_PERMISSION_SAVE_FILE,
+                    new String[]{Globals.READ_EXTERNAL_STORAGE, Globals.WRITE_EXTERNAL_STORAGE});
+
+            // exit from this process
+            return false;
+        }
+
+        return true;
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, @NonNull String[] permissions, @NonNull int[] grantResults) {
+        if (requestCode == RC_PERMISSION_SAVE_FILE) {
+            boolean allGranted = true;
+            for (int a = 0; a < grantResults.length; a++) {
+                L.i("AAA: " + grantResults[a]);
+
+                if (grantResults[a] != PackageManager.PERMISSION_GRANTED) {
+                    allGranted = false;
+                    break;
+                }
+            }
+            if (allGranted) {
+                saveToDevice();
+            }
+        } else {
+            super.onRequestPermissionsResult(requestCode, permissions, grantResults);
         }
     }
 
@@ -1800,7 +1869,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         ArrayList<LatLng> latLngs = new ArrayList<>();
         List<RealmPointObject> points = realm.copyFromRealm(realm.where(RealmPointObject.class).findAll());
         for (RealmPointObject point : points) {
-            latLngs.add(new LatLng(point.getLatitude(), point.getLongitude()));
+            latLngs.add(point.toLatLng());
         }
         return latLngs;
     }

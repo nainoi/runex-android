@@ -42,6 +42,7 @@ import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.Views.xMapViewGroup;
 import com.think.runex.java.Customize.xTalk;
+import com.think.runex.java.Models.EventIdAndPartnerObject;
 import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
@@ -71,6 +72,7 @@ import com.think.runex.java.Utils.Recorder.onRecorderCallback;
 
 import java.io.InputStream;
 import java.net.HttpURLConnection;
+import java.util.List;
 
 public class RecordPage extends xFragment implements OnMapReadyCallback
         , View.OnClickListener
@@ -880,62 +882,62 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     }
 
-    private void apiSaveRecord(onNetworkCallback callback) {
-        // prepare usage variables
-        final String mtn = ct + "apiSaveRecord() ";
-        final rqAddRunningHistory request = new rqAddRunningHistory();
-        final double recordTime = mRecorderUtils.recTimeAsMin();
-        final double recordPace = mRecorderUtils.paceAsMin();
-
-        request.setActivity_type(Globals.ACTIVITY_RUN);
-        request.setCalory(0);
-        request.setDistance(mRecorderUtils.mRecordDistanceKm);
-        request.setCaption("");
-        request.setImage_path("");
-        request.setPace(recordPace);
-        request.setTime(recordTime);
-
-        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
-        new AddHistoryService(activity, new onNetworkCallback() {
-            @Override
-            public void onSuccess(xResponse response) {
-                L.i(mtn + "successfully");
-                L.i(mtn + "response: " + response.jsonString);
-
-                if (callback == null) {
-                    // clear flag
-                    onNetwork = false;
-
-                    // successfully submit result
-                    // to begin step
-                    toBegin();
-
-                    // prepare usage variables
-                    xTalk x = new xTalk();
-                    x.requestCode = Globals.RC_TO_PROFILE_PAGE;
-
-                    // on result
-                    onResult(x);
-
-                } else callback.onSuccess(response);
-            }
-
-            @Override
-            public void onFailure(xResponse response) {
-                L.i(mtn + "failure");
-                L.i(mtn + "response: " + response.jsonString);
-
-                // clear flag
-                onNetwork = false;
-
-                // callback
-                if (callback != null) callback.onFailure(response);
-            }
-        }).doIt(request);
-    }
+//    private void apiSaveRecord(onNetworkCallback callback) {
+//        // prepare usage variables
+//        final String mtn = ct + "apiSaveRecord() ";
+//        final rqAddRunningHistory request = new rqAddRunningHistory();
+//        final double recordTime = mRecorderUtils.recTimeAsMin();
+//        final double recordPace = mRecorderUtils.paceAsMin();
+//
+//        request.setActivity_type(Globals.ACTIVITY_RUN);
+//        request.setCalory(0);
+//        request.setDistance(mRecorderUtils.mRecordDistanceKm);
+//        request.setCaption("");
+//        request.setImage_path("");
+//        request.setPace(recordPace);
+//        request.setTime(recordTime);
+//
+//        L.i(mtn + "save record: " + Globals.GSON.toJson(request));
+//        new AddHistoryService(activity, new onNetworkCallback() {
+//            @Override
+//            public void onSuccess(xResponse response) {
+//                L.i(mtn + "successfully");
+//                L.i(mtn + "response: " + response.jsonString);
+//
+//                if (callback == null) {
+//                    // clear flag
+//                    onNetwork = false;
+//
+//                    // successfully submit result
+//                    // to begin step
+//                    toBegin();
+//
+//                    // prepare usage variables
+//                    xTalk x = new xTalk();
+//                    x.requestCode = Globals.RC_TO_PROFILE_PAGE;
+//
+//                    // on result
+//                    onResult(x);
+//
+//                } else callback.onSuccess(response);
+//            }
+//
+//            @Override
+//            public void onFailure(xResponse response) {
+//                L.i(mtn + "failure");
+//                L.i(mtn + "response: " + response.jsonString);
+//
+//                // clear flag
+//                onNetwork = false;
+//
+//                // callback
+//                if (callback != null) callback.onFailure(response);
+//            }
+//        }).doIt(request);
+//    }
 
     @Override
-    public void onConfirmEvents(String[] selectedEvents) {
+    public void onConfirmEvents(List<EventIdAndPartnerObject> selectedEvents) {
         //TODO("Send distance from event id")
         // prepare usage variables
         final String mtn = ct + "onConfirmEvents() ";
@@ -951,23 +953,22 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
             L.i(mtn + "going to save record.");
 
             // save before submit multi events
-            apiSaveRecord(new onNetworkCallback() {
-                @Override
-                public void onSuccess(xResponse response) {
-                    L.i(mtn + "going to submit multiple events.");
-
-                    // update multiple event
-                    apiSubmitMultiEvents(selectedEvents);
-
-                }
-
-                @Override
-                public void onFailure(xResponse response) {
-                    // clear flag
-                    mOnSubmitMultiResult = false;
-
-                }
-            });
+//            apiSaveRecord(new onNetworkCallback() {
+//                @Override
+//                public void onSuccess(xResponse response) {
+//                    L.i(mtn + "going to submit multiple events.");
+//
+//                    // update multiple event
+//
+//                }
+//
+//                @Override
+//                public void onFailure(xResponse response) {
+//                    // clear flag
+//                    mOnSubmitMultiResult = false;
+//
+//                }
+//            });
         }
     }
 
