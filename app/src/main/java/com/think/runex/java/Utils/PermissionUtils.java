@@ -38,19 +38,26 @@ public class PermissionUtils {
      * Feature methods
      */
     public boolean checkPermission(String permissionName) {
-        return ContextCompat.checkSelfPermission(mActivity, permissionName)
-                == PackageManager.PERMISSION_GRANTED;
+        if (mFragment != null) {
+            return ContextCompat.checkSelfPermission(mFragment.requireContext(), permissionName)
+                    == PackageManager.PERMISSION_GRANTED;
+        } else if (mActivity != null) {
+            return ContextCompat.checkSelfPermission(mActivity, permissionName)
+                    == PackageManager.PERMISSION_GRANTED;
+        } else {
+            return false;
+        }
     }
 
     public void requestPermissions(int requestCode, String... permissions) {
-        if(mFragment != null ) {
+        if (mFragment != null) {
             mFragment.requestPermissions(permissions, requestCode);
 
             // No explanation needed; request the permission
-        } else ActivityCompat.requestPermissions(mActivity,
-                permissions,
-                requestCode);
-
-
+        } else if (mActivity != null) {
+            ActivityCompat.requestPermissions(mActivity,
+                    permissions,
+                    requestCode);
+        }
     }
 }

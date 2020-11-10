@@ -15,7 +15,7 @@ public enum APIs {
     GET_ALL_EVENT(DOMAIN.VAL + "/api/v2/event/active"),
 
     //--> G
-    GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v1/activity/getByEvent2/%s"), //{event_id}
+    GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v2/activity/getByEvent2/%s"), //{event_id}
     GET_REGISTERED_EVENT(DOMAIN.VAL + "/api/v2/register/myRegEvent"),
     GET_USER_PROFILE(DOMAIN.VAL + "/api/v1/user"),
 

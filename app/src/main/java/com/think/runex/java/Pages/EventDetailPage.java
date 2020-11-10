@@ -31,6 +31,7 @@ import com.think.runex.java.Customize.Views.Toolbar.xToolbar;
 import com.think.runex.java.Customize.Views.Toolbar.xToolbarProps;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventDetailObject;
+import com.think.runex.java.Models.WorkoutInfo;
 import com.think.runex.java.Pages.Record.WorkoutsAdapter;
 import com.think.runex.java.Utils.ActivityUtils;
 import com.think.runex.java.Utils.FragmentUtils;
@@ -42,6 +43,7 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 
 import java.net.HttpURLConnection;
+import java.util.ArrayList;
 
 public class EventDetailPage extends xFragment implements View.OnClickListener
         , SwipeRefreshLayout.OnRefreshListener {
@@ -201,7 +203,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     // recycler view props
     private void recyclerViewProps() {
         // prepare usage variables
-        adapter = new WorkoutsAdapter(null,true, new WorkoutsAdapter.OnDeleteRecordListener() {
+        adapter = new WorkoutsAdapter(null, true, new WorkoutsAdapter.OnDeleteRecordListener() {
             @Override
             public void onDeleteRecord(int position) {
                 dialogConfirmation("ยืนยันลบกิจกรรม", "คุณต้องการลบกิจกรรมนี้ใช่หรือไม่", new DialogInterface.OnClickListener() {
@@ -340,11 +342,22 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                     EventDetailObject.DataBean db = rhis.getData();
 
                     // update total distance
-                    lbTotalDistance.setText("" + Globals.DCM_2.format(db.getTotal_distance()));
+                    lbTotalDistance.setText("" + Globals.DCM_2.format(db.getActivities().getTotal_distance()));
 
                     //Keep activity record list for EventRecordHistoryPage
-                    if (db.getActivity_info() != null) {
-                        adapter.submitList(db.getActivity_info());
+                    if (db.getActivities().getActivity_info() != null) {
+                        ArrayList<WorkoutInfo> workoutInfo = new ArrayList<>();
+                        for (EventDetailObject.activity_info item : db.getActivities().getActivity_info()) {
+                            WorkoutInfo info = new WorkoutInfo();
+                            info.setId(item.getId());
+                            info.setDistance(item.getDistance());
+                            info.setCaption(item.getCaption());
+                            info.setApp(item.getApp());
+                            info.setDuration(item.getTime());
+                            info.setWorkout_date(item.getActivity_date());
+                            workoutInfo.add(info);
+                        }
+                        adapter.submitList(workoutInfo);
                     }
 
                 } catch (Exception e) {
