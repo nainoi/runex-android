@@ -15,6 +15,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.think.runex.R;
+import com.think.runex.datasource.api.ApiConfig;
 import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.feature.event.model.registered.RegisteredEvent;
 import com.think.runex.java.App.App;
@@ -107,6 +108,6 @@ public class LeaderBoardPage extends xFragment {
         extraHeaders.put("token", TokenManager.Companion.getAccessToken().replace("Bearer ", ""));
         extraHeaders.put("id", eventID);
 
-        webView.loadUrl("https://runex-leaderboard.thinkdev.app", extraHeaders);
+        webView.loadUrl(ApiConfig.Companion.getLEADER_BOARD_URL(), extraHeaders);
     }
 }

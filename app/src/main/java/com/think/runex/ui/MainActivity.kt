@@ -47,6 +47,7 @@ class MainActivity : BaseActivity() {
         if (savedInstanceState == null) {
             launch {
                 delay(100)
+                authViewModel.updateApiConfig()
                 authViewModel.initialToken()
                 setupScreen()
             }

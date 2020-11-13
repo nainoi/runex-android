@@ -108,7 +108,14 @@ data class Event(
         return 0
     }
 
-    fun coverImage(): String = if (coverImage?.isNotBlank() == true) "${ApiConfig.BASE_URL}$coverImage" else ""
+    fun coverImage(): String = when (coverImage?.isNotBlank() == true) {
+        true -> when (coverImage?.startsWith("http") == true) {
+            true -> coverImage ?: ""
+            false -> ("${ApiConfig.BASE_URL}$coverImage")
+        }
+        false -> ""
+    }
+
 
     fun eventPeriod(context: Context): String {
         return "${context.getString(R.string.event_date)} " +

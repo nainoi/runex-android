@@ -54,7 +54,7 @@ public class VHEvent extends RecyclerView.ViewHolder {
             lbEventType.setText(data.getEvent().getCategory());
             lbStartReg.setText(data.getEvent().registerPeriod(itemView.getContext()));
             //--> image
-            Picasso.get().load(ApiConfig.BASE_URL + data.getEvent().getCoverImage()).into(imgCover);
+            Picasso.get().load(data.getEvent().coverImage()).into(imgCover);
         }
         //--> billing
         lbEventBill.setText(PaymentStatus.INSTANCE.getPaymentStatusText(itemView.getContext(), data.getPaymentStatus()));

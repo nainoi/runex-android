@@ -1,41 +1,40 @@
 package com.think.runex.java.Constants;
 
-public enum APIs {
-    DOMAIN("https://runex-api.thinkdev.app"), //For dev
-    //DOMAIN("https://api.runex.co"),//For Production
+import com.think.runex.datasource.api.ApiConfig;
 
+public enum APIs {
     //--> A
-    ADD_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/add"),
-    ADD_WORKOUT(DOMAIN.VAL + "/api/v2/workout"),
+    ADD_HISTORY(ApiConfig.Companion.getBASE_URL() + "/api/v1/runhistory/add"),
+    ADD_WORKOUT(ApiConfig.Companion.getBASE_URL() + "/api/v2/workout"),
 
     //--> D
-    DELETE_EVENT_HISTORY(DOMAIN.VAL + "/api/v1/activity/deleteActivity/%s/%s"), ///v1/activity/deleteActivity/{event_id}/{act_id}
+    DELETE_EVENT_HISTORY(ApiConfig.Companion.getBASE_URL() + "/api/v1/activity/deleteActivity/%s/%s"), ///v1/activity/deleteActivity/{event_id}/{act_id}
 
     //--> E
-    GET_ALL_EVENT(DOMAIN.VAL + "/api/v2/event/active"),
+    GET_ALL_EVENT(ApiConfig.Companion.getBASE_URL() + "/api/v2/event/active"),
 
     //--> G
-    GET_EVENT_DETAIL(DOMAIN.VAL + "/api/v2/activity/getByEvent2/%s"), //{event_id}
-    GET_REGISTERED_EVENT(DOMAIN.VAL + "/api/v2/register/myRegEvent"),
-    GET_USER_PROFILE(DOMAIN.VAL + "/api/v1/user"),
+    GET_EVENT_DETAIL(ApiConfig.Companion.getBASE_URL() + "/api/v2/activity/getByEvent2/%s"), //{event_id}
+    GET_REGISTERED_EVENT(ApiConfig.Companion.getBASE_URL() + "/api/v2/register/myRegEvent"),
+    GET_USER_PROFILE(ApiConfig.Companion.getBASE_URL() + "/api/v1/user"),
 
     //--> L
-    LOGIN(DOMAIN.VAL + "/api/v1/user/login"),
-    LOGOUT(DOMAIN.VAL + "/api/v2/logout"),
+    LOGIN(ApiConfig.Companion.getBASE_URL() + "/api/v1/user/login"),
+    LOGOUT(ApiConfig.Companion.getBASE_URL() + "/api/v2/logout"),
 
     //--> M
-    MY_ACTIVE_REGISTERED_EVENT(DOMAIN.VAL + "/api/v2/register/myRegEventActivate"),
-    MY_RUNNING_HISTORY(DOMAIN.VAL + "/api/v1/runhistory/myhistory"),
-    MY_WORKOUTS(DOMAIN.VAL + "/api/v2/workouts"),
+    MY_ACTIVE_REGISTERED_EVENT(ApiConfig.Companion.getBASE_URL() + "/api/v2/register/myRegEventActivate"),
+    MY_RUNNING_HISTORY(ApiConfig.Companion.getBASE_URL() + "/api/v1/runhistory/myhistory"),
+    MY_WORKOUTS(ApiConfig.Companion.getBASE_URL() + "/api/v2/workouts"),
 
     //--> R
-    REGISTER_USER(DOMAIN.VAL + "/api/v1/user/ep"),
+    REGISTER_USER(ApiConfig.Companion.getBASE_URL() + "/api/v1/user/ep"),
 
     //--> S
-    SOCIALS_LOGIN(DOMAIN.VAL + "/api/v1/user/pd"),
-    SUBMIT_MULTI_EVENTS(DOMAIN.VAL + "/api/v1/activity/multiadd"),
-    SUBMIT_RUNNING_RESULT(DOMAIN.VAL + "/api/v1/activity/add"),
-    SUBMIT_ACTIVITIES_WORKOUT(DOMAIN.VAL + "/api/v2/activity/activitiesWorkout");
+    SOCIALS_LOGIN(ApiConfig.Companion.getBASE_URL() + "/api/v1/user/pd"),
+    SUBMIT_MULTI_EVENTS(ApiConfig.Companion.getBASE_URL() + "/api/v1/activity/multiadd"),
+    SUBMIT_RUNNING_RESULT(ApiConfig.Companion.getBASE_URL() + "/api/v1/activity/add"),
+    SUBMIT_ACTIVITIES_WORKOUT(ApiConfig.Companion.getBASE_URL() + "/api/v2/activity/activitiesWorkout");
 
     public final String VAL;
 

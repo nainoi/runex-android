@@ -3,6 +3,7 @@ package com.think.runex.java.Utils.Network;
 import android.app.Activity;
 
 import com.google.gson.Gson;
+import com.think.runex.datasource.api.ApiConfig;
 import com.think.runex.feature.auth.RefreshTokenInterceptor;
 import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
@@ -20,8 +21,6 @@ import okhttp3.Request;
 import okhttp3.RequestBody;
 import okhttp3.Response;
 import okhttp3.logging.HttpLoggingInterceptor;
-
-import static com.think.runex.java.Constants.APIs.DOMAIN;
 
 public class NetworkUtils {
 
@@ -278,7 +277,7 @@ public class NetworkUtils {
                         // conditions
                         if (redirectUrl != null && !redirectUrl.isEmpty()) {
                             // update props
-                            props.url = DOMAIN.VAL + redirectUrl;
+                            props.url = ApiConfig.Companion.getBASE_URL() + redirectUrl;
 
                             // fire
                             postJSON(props, callback);

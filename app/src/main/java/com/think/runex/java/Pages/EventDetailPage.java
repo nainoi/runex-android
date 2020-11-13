@@ -108,7 +108,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
             RegisteredEventInfo evtVal = mEvent.getRegisterInfoList().get(0);
             if (evtVal.getEvent() != null) {
-                mEventProfile = ApiConfig.BASE_URL + evtVal.getEvent().getCoverImage();
+                mEventProfile = evtVal.getEvent().coverImage();
                 mEventName = evtVal.getEvent().getName();
             }
         }
@@ -249,7 +249,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                 _lbEventType.setText((evtVal.getEvent().getCategory()));
 
                 //--> image
-                Picasso.get().load(ApiConfig.BASE_URL + evtVal.getEvent().getCoverImage()).into(imgCover);
+                Picasso.get().load(evtVal.getEvent().coverImage()).into(imgCover);
             }
         }
     }

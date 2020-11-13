@@ -16,6 +16,7 @@ const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 4.1.1; Gal
 /**
  * Global Key
  */
+const val KEY_API = "api"
 const val KEY_AUTH = "Authorization"
 const val KEY_ACCESS_TOKEN = "accessToken"
 const val KEY_EVENT = "event"

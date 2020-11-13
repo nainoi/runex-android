@@ -42,7 +42,7 @@ class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBS
         //Load event preview
         register_button?.isEnabled = false
         progress_bar?.visible()
-        web_view.loadUrl("${ApiConfig.EVENT_PREVIEW_URL}/${event?.id}")
+        web_view.loadUrl("${ApiConfig.PREVIEW_EVENT_URL}/${event?.id}")
     }
 
     private fun initialValue() {

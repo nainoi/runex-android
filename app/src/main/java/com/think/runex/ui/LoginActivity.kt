@@ -64,7 +64,7 @@ class LoginActivity : BaseActivity() {
                 return super.shouldOverrideUrlLoading(view, request)
             }
         }
-        web_view.loadUrl("${ApiConfig.AUTH_URL}/login?device=android")
+        web_view.loadUrl("${ApiConfig.LOGIN_URL}?device=android")
     }
 
     private fun subscribeUi() {
