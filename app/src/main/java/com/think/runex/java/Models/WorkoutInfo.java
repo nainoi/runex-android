@@ -270,6 +270,7 @@ public class WorkoutInfo implements Parcelable {
     public RealmRecorderObject toRealmRecorderObject() {
         RealmRecorderObject object = new RealmRecorderObject();
 
+        object.setWorkout_date(workout_date);
         object.setDistanceKm(distance);
         object.setDurationMillis((duration * 1000));
         object.setPaceMillis((long) ((pace * 60) * 1000));

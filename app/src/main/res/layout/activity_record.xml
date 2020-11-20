@@ -22,13 +22,7 @@
             <com.think.runex.java.Customize.Views.xMapViewGroup
                 android:id="@+id/map"
                 android:layout_width="match_parent"
-                android:layout_height="match_parent" >
-
-                <FrameLayout
-                    android:id="@+id/display_fragment_frame"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent" />
-            </com.think.runex.java.Customize.Views.xMapViewGroup>
+                android:layout_height="match_parent" />
 
             <include
                 android:id="@+id/frame_debug"
@@ -459,4 +453,9 @@
     </FrameLayout>
 
     <!-- Frame fragment display container -->
+    <FrameLayout
+        android:id="@+id/display_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 </FrameLayout>

@@ -23,7 +23,7 @@
         android:theme="@style/AppTheme.TransparentStatus"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize|stateHidden">
-        <activity android:name=".java.Pages.WorkoutDetailActivity"></activity>
+        <activity android:name=".java.Pages.WorkoutDetailPage"></activity>
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"

@@ -62,6 +62,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
     // views
     private TextView lbDistance;
     private TextView lbDuration;
+    private TextView lbDateTime;
     private ImageView previewImage;
     //--> buttons
     private View btnShareToFacebook;
@@ -223,6 +224,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
         // labels
         lbDistance.setText(Globals.DCM_2.format(recorderObject.distanceKm) + " กม.");
         lbDuration.setText(DateTimeUtils.toTimeFormat(recorderObject.durationMillis));
+        lbDateTime.setText(recorderObject.getWorkoutDate());
 
         L.i(mtn + "recorder-object: " + Globals.GSON.toJson(recorderObject));
 
@@ -245,6 +247,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
     private void viewMatching(View v) {
         lbDistance = v.findViewById(R.id.lb_distance);
         lbDuration = v.findViewById(R.id.lb_duration);
+        lbDateTime = v.findViewById(R.id.lb_date_time);
         previewImage = v.findViewById(R.id.preview_image);
         //customPreviewImage = v.findViewById(R.id.custom_preview_image);
         //--> buttons

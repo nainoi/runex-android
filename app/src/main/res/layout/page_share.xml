@@ -90,6 +90,7 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:text="ระยะเวลา"
+                       android:layout_gravity="end"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/textContent" />
 
@@ -99,8 +100,18 @@
                         android:layout_height="wrap_content"
                         android:includeFontPadding="false"
                         android:text="00:00"
+                        android:gravity="end"
                         android:textColor="@android:color/white"
                         android:textSize="@dimen/textParagraphH1" />
+
+                    <TextView
+                        android:id="@+id/lb_date_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                       android:layout_gravity="end"
+                        android:textColor="@android:color/white"/>
+
 
                 </LinearLayout>
 

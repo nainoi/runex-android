@@ -2,9 +2,18 @@ package com.think.runex.java.Models;
 
 import android.os.Parcel;
 import android.os.Parcelable;
+
 import com.think.runex.java.Utils.GoogleMap.xLocation;
 
+import java.text.SimpleDateFormat;
+import java.util.Date;
+import java.util.Locale;
+
 import io.realm.RealmObject;
+
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
+import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class RealmRecorderObject extends RealmObject implements Parcelable {
 
@@ -34,6 +43,8 @@ public class RealmRecorderObject extends RealmObject implements Parcelable {
     public boolean gpsPoorSignal = false;
     public boolean forceAction = false;
 
+    private String workout_date = "";
+
     public RealmRecorderObject() {
     }
 
@@ -50,6 +61,7 @@ public class RealmRecorderObject extends RealmObject implements Parcelable {
         gpsAcquired = in.readByte() != 0;
         gpsPoorSignal = in.readByte() != 0;
         forceAction = in.readByte() != 0;
+        workout_date = in.readString();
     }
 
     @Override
@@ -66,6 +78,7 @@ public class RealmRecorderObject extends RealmObject implements Parcelable {
         dest.writeByte((byte) (gpsAcquired ? 1 : 0));
         dest.writeByte((byte) (gpsPoorSignal ? 1 : 0));
         dest.writeByte((byte) (forceAction ? 1 : 0));
+        dest.writeString(workout_date);
     }
 
     @Override
@@ -167,5 +180,36 @@ public class RealmRecorderObject extends RealmObject implements Parcelable {
 
     public void setForceAction(boolean forceAction) {
         this.forceAction = forceAction;
+    }
+
+    public String getWorkout_date() {
+        return workout_date;
+    }
+
+    public void setWorkout_date(String workout_date) {
+        this.workout_date = workout_date;
+    }
+
+    public String getWorkoutDate() {
+        String date = "";
+        try {
+            SimpleDateFormat sdf = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault());
+            Date d = sdf.parse(workout_date);
+            if (d != null) {
+                date = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH, Locale.getDefault()).format(d);
+            }
+        } catch (Throwable error) {
+            error.printStackTrace();
+        }
+        return date;
+    }
+
+    public void setWorkoutDate(long timeMillis) {
+        try {
+            Date d = new Date(timeMillis);
+            workout_date = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault()).format(d);
+        } catch (Throwable error) {
+            error.printStackTrace();
+        }
     }
 }

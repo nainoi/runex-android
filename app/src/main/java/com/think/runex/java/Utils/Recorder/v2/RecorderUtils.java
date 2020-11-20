@@ -30,6 +30,7 @@ public class RecorderUtils {
     //--> stamp time recording
     private long stampMillis = 0L;
     public long recordDurationMillis = 0L;
+    public long workoutDateTimeMillis = 0L;
 
     private RecorderUtils(/*Activity activity*/) {
         // prepare usage variables

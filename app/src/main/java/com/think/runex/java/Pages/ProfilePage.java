@@ -4,7 +4,6 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -325,7 +324,7 @@ public class ProfilePage extends xFragment implements
     @Override
     public void onItemClicked(int position) {
         WorkoutInfo workoutInfo = workoutsAdapter.getItem(position);
-        Intent intent = new Intent(getContext(), WorkoutDetailActivity.class);
+        Intent intent = new Intent(getContext(), WorkoutDetailPage.class);
         intent.putExtra("workoutInfo", workoutInfo);
         startActivity(intent);
     }

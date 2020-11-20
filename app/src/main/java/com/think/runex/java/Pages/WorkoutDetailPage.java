@@ -1,12 +1,10 @@
 package com.think.runex.java.Pages;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.fragment.app.FragmentManager;
 
 import android.app.AlertDialog;
 import android.content.DialogInterface;
-import android.content.Intent;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.location.Location;
@@ -26,7 +24,6 @@ import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.Views.xMapViewGroup;
-import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.EventIdAndPartnerObject;
 import com.think.runex.java.Models.WorkoutInfo;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
@@ -50,12 +47,12 @@ import java.util.List;
 
 import static com.think.runex.java.Constants.Globals.RC_PERMISSION_SAVE_FILE;
 
-public class WorkoutDetailActivity extends xActivity implements OnMapReadyCallback, OnConfirmEventsListener {
+public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, OnConfirmEventsListener {
 
     /**
      * Main variables
      */
-    private final String ct = "WorkoutDetailActivity->";
+    private final String ct = "WorkoutDetailPage->";
 
     private int CONTAINER_ID;
 
@@ -99,7 +96,7 @@ public class WorkoutDetailActivity extends xActivity implements OnMapReadyCallba
         //--> Permission utils
         mPmUtils = PermissionUtils.newInstance(this);
 
-        setContentView(R.layout.activity_workout_detail);
+        setContentView(R.layout.page_workout_detail);
         CONTAINER_ID = R.id.display_fragment_frame;
 
         // Fragment inits
@@ -380,7 +377,7 @@ public class WorkoutDetailActivity extends xActivity implements OnMapReadyCallba
                     btnSubmit.setVisibility(View.GONE);
 
                     //TODO("Refresh profile page")
-                    Toast.makeText(WorkoutDetailActivity.this, "ส่งผลสำเร็จ", Toast.LENGTH_SHORT).show();
+                    Toast.makeText(WorkoutDetailPage.this, "ส่งผลสำเร็จ", Toast.LENGTH_SHORT).show();
                 }
             }
 

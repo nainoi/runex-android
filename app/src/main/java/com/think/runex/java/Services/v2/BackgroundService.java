@@ -130,6 +130,7 @@ public class BackgroundService extends Service {
 
         // initial recorder utils
         recorderUtils = RecorderUtils.newInstance();
+        recorderUtils.workoutDateTimeMillis = System.currentTimeMillis();
         recorderUtils.setRecorderCallback(new onRecorderCallback() {
             @Override
             public void onRecordTimeChanged(String time) {
@@ -142,6 +143,7 @@ public class BackgroundService extends Service {
                 RealmRecorderObject record = new RealmRecorderObject();
 
                 //--> record props
+                record.setWorkoutDate(recorderUtils.workoutDateTimeMillis);
                 record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
                 record.displayPaceAsTime = recorderUtils.displayPaceAsTime;
                 record.paceMillis = recorderUtils.paceMillis;
@@ -350,6 +352,7 @@ public class BackgroundService extends Service {
                     BroadcastObject broadcastObject = new BroadcastObject();
 
                     //--> record props
+                    record.setWorkoutDate(recorderUtils.workoutDateTimeMillis);
                     record.xLocCurrent = new xLocation(xLoc.latitude, xLoc.longitude, xLoc.accuracy, xLoc.avgAccuracy);
                     record.xLocLast = lastLocation;
                     record.displayRecordAsTime = recorderUtils.displayRecordAsTime;
@@ -550,6 +553,7 @@ public class BackgroundService extends Service {
                 boolean _gpsAcquiring = GPS_ACQUIRED;
 
                 //--> update props
+                recorder.setWorkoutDate(recorderUtils.workoutDateTimeMillis);
                 recorder.gpsAcquired = _gpsAcquiring;
 
                 //--> broadcast
@@ -623,6 +627,7 @@ public class BackgroundService extends Service {
         RealmRecorderObject recorder = new RealmRecorderObject();
 
         //--> update props
+        recorder.setWorkoutDate(recorderUtils.workoutDateTimeMillis);
         recorder.gpsPoorSignal = GPS_POOR_SIGNAL;
 
         //--> broadcast
