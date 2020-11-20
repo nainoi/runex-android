@@ -17,6 +17,7 @@
         android:hardwareAccelerated="true"
         android:icon="@mipmap/ic_launcher"
         android:label="@string/app_name"
+        android:largeHeap="true"
         android:requestLegacyExternalStorage="true"
         android:roundIcon="@mipmap/ic_launcher_round"
         android:supportsRtl="true"
@@ -63,11 +64,6 @@
             android:launchMode="singleTop"
             android:screenOrientation="portrait" />
         <activity
-            android:name=".java.Activities._RecordActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:launchMode="singleTop" />
-        <activity
             android:name=".java.Activities.LoginActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name"
@@ -105,17 +101,7 @@
         </provider>
 
         <service
-            android:name=".java.Services.v2.BackgroundService"
-            android:foregroundServiceType="location"
-            android:icon="@drawable/ic_logo_small"
-            android:label="@string/background_service" />
-        <service
             android:name=".java.Services.BackgroundService"
-            android:foregroundServiceType="location"
-            android:icon="@drawable/ic_logo_small"
-            android:label="@string/background_service" />
-        <service
-            android:name=".java.Services.v3.BackgroundService"
             android:foregroundServiceType="location"
             android:icon="@drawable/ic_logo_small"
             android:label="@string/background_service" />

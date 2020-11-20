@@ -16,6 +16,7 @@ import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
+import com.think.runex.feature.auth.TokenManager
 import com.think.runex.feature.social.SocialLoginListener
 import com.think.runex.feature.social.SocialLoginManger
 import com.think.runex.feature.social.SocialLoginManger.Companion.RC_GOOGLE_LOGIN
@@ -93,7 +94,7 @@ class LoginScreen : BaseScreen(), SocialLoginListener, onNetworkCallback {
         val props = NetworkProps()
 
         // update props
-        props.addHeader("Authorization", "Bearer " + Globals.TOKEN)
+        props.addHeader("Authorization", TokenManager.accessToken)
         props.setJsonAsObject(rqLogin("fakespmh.21@gmail.com", "p@ss1234", Configs.PLATFORM))
         props.setUrl(APIs.LOGIN.VAL)
 

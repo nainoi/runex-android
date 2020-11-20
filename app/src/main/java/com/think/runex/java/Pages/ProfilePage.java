@@ -18,6 +18,7 @@ import androidx.recyclerview.widget.RecyclerView;
 import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
+import com.think.runex.BuildConfig;
 import com.think.runex.R;
 import com.think.runex.feature.auth.TokenManager;
 import com.think.runex.java.App.App;
@@ -61,7 +62,7 @@ public class ProfilePage extends xFragment implements
     // views
     private SwipeRefreshLayout refreshLayout;
     private ImageView profileImage;
-    private TextView lbFullname, lbEmail;
+    private TextView lbFullname, lbEmail, lbVersion;
     private TextView lbTotalDistance;
     private View btnSignOut;
     private RecyclerView recyclerView;
@@ -305,6 +306,8 @@ public class ProfilePage extends xFragment implements
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
         }
+
+        lbVersion.setText("Version " + BuildConfig.VERSION_NAME);
     }
 
     /**
@@ -351,6 +354,7 @@ public class ProfilePage extends xFragment implements
         refreshLayout = v.findViewById(R.id.refresh_layout);
         lbFullname = v.findViewById(R.id.lb_user_name);
         lbEmail = v.findViewById(R.id.lb_email);
+        lbVersion = v.findViewById(R.id.lb_version);
         lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         profileImage = v.findViewById(R.id.profile_image);
 

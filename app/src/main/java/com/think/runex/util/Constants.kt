@@ -36,7 +36,7 @@ const val SERVER_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss'Z'"
 const val DISPLAY_DATE_FORMAT = "dd/MM/yyyy"
 const val DISPLAY_DATE_FORMAT_SHOT_MONTH = "dd MMM yyyy"
 
-const val DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH = "EE, dd MMM yyyy HH:mm"
+const val DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH = "EEE, dd MMM yyyy HH:mm"
 
 /**
  * Request Code

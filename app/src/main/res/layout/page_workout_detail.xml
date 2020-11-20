@@ -44,24 +44,94 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent" />
 
-        <LinearLayout
-            android:id="@+id/frame_logo"
+        <ImageView
+            android:id="@+id/preview_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent" />
+
+        <ImageView
+            android:id="@+id/runex_logo"
+            android:layout_width="100dp"
+            android:layout_height="wrap_content"
+            android:layout_marginStart="16dp"
+            android:layout_marginTop="16dp"
+            android:adjustViewBounds="true"
+            android:src="@mipmap/im_app_logo" />
+
+
+        <!-- Frame contents -->
+        <FrameLayout
+            android:id="@+id/frame_distance_in_map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_gravity="bottom"
-            android:gravity="center_horizontal"
-            android:visibility="invisible"
-            android:weightSum="1">
+            android:background="@drawable/background_fading_black_vertical"
+            android:padding="12dp">
 
-            <ImageView
-                android:layout_width="0dp"
+            <!-- Frame distance -->
+            <LinearLayout
+                android:id="@+id/frame_distance"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center_horizontal"
-                android:layout_marginBottom="16dp"
-                android:layout_weight="0.3"
-                android:src="@mipmap/im_app_logo" />
+                android:orientation="vertical">
 
-        </LinearLayout>
+                <TextView
+                    android:id="@+id/v_distance"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="ระยะทาง"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textContent" />
+
+                <TextView
+                    android:id="@+id/lb_distance_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:includeFontPadding="false"
+                    android:text="0.00 กม."
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textParagraphH1" />
+
+            </LinearLayout>
+
+            <!-- Frame duration -->
+            <LinearLayout
+                android:id="@+id/frame_duration"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="right"
+                android:orientation="vertical">
+
+                <TextView
+                    android:id="@+id/v_duratoin"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:includeFontPadding="false"
+                    android:text="ระยะเวลา"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textContent" />
+
+                <TextView
+                    android:id="@+id/lb_duration_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:gravity="end"
+                    android:includeFontPadding="false"
+                    android:text="00:00"
+                    android:textColor="@android:color/white"
+                    android:textSize="@dimen/textParagraphH1" />
+
+                <TextView
+                    android:id="@+id/lb_date_time"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="end"
+                    android:includeFontPadding="false"
+                    android:textColor="@android:color/white" />
+            </LinearLayout>
+        </FrameLayout>
     </FrameLayout>
 
     <!-- Summary -->

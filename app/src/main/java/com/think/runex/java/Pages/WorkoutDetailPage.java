@@ -10,6 +10,7 @@ import android.graphics.Bitmap;
 import android.location.Location;
 import android.os.Bundle;
 import android.view.View;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -69,7 +70,9 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
 
     //--> Frame map
     private xMapViewGroup frameMap;
-    private View frameLogo;
+    private ImageView runexLogo;
+    private TextView distanceInMapLabel, durationInMapLabel, dateTimeLabelInMap;
+    private ImageView previewImage;
 
     private TextView lbDistance;
     private TextView lbTime;
@@ -122,8 +125,11 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
 
         //--> Frame map
         frameMap = findViewById(R.id.map);
-
-        frameLogo = findViewById(R.id.frame_logo);
+        runexLogo = findViewById(R.id.runex_logo);
+        distanceInMapLabel = findViewById(R.id.lb_distance_2);
+        durationInMapLabel = findViewById(R.id.lb_duration_2);
+        dateTimeLabelInMap = findViewById(R.id.lb_date_time);
+        previewImage = findViewById(R.id.preview_image);
 
         //FrameLayout frameLayout = findViewById(R.id.inherit_frame_summary);
         lbDistance = findViewById(R.id.lb_distance);
@@ -169,6 +175,10 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
             } else {
                 btnSubmit.setVisibility(View.VISIBLE);
             }
+
+            distanceInMapLabel.setText(Globals.DCM_2.format(workoutInfo.getDistance()));
+            durationInMapLabel.setText(workoutInfo.getTime_string());
+            dateTimeLabelInMap.setText(workoutInfo.getWorkoutDate());
         }
     }
 
@@ -224,8 +234,6 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
 
                     // zoom to fit
                     mMapUtils.zoomToFit();
-
-                    frameLogo.setVisibility(View.VISIBLE);
                 }
             } else {
                 if (mPmUtils.checkPermission(Globals.ACCESS_FINE_LOCAITON)) {
@@ -317,17 +325,30 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
         if (selectedEvents != null) {
             L.i(mtn + "going to save record.");
             this.selectedEvents = selectedEvents;
-            saveToDevice();
+            saveMapToDeviceSubmitMultiEvents();
 
         }
     }
 
-    private void saveToDevice() {
+    private void saveMapToDeviceSubmitMultiEvents() {
         if (!requestPermissionsWriteStoragePermission()) return;
 
-        // snap and save as file
-        File file = DeviceUtils.instance(this).takeScreenshot2(this, R.id.frame_map);
-        apiSubmitMultiEvents(selectedEvents, file);
+        // capture google map preview image
+        mMap.snapshot(new GoogleMap.SnapshotReadyCallback() {
+            @Override
+            public void onSnapshotReady(Bitmap bitmap) {
+                //frameMap.setVisibility(View.GONE);
+                previewImage.setImageBitmap(bitmap);
+                previewImage.setVisibility(View.VISIBLE);
+
+                // snap and save as file
+                File file = DeviceUtils.instance(WorkoutDetailPage.this).takeScreenshot2(WorkoutDetailPage.this, R.id.frame_map);
+
+                apiSubmitMultiEvents(selectedEvents, file);
+            }
+        });
+
+
     }
 
     /**
@@ -361,7 +382,7 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
         // update props
         request.setEvent_activity(selectedEvents);
         request.setWorkout_info(workoutInfo);
-
+        mOnSubmitMultiResult = true;
         // fire
         new SubmitActivitiesWorkoutService(this, new onNetworkCallback() {
             @Override
@@ -372,12 +393,16 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
                     // remove fragment dialog
                     mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
 
+                    // clear flag
                     mOnSubmitMultiResult = false;
 
                     btnSubmit.setVisibility(View.GONE);
 
                     //TODO("Refresh profile page")
                     Toast.makeText(WorkoutDetailPage.this, "ส่งผลสำเร็จ", Toast.LENGTH_SHORT).show();
+
+                    previewImage.setImageDrawable(null);
+                    previewImage.setVisibility(View.GONE);
                 }
             }
 
@@ -387,7 +412,12 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
 
                 // remove fragment dialog
                 mActiveRegisteredEventCheckerPageDialog.dismissAllowingStateLoss();
+
+                // clear flag
                 mOnSubmitMultiResult = false;
+
+                previewImage.setImageDrawable(null);
+                previewImage.setVisibility(View.GONE);
 
             }
         }).doIt(request, fileImage);
@@ -410,7 +440,7 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
                 }
             }
             if (allGranted) {
-                saveToDevice();
+                saveMapToDeviceSubmitMultiEvents();
             }
         } else {
             super.onRequestPermissionsResult(requestCode, permissions, grantResults);

@@ -8,6 +8,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
+
 public class EventDetailObject {
 
     /**
@@ -225,7 +227,7 @@ public class EventDetailObject {
                 SimpleDateFormat sdf = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT, Locale.getDefault());
                 Date date = sdf.parse(activity_date);
                 if (date != null) {
-                    changedDateTime = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME, Locale.getDefault()).format(date);
+                    changedDateTime = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH, Locale.getDefault()).format(date);
                 }
             } catch (Throwable error) {
                 try {
@@ -236,7 +238,7 @@ public class EventDetailObject {
                     date = sdf.parse(activity_date);
 
                     if (date != null) {
-                        changedDateTime = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME, Locale.getDefault()).format(date);
+                        changedDateTime = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH, Locale.getDefault()).format(date);
                     }
                 } catch (Throwable e) {
                     e.printStackTrace();

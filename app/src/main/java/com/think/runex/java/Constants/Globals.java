@@ -11,16 +11,18 @@ import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
 
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
+
 public class Globals {
     //--> Activities
     public static final String ACTIVITY_RUN = "RUN";
     //--> Fixed
-    public static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzI0NTI2MTIsImlkIjoiNWRiNWJiZDE4NzRhNjkzYTcyZWY2MDkxIiwib3JpZ19pYXQiOjE1NzIxOTM0MTIsInBmIjoid2ViIiwicm9sZSI6Ik1FTUJFUiJ9.D1vXzTpIHiqeWIdUrwFgJxLJ_AuAJg2XCnKmtshWaqY";
+    //public static final String TOKEN = "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJleHAiOjE1NzI0NTI2MTIsImlkIjoiNWRiNWJiZDE4NzRhNjkzYTcyZWY2MDkxIiwib3JpZ19pYXQiOjE1NzIxOTM0MTIsInBmIjoid2ViIiwicm9sZSI6Ik1FTUJFUiJ9.D1vXzTpIHiqeWIdUrwFgJxLJ_AuAJg2XCnKmtshWaqY";
     public static final String EVENT_ID = "5db5bda6874a693a72ef6093";
     public static Gson GSON = new Gson();
     public static DecimalFormat DCM = new DecimalFormat("0.0");
     public static DecimalFormat DCM_2 = new DecimalFormat("0.00");
-    public static SimpleDateFormat SDF_DISPLAY_FULL_DATE_TIME = new SimpleDateFormat(Configs.SERVER_DISPLAY_FULL_DATE_TIME);
+    public static SimpleDateFormat SDF_DISPLAY_FULL_DATE_TIME = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH);
     public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_TOKEN = new SimpleDateFormat(Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
     public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);

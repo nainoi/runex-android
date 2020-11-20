@@ -18,13 +18,12 @@ import androidx.fragment.app.Fragment;
 import com.google.android.material.bottomnavigation.BottomNavigationMenuView;
 import com.google.android.material.bottomnavigation.BottomNavigationView;
 import com.think.runex.R;
-import com.think.runex.java.Activities._RecordActivity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.Fragment.xFragmentHandler;
 import com.think.runex.java.Customize.xTalk;
-import com.think.runex.java.Pages.RecordPage.v2.RecordPage;
+import com.think.runex.java.Pages.RecordPage.RecordPage;
 import com.think.runex.java.Pages.RegisteredEvent.MyEventPage;
 import com.think.runex.java.Utils.ChildFragmentUtils;
 import com.think.runex.java.Utils.L;
@@ -159,12 +158,6 @@ public class MainPage extends xFragment {
             icon.setLayoutParams(layoutParams);
 
         }
-    }
-
-    private void recordPage() {
-        Intent i = new Intent(activity, _RecordActivity.class);
-        startActivityForResult(i, Globals.RC_RECORDER);
-
     }
 
     @SuppressLint("NonConstantResourceId")
