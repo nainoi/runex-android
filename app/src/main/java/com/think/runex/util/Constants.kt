@@ -10,7 +10,11 @@ const val PREFERENCES_NAME = "app_preference"
  */
 const val ANDROID = "android"
 const val APP_SCHEME = "runex"
-const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 4.1.1; Galaxy Nexus Build/JRO03C) AppleWebKit/535.19 (KHTML, like Gecko) Chrome/18.0.1025.166 Mobile Safari/535.19"
+
+/**
+ * Update last user-agent from https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome
+ */
+const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 10) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/87.0.4280.66 Mobile Safari/537.36"
 
 
 /**
