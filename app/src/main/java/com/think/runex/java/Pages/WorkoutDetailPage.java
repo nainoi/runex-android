@@ -41,6 +41,8 @@ import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.SubmitActivitiesWorkoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
+import com.think.runex.java.Utils.RxBus;
+import com.think.runex.java.event.RefreshEvent;
 
 import java.io.File;
 import java.net.HttpURLConnection;
@@ -403,6 +405,9 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
 
                     previewImage.setImageDrawable(null);
                     previewImage.setVisibility(View.GONE);
+
+                    //Refresh event for profile page
+                    RxBus.publish(RxBus.SUBJECT, new RefreshEvent());
                 }
             }
 
