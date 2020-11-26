@@ -34,11 +34,15 @@ import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetWorkoutsService;
 import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
+import com.think.runex.java.Utils.RxBus;
+import com.think.runex.java.event.RefreshEvent;
 import com.think.runex.ui.MainActivity;
 import com.think.runex.util.AppPreference;
 
 import java.net.HttpURLConnection;
 import java.util.ArrayList;
+
+import io.reactivex.functions.Consumer;
 
 import static com.think.runex.util.ConstantsKt.KEY_ACCESS_TOKEN;
 
@@ -66,6 +70,94 @@ public class ProfilePage extends xFragment implements
     private TextView lbTotalDistance;
     private View btnSignOut;
     private RecyclerView recyclerView;
+
+    private Consumer<Object> refreshEvent;
+
+    @Override
+    public void onCreate(@Nullable Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+    }
+
+    @Nullable
+    @Override
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
+        final View v = inflater.inflate(R.layout.page_profile, container, false);
+
+        // views matching
+        viewsMatching(v);
+
+        // views event listener
+        viewEventListener();
+
+        // view binding
+        viewBinding(App.instance(activity).getAppEntity().user);
+
+        // recycler view props
+        recyclerViewProps();
+
+        registerRefreshEvent();
+        return v;
+    }
+
+    /**
+     * Life cycle
+     */
+    @Override
+    public void onResume() {
+        super.onResume();
+        // prepare usage variables
+        final String mtn = ct + "onResume() ";
+
+        if (mRunningHist == null || mOnLoginHasChanged) {
+            // clear flag
+            mOnLoginHasChanged = false;
+
+            // condition
+            if (ON_NETWORKING) return;
+
+            // update flag
+            ON_NETWORKING = true;
+
+            // get my profile
+            apiGetWorkouts();
+
+        } else {
+
+            try {
+                // total distance
+                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) + " km");
+
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
+            }
+
+        }
+    }
+
+    /**
+     * Views matching
+     */
+    private void viewsMatching(View v) {
+        recyclerView = v.findViewById(R.id.recycler_view);
+        refreshLayout = v.findViewById(R.id.refresh_layout);
+        lbFullname = v.findViewById(R.id.lb_user_name);
+        lbEmail = v.findViewById(R.id.lb_email);
+        lbVersion = v.findViewById(R.id.lb_version);
+        lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
+        profileImage = v.findViewById(R.id.profile_image);
+
+        //--> Buttons
+        btnSignOut = v.findViewById(R.id.frame_sign_out);
+    }
+
+    /**
+     * View event listener
+     */
+    private void viewEventListener() {
+        btnSignOut.setOnClickListener(this);
+        refreshLayout.setOnRefreshListener(this);
+    }
+
 
     /**
      * Implement methods
@@ -121,25 +213,6 @@ public class ProfilePage extends xFragment implements
 
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
-        final View v = inflater.inflate(R.layout.page_profile, container, false);
-
-        // views matching
-        viewsMatching(v);
-
-        // views event listener
-        viewEventListener();
-
-        // view binding
-        viewBinding(App.instance(activity).getAppEntity().user);
-
-        // recycler view props
-        recyclerViewProps();
-
-        return v;
-    }
 
     /**
      * API methods
@@ -338,71 +411,6 @@ public class ProfilePage extends xFragment implements
 
     }
 
-    /**
-     * View event listener
-     */
-    private void viewEventListener() {
-        btnSignOut.setOnClickListener(this);
-        refreshLayout.setOnRefreshListener(this);
-    }
-
-    /**
-     * Views matching
-     */
-    private void viewsMatching(View v) {
-        recyclerView = v.findViewById(R.id.recycler_view);
-        refreshLayout = v.findViewById(R.id.refresh_layout);
-        lbFullname = v.findViewById(R.id.lb_user_name);
-        lbEmail = v.findViewById(R.id.lb_email);
-        lbVersion = v.findViewById(R.id.lb_version);
-        lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
-        profileImage = v.findViewById(R.id.profile_image);
-
-        //--> Buttons
-        btnSignOut = v.findViewById(R.id.frame_sign_out);
-    }
-
-
-    /**
-     * Life cycle
-     */
-    @Override
-    public void onResume() {
-        super.onResume();
-        // prepare usage variables
-        final String mtn = ct + "onResume() ";
-
-        if (mRunningHist == null || mOnLoginHasChanged) {
-            // clear flag
-            mOnLoginHasChanged = false;
-
-            // condition
-            if (ON_NETWORKING) return;
-
-            // update flag
-            ON_NETWORKING = true;
-
-            // get my profile
-            apiGetWorkouts();
-
-        } else {
-
-            try {
-                // total distance
-                lbTotalDistance.setText(Globals.DCM.format(mRunningHist.getTotal_distance()) + " km");
-
-            } catch (Exception e) {
-                L.e(mtn + "Err: " + e.getMessage());
-            }
-
-        }
-    }
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
-    }
-
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         super.onActivityResult(requestCode, resultCode, data);
@@ -425,5 +433,35 @@ public class ProfilePage extends xFragment implements
 
             }
         }
+    }
+
+    private void registerRefreshEvent() {
+        refreshEvent = new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                if (o instanceof RefreshEvent) {
+                    // display progress dialog
+                    refreshLayout.setRefreshing(true);
+
+                    // request on refresh
+                    onRefresh();
+                }
+            }
+        };
+        //Subscribe event when setup.
+        RxBus.subscribe(RxBus.SUBJECT, refreshEvent, refreshEvent);
+    }
+
+    private void unRegisterRefreshEvent() {
+        if (refreshEvent != null) {
+            RxBus.unregister(refreshEvent);
+            refreshEvent = null;
+        }
+    }
+
+    @Override
+    public void onDestroyView() {
+        super.onDestroyView();
+        unRegisterRefreshEvent();
     }
 }
