@@ -10,8 +10,6 @@ data class AccessToken(
         @SerializedName("expires_in") var expiresIn: Long = 0,
         @SerializedName("tokenType") var tokenType: String = "Bearer") {
 
-//    private var serverDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'"
-
 
     class Deserializer : ResponseDeserializable<AccessToken> {
         override fun deserialize(content: String): AccessToken = Gson().fromJson(content, AccessToken::class.java)

@@ -1,7 +1,12 @@
 package com.think.runex.feature.user
 
 import com.google.gson.annotations.SerializedName
+import com.jozzee.android.core.datetime.dateTimeFormat
+import com.think.runex.feature.event.model.Event
 import com.think.runex.feature.location.Address
+import com.think.runex.util.DISPLAY_DATE_FORMAT
+import com.think.runex.util.DISPLAY_DATE_FORMAT_SHOT_MONTH
+import com.think.runex.util.SERVER_DATE_TIME_FORMAT
 
 data class UserInfo(
         @SerializedName("email") var email: String = "",
@@ -27,8 +32,12 @@ data class UserInfo(
         @SerializedName("blood_type") var bloodType: String? = null,
         @SerializedName("pf") var pf: String? = null,
         //TODO("Wait a api")
-        @SerializedName("events") var events: List<Any>? = null,
+        @SerializedName("events") var events: List<Event>? = null,
         @SerializedName("strava_id") var stravaId: String? = null,
         @SerializedName("strava_avatar") var stravaAvatar: String? = null,
         @SerializedName("strava_firstname") var stravaFirstName: String? = null,
-        @SerializedName("strava_latname") var stravaLatName: String? = null)
+        @SerializedName("strava_latname") var stravaLatName: String? = null) {
+
+    fun birthDate(): String = birthDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+            ?: ""
+}

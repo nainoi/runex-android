@@ -10,6 +10,7 @@ import com.think.runex.java.App.Configs;
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;
 import java.util.List;
+import java.util.Locale;
 
 import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
 
@@ -22,10 +23,10 @@ public class Globals {
     public static Gson GSON = new Gson();
     public static DecimalFormat DCM = new DecimalFormat("0.0");
     public static DecimalFormat DCM_2 = new DecimalFormat("0.00");
-    public static SimpleDateFormat SDF_DISPLAY_FULL_DATE_TIME = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH);
-    public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
-    public static SimpleDateFormat SDF_TOKEN = new SimpleDateFormat(Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
-    public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
+    public static SimpleDateFormat SDF_DISPLAY_FULL_DATE_TIME = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH, Locale.getDefault());
+    //public static SimpleDateFormat SDF = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
+    //public static SimpleDateFormat SDF_TOKEN = new SimpleDateFormat(Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
+    //public static SimpleDateFormat SDF_ONLY_DATE = new SimpleDateFormat(Configs.SERVER_DATE_FORMAT);
     public static final int FIXED_SCREEN_WIDTH = 1024;
 
     //--> Points

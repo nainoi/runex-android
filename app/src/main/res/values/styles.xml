@@ -103,7 +103,7 @@
 
     <!-- Text Input -->
     <style name="TextInput">
-        <item name="android:textSize">@dimen/text_sub_title</item>
+        <item name="android:textSize">@dimen/text_body_2</item>
         <item name="android:textColorHint">@color/textColorHint</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:minHeight">@dimen/space_48dp</item>

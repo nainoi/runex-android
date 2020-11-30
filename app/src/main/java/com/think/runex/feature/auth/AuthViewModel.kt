@@ -10,7 +10,6 @@ import com.think.runex.feature.auth.request.AuthenWithCodeRequest
 import com.think.runex.feature.user.UserInfo
 import com.think.runex.java.App.App
 import com.think.runex.java.App.AppEntity
-import com.think.runex.java.Models.UserObject
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -54,7 +53,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
             onHandleError(loginResult.statusCode, loginResult.message)
         }
 
-        setTokenAndUserForJavaCode(context, loginResult.data, userResult.data)
+        setUserForJavaCode(context, userResult.data)
         return@withContext loginResult
     }
 
@@ -63,41 +62,10 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         repo.setLocalAccessToken(accessToken)
     }
 
-    private fun setTokenAndUserForJavaCode(context: Context, accessToken: AccessToken?, userInfo: UserInfo?) {
-        //Set User Info
-        val userObject = UserObject()
-        userObject.data.apply {
-            email = userInfo?.email
-            fullname = userInfo?.fullName
-            firstname = userInfo?.firstName
-            lastname = userInfo?.lastName
-            firstname_th = userInfo?.firstName
-            lastname_th = userInfo?.lastName
-            phone = userInfo?.phone
-            avatar = userInfo?.avatar
-            role = userInfo?.role
-            birthdate = userInfo?.birthDate
-            gender = userInfo?.gender
-            created_at = userInfo?.createdAt
-            updated_at = userInfo?.updatedAt
-            isConfirm = userInfo?.isConfirmed ?: false
-            address = ArrayList<UserObject.DataBean.AddressBean>().apply {
-                userInfo?.address?.forEach { address ->
-                    add(UserObject.DataBean.AddressBean().apply {
-                        id = address.id
-                        this.address = address.address
-                        district = address.district
-                        city = address.city
-                        zipcode = address.zipCode
-                        created_at = address.createdAt
-                        updated_at = address.updatedAt
-                    })
-                }
-            }
-        }
+    private fun setUserForJavaCode(context: Context, userInfo: UserInfo?) {
         //Set access token
         val appEntity: AppEntity = App.instance(context).appEntity
-        appEntity.setUser(userObject)
+        appEntity.setUser(userInfo)
         App.instance(context).save(appEntity)
     }
 }

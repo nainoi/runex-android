@@ -4,6 +4,7 @@ import android.app.Activity;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,14 +22,15 @@ import com.squareup.picasso.Picasso;
 import com.think.runex.BuildConfig;
 import com.think.runex.R;
 import com.think.runex.feature.auth.TokenManager;
+import com.think.runex.feature.user.UserInfo;
 import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.WorkoutInfo;
 import com.think.runex.java.Models.WorkoutListObject;
-import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.Record.WorkoutsAdapter;
+import com.think.runex.java.Utils.FragmentUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetWorkoutsService;
@@ -36,6 +38,7 @@ import com.think.runex.java.Utils.Network.Services.LogoutService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.RxBus;
 import com.think.runex.java.event.RefreshEvent;
+import com.think.runex.java.event.UpdateProfileEvent;
 import com.think.runex.ui.MainActivity;
 import com.think.runex.util.AppPreference;
 
@@ -54,6 +57,8 @@ public class ProfilePage extends xFragment implements
      */
     private final String ct = "ProfilePage->";
 
+    private FragmentUtils fragmentUtils;
+
     // instance variables
     private AlertDialog mDialog;
     private WorkoutListObject.DataBean mRunningHist;
@@ -70,8 +75,10 @@ public class ProfilePage extends xFragment implements
     private TextView lbTotalDistance;
     private View btnSignOut;
     private RecyclerView recyclerView;
+    private TextView btnEdit;
 
     private Consumer<Object> refreshEvent;
+    private Consumer<Object> updateProfileEvent;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -89,13 +96,16 @@ public class ProfilePage extends xFragment implements
         // views event listener
         viewEventListener();
 
+        fragmentUtils = FragmentUtils.newInstance(requireActivity(), R.id.display_fragment_frame);
+
         // view binding
-        viewBinding(App.instance(activity).getAppEntity().user);
+        setProfileDataToViews(App.instance(activity).getAppEntity().user);
 
         // recycler view props
         recyclerViewProps();
 
         registerRefreshEvent();
+        registerUpdateProfileEvent();
         return v;
     }
 
@@ -145,6 +155,7 @@ public class ProfilePage extends xFragment implements
         lbVersion = v.findViewById(R.id.lb_version);
         lbTotalDistance = v.findViewById(R.id.lb_total_running_distance);
         profileImage = v.findViewById(R.id.profile_image);
+        btnEdit = v.findViewById(R.id.lb_edit);
 
         //--> Buttons
         btnSignOut = v.findViewById(R.id.frame_sign_out);
@@ -156,6 +167,12 @@ public class ProfilePage extends xFragment implements
     private void viewEventListener() {
         btnSignOut.setOnClickListener(this);
         refreshLayout.setOnRefreshListener(this);
+        btnEdit.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                fragmentUtils.replaceFragment(new EditProfilePage());
+            }
+        });
     }
 
 
@@ -361,20 +378,18 @@ public class ProfilePage extends xFragment implements
     /**
      * Views binding
      */
-    private void viewBinding(UserObject user) {
+    private void setProfileDataToViews(UserInfo user) {
         // prepare usage variables
         final String mtn = ct + "viewBinding() ";
 
         try {
-            UserObject.DataBean dbb = user.getData();
 
-            lbFullname.setText(dbb.getFullname());
-            lbEmail.setText(dbb.getEmail());
+            lbFullname.setText(user.getFullName());
+            lbEmail.setText(user.getEmail());
 //            lbTotalDistance.setText(String.format("%,.2f", 0.00) + "");
 
-            L.i(mtn + "avatar: " + dbb.getAvatar());
-
-            Picasso.get().load(dbb.getAvatar()).into(profileImage);
+            L.i(mtn + "avatar: " + user.getAvatar());
+            Picasso.get().load(user.getAvatar()).into(profileImage);
 
         } catch (Exception e) {
             L.e(mtn + "Err: " + e.getMessage());
@@ -421,7 +436,7 @@ public class ProfilePage extends xFragment implements
                 mOnLoginHasChanged = true;
 
                 // binding view
-                viewBinding(App.instance(activity).getAppEntity().user);
+                setProfileDataToViews(App.instance(activity).getAppEntity().user);
 
             } else {
 
@@ -459,9 +474,33 @@ public class ProfilePage extends xFragment implements
         }
     }
 
+    private void registerUpdateProfileEvent() {
+        updateProfileEvent = new Consumer<Object>() {
+            @Override
+            public void accept(Object o) throws Exception {
+                Log.e("jozzee", "updateProfileEvent");
+                if (o instanceof UpdateProfileEvent) {
+                    Log.e("jozzee", "updateProfileEvent true");
+                    UpdateProfileEvent event = (UpdateProfileEvent) o;
+                    setProfileDataToViews(event.getUserInfo());
+                }
+            }
+        };
+        //Subscribe event when setup.
+        RxBus.subscribe(RxBus.SUBJECT, updateProfileEvent, updateProfileEvent);
+    }
+
+    private void unRegisterUpdateProfileEvent() {
+        if (updateProfileEvent != null) {
+            RxBus.unregister(updateProfileEvent);
+            updateProfileEvent = null;
+        }
+    }
+
     @Override
     public void onDestroyView() {
         super.onDestroyView();
         unRegisterRefreshEvent();
+        unRegisterUpdateProfileEvent();
     }
 }

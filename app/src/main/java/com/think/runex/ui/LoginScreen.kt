@@ -32,6 +32,7 @@ import com.think.runex.java.Utils.Network.Request.rqLogin
 import com.think.runex.java.Utils.Network.Response.xResponse
 import com.think.runex.java.Utils.Network.onNetworkCallback
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.util.ANDROID
 import com.think.runex.util.AppPreference
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.launch
@@ -95,7 +96,7 @@ class LoginScreen : BaseScreen(), SocialLoginListener, onNetworkCallback {
 
         // update props
         props.addHeader("Authorization", TokenManager.accessToken)
-        props.setJsonAsObject(rqLogin("fakespmh.21@gmail.com", "p@ss1234", Configs.PLATFORM))
+        props.setJsonAsObject(rqLogin("fakespmh.21@gmail.com", "p@ss1234", ANDROID))
         props.setUrl(APIs.LOGIN.VAL)
 
         // call api

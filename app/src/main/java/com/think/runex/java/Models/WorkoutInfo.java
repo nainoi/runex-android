@@ -13,6 +13,7 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
+import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 
 public class WorkoutInfo implements Parcelable {
@@ -209,25 +210,13 @@ public class WorkoutInfo implements Parcelable {
         }
         String changedDateTime = workout_date;
         try {
-            SimpleDateFormat sdf = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT, Locale.getDefault());
+            SimpleDateFormat sdf = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault());
             Date date = sdf.parse(workout_date);
             if (date != null) {
                 changedDateTime = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH, Locale.getDefault()).format(date);
             }
         } catch (Throwable error) {
-            try {
-                error.printStackTrace();
-                SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SS'Z'", Locale.getDefault());
-                Date date = null;
-
-                date = sdf.parse(workout_date);
-
-                if (date != null) {
-                    changedDateTime = new SimpleDateFormat(DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH, Locale.getDefault()).format(date);
-                }
-            } catch (Throwable e) {
-                e.printStackTrace();
-            }
+            error.printStackTrace();
         }
         return changedDateTime;
     }

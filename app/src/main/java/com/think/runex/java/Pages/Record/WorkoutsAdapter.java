@@ -10,10 +10,12 @@ import com.think.runex.java.Models.WorkoutInfo;
 import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.Utils.L;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
 public class WorkoutsAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     /**
@@ -22,6 +24,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecordViewHolder> {
     private final String ct = "RecordAdapter->";
     private List<WorkoutInfo> list = new ArrayList<>();
     private boolean canDelete = false;
+    String SERVER_TOKEN_DATE_TIME_FORMAT = "yyyy-MM-dd'T'HH:mm:ss";
 
     private OnItemClickListener onItemClickListener;
     private OnDeleteRecordListener onDeleteRecord;
@@ -62,8 +65,8 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecordViewHolder> {
 
                 for (int b = a; b < list.size(); b++) {
 
-                    if (Globals.SDF_TOKEN.parse(list.get(a).getWorkout_date())
-                            .before(Globals.SDF_TOKEN.parse(list.get(b).getWorkout_date())
+                    if (new SimpleDateFormat(SERVER_TOKEN_DATE_TIME_FORMAT, Locale.getDefault()).parse(list.get(a).getWorkout_date())
+                            .before(new SimpleDateFormat(SERVER_TOKEN_DATE_TIME_FORMAT, Locale.getDefault()).parse(list.get(b).getWorkout_date())
 
                             )) {
 
@@ -92,7 +95,7 @@ public class WorkoutsAdapter extends RecyclerView.Adapter<RecordViewHolder> {
             final WorkoutInfo data = list.get(a);
 
             try {
-                final Date d = Globals.SDF_TOKEN.parse(data.getWorkout_date());
+                final Date d = new SimpleDateFormat(SERVER_TOKEN_DATE_TIME_FORMAT, Locale.getDefault()).parse(data.getWorkout_date());
 
                 // update props
                 calendar.setTimeInMillis(d.getTime());

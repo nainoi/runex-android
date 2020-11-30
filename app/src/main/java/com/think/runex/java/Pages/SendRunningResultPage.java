@@ -31,9 +31,13 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import java.io.InputStream;
 import java.text.DecimalFormat;
+import java.text.SimpleDateFormat;
 import java.util.Calendar;
+import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
+
+import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT_SHOT_MONTH;
 
 public class SendRunningResultPage extends xFragment
         implements onNetworkCallback
@@ -121,12 +125,13 @@ public class SendRunningResultPage extends xFragment
     /**
      * Feature methods
      */
-    private void openImagePicker(){
+    private void openImagePicker() {
         Intent intent = new Intent();
         intent.setType("image/*");
         intent.setAction(Intent.ACTION_GET_CONTENT);
         startActivityForResult(Intent.createChooser(intent, "Select Picture"), Globals.RC_PICK_IMAGE);
     }
+
     private void displayDatePicker() {
         // prepare usage variables
         Calendar cal = mCalendar;
@@ -154,7 +159,7 @@ public class SendRunningResultPage extends xFragment
     }
 
     private void binding() {
-        inputDate.setText(Globals.SDF_ONLY_DATE.format(mSubmitTimestamp));
+        inputDate.setText(new SimpleDateFormat(DISPLAY_DATE_FORMAT_SHOT_MONTH, Locale.getDefault()).format(mSubmitTimestamp));
         inputDist.setText(Globals.DCM.format(mRecorderObject.distanceKm) + "");
     }
 
@@ -209,7 +214,7 @@ public class SendRunningResultPage extends xFragment
         btnCancel.setOnClickListener(this);
         btnSelectDate.setOnClickListener(this);
         btnExit.setOnClickListener(this);
-        btnChangeBGImage.setOnClickListener( this );
+        btnChangeBGImage.setOnClickListener(this);
         inputDist.addTextChangedListener(new TextWatcher() {
             @Override
             public void beforeTextChanged(CharSequence charSequence, int i, int i1, int i2) {
@@ -295,23 +300,25 @@ public class SendRunningResultPage extends xFragment
 
     }
 
-    /** Life cycle */
+    /**
+     * Life cycle
+     */
     @Override
     public void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
         // prepare usage variables
-        final String mtn = ct +"onActivityResult() ";
+        final String mtn = ct + "onActivityResult() ";
 
         super.onActivityResult(requestCode, resultCode, data);
 
-        if( requestCode == Globals.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK ){
+        if (requestCode == Globals.RC_PICK_IMAGE && resultCode == Activity.RESULT_OK) {
             try {
                 InputStream inputStream = activity.getContentResolver().openInputStream(data.getData());
                 Bitmap bitmap = BitmapFactory.decodeStream(inputStream);
 
-                previewImage.setImageBitmap( bitmap );
+                previewImage.setImageBitmap(bitmap);
 
-            } catch ( Exception e ){
-                L.e(mtn +"Err: "+ e.getMessage());
+            } catch (Exception e) {
+                L.e(mtn + "Err: " + e.getMessage());
             }
         }
     }

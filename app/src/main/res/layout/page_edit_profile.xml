@@ -1,0 +1,200 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    tools:context=".java.Pages.EditProfilePage">
+
+    <!-- Toolbar -->
+    <FrameLayout
+        android:id="@+id/frame_toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="?attr/actionBarSize"
+        android:background="@android:color/white">
+
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/btn_cancel"
+            android:layout_width="@dimen/space_24dp"
+            android:layout_height="@dimen/space_24dp"
+            android:layout_gravity="center_vertical"
+            android:layout_marginStart="@dimen/space_12dp"
+            android:background="@android:color/transparent"
+            android:foreground="?selectableItemBackground"
+            android:scaleType="centerInside"
+            app:srcCompat="@drawable/ic_back"
+            app:tint="@color/orange" />
+
+        <!--        <TextView-->
+        <!--            android:id="@+id/toolbar_title"-->
+        <!--            style="@style/TextTitle.Primary"-->
+        <!--            android:layout_gravity="center"-->
+        <!--            android:layout_width="wrap_content"-->
+        <!--            android:layout_height="wrap_content" />-->
+
+        <TextView
+            android:id="@+id/lb_confirm"
+            style="@style/TextBody.Accent"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="end|center_vertical"
+            android:layout_marginEnd="@dimen/space_12dp"
+            android:clickable="true"
+            android:focusable="true"
+            android:foreground="?selectableItemBackground"
+            android:padding="@dimen/space_4dp"
+            android:text="ยืนยัน"
+            android:textStyle="bold" />
+
+    </FrameLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/frame_toolbar"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <androidx.constraintlayout.widget.ConstraintLayout
+                android:id="@+id/cover_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/cover_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:adjustViewBounds="true"
+                    android:minHeight="200dp"
+                    android:scaleType="centerCrop"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toTopOf="parent"
+                    app:srcCompat="@drawable/bg_stat" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="@dimen/space_84dp"
+                    android:layout_height="@dimen/space_84dp"
+                    app:layout_constraintBottom_toBottomOf="@+id/cover_image"
+                    app:layout_constraintEnd_toEndOf="parent"
+                    app:layout_constraintStart_toStartOf="parent"
+                    app:layout_constraintTop_toBottomOf="@+id/cover_image"
+                    app:srcCompat="@drawable/ic_my_profile" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/change_profile_image_button"
+                    android:layout_width="@dimen/space_24dp"
+                    android:layout_height="@dimen/space_24dp"
+                    android:background="@drawable/bg_btn_circle"
+                    android:src="@drawable/ic_camera"
+                    android:visibility="invisible"
+                    app:layout_constraintBottom_toBottomOf="@+id/profile_image"
+                    app:layout_constraintEnd_toEndOf="@+id/profile_image"
+                    app:tint="@color/colorAccent" />
+            </androidx.constraintlayout.widget.ConstraintLayout>
+
+            <TextView
+                android:id="@+id/email_label"
+                style="@style/TextBody.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/cover_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp" />
+
+            <TextView
+                android:id="@+id/name_placeholder"
+                style="@style/TextCaption.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/email_label"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:text="@string/name" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/name_input"
+                style="@style/TextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_placeholder"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:imeOptions="actionNext" />
+
+            <TextView
+                android:id="@+id/last_name_placeholder"
+                style="@style/TextCaption.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/name_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:text="@string/last_name" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/last_name_input"
+                style="@style/TextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/last_name_placeholder"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:imeOptions="actionNext" />
+
+            <TextView
+                android:id="@+id/birth_date_placeholder"
+                style="@style/TextCaption.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/last_name_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:text="@string/birth_date" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/birth_date_input"
+                style="@style/TextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/birth_date_placeholder"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:clickable="true"
+                android:focusable="true" />
+
+            <TextView
+                android:id="@+id/gender_placeholder"
+                style="@style/TextCaption.Hint"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/birth_date_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:text="@string/gender" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/gender_input"
+                style="@style/TextInput"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/gender_placeholder"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:clickable="true"
+                android:focusable="true"
+                android:imeOptions="actionNext" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+</RelativeLayout>
