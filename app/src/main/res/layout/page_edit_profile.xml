@@ -92,7 +92,6 @@
                     android:layout_height="@dimen/space_24dp"
                     android:background="@drawable/bg_btn_circle"
                     android:src="@drawable/ic_camera"
-                    android:visibility="invisible"
                     app:layout_constraintBottom_toBottomOf="@+id/profile_image"
                     app:layout_constraintEnd_toEndOf="@+id/profile_image"
                     app:tint="@color/colorAccent" />

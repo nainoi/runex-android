@@ -18,6 +18,7 @@
     <string name="birth_date">วันเกิด</string>
 
     <!-- c -->
+    <string name="camera">กล้อง</string>
     <string name="cancel">ยกเลิก</string>
     <string name="close">ปิด</string>
     <string name="challenges">ชาเลนจ์</string>
@@ -112,8 +113,8 @@
     <string name="running_date">Running date</string>
 
     <!-- S -->
-    <string name="select_image">Select Image</string>
-    <string name="setting">Setting</string>
+    <string name="select_image">เลือกรูปภาพ</string>
+    <string name="setting">ตั้งค่า</string>
     <string name="start_recording">เริ่มจับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>

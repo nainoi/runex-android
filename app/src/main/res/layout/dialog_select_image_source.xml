@@ -1,0 +1,42 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@color/background"
+    android:padding="@dimen/space_24dp"
+    tools:context=".ui.component.SelectImageSourceDialog">
+
+    <TextView
+        android:id="@+id/camera_label"
+        style="@style/TextBody2.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center"
+        android:minHeight="@dimen/space_48dp"
+        android:text="@string/camera" />
+
+    <View
+        android:id="@+id/underline_camera_label"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/camera_label"
+        android:background="@color/line" />
+
+    <TextView
+        android:id="@+id/select_image_label"
+        style="@style/TextBody2.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/underline_camera_label"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:gravity="center"
+        android:minHeight="@dimen/space_48dp"
+        android:text="@string/select_image" />
+
+</RelativeLayout>
