@@ -54,7 +54,6 @@ import com.think.runex.java.Models.BackgroundServiceInfoObject;
 import com.think.runex.java.Models.BroadcastObject;
 import com.think.runex.java.Models.DebugUIObject;
 import com.think.runex.java.Models.EventIdAndPartnerObject;
-import com.think.runex.java.Models.GPSFileRecordObject;
 import com.think.runex.java.Models.RealmPointObject;
 import com.think.runex.java.Models.RealmRecorderObject;
 import com.think.runex.java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage;
@@ -649,7 +648,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, @Nullable Bundle savedInstanceState) {
         realm = Realm.getDefaultInstance();
 
-        mView = inflater.inflate(R.layout.activity_record, container, false);
+        mView = inflater.inflate(R.layout.page_record, container, false);
 
         CONTAINER_ID = R.id.display_fragment_frame;
         // Fragment inits

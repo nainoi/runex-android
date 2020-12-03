@@ -15,6 +15,7 @@ import com.think.runex.R;
 import com.think.runex.feature.social.SocialLoginListener;
 import com.think.runex.feature.social.SocialLoginManger;
 import com.think.runex.feature.social.SocialPlatform;
+import com.think.runex.feature.user.UserInfo;
 import com.think.runex.feature.user.UserProvider;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
@@ -24,9 +25,7 @@ import com.think.runex.java.Customize.Views.BottomSheet.BottomSheetCallback;
 import com.think.runex.java.Customize.Views.BottomSheet.xRegistrationBottomSheet;
 import com.think.runex.java.Customize.xTalk;
 import com.think.runex.java.Models.TokenObject;
-import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Utils.ActivityUtils;
-import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.KeyboardUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
@@ -289,7 +288,7 @@ public class LoginActivity extends FragmentActivity implements
                 try {
 
                     // prepare usage variables
-                    UserObject user = Globals.GSON.fromJson(response.jsonString, UserObject.class);
+                    UserInfo user = Globals.GSON.fromJson(response.jsonString, UserInfo.class);
                     App app = App.instance(LoginActivity.this);
 
                     // save

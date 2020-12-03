@@ -53,13 +53,13 @@ import java.util.TimeZone;
 
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
 import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
+import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class AddEventPage extends xFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     /**
      * Main variables
      */
     private final String ct = "AddEventPage->";
-    private final String serverDateTimeFormat = "yyyy-MM-dd'T'HH:mm:ss'Z'";
 
     // instance variables
     private PermissionUtils mPmUtils;
@@ -391,7 +391,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         Calendar calendar = Calendar.getInstance();
         if (recordDate.length() > 0) {
             try {
-                Date date = new SimpleDateFormat(serverDateTimeFormat, Locale.getDefault()).parse(recordDate);
+                Date date = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault()).parse(recordDate);
                 calendar.setTime(date);
             } catch (Throwable error) {
                 error.printStackTrace();
@@ -412,7 +412,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         if (dateStr == null || dateStr.length() == 0) return dateStr;
 
         try {
-            Date date = new SimpleDateFormat(serverDateTimeFormat, Locale.getDefault()).parse(dateStr);
+            Date date = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault()).parse(dateStr);
             if (date != null) {
                 return new SimpleDateFormat(pattern, Locale.getDefault()).format(date);
             } else {

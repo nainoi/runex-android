@@ -13,6 +13,8 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
+import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
+
 public class DateTimeUtils {
     /**
      * Main variables
@@ -74,7 +76,7 @@ public class DateTimeUtils {
 
         try {
             // prepare usage variables
-            SimpleDateFormat df = new SimpleDateFormat(Configs.SERVER_DATE_TIME_FORMAT);
+            SimpleDateFormat df = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault());
 
             // parse
             Calendar c = Calendar.getInstance();
@@ -102,7 +104,7 @@ public class DateTimeUtils {
         return null;
     }
 
-    public static  String dateTimeFormat(String dateTime, String fromPattern, String toPattern) {
+    public static String dateTimeFormat(String dateTime, String fromPattern, String toPattern) {
         if (TextUtils.isEmpty(dateTime)) {
             return dateTime;
         }

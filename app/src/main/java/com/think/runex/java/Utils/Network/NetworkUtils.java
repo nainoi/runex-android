@@ -298,6 +298,56 @@ public class NetworkUtils {
 
     }
 
+    public void putJSON(NetworkProps props, onNetworkCallback callback) {
+        // prepare usage variables
+        final String mtn = ct + "putJSON() ";
+        final Runnable runner = new Runnable() {
+            @Override
+            public void run() {
+                // prepare usage variables
+                RequestBody body = RequestBody.create(new Gson().toJson(props.jsonAsObject), JSON);
+                Request.Builder builder = new Request.Builder()
+                        .url(props.url)
+                        .put(body);
+
+                // add headers
+                addHeaders(props, builder);
+
+                // build request
+                Request request = builder.build();
+
+                L.i(mtn + "url: " + props.url);
+                L.i(mtn + "headers: " + Globals.GSON.toJson(props.headers));
+
+                try (Response response = getHttpClient().newCall(request).execute()) {
+
+                    // response as temporary redirect
+                    if (response.code() == HTTP_TEMPORARY_DERIRECT) {
+                        // prepare usage variables
+                        String redirectUrl = response.header("Location");
+
+                        // conditions
+                        if (redirectUrl != null && !redirectUrl.isEmpty()) {
+                            // update props
+                            props.url = ApiConfig.Companion.getBASE_URL() + redirectUrl;
+
+                            // fire
+                            postJSON(props, callback);
+
+                        }
+                    } else onSuccess(response.code(), response.body().string(), callback);
+
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
+                    onFailed(HttpURLConnection.HTTP_BAD_REQUEST, e, callback);
+                }
+
+            }
+        };
+
+        thread(runner);
+    }
+
     public void postMultiPath(NetworkMultipartProps props, onNetworkCallback callback) {
         // prepare usage variables
         final String mtn = ct + "postMultiPath() ";

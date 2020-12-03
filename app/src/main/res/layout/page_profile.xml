@@ -1,149 +1,176 @@
 <?xml version="1.0" encoding="utf-8"?>
-<androidx.swiperefreshlayout.widget.SwipeRefreshLayout
-    android:id="@+id/refresh_layout"
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/root_layout"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <RelativeLayout
-        android:padding="16dp"
+    <androidx.swiperefreshlayout.widget.SwipeRefreshLayout
+        android:id="@+id/refresh_layout"
         android:layout_width="match_parent"
-        android:background="@android:color/white"
         android:layout_height="match_parent">
 
-        <LinearLayout
-            android:id="@+id/frame_profile"
-            android:layout_marginBottom="28dp"
-            android:orientation="horizontal"
+        <RelativeLayout
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
-            <de.hdodenhof.circleimageview.CircleImageView
-                android:id="@+id/profile_image"
-                app:civ_border_width="1dp"
-                app:civ_border_color="@color/softGray"
-                android:src="@drawable/ic_my_profile"
-                android:layout_width="40dp"
-                android:layout_height="40dp"/>
+            android:layout_height="match_parent"
+            android:background="@android:color/white"
+            android:padding="16dp">
 
             <LinearLayout
-                android:id="@+id/frame_profile_info"
-                android:layout_marginLeft="8dp"
-                android:orientation="vertical"
+                android:id="@+id/frame_profile"
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content">
+                android:layout_height="wrap_content"
+                android:layout_marginBottom="24dp"
+                android:orientation="horizontal">
 
-                <TextView
-                    android:id="@+id/lb_user_name"
-                    android:text="Teerapat Thongbor"
-                    android:textColor="@android:color/black"
-                    android:textStyle="bold"
-                    android:textSize="16dp"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <de.hdodenhof.circleimageview.CircleImageView
+                    android:id="@+id/profile_image"
+                    android:layout_width="40dp"
+                    android:layout_height="40dp"
+                    android:src="@drawable/ic_my_profile"
+                    app:civ_border_color="@color/softGray"
+                    app:civ_border_width="1dp" />
 
-                <TextView
-                    android:id="@+id/lb_email"
-                    android:text="dev@gmail.com"
-                    android:textSize="14dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                <RelativeLayout
+                    android:id="@+id/frame_profile_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_marginStart="8dp"
+                    android:orientation="vertical">
 
-                <TextView
-                    android:id="@+id/lb_version"
-                    android:textSize="14dp"
-                    android:textColor="@android:color/darker_gray"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    <TextView
+                        android:id="@+id/lb_user_name"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="Username"
+                        android:textColor="@android:color/black"
+                        android:textSize="16sp"
+                        android:textStyle="bold" />
+
+                    <TextView
+                        android:id="@+id/lb_email"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lb_user_name"
+                        android:text="Email"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/lb_version"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_below="@+id/lb_email"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="14sp" />
+
+                    <TextView
+                        android:id="@+id/lb_edit"
+                        style="@style/TextBody.Accent"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_alignParentEnd="true"
+                        android:clickable="true"
+                        android:focusable="true"
+                        android:foreground="?selectableItemBackground"
+                        android:padding="@dimen/space_4dp"
+                        android:text="@string/edit"
+                        android:textStyle="bold" />
+
+
+                </RelativeLayout>
 
             </LinearLayout>
 
-        </LinearLayout>
+            <androidx.cardview.widget.CardView
+                android:id="@+id/card_total_running_distance"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/frame_profile"
+                android:layout_margin="12dp"
+                android:orientation="vertical"
+                app:cardCornerRadius="8dp">
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/card_total_running_distance"
-            android:layout_below="@+id/frame_profile"
-            android:layout_margin="12dp"
-            app:cardCornerRadius="8dp"
-            android:orientation="vertical"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content">
+                <com.think.runex.java.Customize.Views.xStatFrame
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/bg_stat"
+                    android:gravity="center_vertical"
+                    android:orientation="vertical"
+                    android:paddingHorizontal="22dp"
+                    android:paddingVertical="22dp">
 
-            <com.think.runex.java.Customize.Views.xStatFrame
-                android:paddingHorizontal="22dp"
-                android:background="@drawable/bg_stat"
-                android:paddingVertical="22dp"
-                android:gravity="center_vertical"
+                    <TextView
+                        android:id="@+id/v_total_running_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="ระยะสะสม"
+                        android:textColor="@android:color/white"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/lb_total_running_distance"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:text="0.00 km"
+                        android:textColor="@android:color/white"
+                        android:textSize="42dp" />
+
+                </com.think.runex.java.Customize.Views.xStatFrame>
+
+            </androidx.cardview.widget.CardView>
+
+            <androidx.cardview.widget.CardView
+                android:id="@+id/cardview_recycler_view"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_above="@+id/frame_sign_out"
+                android:layout_below="@+id/card_total_running_distance"
+                android:layout_marginBottom="8dp"
+                android:background="@android:color/white"
+                app:cardCornerRadius="8dp"
+                app:cardElevation="0dp">
+
+                <androidx.recyclerview.widget.RecyclerView
+                    android:id="@+id/recycler_view"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+            </androidx.cardview.widget.CardView>
+
+            <!-- Sign out frame -->
+            <LinearLayout
+                android:id="@+id/frame_sign_out"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentBottom="true"
+                android:layout_centerHorizontal="true"
+                android:layout_gravity="bottom"
+                android:gravity="center"
+                android:paddingVertical="2dp">
 
                 <TextView
-                    android:id="@+id/v_total_running_distance"
-                    android:text="ระยะสะสม"
-                    android:textSize="16dp"
-                    android:textColor="@android:color/white"
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:text="ออกจากระบบ"
+                    android:textColor="@color/textSignOut" />
 
-                <TextView
-                    android:id="@+id/lb_total_running_distance"
-                    android:text="0.00 km"
-                    android:textSize="42dp"
-                    android:textColor="@android:color/white"
+                <ImageView
                     android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"/>
+                    android:layout_height="wrap_content"
+                    android:layout_marginLeft="8dp"
+                    android:scaleType="center"
+                    android:src="@drawable/ic_sign_out" />
 
-            </com.think.runex.java.Customize.Views.xStatFrame>
+            </LinearLayout>
+        </RelativeLayout>
+    </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
-        </androidx.cardview.widget.CardView>
+    <!-- Frame fragment display container -->
+    <FrameLayout
+        android:id="@+id/display_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
 
-        <androidx.cardview.widget.CardView
-            android:id="@+id/cardview_recycler_view"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_above="@+id/frame_sign_out"
-            android:layout_below="@+id/card_total_running_distance"
-            android:layout_marginBottom="8dp"
-            android:background="@android:color/white"
-            app:cardCornerRadius="8dp"
-            app:cardElevation="0dp">
-
-            <androidx.recyclerview.widget.RecyclerView
-                android:id="@+id/recycler_view"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent" />
-
-        </androidx.cardview.widget.CardView>
-
-        <!-- Sign out frame -->
-        <LinearLayout
-            android:layout_alignParentBottom="true"
-            android:gravity="center"
-            android:layout_gravity="bottom"
-            android:paddingVertical="2dp"
-            android:id="@+id/frame_sign_out"
-            android:layout_centerHorizontal="true"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content">
-
-            <TextView
-                android:textColor="@color/textSignOut"
-                android:text="ออกจากระบบ"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-            <ImageView
-                android:layout_marginLeft="8dp"
-                android:src="@drawable/ic_sign_out"
-                android:scaleType="center"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"/>
-
-        </LinearLayout>
-
-    </RelativeLayout>
-
-</androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
+</FrameLayout>

@@ -1,16 +1,532 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
-    android:orientation="vertical"
-    android:background="@android:color/black"
     android:layout_width="match_parent"
-    android:layout_height="match_parent">
+    android:layout_height="match_parent"
+    android:background="@android:color/white">
 
-    <fragment xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
+    <!-- full-view display -->
+    <RelativeLayout
+        android:id="@+id/full_view_display"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:id="@+id/map"
-        android:name="com.google.android.gms.maps.SupportMapFragment" />
+        android:background="@android:color/white"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <FrameLayout
+            android:id="@+id/frame_toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="@android:color/white"
+            android:paddingHorizontal="12dp"
+            android:paddingVertical="16dp"
+            android:visibility="gone">
+
+            <ImageView
+                android:id="@+id/btn_cancel_submit"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:src="@drawable/ic_close"
+                app:tint="@color/orange" />
+
+            <ImageView
+                android:id="@+id/btn_share"
+                android:layout_width="?attr/actionBarSize"
+                android:layout_height="match_parent"
+                android:layout_gravity="right"
+                android:src="@drawable/ic_share_android"
+                app:tint="@color/orange" />
+
+        </FrameLayout>
+
+        <!-- Frame map -->
+        <FrameLayout
+            android:id="@+id/frame_map"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/frame_toolbar">
+
+            <com.think.runex.java.Customize.Views.xMapViewGroup
+                android:id="@+id/map"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/preview_image"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+            <ImageView
+                android:id="@+id/runex_logo"
+                android:layout_width="100dp"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="16dp"
+                android:layout_marginTop="16dp"
+                android:adjustViewBounds="true"
+                android:src="@mipmap/im_app_logo"
+                android:visibility="invisible" />
+
+            <include
+                android:id="@+id/frame_debug"
+                layout="@layout/frame_debug_location_info"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="28dp"
+                android:visibility="gone" />
+
+
+<!--            <LinearLayout-->
+<!--                android:id="@+id/frame_change_background_image"-->
+<!--                android:layout_width="wrap_content"-->
+<!--                android:layout_height="wrap_content"-->
+<!--                android:layout_gravity="bottom|center_horizontal"-->
+<!--                android:layout_marginBottom="8dp"-->
+<!--                android:background="@drawable/background_change_background_image_button"-->
+<!--                android:orientation="horizontal"-->
+<!--                android:paddingHorizontal="8dp"-->
+<!--                android:paddingVertical="2dp"-->
+<!--                android:visibility="gone">-->
+
+<!--                <ImageView-->
+<!--                    android:id="@+id/v_change_bgimage"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:src="@android:drawable/ic_menu_camera" />-->
+
+<!--                <TextView-->
+<!--                    android:id="@+id/lb_change_bgimage"-->
+<!--                    android:layout_width="wrap_content"-->
+<!--                    android:layout_height="match_parent"-->
+<!--                    android:gravity="center_vertical"-->
+<!--                    android:text="เปลี่ยนรูปพื้นหลัง"-->
+<!--                    android:textColor="@android:color/white" />-->
+
+<!--            </LinearLayout>-->
+
+            <!--            <LinearLayout-->
+            <!--                android:layout_width="wrap_content"-->
+            <!--                android:layout_height="wrap_content"-->
+            <!--                android:visibility="gone">-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/btnWriteGPSFile"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:text="write" />-->
+
+            <!--                <Button-->
+            <!--                    android:id="@+id/btnReadGPSFile"-->
+            <!--                    android:layout_width="wrap_content"-->
+            <!--                    android:layout_height="wrap_content"-->
+            <!--                    android:layout_marginLeft="8dp"-->
+            <!--                    android:text="read" />-->
+
+            <!--            </LinearLayout>-->
+
+            <!-- Frame contents -->
+            <FrameLayout
+                android:id="@+id/frame_distance_in_map"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:background="@drawable/background_fading_black_vertical"
+                android:padding="12dp"
+                android:visibility="invisible">
+
+                <!-- Frame distance -->
+                <LinearLayout
+                    android:id="@+id/frame_distance_2"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/v_distance_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="ระยะทาง"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textContent" />
+
+                    <TextView
+                        android:id="@+id/lb_distance_2"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:includeFontPadding="false"
+                        android:text="0.00 กม."
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textParagraphH1" />
+
+                </LinearLayout>
+
+                <!-- Frame duration -->
+                <LinearLayout
+                    android:id="@+id/frame_duration"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="right"
+                    android:orientation="vertical">
+
+                    <TextView
+                        android:id="@+id/v_duratoin"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:includeFontPadding="false"
+                        android:text="ระยะเวลา"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textContent" />
+
+                    <TextView
+                        android:id="@+id/lb_duration"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="end"
+                        android:includeFontPadding="false"
+                        android:text="00:00"
+                        android:textColor="@android:color/white"
+                        android:textSize="@dimen/textParagraphH1" />
+
+                    <TextView
+                        android:id="@+id/lb_date_time"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="end"
+                        android:includeFontPadding="false"
+                        android:textColor="@android:color/white" />
+
+
+                </LinearLayout>
+
+            </FrameLayout>
+
+            <!-- Frame gps acquiring -->
+            <FrameLayout
+                android:id="@+id/frame_gps_signal"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:background="@android:color/holo_green_light"
+                android:paddingVertical="8dp"
+                android:visibility="invisible">
+
+                <TextView
+                    android:id="@+id/lb_gps_signal"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:text="GPS ACQUIRED"
+                    android:textColor="@android:color/white" />
+
+            </FrameLayout>
+
+        </FrameLayout>
+
+        <!-- Record -->
+        <ScrollView
+            android:id="@+id/scroll_frame_recording"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/frame_map"
+            android:fillViewport="true">
+
+            <LinearLayout
+                android:id="@+id/frame_recording"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@android:color/white"
+                android:gravity="center"
+                android:orientation="vertical"
+                android:padding="8dp"
+                android:visibility="invisible">
+
+                <!-- Record information -->
+                <LinearLayout
+                    android:id="@+id/frame_recording_info"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:background="@android:color/white"
+                    android:orientation="vertical"
+                    android:padding="8dp">
+
+                    <!-- Distance -->
+                    <TextView
+                        android:id="@+id/v_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:text="ระยะทาง (km.)"
+                        android:textColor="@android:color/darker_gray"
+                        android:textSize="16dp" />
+
+                    <TextView
+                        android:id="@+id/lb_distance"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:gravity="center"
+                        android:includeFontPadding="false"
+                        android:maxLines="1"
+                        android:text="0.00"
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/textRecordTime"
+                        android:textStyle="bold" />
+
+                    <!-- running detail -->
+                    <LinearLayout
+                        android:id="@+id/frame_running_detail"
+                        android:layout_width="match_parent"
+                        android:layout_height="wrap_content"
+                        android:orientation="horizontal"
+                        android:weightSum="3">
+
+                        <!-- Distance -->
+                        <LinearLayout
+                            android:id="@+id/frame_distance"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/v_time"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="@string/time"
+                                android:textColor="@android:color/darker_gray" />
+
+                            <TextView
+                                android:id="@+id/lb_time"
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:gravity="center"
+                                android:text="00:00:00"
+                                android:textColor="@color/orange"
+                                android:textSize="18dp" />
+
+
+                        </LinearLayout>
+
+                        <!-- Calories-->
+                        <LinearLayout
+                            android:id="@+id/frame_pace"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1.2"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/v_pace"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="Pace (min/km)"
+                                android:textColor="@android:color/darker_gray" />
+
+                            <TextView
+                                android:id="@+id/lb_pace"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="00:00:00"
+                                android:textColor="@color/orange"
+                                android:textSize="18dp" />
+
+                        </LinearLayout>
+
+                        <!-- Step -->
+                        <LinearLayout
+                            android:id="@+id/frame_calories"
+                            android:layout_width="0dp"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="0.9"
+                            android:gravity="center"
+                            android:orientation="vertical"
+                            android:paddingTop="2dp"
+                            android:paddingBottom="12dp">
+
+                            <TextView
+                                android:id="@+id/v_calories"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:text="แคลอรี่"
+                                android:textColor="@android:color/darker_gray" />
+
+                            <TextView
+                                android:id="@+id/lb_calories"
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:maxLines="1"
+                                android:text="0.0"
+                                android:textColor="@color/orange"
+                                android:textSize="18dp" />
+
+                        </LinearLayout>
+                    </LinearLayout>
+
+                </LinearLayout>
+
+                <!--  Feature buttons  -->
+                <LinearLayout
+                    android:id="@+id/frame_controller_buttons"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true"
+                    android:layout_marginBottom="8dp"
+                    android:gravity="center"
+                    android:orientation="horizontal">
+
+                    <!-- Record button-->
+                    <LinearLayout
+                        android:id="@+id/frame_recording_feature_button"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:gravity="center"
+                        android:orientation="vertical">
+
+                        <!-- Record icon -->
+                        <FrameLayout
+                            android:id="@+id/frame_recording_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/btn_start"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:background="@drawable/view_circle_orange"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@android:color/white"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/ic_recording_state"
+                                android:layout_width="35dp"
+                                android:layout_height="35dp"
+                                android:layout_gravity="center"
+                                android:padding="4dp"
+                                android:src="@drawable/ic_play"
+                                app:tint="@android:color/white" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/lb_recording_state_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/background_recording_state_description"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/start_recording" />
+
+                    </LinearLayout>
+
+                    <!-- Stop & submit result -->
+                    <LinearLayout
+                        android:id="@+id/frame_stop_and_submit"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_marginLeft="8dp"
+                        android:gravity="center"
+                        android:orientation="vertical"
+                        android:visibility="invisible">
+
+                        <!-- Stop icon -->
+                        <FrameLayout
+                            android:id="@+id/frame_stop_and_submit_button"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content">
+
+                            <TextView
+                                android:id="@+id/btn_pause"
+                                android:layout_width="75dp"
+                                android:layout_height="75dp"
+                                android:background="@drawable/view_circle_black"
+                                android:gravity="center"
+                                android:text=""
+                                android:textColor="@android:color/white"
+                                android:textSize="20dp"
+                                android:textStyle="bold" />
+
+                            <ImageView
+                                android:id="@+id/ic_stop_state"
+                                android:layout_width="25dp"
+                                android:layout_height="25dp"
+                                android:layout_gravity="center"
+                                android:background="@drawable/ic_stop"
+                                android:padding="4dp" />
+
+                        </FrameLayout>
+
+                        <TextView
+                            android:id="@+id/lb_stop_state_description"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_marginTop="8dp"
+                            android:background="@drawable/background_recording_state_description"
+                            android:paddingHorizontal="8dp"
+                            android:paddingVertical="2dp"
+                            android:text="@string/finish_recording" />
+
+                    </LinearLayout>
+
+
+                </LinearLayout>
+
+            </LinearLayout>
+
+        </ScrollView>
+
+        <!-- Summary -->
+        <FrameLayout
+            android:id="@+id/inherit_frame_summary"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            android:layout_below="@+id/frame_map"
+            android:background="@android:color/white">
+
+            <include
+                android:id="@+id/frame_summary"
+                layout="@layout/frame_record_summary"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent" />
+
+        </FrameLayout>
+
+        <LinearLayout
+            android:id="@+id/frame_labs"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:orientation="vertical"
+            android:padding="2dp"
+            android:visibility="gone">
+
+            <TextView
+                android:id="@+id/lab_accuracy"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="accuracy: 0"
+                android:textColor="@android:color/black"
+                android:textSize="8dp" />
+
+        </LinearLayout>
+
+
+    </RelativeLayout>
+    <!-- Frame fragment display container -->
+    <FrameLayout
+        android:id="@+id/display_fragment_frame"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent" />
+
 
 </FrameLayout>

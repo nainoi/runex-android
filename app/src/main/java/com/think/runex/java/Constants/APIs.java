@@ -34,7 +34,11 @@ public enum APIs {
     SOCIALS_LOGIN(ApiConfig.Companion.getBASE_URL() + "/api/v1/user/pd"),
     SUBMIT_MULTI_EVENTS(ApiConfig.Companion.getBASE_URL() + "/api/v1/activity/multiadd"),
     SUBMIT_RUNNING_RESULT(ApiConfig.Companion.getBASE_URL() + "/api/v1/activity/add"),
-    SUBMIT_ACTIVITIES_WORKOUT(ApiConfig.Companion.getBASE_URL() + "/api/v2/activity/activitiesWorkout");
+    SUBMIT_ACTIVITIES_WORKOUT(ApiConfig.Companion.getBASE_URL() + "/api/v2/activity/activitiesWorkout"),
+
+    UPDATE_USER_PROFILE(ApiConfig.Companion.getBASE_URL() + "/api/v2/user"),
+    UPDATE_USER_PROFILE_IMAGE(ApiConfig.Companion.getBASE_URL() + "/api/v2/uploads");
+
 
     public final String VAL;
 

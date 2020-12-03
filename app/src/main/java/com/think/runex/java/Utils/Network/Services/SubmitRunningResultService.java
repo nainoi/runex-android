@@ -3,6 +3,7 @@ package com.think.runex.java.Utils.Network.Services;
 import android.app.Activity;
 
 import com.think.runex.feature.auth.TokenManager;
+import com.think.runex.java.App.Configs;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
@@ -11,6 +12,11 @@ import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.rqSubmitRunningResult;
 import com.think.runex.java.Utils.Network.Request.xRequest;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
+
+import java.text.SimpleDateFormat;
+import java.util.Locale;
+
+import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class SubmitRunningResultService extends xRequest {
     private final String ct = "SubmitRunningResultService->";
@@ -32,7 +38,7 @@ public class SubmitRunningResultService extends xRequest {
         // prepare usage variables
         final String mtn = ct + "doIt() ";
         NetworkUtils nu = NetworkUtils.newInstance(activity);
-        String submitDate = Globals.SDF.format(request.activity_date).toString();
+        String submitDate = new SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault()).format(request.activity_date);
         NetworkProps props = new NetworkProps();
 
         //--> update props

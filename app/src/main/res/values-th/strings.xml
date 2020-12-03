@@ -15,8 +15,10 @@
 
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
+    <string name="birth_date">วันเกิด</string>
 
     <!-- c -->
+    <string name="camera">กล้อง</string>
     <string name="cancel">ยกเลิก</string>
     <string name="close">ปิด</string>
     <string name="challenges">ชาเลนจ์</string>
@@ -34,6 +36,7 @@
     <string name="date_required">กรุณาเลือกวันที่</string>
 
     <!-- E -->
+    <string name="edit">แก้ไข</string>
     <string name="email">อีเมล</string>
     <string name="email_address">ที่อยู่อีเมล</string>
     <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
@@ -43,6 +46,7 @@
     <string name="event_date">วันที่จัดงาน</string>
 
     <!-- F -->
+    <string name="female">Female</string>
     <string name="finish_recording">จบการจับเวลา</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>
     <string name="free">ฟรี</string>
@@ -50,6 +54,7 @@
 
     <!-- G -->
     <string name="get_started">เริ่มใช้งาน</string>
+    <string name="gender">เพศ</string>
 
     <!-- H -->
 
@@ -62,6 +67,7 @@
 
     <!-- L -->
     <string name="latest">ล่าสุด</string>
+    <string name="last_name">นามสกุล</string>
     <string name="login">เข้าสู่ระบบ</string>
     <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
     <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
@@ -72,10 +78,12 @@
 
 
     <!-- M -->
+    <string name="male">Male</string>
     <string name="menu">เมนู</string>
     <string name="my_events">อีเว้นท์ของฉัน</string>
 
     <!-- N -->
+    <string name="name">ชื่อ</string>
     <string name="notification_display_info">Run %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
@@ -84,13 +92,14 @@
     <!-- O -->
     <string name="ok">ตกลง</string>
     <string name="or">หรือ</string>
-
+    <string name="other">Other</string>
 
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
     <string name="password_required">กรุณาระบุรหัสผ่าน</string>
     <string name="profile">ข้อมูลส่วนตัว</string>
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
+    <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
 
     <!-- R -->

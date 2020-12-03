@@ -21,12 +21,12 @@ import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
 import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.user.UserInfo;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.RegisteredEventsObject;
-import com.think.runex.java.Models.UserObject;
 import com.think.runex.java.Pages.EventDetailPage;
 import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.Utils.ChildFragmentUtils;
@@ -81,7 +81,7 @@ public class RegisteredEventsPage extends xFragment implements
 
             // prepare usage variables
             AppEntity appEntity = App.instance(activity).getAppEntity();
-            UserObject.DataBean user = appEntity.user.getData();
+            UserInfo user = appEntity.user;
 
             if (mUserEmail != null && !((mUserEmail + "").equalsIgnoreCase(user.getEmail()))) {
 

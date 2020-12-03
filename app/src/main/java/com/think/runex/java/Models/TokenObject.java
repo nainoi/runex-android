@@ -65,7 +65,7 @@ public class TokenObject {
         if (expire == null || expire.length() == 0) {
             return 0;
         }
-        DisplayDateTimeObject displayDate = DateTimeUtils.stringToDate(expire, Configs.SERVER_TOKEN_DATE_TIME_FORMAT);
+        DisplayDateTimeObject displayDate = DateTimeUtils.stringToDate(expire, "yyyy-MM-dd'T'HH:mm:ss");
         return displayDate.timestamp;
     }
 

@@ -67,6 +67,10 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="TextBody.Accent" parent="TextBody">
+        <item name="android:textColor">@color/colorAccent</item>
+    </style>
+
     <style name="TextBody.White" parent="TextBody">
         <item name="android:textColor">@android:color/white</item>
     </style>
