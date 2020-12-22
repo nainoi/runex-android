@@ -38,9 +38,9 @@ class Localization {
             if (baseContext == null) return baseContext
 
             val baseLanguage: String = getBaseLanguage(baseContext)
-            val currentLanguage: String? = getCurrentLanguage(baseContext)
+            val currentLanguage: String = getCurrentLanguage(baseContext)
 
-            if (currentLanguage?.isNotBlank() == true && currentLanguage.equals(baseLanguage, ignoreCase = true).not()) {
+            if (currentLanguage.equals(baseLanguage, ignoreCase = true).not()) {
                 val locale = Locale(currentLanguage)
                 val config = Configuration(baseContext.resources.configuration)
 

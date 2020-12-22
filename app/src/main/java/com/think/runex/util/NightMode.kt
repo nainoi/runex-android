@@ -28,7 +28,7 @@ class NightMode {
             activity.recreate()
         }
 
-        fun getNightMode(context: Context): Int? {
+        fun getNightMode(context: Context): Int {
             //TODO("Default night mode is no")
             return AppPreference.createPreferenceNotEncrypt(context).getInt(KEY_NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_NO)
         }
@@ -44,7 +44,7 @@ class NightMode {
         fun applyNightMode(baseContext: Context?): Context? {
             if (baseContext == null) return baseContext
             val nightMode = getNightMode(baseContext)
-            if (nightMode != null && nightMode != 0) {
+            if (nightMode != 0) {
                 AppCompatDelegate.setDefaultNightMode(nightMode)
                 val config = Configuration(baseContext.resources.configuration)
                 config.uiMode = when (nightMode) {
