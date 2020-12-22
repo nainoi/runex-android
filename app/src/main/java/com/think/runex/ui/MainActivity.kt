@@ -57,7 +57,7 @@ class MainActivity : BaseActivity() {
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
             true -> goToHomePageWithJavaStyle()
-            false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = true, clearFragment = false)
+            false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
         }
     }
 
