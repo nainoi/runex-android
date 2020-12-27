@@ -9,8 +9,8 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.auth.request.AuthenWithCodeRequest
 import com.think.runex.feature.user.UserInfo
-import com.think.runex.util.KEY_ACCESS_TOKEN
-import com.think.runex.util.KEY_API
+import com.think.runex.config.KEY_ACCESS_TOKEN
+import com.think.runex.config.KEY_API
 
 class AuthRepository(private val api: AuthApi,
                      private val preferences: SharedPreferences) : RemoteDataSource() {

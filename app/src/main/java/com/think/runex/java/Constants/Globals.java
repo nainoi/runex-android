@@ -12,7 +12,7 @@ import java.text.SimpleDateFormat;
 import java.util.List;
 import java.util.Locale;
 
-import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH;
 
 public class Globals {
     //--> Activities

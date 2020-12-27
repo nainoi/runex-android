@@ -5,6 +5,7 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.think.runex.config.PREFERENCES_NAME
 
 object AppPreference {
 

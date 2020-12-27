@@ -13,9 +13,9 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.ui.base.BaseActivity
-import com.think.runex.util.APP_SCHEME
-import com.think.runex.util.FACE_USER_AGENT_FOR_WEB_VIEW
-import com.think.runex.util.KEY_MESSAGE
+import com.think.runex.config.APP_SCHEME
+import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
+import com.think.runex.config.KEY_MESSAGE
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_login2.*
 

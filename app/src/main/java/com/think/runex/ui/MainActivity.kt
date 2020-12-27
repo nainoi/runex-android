@@ -19,8 +19,8 @@ import com.think.runex.common.getViewModel
 import com.think.runex.feature.auth.*
 import com.think.runex.java.Activities.BridgeFile
 import com.think.runex.ui.base.BaseActivity
-import com.think.runex.util.KEY_MESSAGE
-import com.think.runex.util.RC_LOGIN
+import com.think.runex.config.KEY_MESSAGE
+import com.think.runex.config.RC_LOGIN
 import com.think.runex.util.launch
 import kotlinx.coroutines.delay
 
@@ -56,7 +56,7 @@ class MainActivity : BaseActivity() {
 
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
-            true -> goToHomePageWithJavaStyle()
+            true -> replaceFragment(MainScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
             false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
         }
     }

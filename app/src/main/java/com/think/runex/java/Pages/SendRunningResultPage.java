@@ -37,7 +37,7 @@ import java.util.Locale;
 import java.util.regex.Matcher;
 import java.util.regex.Pattern;
 
-import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT_SHOT_MONTH;
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT_SHOT_MONTH;
 
 public class SendRunningResultPage extends xFragment
         implements onNetworkCallback

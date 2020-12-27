@@ -4,9 +4,9 @@ import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.feature.event.model.Event
 import com.think.runex.feature.location.Address
-import com.think.runex.util.DISPLAY_DATE_FORMAT
-import com.think.runex.util.DISPLAY_DATE_FORMAT_SHOT_MONTH
-import com.think.runex.util.SERVER_DATE_TIME_FORMAT
+import com.think.runex.config.DISPLAY_DATE_FORMAT
+import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
 data class UserInfo(
         @SerializedName("email") var email: String = "",

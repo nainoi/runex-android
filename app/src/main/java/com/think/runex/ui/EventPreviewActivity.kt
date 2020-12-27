@@ -21,7 +21,7 @@ import com.think.runex.feature.event.EventViewModel
 import com.think.runex.feature.event.EventViewModelFactory
 import com.think.runex.feature.event.model.Event
 import com.think.runex.ui.base.BaseActivity
-import com.think.runex.util.KEY_EVENT
+import com.think.runex.config.KEY_EVENT
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.activity_event_preview.*

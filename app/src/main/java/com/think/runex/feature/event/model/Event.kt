@@ -8,8 +8,8 @@ import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.R
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.ticket.Ticket
-import com.think.runex.util.DISPLAY_DATE_FORMAT_SHOT_MONTH
-import com.think.runex.util.SERVER_DATE_TIME_FORMAT
+import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
 data class Event(
         @SerializedName("id") var id: String = "",

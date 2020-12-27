@@ -16,7 +16,7 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 import java.text.SimpleDateFormat;
 import java.util.Locale;
 
-import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
+import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class SubmitRunningResultService extends xRequest {
     private final String ct = "SubmitRunningResultService->";

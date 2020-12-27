@@ -4,7 +4,7 @@ import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.request.AuthenWithCodeRequest
 import com.think.runex.feature.user.UserInfo
-import com.think.runex.util.KEY_AUTH
+import com.think.runex.config.AUTHORIZATION
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 
@@ -18,5 +18,5 @@ interface AuthApi {
                             @Body body: AuthenWithCodeRequest): Deferred<AccessToken>
 
     @GET("/api/${ApiConfig.API_VERSION}/user")
-    fun getUserInfoAsync(@Header(KEY_AUTH) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+    fun getUserInfoAsync(@Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
 }

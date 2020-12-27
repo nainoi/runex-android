@@ -12,8 +12,8 @@ import java.util.Locale;
 
 import io.realm.RealmObject;
 
-import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
-import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
+import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class RealmPointObject extends RealmObject implements Parcelable {
 

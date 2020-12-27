@@ -47,7 +47,7 @@ import java.util.ArrayList;
 
 import io.reactivex.functions.Consumer;
 
-import static com.think.runex.util.ConstantsKt.KEY_ACCESS_TOKEN;
+import static com.think.runex.config.ConstantsKt.KEY_ACCESS_TOKEN;
 
 public class ProfilePage extends xFragment implements
         View.OnClickListener,

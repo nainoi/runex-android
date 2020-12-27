@@ -52,8 +52,8 @@ import java.util.Locale;
 import java.util.TimeZone;
 
 import static com.think.runex.java.Constants.Globals.RC_GALLERY_INTENT;
-import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT;
-import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT;
+import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class AddEventPage extends xFragment implements View.OnClickListener, DatePickerDialog.OnDateSetListener {
     /**

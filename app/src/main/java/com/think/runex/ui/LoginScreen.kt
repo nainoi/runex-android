@@ -32,8 +32,7 @@ import com.think.runex.java.Utils.Network.Request.rqLogin
 import com.think.runex.java.Utils.Network.Response.xResponse
 import com.think.runex.java.Utils.Network.onNetworkCallback
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.util.ANDROID
-import com.think.runex.util.AppPreference
+import com.think.runex.config.ANDROID
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.launch
 import java.lang.Exception

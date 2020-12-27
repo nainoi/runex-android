@@ -36,7 +36,7 @@ import kotlin.Unit;
 import kotlin.jvm.functions.Function2;
 
 import static com.think.runex.java.Constants.Globals.GSON;
-import static com.think.runex.util.ConstantsKt.KEY_EVENT;
+import static com.think.runex.config.ConstantsKt.KEY_EVENT;
 
 public class AllEventsPage extends xFragment {
     /**

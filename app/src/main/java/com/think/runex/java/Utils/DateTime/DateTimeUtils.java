@@ -13,7 +13,7 @@ import java.util.Date;
 import java.util.List;
 import java.util.Locale;
 
-import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
+import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class DateTimeUtils {
     /**

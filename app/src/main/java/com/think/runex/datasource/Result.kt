@@ -1,10 +1,9 @@
 package com.think.runex.datasource
 
 import com.google.gson.annotations.SerializedName
-import com.think.runex.util.KEY_DATA
-import com.think.runex.util.KEY_ERROR
-import com.think.runex.util.KEY_MESSAGE
-import com.think.runex.util.KEY_STATUS_CODE
+import com.think.runex.config.KEY_DATA
+import com.think.runex.config.KEY_MESSAGE
+import com.think.runex.config.KEY_STATUS_CODE
 import java.net.HttpURLConnection
 
 data class Result<T>(

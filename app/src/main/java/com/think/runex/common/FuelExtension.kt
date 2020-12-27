@@ -1,7 +1,7 @@
 package com.think.runex.common
 
 import com.github.kittinunf.fuel.core.FuelError
-import com.think.runex.util.KEY_MESSAGE
+import com.think.runex.config.KEY_MESSAGE
 import org.json.JSONException
 import org.json.JSONObject
 

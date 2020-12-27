@@ -7,7 +7,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.think.runex.R
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.util.RC_LOGIN
+import com.think.runex.config.RC_LOGIN
 import kotlinx.android.synthetic.main.screen_on_boarding.*
 
 class OnBoardingScreen : BaseScreen() {

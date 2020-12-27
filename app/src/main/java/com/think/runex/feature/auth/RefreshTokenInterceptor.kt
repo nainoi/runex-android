@@ -18,8 +18,9 @@ import com.think.runex.java.App.AppEntity
 import com.think.runex.java.Constants.Globals
 import com.think.runex.java.Models.TokenObject
 import com.think.runex.util.AppPreference
-import com.think.runex.util.KEY_ACCESS_TOKEN
-import com.think.runex.util.KEY_DATA
+import com.think.runex.config.KEY_ACCESS_TOKEN
+import com.think.runex.config.KEY_DATA
+import com.think.runex.config.KEY_REFRESH_TOKEN
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -57,9 +58,8 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                             val jsonObject = Gson().fromJson(bodyString, JsonElement::class.java).asJsonObject
                             if (jsonObject.has(KEY_DATA)) {
                                 val tokenObject = jsonObject.get(KEY_DATA).asJsonObject
-                                val accessTokenText = tokenObject.get("access_token").asString ?: ""
-                                val refreshTokenText = tokenObject.get("refresh_token").asString
-                                        ?: ""
+                                val accessTokenText = tokenObject.get(KEY_ACCESS_TOKEN).asString ?: ""
+                                val refreshTokenText = tokenObject.get(KEY_REFRESH_TOKEN).asString ?: ""
                                 if (accessTokenText.isNotBlank() && refreshTokenText.isNotBlank()) {
                                     //Log.e("RefreshTokenInterceptor", "Access token: $accessTokenText")
                                     //Log.e("RefreshTokenInterceptor", "Refresh token: $refreshTokenText")
@@ -82,7 +82,6 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                         }
                     }
                 }
-
             }
 
 //            if (body?.contains(ERR_MSG_UNAUTHORIZED, true) == true) {

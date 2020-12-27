@@ -2,7 +2,7 @@ package com.think.runex.datasource.api
 
 import android.content.res.Resources
 import com.think.runex.R
-import com.think.runex.util.ERR_NO_INTERNET_CONNECTION
+import com.think.runex.config.ERR_NO_INTERNET_CONNECTION
 import javax.net.ssl.HttpsURLConnection
 
 class ApiExceptionMessage {

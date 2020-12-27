@@ -1,7 +1,7 @@
 package com.think.runex.feature.auth.request
 
 import com.google.gson.annotations.SerializedName
-import com.think.runex.util.ANDROID
+import com.think.runex.config.ANDROID
 
 data class LoginEmailRequest(
         @SerializedName("email") var email: String,

@@ -66,8 +66,8 @@ import java.util.Locale;
 import java.util.Objects;
 
 
-import static com.think.runex.util.ConstantsKt.DISPLAY_DATE_FORMAT_SHOT_MONTH;
-import static com.think.runex.util.ConstantsKt.SERVER_DATE_TIME_FORMAT;
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT_SHOT_MONTH;
+import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 
 public class EditProfilePage extends xFragment

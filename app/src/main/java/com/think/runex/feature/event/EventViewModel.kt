@@ -6,7 +6,7 @@ import com.think.runex.datasource.BaseViewModel
 import com.think.runex.feature.event.model.Event
 import com.think.runex.feature.payment.PaymentStatus
 import com.think.runex.feature.payment.PaymentType
-import com.think.runex.util.SERVER_DATE_TIME_FORMAT
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 

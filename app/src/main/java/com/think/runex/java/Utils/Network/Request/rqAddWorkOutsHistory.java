@@ -5,7 +5,7 @@ import com.think.runex.java.Models.RealmPointObject;
 import java.util.ArrayList;
 import java.util.List;
 
-import static com.think.runex.util.ConstantsKt.ANDROID;
+import static com.think.runex.config.ConstantsKt.ANDROID;
 
 public class rqAddWorkOutsHistory {
 
