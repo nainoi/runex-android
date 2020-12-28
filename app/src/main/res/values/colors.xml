@@ -6,24 +6,52 @@
 
     <!-- Background colors -->
     <color name="background">#FFFFFF</color>
+    <color name="backgroundLight">#FFFFFF</color>
+    <color name="backgroundDark">#1C1E21</color>
+
     <color name="backgroundSecondary">#F5F7F9</color>
+    <color name="backgroundSecondaryLight">#F5F7F9</color>
+    <color name="backgroundSecondaryDark">#26282D</color>
+
     <color name="backgroundThirdly">#EDF1F5</color>
+    <color name="backgroundThirdlyLight">#EDF1F5</color>
+    <color name="backgroundThirdlyDark">#313338</color>
 
     <color name="disable">#9A9A9A</color>
+    <color name="disableLight">#9A9A9A</color>
+    <color name="disableDark">#494E52</color>
+
     <color name="disableSecondary">#EAEAEA</color>
+    <color name="disableSecondaryLight">#EAEAEA</color>
+    <color name="disableSecondaryDark">#797979</color>
 
     <color name="grey">#9A9A9A</color>
     <color name="error">#CC2E2E</color>
 
     <color name="line">#DDDDDD</color>
+    <color name="lineInLightBackground">#DDDDDD</color>
+    <color name="lineInDarkBackground">#42979797</color>
+
     <color name="border">#B2B4B5</color>
+    <color name="borderInLightBackground">#B2B4B5</color>
+    <color name="borderInDarkBackground">#42979797</color>
 
     <color name="colorSkeleton">#EEEEEE</color>
+    <color name="skeletonLight">#EEEEEE</color>
+    <color name="skeletonDark">#2B2B2B</color>
 
     <!-- Text Colors -->
     <color name="textColorPrimary">#333333</color>
+    <color name="textColorPrimaryInLightBackground">#333333</color>
+    <color name="textColorPrimaryInDarkBackground">#FFFFFF</color>
+
     <color name="textColorSecondary">#494E52</color>
+    <color name="textColorSecondaryInLightBackground">#494E52</color>
+    <color name="textColorSecondaryInDarkBackground">#EEEEEE</color>
+
     <color name="textColorHint">#9A9A9A</color>
+    <color name="textColorHintInLightBackground">#7A7A7A</color>
+    <color name="textColorHintInDarkBackground">#797979</color>
 
     <color name="textColorWhite">#FFFFFF</color>
     <color name="textColorBlack">#000000</color>
@@ -32,8 +60,17 @@
 
     <!-- Icon colors -->
     <color name="iconColorPrimary">#55595C</color>
+    <color name="iconColorPrimaryInLightBackground">#55595C</color>
+    <color name="iconColorPrimaryInDarkBackground">#FFFFFF</color>
+
     <color name="iconColorSecondary">#C4C4C4</color>
+    <color name="iconColorSecondaryInLightBackground">#C4C4C4</color>
+    <color name="iconColorSecondaryInDarkBackground">#EEEEEE</color>
+
     <color name="iconColorDisable">#4DA8B6C8</color>
+    <color name="iconColorDisableInLightBackground">#4DA8B6C8</color>
+    <color name="iconColorDisableInDarkBackground">#797979</color>
+
     <color name="iconColorAccent">@color/colorAccent</color>
 
     <!-- Payment status colors -->

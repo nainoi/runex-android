@@ -26,7 +26,7 @@
                 android:layout_alignParentTop="true"
                 android:adjustViewBounds="true"
                 android:scaleType="centerCrop"
-                android:src="@mipmap/ic_record" />
+                android:src="@mipmap/im_record" />
 
             <View
                 android:layout_width="match_parent"

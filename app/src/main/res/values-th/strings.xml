@@ -57,6 +57,7 @@
     <string name="gender">เพศ</string>
 
     <!-- H -->
+    <string name="history">ประวัติ</string>
 
     <!-- I -->
 
@@ -134,6 +135,7 @@
     <string name="waiting_for_payment">รอชำระเงิน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
     <string name="pause_recording">พักจับเวลา</string>
+    <string name="workout">ออกกำลังกาย</string>
 
     <!-- Y -->
 

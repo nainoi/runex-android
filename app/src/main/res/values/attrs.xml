@@ -1,9 +1,12 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-
     <declare-styleable name="AspectRatioImageView">
         <attr name="ratioWidth" format="float" />
         <attr name="ratioHeight" format="float" />
     </declare-styleable>
 
+    <declare-styleable name="CustomBottomBarBackground">
+        <attr name="centerMenuSize" format="dimension" />
+        <attr name="backgroundColor" />
+    </declare-styleable>
 </resources>

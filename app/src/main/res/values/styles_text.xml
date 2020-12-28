@@ -10,6 +10,14 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="TextCaption.Primary.InLightBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    </style>
+
+    <style name="TextCaption.Primary.InDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    </style>
+
     <style name="TextCaption.Primary.SingleLine" parent="TextCaption.Primary">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -19,8 +27,24 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
+    <style name="TextCaption.Secondary.InLightBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    </style>
+
+    <style name="TextCaption.Secondary.InDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    </style>
+
     <style name="TextCaption.Hint" parent="TextCaption">
         <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextCaption.Hint.InLightBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    </style>
+
+    <style name="TextCaption.Hint.InDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
     </style>
 
     <style name="TextCaption.Hint.SingleLine" parent="TextCaption.Hint">
@@ -32,6 +56,10 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="TextCaption.Black" parent="TextCaption">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="TextCaption.Error" parent="TextCaption">
         <item name="android:textColor">@color/error</item>
     </style>
@@ -40,8 +68,17 @@
         <item name="android:textSize">@dimen/text_body</item>
     </style>
 
+
     <style name="TextBody.Primary" parent="TextBody">
         <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextBody.Primary.InLightBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    </style>
+
+    <style name="TextBody.Primary.InDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
     </style>
 
     <style name="TextBody.Primary.SingleLine" parent="TextBody.Primary">
@@ -53,6 +90,14 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
+    <style name="TextBody.Secondary.InLightBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    </style>
+
+    <style name="TextBody.Secondary.InDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    </style>
+
     <style name="TextBody.Secondary.SingleLine" parent="TextBody.Secondary">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -60,6 +105,14 @@
 
     <style name="TextBody.Hint" parent="TextBody">
         <item name="android:textColor">@color/textColorHint</item>
+    </style>
+
+    <style name="TextBody.Hint.InLightBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    </style>
+
+    <style name="TextBody.Hint.InDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
     </style>
 
     <style name="TextBody.Hint.SingleLine" parent="TextBody.Hint">
@@ -75,6 +128,10 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="TextBody.Black" parent="TextBody">
+        <item name="android:textColor">@android:color/black</item>
+    </style>
+
     <style name="TextBody.Error" parent="TextBody">
         <item name="android:textColor">@color/error</item>
     </style>
@@ -87,6 +144,14 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="TextBody2.Primary.InLightBackground" parent="TextBody2">
+        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    </style>
+
+    <style name="TextBody2.Primary.InDarkBackground" parent="TextBody2">
+        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    </style>
+
     <style name="TextBody2.Primary.SingleLine" parent="TextBody2.Primary">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -94,6 +159,14 @@
 
     <style name="TextBody2.Secondary" parent="TextBody2">
         <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextBody2.Secondary.InLightBackground" parent="TextBody2">
+        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    </style>
+
+    <style name="TextBody2.Secondary.InDarkBackground" parent="TextBody2">
+        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
     </style>
 
     <style name="TextBody2.Secondary.SingleLine" parent="TextBody2.Secondary">
@@ -105,6 +178,14 @@
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
+    <style name="TextBody2.Hint.InLightBackground" parent="TextBody2">
+        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    </style>
+
+    <style name="TextBody2.Hint.InDarkBackground" parent="TextBody2">
+        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    </style>
+
     <style name="TextBody2.Hint.SingleLine" parent="TextBody2.Hint">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
@@ -112,6 +193,10 @@
 
     <style name="TextBody2.White" parent="TextBody2">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextBody2.Black" parent="TextBody2">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="TextBody2.Accent" parent="TextBody2">
@@ -130,16 +215,44 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="TextSubTitle.Primary.InLightBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    </style>
+
+    <style name="TextSubTitle.Primary.InDarkBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    </style>
+
     <style name="TextSubTitle.Secondary" parent="TextSubTitle">
         <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextSubTitle.Secondary.InLightBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    </style>
+
+    <style name="TextSubTitle.Secondary.InDarkBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
     </style>
 
     <style name="TextSubTitle.Hint" parent="TextSubTitle">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
+    <style name="TextSubTitle.Hint.InLightBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    </style>
+
+    <style name="TextSubTitle.Hint.InDarkBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    </style>
+
     <style name="TextSubTitle.White" parent="TextSubTitle">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextSubTitle.Black" parent="TextSubTitle">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="TextTitle">
@@ -150,16 +263,44 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="TextTitle.Primary.InLightBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    </style>
+
+    <style name="TextTitle.Primary.InDarkBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    </style>
+
     <style name="TextTitle.Secondary" parent="TextTitle">
         <item name="android:textColor">@color/textColorSecondary</item>
+    </style>
+
+    <style name="TextTitle.Secondary.InLightBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    </style>
+
+    <style name="TextTitle.Secondary.InDarkBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
     </style>
 
     <style name="TextTitle.Hint" parent="TextTitle">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
+    <style name="TextTitle.Hint.InLightBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    </style>
+
+    <style name="TextTitle.Hint.InDarkBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    </style>
+
     <style name="TextTitle.White" parent="TextTitle">
         <item name="android:textColor">@android:color/white</item>
+    </style>
+
+    <style name="TextTitle.Black" parent="TextTitle">
+        <item name="android:textColor">@android:color/black</item>
     </style>
 
     <style name="TextHeadLine">
@@ -187,5 +328,17 @@
     </style>
 
     <!-- TextView -->
+
+    <style name="TextBottomBar">
+        <item name="android:textSize">10sp</item>
+        <item name="android:maxLines">1</item>
+        <item name="android:ellipsize">end</item>
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="TextBottomBar.InDarkBackground" parent="TextBottomBar">
+        <item name="android:textColor">@drawable/selector_bottom_bar_text_color
+        </item>
+    </style>
 
 </resources>

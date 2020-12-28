@@ -6,7 +6,9 @@ import android.os.Build
 import android.view.ViewStub
 import android.view.WindowManager
 import androidx.annotation.ColorInt
+import androidx.annotation.ColorRes
 import androidx.fragment.app.Fragment
+import com.jozzee.android.core.resource.getColor
 
 /**
  * Set status bar color
@@ -29,7 +31,6 @@ fun Activity.setStatusBarColor(@ColorInt color: Int = Color.TRANSPARENT, isLight
         }
     }
 }
-
 
 fun Fragment.setStatusBarColor(@ColorInt color: Int = Color.TRANSPARENT, isLightStatusBar: Boolean) {
     if (view == null || isAdded.not()) return

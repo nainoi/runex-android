@@ -42,7 +42,7 @@
     <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
     <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
     <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
-    <string name="events">อีเว้นท์</string>
+    <string name="events">Events</string>
     <string name="event_date">วันที่จัดงาน</string>
 
     <!-- F -->
@@ -57,6 +57,7 @@
     <string name="gender">เพศ</string>
 
     <!-- H -->
+    <string name="history">History</string>
 
     <!-- I -->
 
@@ -80,7 +81,7 @@
     <!-- M -->
     <string name="male">Male</string>
     <string name="menu">เมนู</string>
-    <string name="my_events">อีเว้นท์ของฉัน</string>
+    <string name="my_events">My Events</string>
 
     <!-- N -->
     <string name="name">ชื่อ</string>
@@ -97,7 +98,7 @@
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
     <string name="password_required">กรุณาระบุรหัสผ่าน</string>
-    <string name="profile">ข้อมูลส่วนตัว</string>
+    <string name="profile">Profile</string>
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
     <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
@@ -134,6 +135,7 @@
     <string name="waiting_for_payment">รอชำระเงิน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
     <string name="pause_recording">พักจับเวลา</string>
+    <string name="workout">Workout</string>
 
     <!-- Y -->
 

@@ -8,10 +8,12 @@ import android.view.View
 import android.view.ViewGroup
 import com.jozzee.android.core.fragment.replaceChildFragment
 import com.jozzee.android.core.fragment.replaceFragment
+import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 
 import com.think.runex.R
+import com.think.runex.common.setStatusBarColor
 import com.think.runex.ui.home.AllEventsScreen
 import kotlinx.android.synthetic.main.screen_main.*
 
@@ -24,32 +26,31 @@ class MainScreen : Fragment() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
+        setStatusBarColor(isLightStatusBar = false)
         subscribeUi()
     }
 
     override fun onStart() {
         super.onStart()
         //Initial screen to feed screen first.
-        updateScreen(bottom_navigation.selectedItemId)
+        //updateScreen(bottom_navigation.selectedItemId)
     }
 
     private fun setupComponents() {
-
     }
 
     private fun subscribeUi() {
-        bottom_navigation.setOnNavigationItemSelectedListener { menuItem ->
-            when (menuItem.itemId != bottom_navigation.selectedItemId) {
-                true -> {
-                    Logger.info(simpleName(), "On navigation item selected Id: ${menuItem.itemId}")
-                    updateScreen(menuItem.itemId)
-                    true
-                }
-                false -> false
-            }
-
-        }
+//        bottom_navigation.setOnNavigationItemSelectedListener { menuItem ->
+//            when (menuItem.itemId != bottom_navigation.selectedItemId) {
+//                true -> {
+//                    Logger.info(simpleName(), "On navigation item selected Id: ${menuItem.itemId}")
+//                    updateScreen(menuItem.itemId)
+//                    true
+//                }
+//                false -> false
+//            }
+//
+//        }
     }
 
     private fun updateScreen(itemId: Int) {
