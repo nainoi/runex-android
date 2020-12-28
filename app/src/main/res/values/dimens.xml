@@ -43,6 +43,10 @@
     <dimen name="space_112dp">112dp</dimen>
     <dimen name="space_128dp">128dp</dimen>
 
+    <!-- Components -->
+    <dimen name="bottom_bar_height">56dp</dimen>
+    <dimen name="bottom_bar_center_menu_size">72dp</dimen>
+
     <!-- Text paragraph -->
     <dimen name="textVerticalPaddingNoRelate">28dp</dimen>
     <dimen name="textRecordTime">48dp</dimen>
@@ -63,15 +67,16 @@
     <dimen name="textHorizontalPadding">12dp</dimen>
     <dimen name="buttonHorizontalPadding">38dp</dimen>
 
-    <!--  Login  -->
-    <dimen name="login_title_size">20dp</dimen>
-    <dimen name="login_social_button_description_size">14dp</dimen>
+    <dimen name="login_button_height">48dp</dimen>
+
     <!-- Icon -->
     <dimen name="action_bar_icon_size">32dp</dimen>
     <dimen name="text_view_icon_size">24dp</dimen>
 
-    <!-- Button -->
-    <dimen name="login_button_height">48dp</dimen>
+    <!--  Login  -->
+    <dimen name="login_title_size">20dp</dimen>
+    <dimen name="login_social_button_description_size">14dp</dimen>
+
 
     <!--  Socials button  -->
     <dimen name="social_button_space_vertical">16dp</dimen>

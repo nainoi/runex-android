@@ -38,7 +38,7 @@
             android:padding="@dimen/space_8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
-            android:tint="@color/orange" />
+            android:tint="@color/colorAccent" />
 
         <com.google.android.material.card.MaterialCardView
             android:id="@+id/my_current_event"
@@ -83,7 +83,7 @@
                     android:adjustViewBounds="true"
                     android:scaleType="centerCrop"
                     android:src="@drawable/ic_launcher_background"
-                    android:tint="@color/orange" />
+                    android:tint="@color/colorAccent" />
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_my_event_name"
@@ -167,7 +167,7 @@
             android:padding="@dimen/space_8dp"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_launcher_background"
-            android:tint="@color/icon" />
+            android:tint="@color/iconColorPrimary" />
 
         <androidx.recyclerview.widget.RecyclerView
             android:id="@+id/events_list"

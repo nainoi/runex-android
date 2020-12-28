@@ -89,7 +89,7 @@
                     android:layout_marginLeft="8dp"
                     android:gravity="center"
                     android:text="   เข้าสู่ระบบด้วยบัญชี gmail    "
-                    android:textColor="@color/materialBlack"
+                    android:textColor="@color/textColorPrimary"
                     android:textSize="@dimen/login_social_button_description_size"
                     android:textStyle="bold" />
 
@@ -115,7 +115,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="หรือ"
-                    android:textColor="@color/materialBlack" />
+                    android:textColor="@color/textColorPrimary" />
 
                 <View
                     android:layout_width="0dp"
@@ -229,7 +229,7 @@
                 android:paddingVertical="@dimen/social_button_space_vertical"
                 android:text="ลืมรหัสผ่าน"
                 android:textAllCaps="false"
-                android:textColor="@color/orange"
+                android:textColor="@color/textColorAccent"
                 android:textSize="@dimen/login_social_button_description_size"
                 android:textStyle="bold" />
 
@@ -256,14 +256,14 @@
                 android:text="ยังไม่ได้เป็นสมาชิกในระบบ? " />
 
             <TextView
-                android:paddingVertical="8dp"
-                android:paddingHorizontal="12dp"
                 android:id="@+id/btn_register"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:paddingHorizontal="12dp"
+                android:paddingVertical="8dp"
                 android:text="สมัครสมาชิก"
                 android:textAllCaps="false"
-                android:textColor="@color/orange" />
+                android:textColor="@color/textColorAccent" />
 
         </LinearLayout>
 

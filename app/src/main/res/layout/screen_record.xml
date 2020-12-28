@@ -30,8 +30,7 @@
 
             <View
                 android:layout_width="match_parent"
-                android:layout_height="360dp"
-                android:background="@color/overlayDark">
+                android:layout_height="360dp">
 
             </View>
 
@@ -107,7 +106,7 @@
         android:padding="@dimen/space_8dp"
         android:scaleType="centerCrop"
         android:src="@drawable/ic_launcher_background"
-        android:tint="@color/icon"
+        android:tint="@color/iconColorPrimary"
         app:layout_constraintBottom_toTopOf="@+id/li"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent" />
@@ -205,7 +204,7 @@
                     android:layout_marginTop="@dimen/space_4dp"
                     android:gravity="center_horizontal"
                     android:text="0:06:49"
-                    android:textColor="@color/orange" />
+                    android:textColor="@color/colorAccent" />
             </RelativeLayout>
         </com.google.android.material.card.MaterialCardView>
 

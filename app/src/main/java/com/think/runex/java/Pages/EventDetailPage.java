@@ -156,7 +156,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
                 if (mEvent.getRegisterInfoList().get(0).getEvent() != null) {
                     if (!mEvent.getRegisterInfoList().get(0).getEvent().isInApp()) {
                         toolbar.setImageOptionIcon(R.drawable.ic_add);
-                        toolbar.setOptionButtonColorFilter(R.color.orange);
+                        toolbar.setOptionButtonColorFilter(R.color.colorAccent);
 
                         // hide toolbar option button
                     } else toolbar.toolbarOptionButton.gone();
@@ -164,7 +164,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             }
 
             //--> navigate button
-            toolbar.setNavigationButtonColorFilter(R.color.orange);
+            toolbar.setNavigationButtonColorFilter(R.color.colorAccent);
             toolbar.toolbarTitleIcon.gone();
 
             // binding

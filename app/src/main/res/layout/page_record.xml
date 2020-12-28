@@ -28,7 +28,7 @@
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
                 android:src="@drawable/ic_close"
-                app:tint="@color/orange" />
+                app:tint="@color/textColorAccent" />
 
             <ImageView
                 android:id="@+id/btn_share"
@@ -36,7 +36,7 @@
                 android:layout_height="match_parent"
                 android:layout_gravity="right"
                 android:src="@drawable/ic_share_android"
-                app:tint="@color/orange" />
+                app:tint="@color/textColorAccent" />
 
         </FrameLayout>
 
@@ -305,7 +305,7 @@
                                 android:layout_height="wrap_content"
                                 android:gravity="center"
                                 android:text="00:00:00"
-                                android:textColor="@color/orange"
+                                android:textColor="@color/textColorAccent"
                                 android:textSize="18dp" />
 
 
@@ -335,7 +335,7 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
                                 android:text="00:00:00"
-                                android:textColor="@color/orange"
+                                android:textColor="@color/textColorAccent"
                                 android:textSize="18dp" />
 
                         </LinearLayout>
@@ -364,7 +364,7 @@
                                 android:layout_height="wrap_content"
                                 android:maxLines="1"
                                 android:text="0.0"
-                                android:textColor="@color/orange"
+                                android:textColor="@color/textColorAccent"
                                 android:textSize="18dp" />
 
                         </LinearLayout>

@@ -20,7 +20,7 @@
             android:layout_width="?attr/actionBarSize"
             android:layout_height="match_parent"
             android:src="@drawable/ic_close"
-            app:tint="@color/orange" />
+            app:tint="@color/colorAccent" />
 
         <ImageView
             android:id="@+id/btn_share"
@@ -28,7 +28,7 @@
             android:layout_height="match_parent"
             android:layout_gravity="right"
             android:src="@drawable/ic_share_android"
-            app:tint="@color/orange" />
+            app:tint="@color/colorAccent" />
 
     </FrameLayout>
 

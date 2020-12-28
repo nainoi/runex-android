@@ -72,7 +72,7 @@
             android:visibility="gone"
             android:layout_marginTop="2dp"
             android:text="สำเร็จแล้ว"
-            android:textColor="@color/orange"
+            android:textColor="@color/textColorAccent"
             android:textStyle="bold" />
         
         <!--  Frame begin registration & Running distance  -->

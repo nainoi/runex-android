@@ -5,5 +5,5 @@
     <solid android:color="@color/background" />
     <stroke
         android:width="@dimen/space_1dp"
-        android:color="@color/borderInput" />
+        android:color="@color/border" />
 </shape>

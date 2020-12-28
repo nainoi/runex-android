@@ -88,7 +88,7 @@
                         android:layout_height="wrap_content"
                         android:gravity="center"
                         android:text="00:00:00"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/textColorAccent"
                         android:textSize="18dp" />
 
 
@@ -118,7 +118,7 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:text="00:00:00"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/textColorAccent"
                         android:textSize="18dp" />
 
                 </LinearLayout>
@@ -147,7 +147,7 @@
                         android:layout_height="wrap_content"
                         android:maxLines="1"
                         android:text="0.0"
-                        android:textColor="@color/orange"
+                        android:textColor="@color/textColorAccent"
                         android:textSize="18dp" />
 
                 </LinearLayout>

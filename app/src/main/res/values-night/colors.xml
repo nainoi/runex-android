@@ -1,25 +1,31 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">@color/orange</color>
-    <color name="colorPrimaryDark">@color/orange</color>
-    <color name="colorAccent">@color/orange</color>
+    <color name="colorPrimary">#F7B600</color>
+    <color name="colorPrimaryDark">#F7B600</color>
+    <color name="colorAccent">#F7B600</color>
 
-    <color name="background">#232323</color>
-    <color name="backgroundSecondary">#2A2A2A</color>
-    <color name="backgroundSurface">#484848</color>
+    <!-- Background colors -->
+    <color name="background">#1C1E21</color>
+    <color name="backgroundSecondary">#26282D</color>
+    <color name="backgroundThirdly">#313338</color>
 
-    <color name="colorDisable">#9A9A9A</color>
-    <color name="colorDisableSecondary">#616060</color>
+    <color name="disable">#494E52</color>
+    <color name="disableSecondary">#797979</color>
+
+    <color name="line">#42979797</color>
+    <color name="border">#42979797</color>
+
     <color name="colorSkeleton">#2B2B2B</color>
 
+    <!-- Text Colors -->
     <color name="textColorPrimary">#FFFFFF</color>
-    <color name="textColorSecondary">#ADB7BE</color>
-    <color name="textColorHint">#50595B</color>
+    <color name="textColorSecondary">#EEEEEE</color>
+    <color name="textColorHint">#797979</color>
 
-    <color name="icon">#ADB7bE</color>
-    <color name="iconSurface">#FFFFFF</color>
-    <color name="iconDisable">#50595b</color>
+    <!-- Icon colors -->
+    <color name="iconColorPrimary">#FFFFFF</color>
+    <color name="iconColorSecondary">#EEEEEE</color>
+    <color name="iconColorDisable">#797979</color>
 
-    <!--    <color name="error">#CC2E2E</color>-->
-    <!--    <color name="line">#2E2E2E</color>-->
+    <!-- Others -->
 </resources>

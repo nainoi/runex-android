@@ -65,7 +65,7 @@ public class SummaryPage extends Fragment implements onTabChangedListener {
         // prepare usage variables
         final View v = inflater.inflate(R.layout.page_summary, container, false);
 
-        TAB_SELECTED_COLOR = getResources().getColor(R.color.orange);
+        TAB_SELECTED_COLOR = getResources().getColor(R.color.colorAccent);
         TAB_UNSELECTED_COLOR = getResources().getColor(R.color.textColorHint);
         // view matching
         matchingViews(v);

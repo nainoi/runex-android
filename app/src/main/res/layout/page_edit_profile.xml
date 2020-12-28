@@ -24,7 +24,7 @@
             android:foreground="?selectableItemBackground"
             android:scaleType="centerInside"
             app:srcCompat="@drawable/ic_back"
-            app:tint="@color/orange" />
+            app:tint="@color/textColorPrimary" />
 
         <!--        <TextView-->
         <!--            android:id="@+id/toolbar_title"-->
