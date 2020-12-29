@@ -28,7 +28,7 @@ import com.think.runex.java.Utils.Network.Services.GetAllEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.EventPreviewActivity;
 import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration;
-import com.think.runex.ui.home.EventsAdapter;
+import com.think.runex.ui.event.EventsAdapter;
 
 import java.net.HttpURLConnection;
 
