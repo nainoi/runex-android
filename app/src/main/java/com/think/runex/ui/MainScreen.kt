@@ -8,11 +8,17 @@ import android.view.ViewGroup
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import com.jozzee.android.core.fragment.childFragmentCount
+import com.jozzee.android.core.fragment.replaceChildFragment
 import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDrawable
 import com.think.runex.R
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.event.AllEventsScreen
+import com.think.runex.ui.event.MyEventsScreen
+import com.think.runex.ui.profile.ProfileScreen
+import com.think.runex.ui.workout.WorkoutHistoryScreen
+import com.think.runex.ui.workout.WorkoutScreen
 import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_main.*
 
@@ -75,24 +81,24 @@ class MainScreen : BaseScreen() {
         when (position) {
             1 -> {
                 setActiveMeuBottomBar(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
-                //replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
+                replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
             }
             2 -> {
                 setActiveMeuBottomBar(bottom_bar_menu_my_event_icon, bottom_bar_menu_my_event_label)
-                //replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
+                replaceChildFragment(R.id.navigation_host_fragment, MyEventsScreen(), clearChildFragment = true)
             }
             3 -> {
                 bottom_bar_menu_workout?.background = getDrawable(R.drawable.shape_circle_accent)
                 bottom_bar_menu_workout_label?.isEnabled = true
-                //replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
+                replaceChildFragment(R.id.navigation_host_fragment, WorkoutScreen(), clearChildFragment = true)
             }
             4 -> {
                 setActiveMeuBottomBar(bottom_bar_menu_history_icon, bottom_bar_menu_history_label)
-                //replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
+                replaceChildFragment(R.id.navigation_host_fragment, WorkoutHistoryScreen(), clearChildFragment = true)
             }
             5 -> {
                 setActiveMeuBottomBar(bottom_bar_menu_profile_icon, bottom_bar_menu_profile_label)
-                //replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
+                replaceChildFragment(R.id.navigation_host_fragment, ProfileScreen(), clearChildFragment = true)
             }
         }
     }
