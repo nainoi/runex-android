@@ -5,7 +5,7 @@ import com.think.runex.feature.event.model.registered.RegisteredEvent
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
 
-class RegisteredEventsViewModel(private val repo: EventRepository) : BaseViewModel() {
+class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() {
 
     suspend fun getRegisteredEvents(): List<RegisteredEvent>? = withContext(Dispatchers.IO) {
         val result = repo.getRegisteredEvents()

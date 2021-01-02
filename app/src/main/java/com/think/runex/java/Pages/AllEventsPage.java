@@ -28,7 +28,7 @@ import com.think.runex.java.Utils.Network.Services.GetAllEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.ui.EventPreviewActivity;
 import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration;
-import com.think.runex.ui.event.EventsAdapter;
+import com.think.runex.ui.event.AllEventsAdapter;
 
 import java.net.HttpURLConnection;
 
@@ -45,7 +45,7 @@ public class AllEventsPage extends xFragment {
     private final String ct = "EventsPage->";
 
     // instance variables
-    private EventsAdapter adapter;
+    private AllEventsAdapter adapter;
 
     //Views
     private RecyclerView eventList;
@@ -94,7 +94,7 @@ public class AllEventsPage extends xFragment {
     }
 
     private void recyclerViewProps() {
-        adapter = new EventsAdapter();
+        adapter = new AllEventsAdapter();
         eventList.setLayoutManager(new LinearLayoutManager(requireContext()));
         Drawable lineSeparator = ContextCompat.getDrawable(requireContext(), R.drawable.line_separator_list_item);
         eventList.addItemDecoration(new LineSeparatorItemDecoration(lineSeparator, false, true, RecyclerView.VERTICAL));

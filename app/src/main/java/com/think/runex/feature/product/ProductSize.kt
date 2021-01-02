@@ -5,8 +5,8 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class ProductSize(
-        @SerializedName("name") var name: String = "",
-        @SerializedName("remark") var remark: String = "") : Parcelable {
+        @SerializedName("name") var name: String? = "",
+        @SerializedName("remark") var remark: String? = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<ProductSize> {
         override fun createFromParcel(parcel: Parcel): ProductSize {
@@ -19,8 +19,8 @@ data class ProductSize(
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString() ?: "",
-            parcel.readString() ?: "")
+            parcel.readString(),
+            parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(name)

@@ -319,6 +319,14 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
+    <style name="TextHeadLine.Secondary.InLightBackground" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    </style>
+
+    <style name="TextHeadLine.Secondary.InDarkBackground" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    </style>
+
     <style name="TextHeadLine.Hint" parent="TextHeadLine">
         <item name="android:textColor">@color/textColorHint</item>
     </style>

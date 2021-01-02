@@ -10,14 +10,15 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.ticket.Ticket
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import java.net.HttpURLConnection
 
 data class Event(
-        @SerializedName("id") var id: String = "",
-        @SerializedName("name") var name: String = "",
+        @SerializedName("id") var id: String? = "",
+        @SerializedName("name") var name: String? = "",
         @SerializedName("description") var description: String? = null,
         @SerializedName("body") var body: String? = null,
         @SerializedName("cover") var coverImage: String? = null,
-        @SerializedName("cover_thumb") var coverThumbnailImages: List<EventCoverThumbnailImage>? = null,
+        @SerializedName("cover_thumb") var coverThumbnailImages: List<CoverThumbnailImage>? = null,
         @SerializedName("category") var category: String? = null,
         @SerializedName("slug") var slug: String? = null,
         @SerializedName("ticket") var ticket: List<Ticket>? = null,
@@ -25,14 +26,14 @@ data class Event(
         @SerializedName("status") var status: String? = null,
         @SerializedName("location") var location: String? = null,
         @SerializedName("receive_location") var receiveLocation: String? = null,
-        @SerializedName("is_active") var isActive: Boolean = false,
-        @SerializedName("is_free") var isFree: Boolean = false,
-        @SerializedName("start_reg") var startRegisterDate: String = "",
-        @SerializedName("end_reg") var endRegisterDate: String = "",
-        @SerializedName("start_event") var startEventDate: String = "",
-        @SerializedName("end_event") var endEventDate: String = "",
-        @SerializedName("inapp") var isInApp: Boolean = false,
-        @SerializedName("is_post") var isPost: Boolean = false,
+        @SerializedName("is_active") var isActive: Boolean? = false,
+        @SerializedName("is_free") var isFree: Boolean? = false,
+        @SerializedName("start_reg") var startRegisterDate: String? = "",
+        @SerializedName("end_reg") var endRegisterDate: String? = "",
+        @SerializedName("start_event") var startEventDate: String? = "",
+        @SerializedName("end_event") var endEventDate: String? = "",
+        @SerializedName("inapp") var isInApp: Boolean? = false,
+        @SerializedName("is_post") var isPost: Boolean? = false,
         @SerializedName("post_end_date") var postEndDate: String? = null,
         @SerializedName("partner") var partner: Partner? = null,
         @SerializedName("created_time") var createdTime: String? = null,
@@ -49,12 +50,12 @@ data class Event(
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.createTypedArrayList(EventCoverThumbnailImage),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.createTypedArrayList(CoverThumbnailImage),
             parcel.readString(),
             parcel.readString(),
             parcel.createTypedArrayList(Ticket),
@@ -64,10 +65,10 @@ data class Event(
             parcel.readString(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
             parcel.readString(),
@@ -90,14 +91,14 @@ data class Event(
         parcel.writeString(status)
         parcel.writeString(location)
         parcel.writeString(receiveLocation)
-        parcel.writeByte(if (isActive) 1 else 0)
-        parcel.writeByte(if (isFree) 1 else 0)
+        parcel.writeByte(if (isActive == true) 1 else 0)
+        parcel.writeByte(if (isFree == true) 1 else 0)
         parcel.writeString(startRegisterDate)
         parcel.writeString(endRegisterDate)
         parcel.writeString(startEventDate)
         parcel.writeString(endEventDate)
-        parcel.writeByte(if (isInApp) 1 else 0)
-        parcel.writeByte(if (isPost) 1 else 0)
+        parcel.writeByte(if (isInApp == true) 1 else 0)
+        parcel.writeByte(if (isPost == true) 1 else 0)
         parcel.writeString(postEndDate)
         parcel.writeParcelable(partner, flags)
         parcel.writeString(createdTime)
@@ -108,24 +109,44 @@ data class Event(
         return 0
     }
 
-    fun coverImage(): String = when (coverImage?.isNotBlank() == true) {
-        true -> when (coverImage?.startsWith("http") == true) {
-            true -> coverImage ?: ""
-            false -> ("${ApiConfig.BASE_URL}$coverImage")
+    fun coverImage(): String {
+        val imageUrl: String = when {
+            coverImage?.isNotBlank() == true -> coverImage ?: ""
+            coverThumbnailImages?.isNotEmpty() == true -> coverThumbnailImages?.get(0)?.image ?: ""
+            else -> ""
         }
-        false -> ""
+        return when (imageUrl.startsWith("http", false)) {
+            true -> imageUrl
+            false -> ("${ApiConfig.BASE_URL}$imageUrl")
+        }
     }
 
-
     fun eventPeriod(context: Context): String {
-        return "${context.getString(R.string.event_date)} " +
-                "${startEventDate.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)} - " +
-                endEventDate.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+        HttpURLConnection.HTTP_BAD_GATEWAY
+        return "${context.getString(R.string.event_date)} ${startEventDate()} - ${endEventDate()}"
     }
 
     fun registerPeriod(context: Context): String {
-        return "${context.getString(R.string.register_date)} " +
-                "${startRegisterDate.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)} - " +
-                endRegisterDate.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+        return "${context.getString(R.string.register_date)} ${startRegisterDate()} - ${endRegisterDate()}"
+    }
+
+    private fun startEventDate(): String {
+        return startEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
+    }
+
+    private fun endEventDate(): String {
+        return endEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
+    }
+
+    private fun startRegisterDate(): String {
+        return startRegisterDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
+    }
+
+    private fun endRegisterDate(): String {
+        return endRegisterDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
     }
 }

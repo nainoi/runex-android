@@ -11,6 +11,7 @@ import com.think.runex.util.GlideApp
 fun ImageView.loadEventsImage(url: String?,
                               @DrawableRes defaultImage: Int? = null) {
 
+    if (context == null) return
     if (url.isNullOrBlank()) {
         if (defaultImage != null) {
             this.setImageResource(defaultImage)

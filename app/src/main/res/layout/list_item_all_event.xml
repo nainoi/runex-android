@@ -1,0 +1,66 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.google.android.material.card.MaterialCardView xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_all_event"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:clickable="true"
+    android:focusable="true"
+    app:cardBackgroundColor="@color/backgroundThirdlyDark"
+    app:cardCornerRadius="4dp">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignBottom="@+id/event_detail_layout"
+            android:adjustViewBounds="true"
+            android:background="@mipmap/bg_item_event" />
+
+        <com.think.runex.ui.component.AspectRatioImageView
+            android:id="@+id/event_image"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            app:ratioHeight="1"
+            app:ratioWidth="2" />
+
+        <RelativeLayout
+            android:id="@+id/event_detail_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/event_image">
+
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/event_icon"
+                android:layout_width="@dimen/system_icon_size_dense"
+                android:layout_height="@dimen/system_icon_size_dense"
+                android:layout_margin="@dimen/space_8dp"
+                app:srcCompat="@mipmap/ic_running"
+                app:tint="@color/iconColorDisableInDarkBackground" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/event_name"
+                style="@style/TextBody.Primary.InDarkBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/event_icon"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:layout_toEndOf="@+id/event_icon" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/event_period"
+                style="@style/TextBody.Hint.InDarkBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_name"
+                android:layout_alignStart="@+id/event_name"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:layout_marginBottom="@dimen/space_24dp" />
+        </RelativeLayout>
+    </RelativeLayout>
+</com.google.android.material.card.MaterialCardView>

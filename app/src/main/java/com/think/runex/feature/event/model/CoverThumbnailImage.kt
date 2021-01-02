@@ -4,16 +4,16 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-data class EventCoverThumbnailImage(
+data class CoverThumbnailImage(
         @SerializedName("image") var image: String? = null,
         @SerializedName("size") var size: String? = null) : Parcelable {
 
-    companion object CREATOR : Parcelable.Creator<EventCoverThumbnailImage> {
-        override fun createFromParcel(parcel: Parcel): EventCoverThumbnailImage {
-            return EventCoverThumbnailImage(parcel)
+    companion object CREATOR : Parcelable.Creator<CoverThumbnailImage> {
+        override fun createFromParcel(parcel: Parcel): CoverThumbnailImage {
+            return CoverThumbnailImage(parcel)
         }
 
-        override fun newArray(size: Int): Array<EventCoverThumbnailImage?> {
+        override fun newArray(size: Int): Array<CoverThumbnailImage?> {
             return arrayOfNulls(size)
         }
     }

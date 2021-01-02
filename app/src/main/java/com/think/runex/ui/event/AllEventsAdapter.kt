@@ -10,9 +10,9 @@ import com.think.runex.R
 import com.think.runex.common.loadEventsImage
 import com.think.runex.common.requireContext
 import com.think.runex.feature.event.model.Event
-import kotlinx.android.synthetic.main.list_item_event.view.*
+import kotlinx.android.synthetic.main.list_item_all_event.view.*
 
-class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDiffCallback()) {
+class AllEventsAdapter : ListAdapter<Event, AllEventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
     private var onItemClick: ((position: Int, event: Event) -> Unit)? = null
 
@@ -41,17 +41,15 @@ class EventsAdapter : ListAdapter<Event, EventsAdapter.ViewHolder>(EventsListDif
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
             fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_event, parent, false))
+                    .inflate(R.layout.list_item_all_event, parent, false))
         }
 
         fun bind(data: Event?, onItemClick: ((position: Int, event: Event) -> Unit)? = null) {
             itemView.event_image?.loadEventsImage(data?.coverImage())
-            itemView.event_name_label?.text = data?.name ?: ""
-            itemView.event_category_label?.text = data?.category ?: ""
-            itemView.event_date_label?.text = data?.eventPeriod(requireContext()) ?: ""
-            itemView.register_date_label?.text = data?.registerPeriod(requireContext()) ?: ""
+            itemView.event_name?.text = data?.name ?: ""
+            itemView.event_period?.text = data?.eventPeriod(requireContext()) ?: ""
 
-            itemView.list_item_event?.setOnClickListener {
+            itemView.list_item_all_event?.setOnClickListener {
                 data?.also {
                     onItemClick?.invoke(adapterPosition, it)
                 }

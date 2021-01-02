@@ -7,7 +7,7 @@ import android.view.View
 import androidx.annotation.Dimension
 import androidx.recyclerview.widget.RecyclerView
 
-class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
+class LineSeparatorItemDecoration () : RecyclerView.ItemDecoration() {
 
     constructor(lineSeparator: Drawable?,
                 addLineOnTopOrLeftOfFirstItem: Boolean = false,
@@ -15,8 +15,8 @@ class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
                 @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL) : this() {
 
         this.lineSeparator = lineSeparator
-        this.addLineOnTopOrLeftOfFirstItem = addLineOnTopOrLeftOfFirstItem
-        this.addLineOnBottomOrRightOfLastItem = addLineOnBottomOrRightOfLastItem
+        this.addLineToTopOrLeftOfFirstItem = addLineOnTopOrLeftOfFirstItem
+        this.addLineToBottomOrRightOfLastItem = addLineOnBottomOrRightOfLastItem
         this.orientation = orientation
     }
 
@@ -25,8 +25,8 @@ class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
 
     var lineSeparator: Drawable? = null
 
-    var addLineOnTopOrLeftOfFirstItem: Boolean = false
-    var addLineOnBottomOrRightOfLastItem: Boolean = false
+    var addLineToTopOrLeftOfFirstItem: Boolean = false
+    var addLineToBottomOrRightOfLastItem: Boolean = false
 
     //var isIncludeParentPadding: Boolean = true
 
@@ -46,28 +46,28 @@ class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
             //First item.
             0 -> when (orientation) {
                 RecyclerView.VERTICAL -> {
-                    if (addLineOnTopOrLeftOfFirstItem) {
+                    if (addLineToTopOrLeftOfFirstItem) {
                         outRect.top = height
                     }
-                    if (state.itemCount > 1 || addLineOnBottomOrRightOfLastItem) {
+                    if (state.itemCount > 1 || addLineToBottomOrRightOfLastItem) {
                         outRect.bottom = height
                     }
                 }
                 RecyclerView.HORIZONTAL -> {
-                    if (addLineOnTopOrLeftOfFirstItem) {
+                    if (addLineToTopOrLeftOfFirstItem) {
                         outRect.left = width
                     }
-                    if (addLineOnBottomOrRightOfLastItem) {
+                    if (addLineToBottomOrRightOfLastItem) {
                         outRect.right = width
                     }
                 }
             }
             //Last item.
             (state.itemCount - 1) -> when (orientation) {
-                RecyclerView.VERTICAL -> if (addLineOnBottomOrRightOfLastItem) {
+                RecyclerView.VERTICAL -> if (addLineToBottomOrRightOfLastItem) {
                     outRect.bottom = height
                 }
-                RecyclerView.HORIZONTAL -> if (addLineOnBottomOrRightOfLastItem) {
+                RecyclerView.HORIZONTAL -> if (addLineToBottomOrRightOfLastItem) {
                     outRect.right = width
                 }
             }
@@ -97,7 +97,7 @@ class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
             if (child != null) {
                 val params = child.layoutParams as RecyclerView.LayoutParams
 
-                val newLeft = marginLeftOrTop
+                val newLeft =  marginLeftOrTop
 
                 val newTop = parent.top + marginLeftOrTop //top + if (isIncludeParentPadding) child.paddingTop else 0
 
@@ -106,7 +106,7 @@ class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
                 val newBottom = parent.height - marginRightOrBottom//bottom - if (isIncludeParentPadding) child.paddingBottom else 0
 
                 //Draw line separator to top or left of first position.
-                if (i == 0 && addLineOnTopOrLeftOfFirstItem) {
+                if (i == 0 && addLineToTopOrLeftOfFirstItem) {
                     when (orientation) {
                         RecyclerView.VERTICAL -> {
                             val topOfLine = child.top - params.topMargin - lineSeparator!!.intrinsicHeight
@@ -124,7 +124,7 @@ class LineSeparatorItemDecoration() : RecyclerView.ItemDecoration() {
                 }
 
                 //Draw line separator at bottom or left of item 1..N item.
-                if (i < (count - 1) || (i + 1) == count && addLineOnBottomOrRightOfLastItem) {
+                if (i < (count - 1) || (i + 1) == count && addLineToBottomOrRightOfLastItem) {
                     when (orientation) {
                         RecyclerView.VERTICAL -> {
                             val topOfLine = child.bottom + params.bottomMargin

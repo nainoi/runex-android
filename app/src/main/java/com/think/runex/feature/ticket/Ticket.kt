@@ -16,8 +16,8 @@ data class Ticket(
         @SerializedName("quantity") var quantity: Int? = 0,
         @SerializedName("distance") var distance: Float? = 0f,
         @SerializedName("product") var products: List<Product>? = null,
-        @SerializedName("created_at") var createdAt: String = "",
-        @SerializedName("updated_at") var updatedAt: String = "") : Parcelable {
+        @SerializedName("created_at") var createdAt: String? = "",
+        @SerializedName("updated_at") var updatedAt: String? = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Ticket> {
         override fun createFromParcel(parcel: Parcel): Ticket {

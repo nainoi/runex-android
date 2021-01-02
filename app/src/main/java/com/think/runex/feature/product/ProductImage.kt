@@ -4,7 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-data class ProductImage(@SerializedName("path_url") var url: String = "") : Parcelable {
+data class ProductImage(
+        @SerializedName("path_url") var url: String? = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<ProductImage> {
         override fun createFromParcel(parcel: Parcel): ProductImage {
@@ -16,7 +17,7 @@ data class ProductImage(@SerializedName("path_url") var url: String = "") : Parc
         }
     }
 
-    constructor(parcel: Parcel) : this(parcel.readString() ?: "")
+    constructor(parcel: Parcel) : this(parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(url)

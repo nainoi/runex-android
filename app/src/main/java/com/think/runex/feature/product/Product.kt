@@ -5,16 +5,16 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Product(
-        @SerializedName("id") var id: String = "",
-        @SerializedName("name") var name: String = "",
+        @SerializedName("id") var id: String? = "",
+        @SerializedName("name") var name: String? = "",
         @SerializedName("image") var images: List<ProductImage>? = null,
-        @SerializedName("detail") var detail: String = "",
-        @SerializedName("status") var status: String = "",
-        @SerializedName("reuse") var reuse: Boolean = false,
-        @SerializedName("is_show") var isShow: Boolean = false,
+        @SerializedName("detail") var detail: String? = "",
+        @SerializedName("status") var status: String? = "",
+        @SerializedName("reuse") var reuse: Boolean? = false,
+        @SerializedName("is_show") var isShow: Boolean? = false,
         @SerializedName("sizes") var sizes: ProductSize? = null,
-        @SerializedName("created_at") var createdAt: String = "",
-        @SerializedName("updated_at") var updatedAt: String = "") : Parcelable {
+        @SerializedName("created_at") var createdAt: String? = "",
+        @SerializedName("updated_at") var updatedAt: String? = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Product> {
         override fun createFromParcel(parcel: Parcel): Product {
@@ -27,16 +27,16 @@ data class Product(
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
+            parcel.readString(),
+            parcel.readString(),
             parcel.createTypedArrayList(ProductImage),
-            parcel.readString() ?: "",
-            parcel.readString() ?: "",
+            parcel.readString(),
+            parcel.readString(),
             parcel.readByte() != 0.toByte(),
             parcel.readByte() != 0.toByte(),
             parcel.readParcelable(ProductSize::class.java.classLoader),
-            parcel.readString() ?: "",
-            parcel.readString() ?: "")
+            parcel.readString(),
+            parcel.readString())
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
@@ -44,8 +44,8 @@ data class Product(
         parcel.writeTypedList(images)
         parcel.writeString(detail)
         parcel.writeString(status)
-        parcel.writeByte(if (reuse) 1 else 0)
-        parcel.writeByte(if (isShow) 1 else 0)
+        parcel.writeByte(if (reuse == true) 1 else 0)
+        parcel.writeByte(if (isShow == true) 1 else 0)
         parcel.writeParcelable(sizes, flags)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)

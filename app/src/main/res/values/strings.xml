@@ -11,7 +11,7 @@
     <string name="activity_record">บันทึกกิจกรรม</string>
     <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
 
-    <string name="all_event">งานวิ่งทั้งหมด</string>
+    <string name="all_event">All Events</string>
 
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
