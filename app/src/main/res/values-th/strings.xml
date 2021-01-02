@@ -44,6 +44,7 @@
     <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="events">อีเว้นท์</string>
     <string name="event_date">วันที่จัดงาน</string>
+    <string name="event_detail">รายละเอียด</string>
 
     <!-- F -->
     <string name="female">Female</string>
@@ -107,7 +108,7 @@
     <string name="record">บันทึก</string>
     <string name="register">สมัครสมาชิก</string>
     <string name="register_date">รับสมัคร</string>
-    <string name="register_event">สมัครงานวิ่ง</string>
+    <string name="register_event">ลงสมัครวิ่ง</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>

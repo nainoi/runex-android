@@ -9,6 +9,7 @@ import com.think.runex.R
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.ticket.Ticket
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
+import com.think.runex.config.DISPLAY_TIME_FORMAT
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import java.net.HttpURLConnection
 
@@ -122,31 +123,27 @@ data class Event(
     }
 
     fun eventPeriod(context: Context): String {
-        HttpURLConnection.HTTP_BAD_GATEWAY
-        return "${context.getString(R.string.event_date)} ${startEventDate()} - ${endEventDate()}"
+        val startEventDate = startEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
+        val endEventDate = endEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
+        return "${context.getString(R.string.event_date)} $startEventDate - $endEventDate"
+    }
+
+    fun eventPeriodWithTime(): String {
+        val dateTimeFormat = "dd MMM yyyy(HH:mm)"
+        val startEventDate = startEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
+                ?: ""
+        val endEventDate = endEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
+                ?: ""
+        return "$startEventDate - $endEventDate"
     }
 
     fun registerPeriod(context: Context): String {
-        return "${context.getString(R.string.register_date)} ${startRegisterDate()} - ${endRegisterDate()}"
-    }
-
-    private fun startEventDate(): String {
-        return startEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+        val startRegisterDate = startRegisterDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
                 ?: ""
-    }
-
-    private fun endEventDate(): String {
-        return endEventDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+        val endRegisterDate = endRegisterDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
                 ?: ""
-    }
-
-    private fun startRegisterDate(): String {
-        return startRegisterDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
-                ?: ""
-    }
-
-    private fun endRegisterDate(): String {
-        return endRegisterDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
-                ?: ""
+        return "${context.getString(R.string.register_date)} $startRegisterDate - $endRegisterDate"
     }
 }

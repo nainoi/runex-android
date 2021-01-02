@@ -43,7 +43,8 @@
     <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
     <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="events">Events</string>
-    <string name="event_date">วันที่จัดงาน</string>
+    <string name="event_date">Event Date</string>
+    <string name="event_detail">Event Detail</string>
 
     <!-- F -->
     <string name="female">Female</string>
@@ -105,9 +106,9 @@
 
     <!-- R -->
     <string name="record">บันทึก</string>
-    <string name="register">สมัครสมาชิก</string>
-    <string name="register_date">รับสมัคร</string>
-    <string name="register_event">สมัครงานวิ่ง</string>
+    <string name="register">Register</string>
+    <string name="register_date">Register Date</string>
+    <string name="register_event">Register Event</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>

@@ -1,20 +1,17 @@
-package com.think.runex.ui
+package com.think.runex.ui.event
 
 import android.annotation.SuppressLint
 import android.app.Dialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
-import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jozzee.android.core.view.content
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
 import com.think.runex.ui.base.BaseDialog
-import kotlinx.android.synthetic.main.dialog_register_event_with_ebib_dialog.*
 import kotlinx.android.synthetic.main.dialog_register_event_with_ebib_dialog.view.*
 
 class RegisterEventWithEBIBDialog : BaseDialog() {

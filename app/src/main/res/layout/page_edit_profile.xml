@@ -23,7 +23,7 @@
             android:background="@android:color/transparent"
             android:foreground="?selectableItemBackground"
             android:scaleType="centerInside"
-            app:srcCompat="@drawable/ic_back"
+            app:srcCompat="@mipmap/ic_navigation_back"
             app:tint="@color/textColorPrimary" />
 
         <!--        <TextView-->

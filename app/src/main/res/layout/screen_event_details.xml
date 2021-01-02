@@ -1,0 +1,136 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundDark"
+    tools:context=".ui.event.EventDetailsScreen">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundDark"
+        android:paddingTop="@dimen/space_24dp">
+
+        <include layout="@layout/toolbar" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/scroll_view"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_above="@+id/register_button"
+        android:layout_below="@+id/top_bar"
+        android:fillViewport="true">
+
+        <RelativeLayout
+            android:id="@+id/content_layout"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent">
+
+            <com.think.runex.ui.component.AspectRatioImageView
+                android:id="@+id/event_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                app:ratioHeight="1"
+                app:ratioWidth="2" />
+
+            <RelativeLayout
+                android:id="@+id/event_date_and_share_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_image"
+                android:layout_margin="@dimen/space_16dp">
+
+                <TextView
+                    android:id="@+id/event_period_label"
+                    style="@style/TextBody.Accent"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_centerVertical="true"
+                    android:layout_marginEnd="@dimen/space_16dp"
+                    android:layout_toStartOf="@id/share_button" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/share_button"
+                    android:layout_width="@dimen/space_40dp"
+                    android:layout_height="@dimen/space_40dp"
+                    android:layout_alignParentEnd="true"
+                    android:background="@drawable/ripple_circle"
+                    app:srcCompat="@mipmap/ic_share" />
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/event_name_label"
+                style="@style/TextSubTitle.Primary.InDarkBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_date_and_share_layout"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:maxLines="2" />
+
+            <RelativeLayout
+                android:id="@+id/event_type_layout"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_name_label"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_24dp"
+                android:background="@drawable/shape_rectangle_border_grey_in_background_dark_rounded_4dp">
+
+            </RelativeLayout>
+
+            <TextView
+                android:id="@+id/event_detail_label"
+                style="@style/TextBody.Secondary.InDarkBackground"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/event_type_layout"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp" />
+
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
+
+    <FrameLayout
+        android:id="@+id/register_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_margin="@dimen/space_16dp"
+        android:background="@drawable/bg_btn_primary"
+        android:clickable="true"
+        android:focusable="true"
+        android:minHeight="@dimen/space_48dp">
+
+        <RelativeLayout
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center">
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/running_icon"
+                android:layout_width="@dimen/system_icon_size"
+                android:layout_height="@dimen/system_icon_size"
+                android:layout_centerVertical="true"
+                android:layout_marginEnd="@dimen/space_8dp"
+                app:srcCompat="@mipmap/ic_running"
+                app:tint="@android:color/white" />
+
+            <TextView
+                style="@style/TextBody2.White.Bold"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerVertical="true"
+                android:layout_toEndOf="@+id/running_icon"
+                android:text="@string/register_event" />
+
+        </RelativeLayout>
+    </FrameLayout>
+</RelativeLayout>

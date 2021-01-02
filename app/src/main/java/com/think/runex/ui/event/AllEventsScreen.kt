@@ -58,7 +58,7 @@ class AllEventsScreen : BaseScreen() {
     private fun subscribeUi() {
 
         adapter.setOnItemClick { _, event ->
-            //TODO("Open event details screen")
+            addFragment(EventDetailsScreen.newInstance(event))
         }
 
         viewModel.setOnHandleError(::errorHandler)

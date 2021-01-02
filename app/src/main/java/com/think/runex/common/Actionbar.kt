@@ -9,6 +9,8 @@ import androidx.appcompat.widget.Toolbar
 import androidx.core.content.ContextCompat
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
+import com.jozzee.android.core.resource.getColor
+import com.jozzee.android.core.resource.getDrawable
 import com.think.runex.R
 
 fun FragmentActivity.setupToolbar(toolbar: Toolbar) {
@@ -79,6 +81,16 @@ fun Fragment.setupToolbar(toolbar: Toolbar,
                           @StyleRes titleTextAppearance: Int? = null) {
     if (activity == null || view == null) return
     activity?.setupToolbar(toolbar, title, homeButton, titleTextAppearance)
+}
+
+fun Fragment.setupToolbarDarkBackground(toolbar: Toolbar,
+                                        @StringRes title: Int? = null,
+                                        @DrawableRes homeButton: Int? = null) {
+    if (activity == null || view == null) return
+    val toolbarTitle = title?.let { getString(it) }
+    val toolbarHomeButton = homeButton?.let { getDrawable(it) }
+    toolbarHomeButton?.setColorFilter(getColor(R.color.iconColorPrimaryInDarkBackground))
+    activity?.setupToolbar(toolbar, toolbarTitle, toolbarHomeButton, R.style.TextTitle_Primary_InDarkBackground)
 }
 
 fun Fragment.setupToolbar(toolbar: Toolbar,

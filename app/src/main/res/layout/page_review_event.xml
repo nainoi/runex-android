@@ -22,7 +22,7 @@
             android:background="@drawable/bg_btn_circle"
             android:padding="@dimen/space_8dp"
             android:scaleType="centerCrop"
-            android:src="@drawable/ic_back" />
+            android:src="@mipmap/ic_navigation_back" />
     </FrameLayout>
 
     <TextView

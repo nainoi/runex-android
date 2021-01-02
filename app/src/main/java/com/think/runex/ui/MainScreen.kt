@@ -32,7 +32,6 @@ class MainScreen : BaseScreen() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setStatusBarColor(isLightStatusBar = false)
         setupComponents()
         subscribeUi()
     }
@@ -46,6 +45,7 @@ class MainScreen : BaseScreen() {
     }
 
     private fun setupComponents() {
+        setStatusBarColor(isLightStatusBar = false)
     }
 
     private fun subscribeUi() {

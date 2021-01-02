@@ -1,4 +1,4 @@
-package com.think.runex.ui
+package com.think.runex.ui.event
 
 import android.annotation.SuppressLint
 import android.graphics.Color
@@ -55,7 +55,7 @@ class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBS
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupComponents() {
         setStatusBarColor(Color.TRANSPARENT, NightMode.isNightMode(this).not())
-        setupToolbar(toolbar, R.string.detail, R.mipmap.ic_back)
+        setupToolbar(toolbar, R.string.detail, R.mipmap.ic_navigation_back)
 
         //Setup view view
         web_view?.settings?.apply {

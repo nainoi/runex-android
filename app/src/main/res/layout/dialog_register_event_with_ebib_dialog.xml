@@ -5,7 +5,7 @@
     android:layout_height="wrap_content"
     android:background="@color/background"
     android:padding="@dimen/space_24dp"
-    tools:context=".ui.RegisterEventWithEBIBDialog">
+    tools:context=".ui.event.RegisterEventWithEBIBDialog">
 
     <TextView
         android:id="@+id/title_label"
@@ -46,8 +46,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/ebib_input"
-        android:layout_marginTop="@dimen/space_24dp"
-        android:layout_marginEnd="@dimen/space_8dp"
+        android:layout_marginTop="26dp"
+        android:layout_marginEnd="8dp"
         android:layout_toStartOf="@+id/guideline_center_horizontal"
         android:minHeight="@dimen/space_40dp"
         android:text="@string/cancel" />

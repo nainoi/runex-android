@@ -195,8 +195,16 @@
         <item name="android:textColor">@android:color/white</item>
     </style>
 
+    <style name="TextBody2.White.Bold" parent="TextBody2.White">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextBody2.Black" parent="TextBody2">
         <item name="android:textColor">@android:color/black</item>
+    </style>
+
+    <style name="TextBody2.Black.Bold" parent="TextBody2.Black">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextBody2.Accent" parent="TextBody2">
