@@ -108,6 +108,7 @@
     <string name="register">สมัครสมาชิก</string>
     <string name="register_date">รับสมัคร</string>
     <string name="register_event">ลงสมัครวิ่ง</string>
+    <string name="register_event_success">ลงสมัครวิ่งสำเร็จ</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>

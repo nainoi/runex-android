@@ -22,18 +22,16 @@ class EventViewModel(private val repo: EventRepository) : BaseViewModel() {
 
     suspend fun registerEventWithKoa(event: Event, eBib: String): Boolean = withContext(IO) {
 
-        val ticketObject = JsonObject().apply {
-            event.ticket?.get(0)?.also { ticket ->
+        val ticketObjects = JsonArray()
+        event.ticket?.forEach { ticket ->
+            val ticketObject = JsonObject().apply {
                 addProperty("ticket_id", ticket.id)
                 addProperty("ticket_name", ticket.title)
                 addProperty("distance", ticket.distance ?: 0f)
                 addProperty("total_price", ticket.price ?: 0)
             }
+            ticketObjects.add(ticketObject)
         }
-
-        val ticketObjects = JsonArray()
-        ticketObjects.add(ticketObject)
-
         val ticketOptionObject = JsonObject().apply {
             add("tickets", ticketObjects)
             addProperty("total_price", 0)

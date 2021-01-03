@@ -108,6 +108,7 @@
     <string name="register">Register</string>
     <string name="register_date">Register date</string>
     <string name="register_event">Register event</string>
+    <string name="register_event_success">Register event success</string>
     <string name="resume_recording">Resume recording</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">Summary</string>

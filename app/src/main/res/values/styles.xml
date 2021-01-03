@@ -89,6 +89,9 @@
         <item name="android:paddingStart">@dimen/space_16dp</item>
         <item name="android:paddingEnd">@dimen/space_16dp</item>
         <item name="android:minHeight">@dimen/space_48dp</item>
+        <item name="autoSizeTextType">uniform</item>
+        <item name="autoSizeMaxTextSize">@dimen/text_body_2</item>
+        <item name="autoSizeMinTextSize">@dimen/text_body</item>
     </style>
 
     <style name="Button.Primary" parent="Button">

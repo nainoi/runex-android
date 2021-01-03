@@ -5,6 +5,7 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.view.showDialog
 import com.think.runex.R
 import com.think.runex.common.*
@@ -19,7 +20,7 @@ import kotlinx.android.synthetic.main.screen_event_details.*
 import kotlinx.android.synthetic.main.screen_event_details.register_button
 import kotlinx.android.synthetic.main.toolbar.*
 
-class EventDetailsScreen : BaseScreen() {
+class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
 
     companion object {
         @JvmStatic
@@ -69,14 +70,7 @@ class EventDetailsScreen : BaseScreen() {
 
     private fun subscribeUi() {
         share_button?.setOnClickListener {
-            val url = "${ApiConfig.PREVIEW_EVENT_URL}/${event?.id}"
-            val sendIntent = Intent().apply {
-                action = Intent.ACTION_SEND
-                putExtra(Intent.EXTRA_TEXT, url)
-                type = "text/plain"
-            }
-            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
-            startActivity(shareIntent)
+            onShareEvent()
         }
 
         register_button?.setOnClickListener {
@@ -89,8 +83,41 @@ class EventDetailsScreen : BaseScreen() {
         viewModel.setOnHandleError(::errorHandler)
     }
 
+    private fun onShareEvent() {
+        val url = "${ApiConfig.PREVIEW_EVENT_URL}/${event?.id}"
+        val sendIntent = Intent().apply {
+            action = Intent.ACTION_SEND
+            putExtra(Intent.EXTRA_TEXT, url)
+            type = "text/plain"
+        }
+        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
+        startActivity(shareIntent)
+    }
+
+    override fun onEBIBSpecified(eBib: String) {
+        performRegisterEventWithEBIB(eBib)
+    }
+
     private fun checkRegisteredEvent() = launch {
         val isRegistered = viewModel.isRegisteredEvent(event?.id ?: "")
         register_button?.isEnabled = isRegistered.not()
+    }
+
+    private fun performRegisterEventWithEBIB(eBib: String) = event?.also { event ->
+        launch {
+            showProgressDialog(getString(R.string.register_event))
+            val isSuccess = viewModel.registerEventWithKoa(event, eBib)
+            hideProgressDialog()
+            if (isSuccess) {
+                showRegisterSuccessDialog()
+            }
+        }
+    }
+
+    private fun showRegisterSuccessDialog() {
+        showAlertDialog(R.string.register_event_success, false) {
+            //On positive click
+            onBackPressed()
+        }
     }
 }

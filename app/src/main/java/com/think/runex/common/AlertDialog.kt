@@ -78,29 +78,32 @@ fun Context.showAlertDialog(
         }
 
         //Set title and message
-        view.title_label.setVisible(title?.isNotBlank() == true)
-        view.title_label.text = title ?: ""
-        view.message_label.setVisible(message?.isNotBlank() == true)
-        view.message_label.text = message ?: ""
+        view.title_label?.setVisible(title?.isNotBlank() == true)
+        view.title_label?.text = title ?: ""
+        view.message_label?.setVisible(message?.isNotBlank() == true)
+        view.message_label?.text = message ?: ""
 
         //Set negative button
         when (negativeText?.isNotBlank() == true) {
             true -> {
-                view.negative_button.visible()
-                view.negative_button.text = negativeText ?: ""
-                view.negative_button.setOnClickListener {
+                view.negative_button?.visible()
+                view.negative_button?.text = negativeText ?: ""
+                view.negative_button?.setOnClickListener {
                     onNegativeClick?.invoke()
                     dismiss()
                 }
             }
-            false -> view.negative_button.gone()
+            false -> {
+                //view.guideline_center_horizontal?.gone()
+                view.negative_button?.gone()
+            }
         }
 
         //Set positive button
         if (positiveText?.isNotBlank() == true) {
-            view.positive_button.text = positiveText
+            view.positive_button?.text = positiveText
         }
-        view.positive_button.setOnClickListener {
+        view.positive_button?.setOnClickListener {
             onPositiveClick?.invoke()
             dismiss()
         }
@@ -239,11 +242,12 @@ fun Fragment.showAlertDialog(
 
 fun Fragment.showAlertDialog(
         @StringRes message: Int,
+        isCancelEnable: Boolean = true,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isAdded.not() || view == null) return
     view?.hideKeyboard()
 
     activity?.showAlertDialog(getString(R.string.app_name), getString(message), null, null,
-            onPositiveClick, null, null, true)
+            onPositiveClick, null, null, isCancelEnable)
 }
