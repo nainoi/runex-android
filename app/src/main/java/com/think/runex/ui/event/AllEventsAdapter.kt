@@ -46,7 +46,7 @@ class AllEventsAdapter : ListAdapter<Event, AllEventsAdapter.ViewHolder>(EventsL
 
         fun bind(data: Event?, onItemClick: ((position: Int, event: Event) -> Unit)? = null) {
             itemView.event_image?.loadEventsImage(data?.coverImage())
-            itemView.event_name?.text = data?.name ?: ""
+            itemView.event_name_label?.text = data?.name ?: ""
             itemView.event_period?.text = data?.eventPeriod(requireContext()) ?: ""
 
             itemView.list_item_all_event?.setOnClickListener {

@@ -26,7 +26,7 @@ class EventViewModel(private val repo: EventRepository) : BaseViewModel() {
         event.ticket?.forEach { ticket ->
             val ticketObject = JsonObject().apply {
                 addProperty("ticket_id", ticket.id)
-                addProperty("ticket_name", ticket.title)
+                addProperty("ticket_name", ticket.name)
                 addProperty("distance", ticket.distance ?: 0f)
                 addProperty("total_price", ticket.price ?: 0)
             }

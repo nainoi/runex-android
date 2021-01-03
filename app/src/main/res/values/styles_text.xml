@@ -152,6 +152,10 @@
         <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
     </style>
 
+    <style name="TextBody2.Primary.InDarkBackground.Bold" parent="TextBody2.Primary.InDarkBackground">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextBody2.Primary.SingleLine" parent="TextBody2.Primary">
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>

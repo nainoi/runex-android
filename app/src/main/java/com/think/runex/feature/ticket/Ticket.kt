@@ -7,8 +7,8 @@ import com.think.runex.feature.product.Product
 
 data class Ticket(
         @SerializedName("id") var id: String? = "",
-        @SerializedName("title") var title: String? = "",
-        @SerializedName("price") var price: Double? = 0.0,
+        @SerializedName("title") var name: String? = "",
+        @SerializedName("price") var price: Float? = 0f,
         @SerializedName("description") var description: String? = "",
         @SerializedName("currency") var currency: String? = "",
         @SerializedName("ticket_type") var ticketType: String? = "",
@@ -32,7 +32,7 @@ data class Ticket(
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
-            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readValue(Float::class.java.classLoader) as? Float,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -45,7 +45,7 @@ data class Ticket(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(id)
-        parcel.writeString(title)
+        parcel.writeString(name)
         parcel.writeValue(price)
         parcel.writeString(description)
         parcel.writeString(currency)

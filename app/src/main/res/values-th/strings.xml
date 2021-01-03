@@ -10,8 +10,8 @@
     <string name="add_distance">เพิ่มระยะวิ่ง</string>
     <string name="add_image">เพิ่มรูปภาพ</string>
     <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
-
     <string name="all_event">งานวิ่งทั้งหมด</string>
+    <string name="active">Active</string>
 
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
@@ -102,6 +102,7 @@
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
     <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
+    <string name="passed">Passed</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>

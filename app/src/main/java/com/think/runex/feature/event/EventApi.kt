@@ -17,6 +17,10 @@ interface EventApi {
     fun getAllEventAsync(
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<Event>>>
 
+    @GET("/api/${ApiConfig.API_VERSION}/register/myRegEvent")
+    fun getMyEventAsync(
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<RegisteredEvent>>>
+
     @GET("/api/${ApiConfig.API_VERSION}/register/checkUserRegisterEvent/{eventId}")
     fun isRegisteredEventAsync(
             @Path("eventId") eventId: String,
@@ -27,8 +31,5 @@ interface EventApi {
             @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
-    @GET("/api/${ApiConfig.API_VERSION}/register/myRegEvent")
-    fun getRegisteredEventAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<RegisteredEvent>>>
 
 }

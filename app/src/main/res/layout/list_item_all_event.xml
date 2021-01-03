@@ -24,6 +24,7 @@
             android:id="@+id/event_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
+            android:scaleType="centerCrop"
             app:ratioHeight="1"
             app:ratioWidth="2" />
 
@@ -43,7 +44,7 @@
                 app:tint="@color/iconColorDisableInDarkBackground" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/event_name"
+                android:id="@+id/event_name_label"
                 style="@style/TextBody.Primary.InDarkBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -56,8 +57,8 @@
                 style="@style/TextBody.Hint.InDarkBackground"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/event_name"
-                android:layout_alignStart="@+id/event_name"
+                android:layout_below="@+id/event_name_label"
+                android:layout_alignStart="@+id/event_name_label"
                 android:layout_marginTop="@dimen/space_4dp"
                 android:layout_marginEnd="@dimen/space_8dp"
                 android:layout_marginBottom="@dimen/space_24dp" />
