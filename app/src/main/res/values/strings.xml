@@ -5,39 +5,38 @@
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
 
     <string name="add_distance">เพิ่มระยะวิ่ง</string>
-    <string name="add_image">เพิ่มรูปภาพ</string>
-    <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
-    <string name="activity">กิจกรรม</string>
-    <string name="activity_record">บันทึกกิจกรรม</string>
+    <string name="add_image">Add image</string>
+    <string name="add_activity_success">Add activity success</string>
+    <string name="activity">Activity</string>
+    <string name="activity_record">Activity record</string>
     <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
 
     <string name="all_event">All Events</string>
 
     <!-- B -->
-    <string name="back">ย้อนกลับ</string>
-    <string name="birth_date">วันเกิด</string>
+    <string name="back">Back</string>
+    <string name="birth_date">Birth date</string>
 
     <!-- c -->
-    <string name="camera">กล้อง</string>
-    <string name="cancel">ยกเลิก</string>
-    <string name="close">ปิด</string>
-    <string name="challenges">ชาเลนจ์</string>
-    <string name="confirm">ยืนยัน</string>
-    <string name="confirm_register">ยืนยันการสมัคร</string>
-    <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
+    <string name="camera">Camera</string>
+    <string name="cancel">Cancel</string>
+    <string name="close">Close</string>
+    <string name="confirm">Confirm</string>
+    <string name="confirm_register">Confirm register</string>
+    <string name="connection_timed_out">Connection timed out</string>
 
     <!-- D -->
-    <string name="detail">รายละเอียด</string>
-    <string name="delete">ลบ</string>
-    <string name="distance">ระยะทาง</string>
+    <string name="detail">Detail</string>
+    <string name="delete">Delete</string>
+    <string name="distance">Distance</string>
     <string name="distance_kg">ระยะทาง (กม.)</string>
     <string name="distance_required">กรุณาระบุระยะทาง</string>
-    <string name="delete_image">ลบรูปภาพ</string>
+    <string name="delete_image">Delete image</string>
     <string name="date_required">กรุณาเลือกวันที่</string>
 
     <!-- E -->
-    <string name="edit">แก้ไข</string>
-    <string name="email">อีเมล</string>
+    <string name="edit">Edit</string>
+    <string name="email">Email</string>
     <string name="email_address">ที่อยู่อีเมล</string>
     <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
     <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
@@ -48,14 +47,14 @@
 
     <!-- F -->
     <string name="female">Female</string>
-    <string name="finish_recording">จบการจับเวลา</string>
-    <string name="forgot_password">ลืมรหัสผ่าน</string>
-    <string name="free">ฟรี</string>
-    <string name="failed">ล้มเหลว</string>
+    <string name="finish_recording">Finish recording</string>
+    <string name="forgot_password">Forgot password</string>
+    <string name="free">Free</string>
+    <string name="failed">Failed</string>
 
     <!-- G -->
-    <string name="get_started">เริ่มใช้งาน</string>
-    <string name="gender">เพศ</string>
+    <string name="get_started">Get started</string>
+    <string name="gender">Gender</string>
 
     <!-- H -->
     <string name="history">History</string>
@@ -65,35 +64,35 @@
     <!-- J -->
 
     <!-- K -->
-    <string name="km">กม.</string>
+    <string name="km">km.</string>
 
     <!-- L -->
-    <string name="latest">ล่าสุด</string>
-    <string name="last_name">นามสกุล</string>
-    <string name="login">เข้าสู่ระบบ</string>
+    <string name="latest">Latest</string>
+    <string name="last_name">Last name</string>
+    <string name="login">Login</string>
     <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
     <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
     <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
     <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
     <string name="login_with_email">ลงชื่อใช้งานด้วยอีเมล</string>
-    <string name="logout">ออกจากระบบ</string>
+    <string name="logout">Logout</string>
 
 
     <!-- M -->
     <string name="male">Male</string>
-    <string name="menu">เมนู</string>
+    <string name="menu">Menu</string>
     <string name="my_events">My Events</string>
 
     <!-- N -->
-    <string name="name">ชื่อ</string>
+    <string name="name">Name</string>
     <string name="notification_display_info">Run %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
     <string name="note">Note</string>
 
     <!-- O -->
-    <string name="ok">ตกลง</string>
-    <string name="or">หรือ</string>
+    <string name="ok">OK</string>
+    <string name="or">Or</string>
     <string name="other">Other</string>
 
     <!-- P -->
@@ -105,33 +104,34 @@
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
 
     <!-- R -->
-    <string name="record">บันทึก</string>
+    <string name="record">Record</string>
     <string name="register">Register</string>
-    <string name="register_date">Register Date</string>
-    <string name="register_event">Register Event</string>
-    <string name="resume_recording">จับเวลาต่อ</string>
+    <string name="register_date">Register date</string>
+    <string name="register_event">Register event</string>
+    <string name="resume_recording">Resume recording</string>
     <string name="runex_sync">RUNEX Sync</string>
-    <string name="running_summary">สรุปผล</string>
+    <string name="running_summary">Summary</string>
     <string name="running_date">Running date</string>
 
     <!-- S -->
-    <string name="select_image">เลือกรูปภาพ</string>
-    <string name="setting">ตั้งค่า</string>
-    <string name="start_recording">เริ่มจับเวลา</string>
-    <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
-    <string name="submit_result">ส่งผล</string>
-    <string name="success">สำเร็จ</string>
+    <string name="select_image">Select image</string>
+    <string name="setting">Setting</string>
+    <string name="start_recording">Start recording</string>
+    <string name="stop_and_submit_running_result">Stop and Submit</string>
+    <string name="submit_result">Submit result</string>
+    <string name="success">Success</string>
+    <string name="share">Share</string>
 
     <!-- T -->
-    <string name="time">เวลา</string>
+    <string name="time">Time</string>
 
     <!-- U -->
 
     <!-- V -->
-    <string name="version">เวอร์ชัน</string>
+    <string name="version">Version</string>
 
     <!-- W -->
-    <string name="warning">แจ้งเตือน</string>
+    <string name="warning">Warning</string>
     <string name="waiting_for_approve">รอการตรวจสอบ</string>
     <string name="waiting_for_payment">รอชำระเงิน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>

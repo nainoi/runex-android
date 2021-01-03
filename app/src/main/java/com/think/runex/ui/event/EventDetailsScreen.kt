@@ -1,5 +1,6 @@
 package com.think.runex.ui.event
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
@@ -8,6 +9,7 @@ import com.jozzee.android.core.view.showDialog
 import com.think.runex.R
 import com.think.runex.common.*
 import com.think.runex.config.KEY_EVENT
+import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.event.EventViewModel
 import com.think.runex.feature.event.EventViewModelFactory
 import com.think.runex.feature.event.model.Event
@@ -67,7 +69,14 @@ class EventDetailsScreen : BaseScreen() {
 
     private fun subscribeUi() {
         share_button?.setOnClickListener {
-
+            val url = "${ApiConfig.PREVIEW_EVENT_URL}/${event?.id}"
+            val sendIntent = Intent().apply {
+                action = Intent.ACTION_SEND
+                putExtra(Intent.EXTRA_TEXT, url)
+                type = "text/plain"
+            }
+            val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
+            startActivity(shareIntent)
         }
 
         register_button?.setOnClickListener {
