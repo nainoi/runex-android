@@ -28,7 +28,7 @@ import com.google.android.gms.location.LocationCallback;
 import com.google.android.gms.location.LocationRequest;
 import com.google.android.gms.location.LocationResult;
 import com.google.android.gms.location.LocationServices;
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.maps.model.LatLng;
 import com.think.runex.R;
 import com.think.runex.java.Activities.BridgeFile;
 import com.think.runex.java.Constants.BroadcastAction;

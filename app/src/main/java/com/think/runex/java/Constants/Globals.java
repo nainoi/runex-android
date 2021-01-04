@@ -3,7 +3,7 @@ package com.think.runex.java.Constants;
 import android.Manifest;
 import android.app.Activity;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.maps.model.LatLng;
 import com.google.gson.Gson;
 import com.think.runex.java.App.Configs;
 

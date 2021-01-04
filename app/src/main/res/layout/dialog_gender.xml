@@ -27,7 +27,7 @@
 
     <TextView
         android:id="@+id/female_label"
-        style="@style/TextBody2.Primary"
+        style="@style/TextBodyHeading.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/message_label"
@@ -48,7 +48,7 @@
 
     <TextView
         android:id="@+id/male_label"
-        style="@style/TextBody2.Primary"
+        style="@style/TextBodyHeading.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/underline_female_label"
@@ -68,7 +68,7 @@
 
     <TextView
         android:id="@+id/other_label"
-        style="@style/TextBody2.Primary"
+        style="@style/TextBodyHeading.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/underline_male_label"

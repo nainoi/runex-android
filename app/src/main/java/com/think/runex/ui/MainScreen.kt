@@ -88,7 +88,7 @@ class MainScreen : BaseScreen() {
                 replaceChildFragment(R.id.navigation_host_fragment, MyEventsScreen(), clearChildFragment = true)
             }
             3 -> {
-                bottom_bar_menu_workout?.background = getDrawable(R.drawable.shape_circle_accent)
+                bottom_bar_menu_workout?.setColorFilter(getColor(R.color.iconColorAccent), PorterDuff.Mode.MULTIPLY)
                 bottom_bar_menu_workout_label?.isEnabled = true
                 replaceChildFragment(R.id.navigation_host_fragment, WorkoutScreen(), clearChildFragment = true)
             }
@@ -107,7 +107,7 @@ class MainScreen : BaseScreen() {
         val iconColor = getColor(R.color.iconColorSecondaryInDarkBackground)
         bottom_bar_menu_all_event_icon?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
         bottom_bar_menu_my_event_icon?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
-        bottom_bar_menu_workout?.background = getDrawable(R.drawable.bg_bottom_bar_center_menu_icon)
+        bottom_bar_menu_workout?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
         bottom_bar_menu_history_icon?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
         bottom_bar_menu_profile_icon?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
         bottom_bar_menu_all_event_label?.isEnabled = false

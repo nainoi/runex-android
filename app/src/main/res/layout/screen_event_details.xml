@@ -124,7 +124,7 @@
                 app:tint="@android:color/white" />
 
             <TextView
-                style="@style/TextBody2.White.Bold"
+                style="@style/TextBodyHeading.White.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"

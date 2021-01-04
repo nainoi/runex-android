@@ -12,6 +12,7 @@ import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.common.observe
 import com.think.runex.common.removeObservers
+import com.think.runex.common.setStatusBarColor
 import com.think.runex.feature.event.AllEventListViewModel
 import com.think.runex.feature.event.AllEventListViewModelFactory
 import com.think.runex.ui.base.BaseScreen
@@ -47,6 +48,7 @@ class AllEventsScreen : BaseScreen() {
 
 
     private fun setupComponents() {
+        setStatusBarColor(isLightStatusBar = false)
         //Set update recycler view
         adapter = AllEventsAdapter()
         layoutManager = LinearLayoutManager(requireContext())

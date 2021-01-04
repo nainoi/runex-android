@@ -6,7 +6,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 
-import com.google.android.gms.maps.SupportMapFragment;
+import com.google.android.libraries.maps.SupportMapFragment;
 import com.think.runex.java.Constants.Priority;
 import com.think.runex.java.Customize.Activity.xActivity;
 import com.think.runex.java.Customize.xTalk;

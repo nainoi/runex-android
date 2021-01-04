@@ -15,7 +15,7 @@
 
     <androidx.appcompat.widget.AppCompatTextView
         android:id="@+id/tv_message"
-        style="@style/TextBody2.White"
+        style="@style/TextBodyHeading.White"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/progress_bar"

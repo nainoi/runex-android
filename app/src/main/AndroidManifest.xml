@@ -13,6 +13,7 @@
 
     <!-- Camera -->
     <uses-permission android:name="android.permission.CAMERA" />
+
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
 
@@ -29,7 +30,7 @@
         android:theme="@style/AppTheme.TransparentStatus"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize|stateHidden">
-        <activity android:name=".java.Pages.WorkoutDetailPage"></activity>
+
         <activity
             android:name=".ui.MainActivity"
             android:launchMode="singleTask"
@@ -74,10 +75,16 @@
             android:label="@string/app_name"
             android:screenOrientation="portrait"
             android:theme="@style/AppTheme.LoginActivity" />
+
+        <activity
+            android:name=".java.Pages.WorkoutDetailPage"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -91,10 +98,12 @@
             </intent-filter>
         </activity>
 
-        <provider
-            android:name="com.facebook.FacebookContentProvider"
-            android:authorities="com.facebook.app.FacebookContentProvider657116381441095"
-            android:exported="true" />
+        <service
+            android:name=".java.Services.BackgroundService"
+            android:foregroundServiceType="location"
+            android:icon="@drawable/ic_logo_small"
+            android:label="@string/background_service" />
+
         <provider
             android:name="androidx.core.content.FileProvider"
             android:authorities="${applicationId}.provider"
@@ -105,21 +114,17 @@
                 android:resource="@xml/provider_paths" />
         </provider>
 
-        <service
-            android:name=".java.Services.BackgroundService"
-            android:foregroundServiceType="location"
-            android:icon="@drawable/ic_logo_small"
-            android:label="@string/background_service" />
+        <provider
+            android:name="com.facebook.FacebookContentProvider"
+            android:authorities="com.facebook.app.FacebookContentProvider657116381441095"
+            android:exported="true" />
 
-        <meta-data
-            android:name="com.google.android.gms.version"
-            android:value="@integer/google_play_services_version" />
-        <meta-data
-            android:name="com.google.android.geo.API_KEY"
-            android:value="AIzaSyAb-C-jWRRLpSGFUnI4E-XxurvEymJdeo0" />
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
-    </application>
 
+        <meta-data
+            android:name="com.google.android.geo.API_KEY"
+            android:value="AIzaSyAb-C-jWRRLpSGFUnI4E-XxurvEymJdeo0" />
+    </application>
 </manifest>

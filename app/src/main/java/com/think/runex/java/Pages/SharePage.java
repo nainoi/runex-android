@@ -21,6 +21,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.DecodeFormat;
 import com.facebook.CallbackManager;
 import com.facebook.FacebookCallback;
@@ -38,7 +39,6 @@ import com.think.runex.java.Utils.DateTime.DateTimeUtils;
 import com.think.runex.java.Utils.DeviceUtils;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.PermissionUtils;
-import com.think.runex.util.GlideApp;
 
 import java.io.File;
 
@@ -315,7 +315,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
         if (customImageUri != null) {
             addPhotoButton.setImageResource(R.drawable.ic_remove_image);
             previewImage.setScaleType(ImageView.ScaleType.CENTER_CROP);
-            GlideApp.with(previewImage)
+            Glide.with(previewImage)
                     .load(customImageUri)
                     .format(DecodeFormat.PREFER_ARGB_8888)
                     .centerCrop()

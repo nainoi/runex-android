@@ -32,6 +32,7 @@ import android.widget.DatePicker;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.bumptech.glide.Glide;
 import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputEditText;
 import com.think.runex.BuildConfig;
@@ -52,7 +53,6 @@ import com.think.runex.java.event.UpdateProfileEvent;
 import com.think.runex.ui.component.ProgressDialog;
 import com.think.runex.ui.component.SelectImageSourceDialog;
 import com.think.runex.ui.profile.GenderDialog;
-import com.think.runex.util.GlideApp;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -130,7 +130,7 @@ public class EditProfilePage extends xFragment
 
     private void updateUserInfo(){
         //Update data to views
-        GlideApp.with(profileImage)
+        Glide.with(profileImage)
                 .load(userInfo.getAvatar())
                 .circleCrop()
                 .diskCacheStrategy(DiskCacheStrategy.NONE)

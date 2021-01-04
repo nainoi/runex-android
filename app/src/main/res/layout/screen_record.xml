@@ -143,7 +143,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_avg"
-                    style="@style/TextBody2.Hint"
+                    style="@style/TextBodyHeading.Hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/gl_c_1"
@@ -187,7 +187,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_time"
-                    style="@style/TextBody2.Hint"
+                    style="@style/TextBodyHeading.Hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/gl_c_2"
@@ -232,7 +232,7 @@
 
                 <com.google.android.material.textview.MaterialTextView
                     android:id="@+id/tv_distance"
-                    style="@style/TextBody2.Hint"
+                    style="@style/TextBodyHeading.Hint"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:layout_above="@+id/gl_c_3"

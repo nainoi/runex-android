@@ -22,7 +22,7 @@
 
     <com.google.android.material.textview.MaterialTextView
         android:id="@+id/tv_virtual_run_name"
-        style="@style/TextBody2.Primary"
+        style="@style/TextBodyHeading.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/card_virtual_run"

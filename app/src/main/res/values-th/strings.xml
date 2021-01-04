@@ -24,6 +24,7 @@
     <string name="confirm">ยืนยัน</string>
     <string name="confirm_register">ยืนยันการสมัคร</string>
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
+    <string name="calorie">แคลอรี่</string>
 
     <!-- D -->
     <string name="detail">รายละเอียด</string>
@@ -103,6 +104,7 @@
     <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
     <string name="passed">Passed</string>
+    <string name="pace">Pace</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>
@@ -118,7 +120,7 @@
     <!-- S -->
     <string name="select_image">เลือกรูปภาพ</string>
     <string name="setting">ตั้งค่า</string>
-    <string name="start_recording">เริ่มจับเวลา</string>
+    <string name="start_recording">จับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>
     <string name="success">สำเร็จ</string>
@@ -126,6 +128,7 @@
 
     <!-- T -->
     <string name="time">เวลา</string>
+    <string name="time_duration">ระยะเวลา</string>
 
     <!-- U -->
 

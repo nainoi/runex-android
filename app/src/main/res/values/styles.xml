@@ -81,7 +81,7 @@
     <!-- Base Button -->
     <style name="Button" parent="@style/Widget.AppCompat.Button.Borderless">
         <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
-        <item name="android:textSize">@dimen/text_body_2</item>
+        <item name="android:textSize">@dimen/text_body_heading</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAllCaps">false</item>
@@ -90,7 +90,7 @@
         <item name="android:paddingEnd">@dimen/space_16dp</item>
         <item name="android:minHeight">@dimen/space_48dp</item>
         <item name="autoSizeTextType">uniform</item>
-        <item name="autoSizeMaxTextSize">@dimen/text_body_2</item>
+        <item name="autoSizeMaxTextSize">@dimen/text_body_heading</item>
         <item name="autoSizeMinTextSize">@dimen/text_body</item>
     </style>
 
@@ -106,7 +106,7 @@
 
     <!-- Text Input -->
     <style name="TextInput">
-        <item name="android:textSize">@dimen/text_body_2</item>
+        <item name="android:textSize">@dimen/text_body_heading</item>
         <item name="android:textColorHint">@color/textColorHint</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:minHeight">@dimen/space_48dp</item>

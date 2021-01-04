@@ -24,12 +24,13 @@
     <string name="confirm">Confirm</string>
     <string name="confirm_register">Confirm register</string>
     <string name="connection_timed_out">Connection timed out</string>
+    <string name="calorie">Calorie</string>
 
     <!-- D -->
     <string name="detail">Detail</string>
     <string name="delete">Delete</string>
     <string name="distance">Distance</string>
-    <string name="distance_kg">ระยะทาง (กม.)</string>
+    <string name="distance_kg">Distance (km.)</string>
     <string name="distance_required">กรุณาระบุระยะทาง</string>
     <string name="delete_image">Delete image</string>
     <string name="date_required">กรุณาเลือกวันที่</string>
@@ -103,6 +104,7 @@
     <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
     <string name="passed">Passed</string>
+    <string name="pace">Pace</string>
 
     <!-- R -->
     <string name="record">Record</string>
@@ -110,7 +112,7 @@
     <string name="register_date">Register date</string>
     <string name="register_event">Register event</string>
     <string name="register_event_success">Register event success</string>
-    <string name="resume_recording">Resume recording</string>
+    <string name="resume_recording">Resume</string>
     <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">Summary</string>
     <string name="running_date">Running date</string>
@@ -118,7 +120,7 @@
     <!-- S -->
     <string name="select_image">Select image</string>
     <string name="setting">Setting</string>
-    <string name="start_recording">Start recording</string>
+    <string name="start_recording">Start</string>
     <string name="stop_and_submit_running_result">Stop and Submit</string>
     <string name="submit_result">Submit result</string>
     <string name="success">Success</string>
@@ -126,6 +128,7 @@
 
     <!-- T -->
     <string name="time">Time</string>
+    <string name="time_duration">Time</string>
 
     <!-- U -->
 

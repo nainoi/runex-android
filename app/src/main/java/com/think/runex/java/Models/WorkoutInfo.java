@@ -3,7 +3,7 @@ package com.think.runex.java.Models;
 import android.os.Parcel;
 import android.os.Parcelable;
 
-import com.google.android.gms.maps.model.LatLng;
+import com.google.android.libraries.maps.model.LatLng;
 import com.think.runex.java.App.Configs;
 
 import java.text.SimpleDateFormat;

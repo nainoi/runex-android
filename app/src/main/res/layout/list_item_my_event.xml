@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/event_name_label"
-        style="@style/TextBody2.Primary.InDarkBackground.Bold"
+        style="@style/TextBodyHeading.Primary.InDarkBackground.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_8dp"
