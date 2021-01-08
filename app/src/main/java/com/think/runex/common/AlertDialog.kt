@@ -111,143 +111,71 @@ fun Context.showAlertDialog(
     }.show()
 }
 
-/**
- * Show normal alert dialog with activity.
- * [title] text character
- * [message] text character
- * [onPositiveClick] event when click positive button (OK Button)
- */
-fun FragmentActivity.showAlertDialog(
-        title: String?,
-        message: String?,
-        onPositiveClick: (() -> Unit)? = null) {
-
-    if (isDestroyed) return
-    hideKeyboard()
-
-    showAlertDialog(title, message, null, null,
-            onPositiveClick, null, null, true)
-}
-
-
 fun FragmentActivity.showAlertDialog(
         message: String,
+        isCancelEnable: Boolean = true,
+        positiveText: String? = null,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isDestroyed) return
     hideKeyboard()
 
-    showAlertDialog(getString(R.string.app_name), message, null, null,
-            onPositiveClick, null, null, true)
-}
-
-/**
- * Show normal alert dialog with activity.
- * [title] string resource id
- * [message]  string resource id
- * [onPositiveClick] event when click positive button (OK Button)
- */
-fun FragmentActivity.showAlertDialog(
-        @StringRes title: Int?,
-        @StringRes message: Int?,
-        onPositiveClick: (() -> Unit)? = null) {
-
-    if (isDestroyed) return
-    hideKeyboard()
-
-    val titleText = if (title != null) getString(title) else null
-    val messageText = if (message != null) getString(message) else null
-
-    showAlertDialog(titleText, messageText, null, null,
-            onPositiveClick, null, null, true)
-}
-
-fun FragmentActivity.showAlertDialog(
-        @StringRes title: Int?,
-        @StringRes message: Int?,
-        @StringRes positiveButton: Int = R.string.ok,
-        @StringRes negativeButton: Int = R.string.cancel,
-        onPositiveClick: (() -> Unit)? = null) {
-
-    if (isDestroyed) return
-    hideKeyboard()
-
-    val titleText = if (title != null) getString(title) else null
-    val messageText = if (message != null) getString(message) else null
-
-    showAlertDialog(titleText, messageText, getString(positiveButton), getString(negativeButton),
-            onPositiveClick, null, null, true)
+    showAlertDialog(title = getString(R.string.app_name),
+            message = message, positiveText = positiveText, negativeText = null,
+            onPositiveClick = onPositiveClick, onNegativeClick = null, onDialogDismiss = null,
+            cancelable = isCancelEnable)
 }
 
 fun FragmentActivity.showAlertDialog(
         @StringRes message: Int,
+        isCancelEnable: Boolean = true,
+        @StringRes positiveText: Int? = null,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isDestroyed) return
     hideKeyboard()
 
-    showAlertDialog(getString(R.string.app_name), getString(message), null, null,
-            onPositiveClick, null, null, true)
-}
-
-/**
- * Show normal alert dialog with fragment.
- * [title] text character
- * [message] text character
- * [onPositiveClick] event when click positive button (OK Button)
- */
-fun Fragment.showAlertDialog(
-        title: String?,
-        message: String?,
-        onPositiveClick: (() -> Unit)? = null) {
-
-    if (isAdded.not() || view == null) return
-    view?.hideKeyboard()
-
-    activity?.showAlertDialog(title, message, null, null,
-            onPositiveClick, null, null, true)
+    showAlertDialog(title = getString(R.string.app_name),
+            message = getString(message),
+            positiveText = if (positiveText != null) getString(positiveText) else null,
+            negativeText = null,
+            onPositiveClick = onPositiveClick,
+            onNegativeClick = null,
+            onDialogDismiss = null,
+            cancelable = isCancelEnable)
 }
 
 fun Fragment.showAlertDialog(
         message: String,
+        isCancelEnable: Boolean = true,
+        positiveText: String? = null,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isAdded.not() || view == null) return
     view?.hideKeyboard()
 
-    activity?.showAlertDialog(getString(R.string.app_name), message, null, null,
-            onPositiveClick, null, null, true)
+    requireContext().showAlertDialog(title = getString(R.string.app_name),
+            message = message, positiveText = positiveText, negativeText = null,
+            onPositiveClick = onPositiveClick, onNegativeClick = null, onDialogDismiss = null,
+            cancelable = isCancelEnable)
 }
 
-
-/**
- * Show normal alert dialog with fragment.
- * [title] string resource id
- * [message]  string resource id
- * [onPositiveClick] event when click positive button (OK Button)
- */
-fun Fragment.showAlertDialog(
-        @StringRes title: Int?,
-        @StringRes message: Int?,
-        onPositiveClick: (() -> Unit)? = null) {
-
-    if (isAdded.not() || view == null) return
-    view?.hideKeyboard()
-
-    val titleText = if (title != null) getString(title) else null
-    val messageText = if (message != null) getString(message) else null
-    activity?.showAlertDialog(titleText, messageText, null, null,
-            onPositiveClick, null, null, true)
-}
 
 fun Fragment.showAlertDialog(
         @StringRes message: Int,
         isCancelEnable: Boolean = true,
+        @StringRes positiveText: Int? = null,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isAdded.not() || view == null) return
     view?.hideKeyboard()
 
-    activity?.showAlertDialog(getString(R.string.app_name), getString(message), null, null,
-            onPositiveClick, null, null, isCancelEnable)
+    requireContext().showAlertDialog(title = getString(R.string.app_name),
+            message = getString(message),
+            positiveText = if (positiveText != null) getString(positiveText) else null,
+            negativeText = null,
+            onPositiveClick = onPositiveClick,
+            onNegativeClick = null,
+            onDialogDismiss = null,
+            cancelable = isCancelEnable)
 }

@@ -12,6 +12,7 @@
     <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
     <string name="all_event">All Events</string>
     <string name="active">Active</string>
+    <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
 
     <!-- B -->
     <string name="back">Back</string>
@@ -73,10 +74,11 @@
     <string name="login">Login</string>
     <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
     <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
-    <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
-    <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
-    <string name="login_with_email">ลงชื่อใช้งานด้วยอีเมล</string>
+    <string name="login_with_facebook">Login with Facebook</string>
+    <string name="login_with_google">Login with Google</string>
+    <string name="login_with_email">Email Login</string>
     <string name="logout">Logout</string>
+    <string name="location_permission_denied">Unable to access your current location due to being denied.</string>
 
 
     <!-- M -->

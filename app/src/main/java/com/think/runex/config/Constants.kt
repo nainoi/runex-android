@@ -49,12 +49,17 @@ const val DISPLAY_TIME_FORMAT = "HH:mm"
  * Request Code
  */
 const val RC_LOGIN = 2000
+const val RC_OPEN_GPS = 2001
+
+const val RC_PERMISSION_LOCATION = 3000
 
 /**
  * Notification chanel id and request code
  */
-const val NOTIFICATION_CHANEL_ID_DEFAULT = "default"
-const val NOTIFICATION_ID_DEFAULT = 0
+const val NOTIFICATION_DEFAULT_CHANEL_ID = "Default"
+const val NOTIFICATION_DEFAULT_ID = 0
+const val NOTIFICATION_WORKOUT_CHANEL_ID = "Workout"
+const val NOTIFICATION_WORKOUT_ID = 1
 
 
 /**

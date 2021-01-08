@@ -7,5 +7,7 @@
 
     <!-- Server Id -->
     <string name="server_client_id" translatable="false">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
-    <string name="background_service" translatable="false">background-service</string>
+
+    <!-- Service -->
+    <string name="workout_service_name" translatable="false">Workout</string>
 </resources>

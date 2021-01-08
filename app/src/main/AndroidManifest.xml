@@ -2,20 +2,31 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.think.runex">
 
-    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.VIBRATE" />
+    <!-- Internet and Network -->
     <uses-permission android:name="android.permission.INTERNET" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Storage -->
+    <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
-    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
 
     <!-- Camera -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
     <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- Service -->
+    <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
+    <uses-permission android:name="android.permission.FOREGROUND_SERVICE" />
+
+    <!-- Other -->
+    <uses-permission android:name="android.permission.VIBRATE" />
+
 
     <application
         android:name=".RunexApplication"
@@ -102,7 +113,13 @@
             android:name=".java.Services.BackgroundService"
             android:foregroundServiceType="location"
             android:icon="@drawable/ic_logo_small"
-            android:label="@string/background_service" />
+            android:label="BackgroundService" />
+
+        <service
+            android:name=".feature.workout.WorkoutService"
+            android:foregroundServiceType="location"
+            android:icon="@drawable/ic_logo_small"
+            android:label="@string/workout_service_name" />
 
         <provider
             android:name="androidx.core.content.FileProvider"

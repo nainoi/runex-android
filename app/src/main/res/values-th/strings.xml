@@ -12,6 +12,7 @@
     <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
     <string name="all_event">งานวิ่งทั้งหมด</string>
     <string name="active">Active</string>
+    <string name="allow_permission_in_setting">หากต้องการใช้ฟีเจอร์นี้ คุณต้องให้การอนุญาตในการตั้งค่า</string>
 
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
@@ -77,6 +78,7 @@
     <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
     <string name="login_with_email">ลงชื่อใช้งานด้วยอีเมล</string>
     <string name="logout">ออกจากระบบ</string>
+    <string name="location_permission_denied">ไม่สามารถเข้าถึงตำแหน่งปัจจุบันของคุณได้เนื่องจากถูกปฏิเสธ</string>
 
 
     <!-- M -->

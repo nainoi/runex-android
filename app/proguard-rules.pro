@@ -19,3 +19,9 @@
 # If you keep the line number information, uncomment this to
 # gone the original source file name.
 #-renamesourcefileattribute SourceFile
+
+-keepattributes *Annotation*
+-keepattributes Signature
+
+# Google Maps 3.1.0 Beta
+-keep,allowoptimization class com.google.android.libraries.maps.** { *; }

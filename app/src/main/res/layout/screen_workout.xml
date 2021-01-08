@@ -147,7 +147,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginTop="@dimen/space_16dp"
+        android:layout_marginTop="@dimen/space_8dp"
         android:layout_marginBottom="@dimen/space_40dp"
         android:orientation="horizontal">
 
@@ -165,7 +165,7 @@
                 android:background="@drawable/shape_circle_border_in_dark_background"
                 android:clickable="true"
                 android:focusable="true"
-                android:foreground="?selectableItemBackgroundBorderless"
+                android:foreground="@drawable/ripple_circle"
                 android:padding="@dimen/space_4dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
