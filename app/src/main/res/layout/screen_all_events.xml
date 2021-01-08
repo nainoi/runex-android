@@ -3,13 +3,13 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundDark"
+    android:background="@color/background"
     android:paddingTop="@dimen/space_24dp"
     tools:context=".ui.event.AllEventsScreen">
 
     <TextView
         android:id="@+id/top_bar"
-        style="@style/TextHeadLine.Secondary.InDarkBackground"
+        style="@style/TextHeadLine.Secondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center_vertical"

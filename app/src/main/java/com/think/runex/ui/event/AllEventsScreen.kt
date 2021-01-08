@@ -17,6 +17,7 @@ import com.think.runex.feature.event.AllEventListViewModel
 import com.think.runex.feature.event.AllEventListViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.recyclerview.MarginItemDecoration
+import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_all_events.*
 
 class AllEventsScreen : BaseScreen() {
@@ -48,7 +49,7 @@ class AllEventsScreen : BaseScreen() {
 
 
     private fun setupComponents() {
-        setStatusBarColor(isLightStatusBar = false)
+        setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         //Set update recycler view
         adapter = AllEventsAdapter()
         layoutManager = LinearLayoutManager(requireContext())

@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:clickable="true"
     android:focusable="true"
-    app:cardBackgroundColor="@color/backgroundThirdlyDark"
+    app:cardBackgroundColor="@color/background"
     app:cardCornerRadius="4dp">
 
     <RelativeLayout
@@ -34,18 +34,17 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/event_image">
 
-
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/event_icon"
                 android:layout_width="@dimen/system_icon_size_dense"
                 android:layout_height="@dimen/system_icon_size_dense"
                 android:layout_margin="@dimen/space_8dp"
                 app:srcCompat="@mipmap/ic_running"
-                app:tint="@color/iconColorDisableInDarkBackground" />
+                app:tint="@color/iconColorDisable" />
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/event_name_label"
-                style="@style/TextBody.Primary.InDarkBackground"
+                style="@style/TextBody.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_alignTop="@+id/event_icon"
@@ -54,7 +53,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/event_period"
-                style="@style/TextBody.Hint.InDarkBackground"
+                style="@style/TextBody.Hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/event_name_label"

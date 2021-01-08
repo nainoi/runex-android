@@ -15,6 +15,7 @@ import com.think.runex.feature.event.EventViewModel
 import com.think.runex.feature.event.EventViewModelFactory
 import com.think.runex.feature.event.model.Event
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_event_details.*
 import kotlinx.android.synthetic.main.screen_event_details.register_button
@@ -52,7 +53,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     }
 
     private fun setupComponents() {
-        setStatusBarColor(isLightStatusBar = false)
+        setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbarDarkBackground(toolbar, R.string.event_detail, R.mipmap.ic_navigation_back)
 
         //Set event details to views

@@ -138,4 +138,25 @@
         <item name="android:inputType">text</item>
         <item name="android:hint">@string/note</item>
     </style>
+
+    <!-- Icon -->
+    <style name="Icon">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Icon.Primary" parent="Icon">
+        <item name="tint">@color/iconColorPrimary</item>
+    </style>
+
+    <style name="Icon.Secondary" parent="Icon">
+        <item name="tint">@color/iconColorSecondary</item>
+    </style>
+
+    <style name="Icon.Disable" parent="Icon">
+        <item name="tint">@color/iconColorDisable</item>
+    </style>
+
+    <style name="Icon.BottomBar" parent="Icon">
+        <item name="tint">@color/iconColorSecondary</item>
+    </style>
 </resources>

@@ -45,7 +45,6 @@ class MainScreen : BaseScreen() {
     }
 
     private fun setupComponents() {
-        setStatusBarColor(isLightStatusBar = false)
     }
 
     private fun subscribeUi() {
@@ -104,7 +103,7 @@ class MainScreen : BaseScreen() {
     }
 
     private fun disableAllMenuInBottomBar() {
-        val iconColor = getColor(R.color.iconColorSecondaryInDarkBackground)
+        val iconColor = getColor(R.color.iconColorSecondary)
         bottom_bar_menu_all_event_icon?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
         bottom_bar_menu_my_event_icon?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)
         bottom_bar_menu_workout?.setColorFilter(iconColor, PorterDuff.Mode.MULTIPLY)

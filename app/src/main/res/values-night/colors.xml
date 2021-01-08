@@ -8,6 +8,7 @@
     <color name="background">#1C1E21</color>
     <color name="backgroundSecondary">#26282D</color>
     <color name="backgroundThirdly">#313338</color>
+    <color name="backgroundWorkoutScreen">@color/backgroundThirdly</color>
 
     <color name="disable">#494E52</color>
     <color name="disableSecondary">#797979</color>
@@ -20,7 +21,10 @@
     <!-- Text Colors -->
     <color name="textColorPrimary">#FFFFFF</color>
     <color name="textColorSecondary">#EEEEEE</color>
+    <color name="textColorThirdly">#C4C4C4</color>
     <color name="textColorHint">#797979</color>
+
+    <color name="textColorBottomBar">@color/textColorSecondary</color>
 
     <!-- Icon colors -->
     <color name="iconColorPrimary">#FFFFFF</color>
@@ -28,4 +32,5 @@
     <color name="iconColorDisable">#797979</color>
 
     <!-- Others -->
+    <color name="bottom_bar_center_menu">#474D51</color>
 </resources>

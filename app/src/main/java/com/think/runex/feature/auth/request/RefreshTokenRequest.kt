@@ -5,7 +5,4 @@ import com.think.runex.feature.auth.AccessToken
 
 data class RefreshTokenRequest(
         @SerializedName("access_token") var accessToken: String,
-        @SerializedName("refresh_token") var refreshToken: String) {
-
-    fun toAccessToken() = AccessToken(accessToken, refreshToken)
-}
+        @SerializedName("refresh_token") var refreshToken: String)

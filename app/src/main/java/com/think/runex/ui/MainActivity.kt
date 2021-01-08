@@ -56,9 +56,17 @@ class MainActivity : BaseActivity() {
 
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
-            true -> replaceFragment(MainScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
-            false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
+            true -> gotoMainScreen()
+            false -> gotoOnBoardingScreen()
         }
+    }
+
+    private fun gotoMainScreen() {
+        replaceFragment(MainScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
+    }
+
+    private fun gotoOnBoardingScreen(){
+        replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
     }
 
     override fun onBackPressed() {
@@ -83,19 +91,12 @@ class MainActivity : BaseActivity() {
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
             RC_LOGIN -> when (resultCode == RESULT_OK) {
-                true -> goToHomePageWithJavaStyle()
+                true -> gotoMainScreen()
                 false -> data?.getStringExtra(KEY_MESSAGE)?.also {
                     showToast(it)
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
-    }
-
-    //TODO("Use old to java style")
-    private fun goToHomePageWithJavaStyle() {
-        val intent = Intent(this@MainActivity, BridgeFile::class.java);
-        startActivity(intent)
-        finish()
     }
 }

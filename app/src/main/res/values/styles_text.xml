@@ -35,6 +35,10 @@
         <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
     </style>
 
+    <style name="TextCaption.Thirdly" parent="TextCaption">
+        <item name="android:textColor">@color/textColorThirdly</item>
+    </style>
+
     <style name="TextCaption.Thirdly.InDarkBackground" parent="TextCaption">
         <item name="android:textColor">@color/textColorThirdlyInDarkBackground</item>
     </style>
@@ -107,6 +111,10 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+    <style name="TextBody.Thirdly" parent="TextBody">
+        <item name="android:textColor">@color/textColorThirdly</item>
+    </style>
+
     <style name="TextBody.Thirdly.InDarkBackground" parent="TextBody">
         <item name="android:textColor">@color/textColorThirdlyInDarkBackground</item>
     </style>
@@ -150,6 +158,10 @@
 
     <style name="TextBodyHeading.Primary" parent="TextBodyHeading">
         <item name="android:textColor">@color/textColorPrimary</item>
+    </style>
+
+    <style name="TextBodyHeading.Primary.Bold" parent="TextBodyHeading.Primary">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextBodyHeading.Primary.InLightBackground" parent="TextBodyHeading">
@@ -287,6 +299,10 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="TextTitle.Primary.Bold" parent="TextTitle.Primary">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextTitle.Primary.InLightBackground" parent="TextTitle">
         <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
     </style>
@@ -364,17 +380,13 @@
     </style>
 
     <!-- TextView -->
-
     <style name="TextBottomBar">
         <item name="android:textSize">10sp</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
+        <item name="android:textColor">@drawable/selector_bottom_bar_text_color</item>
     </style>
 
-    <style name="TextBottomBar.InDarkBackground" parent="TextBottomBar">
-        <item name="android:textColor">@drawable/selector_bottom_bar_text_color
-        </item>
-    </style>
 
 </resources>

@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/backgroundThirdlyDark"
+    android:background="@color/backgroundWorkoutScreen"
     tools:context=".ui.workout.WorkoutScreen">
 
     <fragment
@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/distance_placeholder"
-        style="@style/TextBody.Thirdly.InDarkBackground"
+        style="@style/TextBody.Thirdly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/distance_label"
@@ -38,7 +38,7 @@
         android:includeFontPadding="false"
         android:maxLines="1"
         android:text="0.00"
-        android:textColor="@color/textColorPrimaryInDarkBackground"
+        android:textColor="@color/textColorPrimary"
         android:textSize="48sp"
         android:textStyle="bold" />
 
@@ -59,7 +59,7 @@
 
             <TextView
                 android:id="@+id/time_duration_placeholder"
-                style="@style/TextBody.Thirdly.InDarkBackground"
+                style="@style/TextBody.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -69,7 +69,7 @@
 
             <TextView
                 android:id="@+id/time_duration_label"
-                style="@style/TextTitle.Primary.InDarkBackground.Bold"
+                style="@style/TextTitle.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/time_duration_placeholder"
@@ -89,7 +89,7 @@
 
             <TextView
                 android:id="@+id/pace_placeholder"
-                style="@style/TextBody.Thirdly.InDarkBackground"
+                style="@style/TextBody.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -99,7 +99,7 @@
 
             <TextView
                 android:id="@+id/pace_label"
-                style="@style/TextTitle.Primary.InDarkBackground.Bold"
+                style="@style/TextTitle.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/pace_placeholder"
@@ -118,7 +118,7 @@
 
             <TextView
                 android:id="@+id/calorie_placeholder"
-                style="@style/TextBody.Thirdly.InDarkBackground"
+                style="@style/TextBody.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -128,7 +128,7 @@
 
             <TextView
                 android:id="@+id/calorie_label"
-                style="@style/TextTitle.Primary.InDarkBackground.Bold"
+                style="@style/TextTitle.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/calorie_placeholder"
@@ -162,7 +162,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/shape_circle_border_in_dark_background"
+                android:background="@drawable/shape_circle_border"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="@drawable/ripple_circle"
@@ -179,7 +179,7 @@
 
             <TextView
                 android:id="@+id/main_control_label"
-                style="@style/TextBody.Thirdly.InDarkBackground"
+                style="@style/TextBody.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/main_control_button"
@@ -200,7 +200,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
-                android:background="@drawable/shape_circle_border_in_dark_background"
+                android:background="@drawable/shape_circle_border"
                 android:clickable="true"
                 android:focusable="true"
                 android:foreground="?selectableItemBackgroundBorderless"
@@ -217,7 +217,7 @@
 
             <TextView
                 android:id="@+id/resume_control_label"
-                style="@style/TextCaption.Thirdly.InDarkBackground"
+                style="@style/TextCaption.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/resume_control_button"

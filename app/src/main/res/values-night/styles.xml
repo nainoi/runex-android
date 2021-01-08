@@ -17,4 +17,24 @@
         <item name="android:windowLightStatusBar">false</item>
     </style>
 
+    <!-- Icon -->
+    <style name="Icon">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Icon.Primary" parent="Icon">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Icon.Secondary" parent="Icon">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Icon.Disable" parent="Icon">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Icon.BottomBar" parent="Icon">
+        <!-- Noting for now -->
+    </style>
 </resources>
