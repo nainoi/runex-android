@@ -2,6 +2,7 @@ package com.think.runex.ui
 
 import android.annotation.SuppressLint
 import android.content.Intent
+import android.graphics.Color
 import android.os.Bundle
 import android.webkit.*
 import com.jozzee.android.core.view.gone
@@ -9,6 +10,7 @@ import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.getViewModel
+import com.think.runex.common.setStatusBarColor
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory

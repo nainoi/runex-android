@@ -47,6 +47,12 @@ class AllEventsScreen : BaseScreen() {
         viewModel.getEventList()
     }
 
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if(hidden.not()){
+            setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
+        }
+    }
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
@@ -71,7 +77,6 @@ class AllEventsScreen : BaseScreen() {
             adapter.submitList(eventList?.toMutableList())
         }
     }
-
 
     override fun errorHandler(statusCode: Int, message: String) {
         super.errorHandler(statusCode, message)

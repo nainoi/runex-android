@@ -23,7 +23,7 @@ fun ImageView.loadEventsImage(url: String?,
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .override(width, height)
                 .centerCrop()
-                .diskCacheStrategy(DiskCacheStrategy.NONE)
+                //.diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(this)
                 .clearOnDetach()
     }

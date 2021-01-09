@@ -1,25 +1,28 @@
 package com.think.runex.ui
 
+import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.ImageView
 import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
+import androidx.fragment.app.Fragment
+import androidx.fragment.app.commit
+import com.jozzee.android.core.fragment.addChildFragment
 import com.jozzee.android.core.fragment.childFragmentCount
-import com.jozzee.android.core.fragment.replaceChildFragment
+import com.jozzee.android.core.fragment.childFragments
 import com.jozzee.android.core.resource.getColor
-import com.jozzee.android.core.resource.getDrawable
 import com.think.runex.R
-import com.think.runex.common.setStatusBarColor
+import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.event.AllEventsScreen
 import com.think.runex.ui.event.MyEventsScreen
 import com.think.runex.ui.profile.ProfileScreen
 import com.think.runex.ui.workout.WorkoutHistoryScreen
 import com.think.runex.ui.workout.WorkoutScreen
-import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_main.*
 
 class MainScreen : BaseScreen() {
@@ -40,7 +43,8 @@ class MainScreen : BaseScreen() {
         super.onStart()
         //If not have any screen will be initial screen.
         if (childFragmentCount() == 0) {
-            updateScreen(selectedBottomBarPosition)
+            selectedBottomBarPosition = 1
+            setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
         }
     }
 
@@ -50,57 +54,35 @@ class MainScreen : BaseScreen() {
     private fun subscribeUi() {
         bottom_bar_menu_all_event?.setOnClickListener {
             if (selectedBottomBarPosition == 1) return@setOnClickListener
-            updateScreen(1)
+            selectedBottomBarPosition = 1
+            setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
         }
 
         bottom_bar_menu_my_event?.setOnClickListener {
             if (selectedBottomBarPosition == 2) return@setOnClickListener
-            updateScreen(2)
+            selectedBottomBarPosition = 2
+            setActiveScreen<MyEventsScreen>(bottom_bar_menu_my_event_icon, bottom_bar_menu_my_event_label)
         }
 
         bottom_bar_menu_workout?.setOnClickListener {
             if (selectedBottomBarPosition == 3) return@setOnClickListener
-            updateScreen(3)
+            selectedBottomBarPosition = 3
+            setActiveScreen<WorkoutScreen>(bottom_bar_menu_workout, bottom_bar_menu_workout_label)
         }
 
         bottom_bar_menu_history?.setOnClickListener {
             if (selectedBottomBarPosition == 4) return@setOnClickListener
-            updateScreen(4)
+            selectedBottomBarPosition = 4
+            setActiveScreen<WorkoutHistoryScreen>(bottom_bar_menu_history_icon, bottom_bar_menu_history_label)
         }
 
         bottom_bar_menu_profile?.setOnClickListener {
             if (selectedBottomBarPosition == 5) return@setOnClickListener
-            updateScreen(5)
+            selectedBottomBarPosition = 5
+            setActiveScreen<ProfileScreen>(bottom_bar_menu_profile_icon, bottom_bar_menu_profile_label)
         }
     }
 
-    private fun updateScreen(position: Int) = runOnUiThread {
-        selectedBottomBarPosition = position
-        disableAllMenuInBottomBar()
-        when (position) {
-            1 -> {
-                setActiveMeuBottomBar(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
-                replaceChildFragment(R.id.navigation_host_fragment, AllEventsScreen(), clearChildFragment = true)
-            }
-            2 -> {
-                setActiveMeuBottomBar(bottom_bar_menu_my_event_icon, bottom_bar_menu_my_event_label)
-                replaceChildFragment(R.id.navigation_host_fragment, MyEventsScreen(), clearChildFragment = true)
-            }
-            3 -> {
-                bottom_bar_menu_workout?.setColorFilter(getColor(R.color.iconColorAccent), PorterDuff.Mode.MULTIPLY)
-                bottom_bar_menu_workout_label?.isEnabled = true
-                replaceChildFragment(R.id.navigation_host_fragment, WorkoutScreen(), clearChildFragment = true)
-            }
-            4 -> {
-                setActiveMeuBottomBar(bottom_bar_menu_history_icon, bottom_bar_menu_history_label)
-                replaceChildFragment(R.id.navigation_host_fragment, WorkoutHistoryScreen(), clearChildFragment = true)
-            }
-            5 -> {
-                setActiveMeuBottomBar(bottom_bar_menu_profile_icon, bottom_bar_menu_profile_label)
-                replaceChildFragment(R.id.navigation_host_fragment, ProfileScreen(), clearChildFragment = true)
-            }
-        }
-    }
 
     private fun disableAllMenuInBottomBar() {
         val iconColor = getColor(R.color.iconColorSecondary)
@@ -116,8 +98,40 @@ class MainScreen : BaseScreen() {
         bottom_bar_menu_profile_label?.isEnabled = false
     }
 
-    private fun setActiveMeuBottomBar(icon: AppCompatImageView?, label: AppCompatTextView?) {
+    private inline fun <reified T : Fragment> setActiveScreen(icon: ImageView?, label: AppCompatTextView?) {
+        //Update bottom bar
+        disableAllMenuInBottomBar()
         icon?.setColorFilter(getColor(R.color.iconColorAccent), PorterDuff.Mode.MULTIPLY)
         label?.isEnabled = true
+
+        //Update screen fragment
+        var fragmentIsAlready = false
+        childFragments().forEach { childFragment ->
+            childFragmentManager.commit(true) {
+                if (childFragment is T) {
+                    show(childFragment)
+                    fragmentIsAlready = true
+                } else {
+                    hide(childFragment)
+                }
+            }
+        }
+        childFragmentManager.executePendingTransactions()
+        if (fragmentIsAlready.not()) {
+            addChildFragment(R.id.navigation_host_fragment, T::class.java.newInstance(),
+                    hidePrevious = childFragmentCount(), tag = T::class.java.simpleName)
+        }
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            RC_OPEN_GPS -> childFragments().forEach { childFragment ->
+                if (childFragment is WorkoutScreen) {
+                    childFragment.onActivityResult(requestCode, resultCode, data)
+                    return@forEach
+                }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
     }
 }

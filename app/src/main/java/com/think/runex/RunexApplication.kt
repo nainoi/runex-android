@@ -9,9 +9,10 @@ import io.realm.RealmConfiguration
 
 class RunexApplication : Application() {
 
-//    override fun attachBaseContext(base: Context?) {
-//        super.attachBaseContext(NightMode.applyNightMode(Localization.applyLanguage(base)))
-//    }
+    override fun attachBaseContext(base: Context?) {
+        //Set ui mode and language
+        super.attachBaseContext(NightMode.applyNightMode(Localization.applyLanguage(base)))
+    }
 
     override fun onCreate() {
         super.onCreate()

@@ -17,7 +17,7 @@
 
     <style name="AppTheme.LoginActivity" parent="AppTheme">
         <item name="android:windowTranslucentStatus">false</item>
-        <item name="android:statusBarColor">@color/background</item>
+        <item name="android:statusBarColor">@color/backgroundLight</item>
         <item name="android:windowLightStatusBar">true</item>
     </style>
 

@@ -12,6 +12,8 @@ const val ANDROID = "Android"
 const val APP_SCHEME = "runex"
 const val AUTHORIZATION = "Authorization"
 
+const val GOOGLE_MAP_DEFAULT_ZOOM = 18f
+
 /**
  * Update last user-agent from https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome
  */
@@ -70,7 +72,3 @@ const val ERR_SOCKET_EXCEPTION = 481
 const val ERROR_NETWORK_UNREACHABLE = 482
 const val ERROR_JSON_FORMAT = 483
 const val ERR_NO_STATUS_CODE = 999
-
-
-
-

@@ -26,8 +26,7 @@ open class BaseActivity : AppCompatActivity() {
     protected var mainFragmentContainerId: Int = -1
 
     override fun attachBaseContext(newBase: Context?) {
-        //TODO("Set language with ui mode")
-        //super.attachBaseContext(UiMode.applyUiMode(Localization.applyLanguageContext(newBase)))
+        //Set ui mode and language
         super.attachBaseContext(NightMode.applyNightMode(Localization.applyLanguage(newBase)))
     }
 

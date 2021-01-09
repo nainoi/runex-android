@@ -8,19 +8,19 @@ import androidx.lifecycle.Observer
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.connection.NetworkStatus
 import com.jozzee.android.core.fragment.fragmentBackStackCount
-import com.jozzee.android.core.fragment.replaceFragment
+import com.jozzee.android.core.fragment.fragments
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
-import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.common.fadeIn
 import com.think.runex.common.getViewModel
 import com.think.runex.feature.auth.*
-import com.think.runex.java.Activities.BridgeFile
 import com.think.runex.ui.base.BaseActivity
+import com.think.runex.ui.workout.WorkoutScreen
 import com.think.runex.config.KEY_MESSAGE
 import com.think.runex.config.RC_LOGIN
+import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.util.launch
 import kotlinx.coroutines.delay
 
@@ -32,7 +32,8 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
 
         //Initial logger show log when is debug mode.
-        Logger.isLogging = BuildConfig.DEBUG
+        //TODO("Force login to 'true' for development, Use default when build release.")
+        Logger.isLogging = true//BuildConfig.DEBUG
 
         //Listener network connection.
         NetworkMonitor(this).observe(this, Observer(::onNetworkChanged))
@@ -65,7 +66,7 @@ class MainActivity : BaseActivity() {
         replaceFragment(MainScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
     }
 
-    private fun gotoOnBoardingScreen(){
+    private fun gotoOnBoardingScreen() {
         replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
     }
 
@@ -94,6 +95,19 @@ class MainActivity : BaseActivity() {
                 true -> gotoMainScreen()
                 false -> data?.getStringExtra(KEY_MESSAGE)?.also {
                     showToast(it)
+                }
+            }
+            RC_OPEN_GPS -> {
+                /**
+                 * Find [MainScreen] and send onActivityResult.
+                 * [WorkoutScreen] it a only screen that request [RC_OPEN_GPS] for now,
+                 * which that is child fragment of [MainScreen]
+                 */
+                fragments()?.forEach { childFragment ->
+                    if (childFragment is MainScreen) {
+                        childFragment.onActivityResult(requestCode, resultCode, data)
+                        return@forEach
+                    }
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
