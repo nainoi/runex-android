@@ -6,7 +6,9 @@
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
         <item name="android:windowLightStatusBar">true</item>
-        <item name="android:windowBackground">@color/background</item>
+
+        <!-- Set windowBackground to dark color for dark mode default.-->
+        <item name="android:windowBackground">@color/backgroundDark</item>
     </style>
 
     <style name="AppTheme.TransparentStatus" parent="AppTheme">

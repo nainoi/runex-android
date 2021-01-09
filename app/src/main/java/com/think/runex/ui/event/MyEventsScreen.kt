@@ -42,18 +42,18 @@ class MyEventsScreen : BaseScreen() {
         subscribeUi()
 
         //Initial get all event list
-        progress_bar?.visible()
+        refresh_layout?.isRefreshing = true
         viewModel.getEventList()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if(hidden.not()){
+        if (hidden.not()) {
             setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         }
     }
 
-    private fun setupComponents(){
+    private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         //Set update recycler view
         adapter = MyEventsAdapter()
@@ -63,7 +63,12 @@ class MyEventsScreen : BaseScreen() {
         event_list?.adapter = adapter
     }
 
-    private fun subscribeUi(){
+    private fun subscribeUi() {
+
+        refresh_layout?.setOnRefreshListener {
+            viewModel.getEventList()
+        }
+
         adapter.setOnItemClick { _, event ->
 
         }
@@ -71,14 +76,14 @@ class MyEventsScreen : BaseScreen() {
         viewModel.setOnHandleError(::errorHandler)
 
         observe(viewModel.eventList) { eventList ->
-            progress_bar?.gone()
+            refresh_layout?.isRefreshing = false
             adapter.submitList(eventList?.toMutableList())
         }
     }
 
     override fun errorHandler(statusCode: Int, message: String) {
         super.errorHandler(statusCode, message)
-        progress_bar?.gone()
+        refresh_layout?.isRefreshing = false
     }
 
     override fun onDestroy() {

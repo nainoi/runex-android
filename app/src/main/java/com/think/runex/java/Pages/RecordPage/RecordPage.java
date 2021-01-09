@@ -12,6 +12,7 @@ import android.content.IntentFilter;
 import android.content.pm.PackageManager;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.Drawable;
 import android.location.Location;
 import android.os.Bundle;
 import android.os.Handler;
@@ -27,6 +28,7 @@ import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.appcompat.widget.AppCompatImageView;
 import androidx.core.content.ContextCompat;
 import androidx.fragment.app.Fragment;
 import androidx.fragment.app.FragmentManager;
@@ -318,7 +320,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
     // views
     private View mView;
     private TextView lbRecordingState;
-    private ImageView icRecordState;
+    private AppCompatImageView icRecordState;
     private TextView lbTime;
     private TextView lbDistance;
     private TextView lbCalories;
@@ -1118,7 +1120,8 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                     @Override
                     public void onStart() {
-                        icRecordState.setImageDrawable(activity.getDrawable(drawerId));
+                        Drawable icon = ContextCompat.getDrawable(getContext(), drawerId);
+                        icRecordState.setImageDrawable(icon);
 
                     }
                 });
@@ -1247,7 +1250,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
                     // clear flag
                     onNetwork = false;
-                    mOnSubmitMultiResult= false;
+                    mOnSubmitMultiResult = false;
 
                     stopService();
                     // binding views

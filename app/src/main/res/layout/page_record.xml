@@ -208,8 +208,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:background="@android:color/holo_green_light"
-                android:paddingVertical="8dp"
-                android:visibility="invisible">
+                android:paddingVertical="8dp">
 
                 <TextView
                     android:id="@+id/lb_gps_signal"
@@ -407,13 +406,13 @@
                                 android:textSize="20dp"
                                 android:textStyle="bold" />
 
-                            <ImageView
+                            <androidx.appcompat.widget.AppCompatImageView
                                 android:id="@+id/ic_recording_state"
                                 android:layout_width="35dp"
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:padding="4dp"
-                                android:src="@drawable/ic_play"
+                                app:srcCompat="@drawable/ic_play"
                                 app:tint="@android:color/white" />
 
                         </FrameLayout>
