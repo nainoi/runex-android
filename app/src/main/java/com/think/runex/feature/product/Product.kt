@@ -10,7 +10,7 @@ data class Product(
         @SerializedName("image") var images: List<ProductImage>? = null,
         @SerializedName("detail") var detail: String? = "",
         @SerializedName("status") var status: String? = "",
-        @SerializedName("reuse") var reuse: Boolean? = false,
+        @SerializedName("reuse") var isReuse: Boolean? = false,
         @SerializedName("is_show") var isShow: Boolean? = false,
         @SerializedName("sizes") var sizes: ProductSize? = null,
         @SerializedName("created_at") var createdAt: String? = "",
@@ -44,7 +44,7 @@ data class Product(
         parcel.writeTypedList(images)
         parcel.writeString(detail)
         parcel.writeString(status)
-        parcel.writeByte(if (reuse == true) 1 else 0)
+        parcel.writeByte(if (isReuse == true) 1 else 0)
         parcel.writeByte(if (isShow == true) 1 else 0)
         parcel.writeParcelable(sizes, flags)
         parcel.writeString(createdAt)

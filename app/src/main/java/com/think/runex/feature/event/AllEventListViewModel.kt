@@ -2,15 +2,15 @@ package com.think.runex.feature.event
 
 import androidx.lifecycle.MutableLiveData
 import com.think.runex.datasource.BaseViewModel
-import com.think.runex.feature.event.model.Event
+import com.think.runex.feature.event.model.EventItem
 import com.think.runex.util.launchIoThread
 
 class AllEventListViewModel(private val repo: EventRepository) : BaseViewModel() {
 
     //val pageSize: Int = 20
 
-    val eventList: MutableLiveData<List<Event>> by lazy {
-        MutableLiveData<List<Event>>()
+    val eventList: MutableLiveData<List<EventItem>> by lazy {
+        MutableLiveData<List<EventItem>>()
     }
 
     var isLoading: Boolean = false

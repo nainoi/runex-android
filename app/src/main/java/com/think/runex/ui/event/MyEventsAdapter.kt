@@ -10,15 +10,14 @@ import com.think.runex.R
 import com.think.runex.common.getDrawable
 import com.think.runex.common.getString
 import com.think.runex.common.loadEventsImage
-import com.think.runex.feature.event.model.Event
-import com.think.runex.feature.event.model.registered.RegisteredEvent
+import com.think.runex.feature.event.model.EventRegistered
 import kotlinx.android.synthetic.main.list_item_my_event.view.*
 
-class MyEventsAdapter : ListAdapter<RegisteredEvent, MyEventsAdapter.ViewHolder>(MyEventsAdapter.EventsListDiffCallback()) {
+class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(MyEventsAdapter.EventsListDiffCallback()) {
 
-    private var onItemClick: ((position: Int, event: RegisteredEvent) -> Unit)? = null
+    private var onItemClick: ((position: Int, event: EventRegistered) -> Unit)? = null
 
-    fun setOnItemClick(block: (position: Int, event: RegisteredEvent) -> Unit) {
+    fun setOnItemClick(block: (position: Int, event: EventRegistered) -> Unit) {
         onItemClick = block
     }
 
@@ -30,12 +29,12 @@ class MyEventsAdapter : ListAdapter<RegisteredEvent, MyEventsAdapter.ViewHolder>
         holder.bind(getItem(position), onItemClick)
     }
 
-    class EventsListDiffCallback : DiffUtil.ItemCallback<RegisteredEvent>() {
-        override fun areItemsTheSame(oldItem: RegisteredEvent, newItem: RegisteredEvent): Boolean {
-            return oldItem.eventId == newItem.eventId
+    class EventsListDiffCallback : DiffUtil.ItemCallback<EventRegistered>() {
+        override fun areItemsTheSame(oldItem: EventRegistered, newItem: EventRegistered): Boolean {
+            return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: RegisteredEvent, newItem: RegisteredEvent): Boolean {
+        override fun areContentsTheSame(oldItem: EventRegistered, newItem: EventRegistered): Boolean {
             return oldItem == newItem
         }
     }
@@ -46,21 +45,21 @@ class MyEventsAdapter : ListAdapter<RegisteredEvent, MyEventsAdapter.ViewHolder>
                     .inflate(R.layout.list_item_my_event, parent, false))
         }
 
-        fun bind(data: RegisteredEvent?, onItemClick: ((position: Int, event: RegisteredEvent) -> Unit)? = null) {
-            data?.registerInfoList?.get(0)?.event?.also { event ->
-                itemView.event_image?.loadEventsImage(event.coverImage())
-                itemView.event_name_label?.text = event.name
-                when (event.isActive) {
-                    true -> {
-                        itemView.event_status_icon?.background = getDrawable(R.drawable.shape_circle_accent)
-                        itemView.event_status_label?.text = getString(R.string.active)
-                    }
-                    false -> {
-                        itemView.event_status_icon?.background = getDrawable(R.drawable.shape_circle_disable)
-                        itemView.event_status_label?.text = getString(R.string.passed)
-                    }
+        fun bind(data: EventRegistered?, onItemClick: ((position: Int, event: EventRegistered) -> Unit)? = null) {
+
+            itemView.event_image?.loadEventsImage(data?.coverImage)
+            itemView.event_name_label?.text = data?.name ?: ""
+            when (data?.isActive) {
+                true -> {
+                    itemView.event_status_icon?.background = getDrawable(R.drawable.shape_circle_accent)
+                    itemView.event_status_label?.text = getString(R.string.active)
+                }
+                false -> {
+                    itemView.event_status_icon?.background = getDrawable(R.drawable.shape_circle_disable)
+                    itemView.event_status_label?.text = getString(R.string.passed)
                 }
             }
+
         }
     }
 }

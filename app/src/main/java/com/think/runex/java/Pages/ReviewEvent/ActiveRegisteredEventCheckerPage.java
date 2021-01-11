@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.think.runex.R;
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.event.model.EventRegistered;
 import com.think.runex.java.Models.EventIdAndPartnerObject;
 import com.think.runex.java.Models.RegisteredEventsObject;
 import com.think.runex.java.Utils.L;
@@ -138,7 +138,7 @@ public class ActiveRegisteredEventCheckerPage extends DialogFragment implements 
 
                 if (object.getCode() == HttpURLConnection.HTTP_OK) {
                     for (int i = 0; i < object.getData().size(); i++) {
-                        RegisteredEvent data = object.getData().get(i);
+                        EventRegistered data = object.getData().get(i);
                         data.setChecked(true);
                         object.getData().set(i, data);
                     }

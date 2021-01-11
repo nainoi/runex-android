@@ -5,15 +5,20 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.fragment.app.viewModels
 import com.jozzee.android.core.fragment.onBackPressed
+import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.showDialog
+import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.*
+import com.think.runex.config.KEY_CODE
 import com.think.runex.config.KEY_EVENT
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.event.EventViewModel
-import com.think.runex.feature.event.EventViewModelFactory
-import com.think.runex.feature.event.model.Event
+import com.think.runex.feature.event.EventDetailsViewModel
+import com.think.runex.feature.event.EventDetailsViewModelFactory
+import com.think.runex.feature.event.model.EventItem
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
@@ -25,20 +30,19 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     companion object {
         @JvmStatic
-        fun newInstance(event: Event) = EventDetailsScreen().apply {
+        fun newInstance(code: String?) = EventDetailsScreen().apply {
             arguments = Bundle().apply {
-                putParcelable(KEY_EVENT, event)
+                putString(KEY_CODE, code)
             }
         }
     }
 
-    private lateinit var viewModel: EventViewModel
-    private var event: Event? = null
+    private lateinit var viewModel: EventDetailsViewModel
+
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel(EventViewModelFactory(requireContext()))
-        event = arguments?.getParcelable(KEY_EVENT)
+        viewModel = getViewModel(EventDetailsViewModelFactory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -49,24 +53,12 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
-        checkRegisteredEvent()
+        performGetEventDetails(arguments?.getString(KEY_CODE) ?: "")
     }
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbarDarkBackground(toolbar, R.string.event_detail, R.mipmap.ic_navigation_back)
-
-        //Set event details to views
-        event_image?.loadEventsImage(event?.coverImage())
-        event_period_label?.text = event?.eventPeriodWithTime() ?: ""
-        event_name_label?.text = event?.name ?: ""
-        event_detail_label?.setTextHtmlFormat(event?.body ?: "")
-        register_button?.isEnabled = false
-
-        //Set register button if event not free
-        if (event?.isFree == true) {
-            register_button?.isEnabled = true
-        }
     }
 
     private fun subscribeUi() {
@@ -75,45 +67,73 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         }
 
         register_button?.setOnClickListener {
-            //TODO(Force enable to register when partner name is 'KAO' for now.")
-            if (event?.partner?.partnerName == "KAO") {
-                showDialog(RegisterEventWithEBIBDialog())
-            }
+            //TODO("Disable for now")
+            //if (viewModel.eventDetail?.partner?.partnerName == "KAO") {
+            //     showDialog(RegisterEventWithEBIBDialog())
+            //}
         }
 
         viewModel.setOnHandleError(::errorHandler)
     }
 
-    private fun onShareEvent() {
-        val url = "${ApiConfig.PREVIEW_EVENT_URL}/${event?.id}"
-        val sendIntent = Intent().apply {
-            action = Intent.ACTION_SEND
-            putExtra(Intent.EXTRA_TEXT, url)
-            type = "text/plain"
+    private fun performGetEventDetails(code: String) = launch {
+        showLoading()
+        val isSuccess = viewModel.getEventDetail(code)
+        if (isSuccess) {
+            hideLoading()
+            updateEventDetails()
         }
-        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
-        startActivity(shareIntent)
     }
 
-    override fun onEBIBSpecified(eBib: String) {
-        performRegisterEventWithEBIB(eBib)
-    }
+    private fun updateEventDetails() {
+        //Set event details to views
 
-    private fun checkRegisteredEvent() = launch {
-        val isRegistered = viewModel.isRegisteredEvent(event?.id ?: "")
-        register_button?.isEnabled = isRegistered.not()
-    }
+        event_image?.loadEventsImage(viewModel.eventDetail?.coverImage())
+        event_period_label?.text = viewModel.eventDetail?.eventPeriodWithTime() ?: ""
+        event_title_label?.text = viewModel.eventDetail?.title ?: ""
+        event_detail_label?.text = viewModel.eventDetail?.contact ?: ""
+        register_button?.isEnabled = false
 
-    private fun performRegisterEventWithEBIB(eBib: String) = event?.also { event ->
+        //Set register button if event not free
+        if (viewModel.eventDetail?.isFreeEvent == true) {
+            register_button?.isEnabled = true
+        }
         launch {
-            showProgressDialog(getString(R.string.register_event))
-            val isSuccess = viewModel.registerEventWithKoa(event, eBib)
-            hideProgressDialog()
-            if (isSuccess) {
-                showRegisterSuccessDialog()
+            val isRegistered = viewModel.isRegisteredEvent(arguments?.getString(KEY_CODE) ?: "")
+            if (isRegistered) {
+                register_button?.isEnabled = false
             }
         }
     }
+
+    private fun onShareEvent() {
+        //TODO("Disable for now")
+//        val url = "${ApiConfig.PREVIEW_EVENT_URL}/"
+//        val sendIntent = Intent().apply {
+//            action = Intent.ACTION_SEND
+//            putExtra(Intent.EXTRA_TEXT, url)
+//            type = "text/plain"
+//        }
+//        val shareIntent = Intent.createChooser(sendIntent, getString(R.string.share))
+//        startActivity(shareIntent)
+    }
+
+    override fun onEBIBSpecified(eBib: String) {
+        TODO("Disable for now")
+        //performRegisterEventWithEBIB(eBib)
+    }
+
+    //TODO("Disable for now")
+//    private fun performRegisterEventWithEBIB(eBib: String) = viewModel.eventDetail?.also { event ->
+//        launch {
+//            showProgressDialog(getString(R.string.register_event))
+//            val isSuccess = viewModel.registerEventWithKoa(event, eBib)
+//            hideProgressDialog()
+//            if (isSuccess) {
+//                showRegisterSuccessDialog()
+//            }
+//        }
+//    }
 
     private fun showRegisterSuccessDialog() {
         showAlertDialog(R.string.register_event_success, false) {
@@ -121,4 +141,22 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
             onBackPressed()
         }
     }
+
+    override fun errorHandler(statusCode: Int, message: String) {
+        super.errorHandler(statusCode, message)
+        progress_bar?.gone()
+    }
+
+    private fun showLoading() {
+        scroll_view?.inVisible()
+        register_button?.inVisible()
+        progress_bar?.visible()
+    }
+
+    private fun hideLoading() {
+        scroll_view?.visible()
+        register_button?.visible()
+        progress_bar?.gone()
+    }
+
 }

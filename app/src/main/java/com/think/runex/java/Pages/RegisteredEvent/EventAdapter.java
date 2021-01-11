@@ -7,8 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.R;
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
-import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
+import com.think.runex.feature.event.model.EventRegistered;
 import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.ViewHolders.VHEvent;
 
@@ -22,9 +21,9 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
 
     // instance variables
     private OnItemClickListener mListener;
-    private List<RegisteredEvent> events;
+    private List<EventRegistered> events;
 
-    public EventAdapter(List<RegisteredEvent> events, OnItemClickListener listener) {
+    public EventAdapter(List<EventRegistered> events, OnItemClickListener listener) {
         super();
 
         this.events = events;
@@ -43,11 +42,7 @@ public class EventAdapter extends RecyclerView.Adapter<RecyclerView.ViewHolder> 
     public void onBindViewHolder(@NonNull RecyclerView.ViewHolder holder, int position) {
         if (getItemViewType(position) == 0) {
             VHEvent vh = ((VHEvent) holder);
-
-            if (events.get(position) != null && events.get(position).getRegisterInfoList() != null && events.get(position).getRegisterInfoList().size() > 0) {
-                RegisteredEventInfo data = events.get(position).getRegisterInfoList().get(0);
-                vh.bind(data, mListener);
-            }
+            vh.bind(events.get(position), mListener);
         }
     }
 

@@ -5,11 +5,8 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.webkit.WebResourceRequest;
-import android.webkit.WebResourceResponse;
 import android.webkit.WebSettings;
 import android.webkit.WebView;
-import android.webkit.WebViewClient;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -17,7 +14,6 @@ import androidx.annotation.Nullable;
 import com.think.runex.R;
 import com.think.runex.datasource.api.ApiConfig;
 import com.think.runex.feature.auth.TokenManager;
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Customize.Fragment.xFragment;
@@ -26,7 +22,6 @@ import com.think.runex.java.Customize.Views.Toolbar.xToolbarProps;
 import com.think.runex.java.Utils.L;
 
 import java.util.HashMap;
-import java.util.Map;
 
 public class LeaderBoardPage extends xFragment {
     /**

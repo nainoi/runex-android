@@ -71,7 +71,7 @@ class AllEventsScreen : BaseScreen() {
         }
 
         adapter.setOnItemClick { _, event ->
-            addFragment(EventDetailsScreen.newInstance(event))
+            addFragment(EventDetailsScreen.newInstance(event.code))
         }
 
         viewModel.setOnHandleError(::errorHandler)

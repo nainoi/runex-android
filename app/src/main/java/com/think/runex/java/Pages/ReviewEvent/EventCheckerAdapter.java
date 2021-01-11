@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.event.model.EventRegistered;
 import com.think.runex.java.Models.EventIdAndPartnerObject;
 
 import java.util.ArrayList;
@@ -14,7 +14,7 @@ import java.util.List;
 public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHolder> implements
         EventCheckerViewHolder.OnCheckedChangeListener {
 
-    private List<RegisteredEvent> list;
+    private List<EventRegistered> list;
 
     @NonNull
     @Override
@@ -33,7 +33,7 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
         return list.size();
     }
 
-    void submitList(List<RegisteredEvent> list) {
+    void submitList(List<EventRegistered> list) {
         this.list = list;
         notifyDataSetChanged();
     }
@@ -42,7 +42,7 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
     @Override
     public void onCheckedChanged(int position, boolean isChecked) {
         if (list != null) {
-            RegisteredEvent event = list.get(position);
+            EventRegistered event = list.get(position);
             if (event != null) {
                 event.setChecked(isChecked);
                 list.set(position, event);
@@ -55,13 +55,11 @@ public class EventCheckerAdapter extends RecyclerView.Adapter<EventCheckerViewHo
         if (list == null || list.size() == 0) return new ArrayList<>();
 
         ArrayList<EventIdAndPartnerObject> selectedList = new ArrayList<>();
-        for (RegisteredEvent event : list) {
+        for (EventRegistered event : list) {
             if (event.isChecked()) {
                 EventIdAndPartnerObject eventIdAndPartner = new EventIdAndPartnerObject();
-                eventIdAndPartner.setEvent_id(event.getEventId());
-                if (event.getEventInfo() != null) {
-                    eventIdAndPartner.setPartner(event.getEventInfo().getPartner());
-                }
+                eventIdAndPartner.setEvent_id(event.getId());
+                eventIdAndPartner.setPartner(event.getPartner());
                 selectedList.add(eventIdAndPartner);
             }
         }

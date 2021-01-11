@@ -11,7 +11,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.textview.MaterialTextView;
 import com.think.runex.R;
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.event.model.EventRegistered;
 
 public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
 
@@ -33,7 +33,7 @@ public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
                 .inflate(R.layout.list_item_event_send_distance, parent, false));
     }
 
-    public void bind(RegisteredEvent data, OnCheckedChangeListener checkedChangeListener) {
+    public void bind(EventRegistered data, OnCheckedChangeListener checkedChangeListener) {
         if (checkedChangeListener != null) {
             this.checkedChangeListener = checkedChangeListener;
         }
@@ -45,7 +45,7 @@ public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
         }
 
 
-        title.setText(data.getEventInfo().getEvent().getName());
+        title.setText(data.getName());
 
         rootView.setOnClickListener(new View.OnClickListener() {
             @Override

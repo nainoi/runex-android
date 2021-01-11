@@ -13,8 +13,7 @@ import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.datasource.api.ApiConfig;
-import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
+import com.think.runex.feature.event.model.EventRegistered;
 import com.think.runex.feature.payment.PaymentStatus;
 import com.think.runex.java.Pages.OnItemClickListener;
 
@@ -42,30 +41,29 @@ public class VHEvent extends RecyclerView.ViewHolder {
         return new VHEvent(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_event_java, parent, false));
     }
 
-    public void bind(RegisteredEventInfo data, OnItemClickListener listener) {
+    public void bind(EventRegistered data, OnItemClickListener listener) {
         // prepare usage variables
         //EventObject.DataBean evt = (EventObject.DataBean)ml.getAttachedObject();
         //EventObject.DataBean.EventBean evtVal = evt.getEvent();
         //Payment payment =  evtVal.getCustomPaymentColor();
 
         // binding
-        if (data.getEvent() != null) {
-            lbEventName.setText(data.getEvent().getName());
-            lbEventType.setText(data.getEvent().getCategory());
-            lbStartReg.setText(data.getEvent().registerPeriod(itemView.getContext()));
-            //--> image
-            Picasso.get().load(data.getEvent().coverImage()).into(imgCover);
-        }
+        lbEventName.setText(data.getName());
+        lbEventType.setText(data.getCategory());
+        lbStartReg.setText(data.registerEventPeriod(itemView.getContext()));
+        //--> image
+        Picasso.get().load(data.getCoverImage()).into(imgCover);
+
         //--> billing
-        lbEventBill.setText(PaymentStatus.INSTANCE.getPaymentStatusText(itemView.getContext(), data.getPaymentStatus()));
-        lbEventBill.setTextColor(ContextCompat.getColor(itemView.getContext(), PaymentStatus.INSTANCE.getPaymentStatusColor(data.getPaymentStatus())));
+        lbEventBill.setText(PaymentStatus.INSTANCE.getPaymentStatusText(itemView.getContext(), data.getStatus()));
+        //lbEventBill.setTextColor(ContextCompat.getColor(itemView.getContext(), PaymentStatus.INSTANCE.getPaymentStatusColor(data.getPaymentStatus())));
 
         //--> event
         itemView.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 // exit from this process
-                if (!data.getPaymentStatus().equals(PaymentStatus.SUCCESS)) return;
+                //if (!data.getPaymentStatus().equals(PaymentStatus.SUCCESS)) return;
 
                 // exit from this process
                 if (listener == null) return;

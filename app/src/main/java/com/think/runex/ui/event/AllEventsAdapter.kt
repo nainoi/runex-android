@@ -9,14 +9,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.loadEventsImage
 import com.think.runex.common.requireContext
-import com.think.runex.feature.event.model.Event
+import com.think.runex.feature.event.model.EventItem
 import kotlinx.android.synthetic.main.list_item_all_event.view.*
 
-class AllEventsAdapter : ListAdapter<Event, AllEventsAdapter.ViewHolder>(EventsListDiffCallback()) {
+class AllEventsAdapter : ListAdapter<EventItem, AllEventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
-    private var onItemClick: ((position: Int, event: Event) -> Unit)? = null
+    private var onItemClick: ((position: Int, event: EventItem) -> Unit)? = null
 
-    fun setOnItemClick(block: (position: Int, event: Event) -> Unit) {
+    fun setOnItemClick(block: (position: Int, event: EventItem) -> Unit) {
         onItemClick = block
     }
 
@@ -28,12 +28,12 @@ class AllEventsAdapter : ListAdapter<Event, AllEventsAdapter.ViewHolder>(EventsL
         holder.bind(getItem(position), onItemClick)
     }
 
-    class EventsListDiffCallback : DiffUtil.ItemCallback<Event>() {
-        override fun areItemsTheSame(oldItem: Event, newItem: Event): Boolean {
-            return oldItem.id == newItem.id
+    class EventsListDiffCallback : DiffUtil.ItemCallback<EventItem>() {
+        override fun areItemsTheSame(oldItem: EventItem, newItem: EventItem): Boolean {
+            return oldItem.code == newItem.code
         }
 
-        override fun areContentsTheSame(oldItem: Event, newItem: Event): Boolean {
+        override fun areContentsTheSame(oldItem: EventItem, newItem: EventItem): Boolean {
             return oldItem == newItem
         }
     }
@@ -44,10 +44,10 @@ class AllEventsAdapter : ListAdapter<Event, AllEventsAdapter.ViewHolder>(EventsL
                     .inflate(R.layout.list_item_all_event, parent, false))
         }
 
-        fun bind(data: Event?, onItemClick: ((position: Int, event: Event) -> Unit)? = null) {
+        fun bind(data: EventItem?, onItemClick: ((position: Int, event: EventItem) -> Unit)? = null) {
             itemView.event_image?.loadEventsImage(data?.coverImage())
-            itemView.event_name_label?.text = data?.name ?: ""
-            itemView.event_period?.text = data?.eventPeriod(requireContext()) ?: ""
+            itemView.event_title_label?.text = data?.title ?: ""
+            itemView.event_date_label?.text = data?.eventDateDisplay ?: ""
 
             itemView.list_item_all_event?.setOnClickListener {
                 data?.also {

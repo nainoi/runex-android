@@ -20,9 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.datasource.api.ApiConfig;
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
-import com.think.runex.feature.event.model.registered.RegisteredEventInfo;
+import com.think.runex.feature.event.model.EventRegistered;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xAction;
 import com.think.runex.java.Customize.Fragment.xFragment;
@@ -54,7 +52,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     private final String ct = "EventDetailPage->";
 
     // instance variables
-    private RegisteredEvent mEvent;
+    private EventRegistered mEvent;
     private WorkoutsAdapter adapter;
 
     // explicit variables
@@ -104,14 +102,9 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
         if (mEvent == null) return v;
 
         // update props
-        mEventId = mEvent.getEventId();
-        if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
-            RegisteredEventInfo evtVal = mEvent.getRegisterInfoList().get(0);
-            if (evtVal.getEvent() != null) {
-                mEventProfile = evtVal.getEvent().coverImage();
-                mEventName = evtVal.getEvent().getName();
-            }
-        }
+        mEventId = mEvent.getId();
+        mEventProfile = mEvent.getCoverImage();
+        mEventName = mEvent.getName();
 
 
         // view matching
@@ -152,16 +145,14 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
             props.titleLabel = mEventName;
             //--> views
             //--> option button
-            if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
-                if (mEvent.getRegisterInfoList().get(0).getEvent() != null) {
-                    if (!mEvent.getRegisterInfoList().get(0).getEvent().isInApp()) {
-                        toolbar.setImageOptionIcon(R.drawable.ic_add);
-                        toolbar.setOptionButtonColorFilter(R.color.colorAccent);
-
-                        // hide toolbar option button
-                    } else toolbar.toolbarOptionButton.gone();
-                }
+            if (mEvent.isInApp()) {
+                toolbar.setImageOptionIcon(R.drawable.ic_add);
+                toolbar.setOptionButtonColorFilter(R.color.colorAccent);
+                // hide toolbar option button
+            } else {
+                toolbar.toolbarOptionButton.gone();
             }
+
 
             //--> navigate button
             toolbar.setNavigationButtonColorFilter(R.color.colorAccent);
@@ -237,21 +228,17 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     private void eventViewHolder(View v) {
         // prepare usage variables
         View vh = v.findViewById(R.id.vh_event);
-        if (mEvent.getRegisterInfoList() != null && mEvent.getRegisterInfoList().size() > 0) {
-            RegisteredEventInfo evtVal = mEvent.getRegisterInfoList().get(0);
-            if (evtVal.getEvent() != null) {
-                TextView _lbEventName = vh.findViewById(R.id.lb_event_name);
-                TextView _lbEventType = vh.findViewById(R.id.lb_event_type);
-                ImageView imgCover = vh.findViewById(R.id.view_cover);
 
-                // binding
-                _lbEventName.setText(evtVal.getEvent().getName());
-                _lbEventType.setText((evtVal.getEvent().getCategory()));
+        TextView _lbEventName = vh.findViewById(R.id.lb_event_name);
+        TextView _lbEventType = vh.findViewById(R.id.lb_event_type);
+        ImageView imgCover = vh.findViewById(R.id.view_cover);
 
-                //--> image
-                Picasso.get().load(evtVal.getEvent().coverImage()).into(imgCover);
-            }
-        }
+        // binding
+        _lbEventName.setText(mEvent.getName());
+        _lbEventType.setText((mEvent.getCategory()));
+
+        //--> image
+        Picasso.get().load(mEvent.getCategory()).into(imgCover);
     }
 
     // view matching
@@ -390,7 +377,7 @@ public class EventDetailPage extends xFragment implements View.OnClickListener
     /**
      * Setter
      */
-    public xFragment setEvent(RegisteredEvent event) {
+    public xFragment setEvent(EventRegistered event) {
         mEvent = event;
 
         return this;

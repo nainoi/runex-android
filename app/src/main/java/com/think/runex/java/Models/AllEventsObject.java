@@ -1,6 +1,6 @@
 package com.think.runex.java.Models;
 
-import com.think.runex.feature.event.model.Event;
+import com.think.runex.feature.event.model.EventItem;
 
 import java.util.List;
 
@@ -8,7 +8,7 @@ public class AllEventsObject {
 
     private int code;
     private String msg;
-    private List<Event> data;
+    private List<EventItem> data;
 
     public int getCode() {
         return code;
@@ -26,11 +26,11 @@ public class AllEventsObject {
         this.msg = msg;
     }
 
-    public List<Event> getData() {
+    public List<EventItem> getData() {
         return data;
     }
 
-    public void setData(List<Event> data) {
+    public void setData(List<EventItem> data) {
         this.data = data;
     }
 }

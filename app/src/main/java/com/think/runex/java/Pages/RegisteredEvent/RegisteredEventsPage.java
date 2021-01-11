@@ -20,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.feature.event.model.registered.RegisteredEvent;
+import com.think.runex.feature.event.model.EventRegistered;
 import com.think.runex.feature.user.UserInfo;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
@@ -55,7 +55,7 @@ public class RegisteredEventsPage extends xFragment implements
     // instance variables
     private ChildFragmentUtils mChildFragmentUtils;
     private EventAdapter eventAdapter;
-    private List<RegisteredEvent> events = new ArrayList<>();
+    private List<EventRegistered> events = new ArrayList<>();
 
     // explicit variables
     private boolean ON_REFRESH = false;

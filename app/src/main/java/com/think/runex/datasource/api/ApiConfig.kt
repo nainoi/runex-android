@@ -9,9 +9,8 @@ class ApiConfig {
 
         var BASE_URL: String = "https://api.runex.co"
             private set
-            //TODO("Force to production url")
             get() = when (BuildConfig.DEBUG) {
-                true -> "https://api.runex.co" //"https://runex-api.thinkdev.app"
+                true -> "https://runex-api.thinkdev.app" //"https://api.runex.co"
                 false -> "https://api.runex.co"
             }
 

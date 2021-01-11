@@ -19,7 +19,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.feature.event.model.Event;
+import com.think.runex.feature.event.model.EventItem;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.AllEventsObject;
 import com.think.runex.java.Utils.L;
@@ -102,9 +102,9 @@ public class AllEventsPage extends xFragment {
     }
 
     private void viewEventListener() {
-        adapter.setOnItemClick(new Function2<Integer, Event, Unit>() {
+        adapter.setOnItemClick(new Function2<Integer, EventItem, Unit>() {
             @Override
-            public Unit invoke(Integer position, Event event) {
+            public Unit invoke(Integer position, EventItem event) {
                 Intent intent = new Intent(activity, EventPreviewActivity.class);
                 intent.putExtra(KEY_EVENT, event);
                 startActivity(intent);

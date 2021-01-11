@@ -43,7 +43,7 @@
                 app:tint="@color/iconColorDisable" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/event_name_label"
+                android:id="@+id/event_title_label"
                 style="@style/TextBody.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -52,12 +52,12 @@
                 android:layout_toEndOf="@+id/event_icon" />
 
             <androidx.appcompat.widget.AppCompatTextView
-                android:id="@+id/event_period"
+                android:id="@+id/event_date_label"
                 style="@style/TextBody.Hint"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/event_name_label"
-                android:layout_alignStart="@+id/event_name_label"
+                android:layout_below="@+id/event_title_label"
+                android:layout_alignStart="@+id/event_title_label"
                 android:layout_marginTop="@dimen/space_4dp"
                 android:layout_marginEnd="@dimen/space_8dp"
                 android:layout_marginBottom="@dimen/space_24dp" />
