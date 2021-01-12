@@ -12,7 +12,7 @@ const val ANDROID = "Android"
 const val APP_SCHEME = "runex"
 const val AUTHORIZATION = "Authorization"
 
-const val GOOGLE_MAP_DEFAULT_ZOOM = 18f
+const val GOOGLE_MAP_DEFAULT_ZOOM = 16f
 
 /**
  * Update last user-agent from https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome
@@ -30,8 +30,10 @@ const val KEY_EVENT = "event"
 const val KEY_ERROR = "error"
 const val KEY_DATA = "data"
 const val KEY_FIREBASE_TOKEN = "firebase_token"
-const val KEY_REFRESH_TOKEN = "refresh_token"
+const val KEY_LOCATION = "location"
 const val KEY_MESSAGE = "msg"
+const val KEY_REFRESH_TOKEN = "refresh_token"
+const val KEY_STATUS = "status"
 const val KEY_STATUS_CODE = "code"
 const val KEY_VERSION = "version"
 

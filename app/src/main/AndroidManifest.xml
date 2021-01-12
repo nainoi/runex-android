@@ -121,6 +121,8 @@
 
         <service
             android:name=".feature.workout.WorkoutService"
+            android:enabled="true"
+            android:exported="true"
             android:foregroundServiceType="location"
             android:icon="@drawable/ic_logo_small"
             android:label="@string/workout_service_name" />

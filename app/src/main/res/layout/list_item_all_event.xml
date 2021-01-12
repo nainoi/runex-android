@@ -36,8 +36,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/event_icon"
-                android:layout_width="@dimen/system_icon_size_dense"
-                android:layout_height="@dimen/system_icon_size_dense"
+                android:layout_width="@dimen/icon_size_system_dense"
+                android:layout_height="@dimen/icon_size_system_dense"
                 android:layout_margin="@dimen/space_8dp"
                 app:srcCompat="@mipmap/ic_running"
                 app:tint="@color/iconColorDisable" />

@@ -425,41 +425,41 @@ public class BackgroundService extends Service {
 
     }
 
-    private void DebugUIBroadcast(xLocation location) {
-        // prepare usage variables
-        if (mLocationManager == null)
-            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
-
-        // getting GPS status
-        boolean isGPSEnabled = mLocationManager
-                .isProviderEnabled(LocationManager.GPS_PROVIDER);
-
-        // getting network status
-        boolean isNetworkEnabled = mLocationManager
-                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
-
-        // broadcast location
-        // prepare usage variables
-        Intent i = new Intent();
-        DebugUIObject debug = new DebugUIObject();
-        BroadcastObject broadcastObject = new BroadcastObject();
-
-        //--> debug
-        debug.xLocation = location;
-        debug.isGPSEnabled = isGPSEnabled;
-        debug.isNetworkEnabled = isNetworkEnabled;
-        //--> broadcast
-        broadcastObject.broadcastType = BroadcastType.ACTIONS;
-        broadcastObject.broadcastAction = BroadcastAction.UI_DEBUG_UPDATE;
-        broadcastObject.debugUIObject = debug;
-
-        //--> intent props
-        i.setAction(Globals.BROADCAST_TEST);
-        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
-
-        // send broadcast
-        sendBroadcast(i);
-    }
+//    private void DebugUIBroadcast(xLocation location) {
+//        // prepare usage variables
+//        if (mLocationManager == null)
+//            mLocationManager = (LocationManager) getSystemService(LOCATION_SERVICE);
+//
+//        // getting GPS status
+//        boolean isGPSEnabled = mLocationManager
+//                .isProviderEnabled(LocationManager.GPS_PROVIDER);
+//
+//        // getting network status
+//        boolean isNetworkEnabled = mLocationManager
+//                .isProviderEnabled(LocationManager.NETWORK_PROVIDER);
+//
+//        // broadcast location
+//        // prepare usage variables
+//        Intent i = new Intent();
+//        DebugUIObject debug = new DebugUIObject();
+//        BroadcastObject broadcastObject = new BroadcastObject();
+//
+//        //--> debug
+//        debug.xLocation = location;
+//        debug.isGPSEnabled = isGPSEnabled;
+//        debug.isNetworkEnabled = isNetworkEnabled;
+//        //--> broadcast
+//        broadcastObject.broadcastType = BroadcastType.ACTIONS;
+//        broadcastObject.broadcastAction = BroadcastAction.UI_DEBUG_UPDATE;
+//        broadcastObject.debugUIObject = debug;
+//
+//        //--> intent props
+//        i.setAction(Globals.BROADCAST_TEST);
+//        i.putExtra(Globals.SERIALIZABLE, broadcastObject);
+//
+//        // send broadcast
+//        sendBroadcast(i);
+//    }
 
     private void updateNotifyContent() {
         // prepare usage variables

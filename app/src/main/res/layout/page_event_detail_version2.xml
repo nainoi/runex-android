@@ -101,7 +101,7 @@
                     android:layout_toEndOf="@+id/leader_board_icon"
                     android:text="View Leaderboard"
                     android:textColor="@color/textColorPrimary"
-                    android:textSize="@dimen/text_body_heading" />
+                    android:textSize="@dimen/text_size_body_heading" />
 
                 <ImageView
                     android:id="@+id/next_icon"

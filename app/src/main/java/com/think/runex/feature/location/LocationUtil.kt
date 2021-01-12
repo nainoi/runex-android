@@ -68,7 +68,7 @@ object LocationUtil {
 
     //@RequiresPermission(allOf = [Manifest.permission.ACCESS_COARSE_LOCATION, Manifest.permission.ACCESS_FINE_LOCATION])
     @SuppressLint("MissingPermission")
-    fun getLastKnownLocation(context: Context, onLocationFound: ((location: Location?) -> Unit)) {
+    fun getLastLocation(context: Context, onLocationFound: ((location: Location?) -> Unit)) {
         if (context.havePermission(Manifest.permission.ACCESS_FINE_LOCATION).not()) {
             Logger.error(simpleName(), "Location permissions denied")
             onLocationFound.invoke(null)
@@ -120,7 +120,7 @@ object LocationUtil {
         }
     }
 
-    private fun onCheckLocationSettingsError(context: Context, error: Exception) {
+    fun onCheckLocationSettingsError(context: Context, error: Exception) {
         if (error is ApiException) {
             when (error.statusCode) {
                 LocationSettingsStatusCodes.RESOLUTION_REQUIRED -> {

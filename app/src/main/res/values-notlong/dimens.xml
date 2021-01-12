@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <!-- Workout Screen -->
+    <dimen name="workout_control_button_size">64dp</dimen>
+    <dimen name="workout_detail_layout_padding">8dp</dimen>
+    <dimen name="workout_distance_label_size">36sp</dimen>
+    <dimen name="workout_margin">16dp</dimen>
+
+</resources>

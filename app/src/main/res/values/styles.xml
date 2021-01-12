@@ -34,19 +34,19 @@
     </style>
 
     <style name="AppAlertDialog.TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
-        <item name="android:textSize">@dimen/text_title</item>
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="AppAlertDialog.BodyTextStyle">
-        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
     <style name="AppAlertDialog.PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textAllCaps">false</item>
-        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
         <item name="android:textStyle">bold</item>
@@ -55,7 +55,7 @@
     <style name="AppAlertDialog.NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
         <item name="android:textAllCaps">false</item>
         <item name="android:textColor">@color/textColorHint</item>
-        <item name="android:textSize">@dimen/text_body</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
         <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
         <item name="android:textStyle">bold</item>
     </style>
@@ -83,7 +83,7 @@
     <!-- Base Button -->
     <style name="Button" parent="@style/Widget.AppCompat.Button.Borderless">
         <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
-        <item name="android:textSize">@dimen/text_body_heading</item>
+        <item name="android:textSize">@dimen/text_size_body_heading</item>
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:textAllCaps">false</item>
@@ -92,8 +92,8 @@
         <item name="android:paddingEnd">@dimen/space_16dp</item>
         <item name="android:minHeight">@dimen/space_48dp</item>
         <item name="autoSizeTextType">uniform</item>
-        <item name="autoSizeMaxTextSize">@dimen/text_body_heading</item>
-        <item name="autoSizeMinTextSize">@dimen/text_body</item>
+        <item name="autoSizeMaxTextSize">@dimen/text_size_body_heading</item>
+        <item name="autoSizeMinTextSize">@dimen/text_size_body</item>
     </style>
 
     <style name="Button.Primary" parent="Button">
@@ -108,7 +108,7 @@
 
     <!-- Text Input -->
     <style name="TextInput">
-        <item name="android:textSize">@dimen/text_body_heading</item>
+        <item name="android:textSize">@dimen/text_size_body_heading</item>
         <item name="android:textColorHint">@color/textColorHint</item>
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:minHeight">@dimen/space_48dp</item>

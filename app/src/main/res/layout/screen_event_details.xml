@@ -116,8 +116,8 @@
 
             <androidx.appcompat.widget.AppCompatImageView
                 android:id="@+id/running_icon"
-                android:layout_width="@dimen/system_icon_size"
-                android:layout_height="@dimen/system_icon_size"
+                android:layout_width="@dimen/icon_size_system"
+                android:layout_height="@dimen/icon_size_system"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/space_8dp"
                 app:srcCompat="@mipmap/ic_running"

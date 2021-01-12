@@ -3,9 +3,21 @@ package com.think.runex.feature.workout
 import androidx.annotation.IntDef
 import com.think.runex.feature.event.EventItemType
 
-//@IntDef(value = [EventItemType.NORMAL, EventItemType.MY_EVENT])
+@IntDef(value = [WorkoutStatus.UNKNOWN, WorkoutStatus.READY, WorkoutStatus.WORKING_OUT,
+    WorkoutStatus.PAUSE, WorkoutStatus.STOP, WorkoutStatus.FINISH])
 annotation class WorkoutStatus {
     companion object {
 
+        const val UNKNOWN = -1
+
+        /**
+         * First status when open workout screen it mean
+         * ready to start working out
+         */
+        const val READY = 0
+        const val WORKING_OUT = 1
+        const val PAUSE = 2
+        const val STOP = 3
+        const val FINISH = 4
     }
 }

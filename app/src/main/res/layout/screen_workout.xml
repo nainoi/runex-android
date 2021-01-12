@@ -22,9 +22,9 @@
         android:layout_height="wrap_content"
         android:layout_above="@+id/distance_label"
         android:layout_centerHorizontal="true"
-        android:layout_marginStart="@dimen/space_24dp"
-        android:layout_marginTop="@dimen/space_24dp"
-        android:layout_marginEnd="@dimen/space_24dp"
+        android:layout_marginStart="@dimen/workout_margin"
+        android:layout_marginTop="@dimen/workout_margin"
+        android:layout_marginEnd="@dimen/workout_margin"
         android:text="@string/distance_kg" />
 
     <TextView
@@ -39,7 +39,7 @@
         android:maxLines="1"
         android:text="0.00"
         android:textColor="@color/textColorPrimary"
-        android:textSize="48sp"
+        android:textSize="@dimen/workout_distance_label_size"
         android:textStyle="bold" />
 
     <LinearLayout
@@ -47,10 +47,10 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/control_layout"
-        android:layout_marginStart="@dimen/space_24dp"
-        android:layout_marginEnd="@dimen/space_24dp"
+        android:layout_marginStart="@dimen/workout_margin"
+        android:layout_marginEnd="@dimen/workout_margin"
         android:orientation="horizontal"
-        android:padding="@dimen/space_16dp">
+        android:padding="@dimen/workout_detail_layout_padding">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -147,7 +147,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
+        android:layout_marginStart="@dimen/workout_margin"
         android:layout_marginTop="@dimen/space_8dp"
+        android:layout_marginEnd="@dimen/workout_margin"
         android:layout_marginBottom="@dimen/space_40dp"
         android:orientation="horizontal">
 
@@ -169,8 +171,8 @@
                 android:padding="@dimen/space_4dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/space_72dp"
-                    android:layout_height="@dimen/space_72dp"
+                    android:layout_width="@dimen/workout_control_button_size"
+                    android:layout_height="@dimen/workout_control_button_size"
                     android:layout_gravity="center"
                     android:background="@drawable/shape_circle_accent"
                     app:srcCompat="@drawable/ic_play" />
@@ -206,11 +208,10 @@
                 android:padding="@dimen/space_4dp">
 
                 <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/space_84dp"
-                    android:layout_height="@dimen/space_84dp"
+                    android:layout_width="@dimen/workout_control_button_size"
+                    android:layout_height="@dimen/workout_control_button_size"
                     android:layout_gravity="center"
                     android:background="@drawable/shape_circle_accent"
-                    android:scaleType="center"
                     app:srcCompat="@drawable/ic_play" />
             </FrameLayout>
 

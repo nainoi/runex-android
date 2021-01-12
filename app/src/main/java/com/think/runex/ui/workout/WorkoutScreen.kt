@@ -3,13 +3,17 @@ package com.think.runex.ui.workout
 import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
-import android.content.Intent
+import android.content.*
+import android.location.Location
 import android.net.Uri
 import android.os.Bundle
+import android.os.IBinder
+import android.os.Messenger
 import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.SupportMapFragment
@@ -21,23 +25,69 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
+import com.think.runex.common.serviceIsRunning
+import com.think.runex.common.serviceIsRunningInForeground
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.showAlertDialog
-import com.think.runex.config.GOOGLE_MAP_DEFAULT_ZOOM
-import com.think.runex.config.RC_OPEN_GPS
-import com.think.runex.config.RC_PERMISSION_LOCATION
+import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
+import com.think.runex.feature.workout.WorkoutReceiver
+import com.think.runex.feature.workout.WorkoutService
+import com.think.runex.feature.workout.WorkoutStatus
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.util.NightMode
 import com.think.runex.util.launch
+import com.think.runex.util.launchMainThread
+import com.think.runex.util.runOnUiThread
 import kotlinx.coroutines.delay
+import java.lang.Exception
 
 class WorkoutScreen : BaseScreen() {
 
     private var googleMap: GoogleMap? = null
 
+    private var workoutServiceMessenger: Messenger? = null
+
+    //Monitors the state of the connection to the service.
+    private val serviceConnection = object : ServiceConnection {
+        override fun onServiceDisconnected(name: ComponentName?) {
+            workoutServiceMessenger = null
+        }
+
+        override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
+            workoutServiceMessenger = Messenger(service)
+        }
+    }
+
+    private val workoutReceiver: WorkoutReceiver by lazy {
+        object : WorkoutReceiver() {
+            override fun onReceive(context: Context?, intent: Intent?) {
+                if (view == null || isAdded.not()) return
+                if (intent?.action != WorkoutService.ACTION_BROADCAST) return
+
+                when (intent.getIntExtra(KEY_STATUS, WorkoutStatus.UNKNOWN)) {
+                    WorkoutStatus.READY -> {
+                        //Update location when have location data from intent
+                        intent.getParcelableExtra<Location>(KEY_LOCATION)?.also { location ->
+                            runOnUiThread { moveMapCameraToLocation(location) }
+                        }
+                    }
+                    WorkoutStatus.WORKING_OUT -> {
+
+                    }
+                    WorkoutStatus.PAUSE -> {
+
+                    }
+                    WorkoutStatus.STOP -> {
+
+                    }
+                }
+            }
+        }
+    }
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        Logger.warning(simpleName(), "onCreate")
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -47,24 +97,74 @@ class WorkoutScreen : BaseScreen() {
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
+        subscribeUi()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
-        if(hidden.not()){
-            setStatusBarColor(isLightStatusBar = true)
+        Logger.warning(simpleName(), "onHiddenChanged: $hidden")
+        when (hidden) {
+            true -> {
+                unbindWorkoutServiceWhenNotForeGround()
+            }
+            false -> {
+                setStatusBarColor(isLightStatusBar = true)
+                bindWorkoutServiceIfNotRunning()
+            }
+        }
+    }
+
+    override fun onStart() {
+        super.onStart()
+        Logger.warning(simpleName(), "onStart")
+
+        //Initial google map and bind workout service.
+        initGoogleMap {
+            bindWorkoutServiceIfNotRunning()
+            LocalBroadcastManager.getInstance(requireContext())
+                    .registerReceiver(workoutReceiver, IntentFilter(WorkoutService.ACTION_BROADCAST))
+        }
+    }
+
+    override fun onResume() {
+        super.onResume()
+        Logger.warning(simpleName(), "onResume")
+    }
+
+    override fun onPause() {
+        super.onPause()
+        Logger.warning(simpleName(), "onPause")
+    }
+
+    override fun onStop() {
+        super.onStop()
+        Logger.warning(simpleName(), "onStop")
+        try {
+            unbindWorkoutServiceWhenNotForeGround()
+            LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(workoutReceiver)
+
+        } catch (error: Exception) {
+            error.printStackTrace()
         }
     }
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = true)
-        initGoogleMap()
     }
 
-    private fun initGoogleMap() {
-        (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment: SupportMapFragment ->
+    private fun subscribeUi() {
+
+    }
+
+    private fun initGoogleMap(callbacks: () -> Unit) {
+        if (googleMap != null) {
+            callbacks.invoke()
+            return
+        }
+        (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment ->
             mapFragment.getMapAsync { googleMap: GoogleMap ->
                 onMapReady(googleMap)
+                callbacks.invoke()
             }
         }
     }
@@ -72,11 +172,52 @@ class WorkoutScreen : BaseScreen() {
     private fun onMapReady(googleMap: GoogleMap) {
         this.googleMap = googleMap
         this.googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-        getLastKnownLocation()
+    }
+
+
+    private fun bindWorkoutService() {
+        if (checkLocationPermissionsAndOpenGps()) {
+            val intent = Intent(requireContext(), WorkoutService::class.java)
+            requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
+            Logger.info(simpleName(), "bindWorkoutService")
+        }
+    }
+
+    /**
+     * Check workout service is running, if not runnig
+     * will be bind service
+     */
+    private fun bindWorkoutServiceIfNotRunning() {
+        if (requireContext().serviceIsRunning(WorkoutService::class.java).not()) {
+            Logger.warning(simpleName(), "Workout service not running")
+            bindWorkoutService()
+        }
+    }
+
+    private fun unbindWorkoutService() = try {
+        requireContext().unbindService(serviceConnection)
+        Logger.error(simpleName(), "unbindWorkoutService")
+    } catch (error: Exception) {
+        error.printStackTrace()
+    }
+
+    /**
+     * Check workout service is running in foreground (On working out?)
+     * if service is not foreground will be unbind service
+     */
+    private fun unbindWorkoutServiceWhenNotForeGround() {
+        if (requireContext().serviceIsRunningInForeground(WorkoutService::class.java).not()) {
+            Logger.warning(simpleName(), "Workout service not running in foreground")
+            unbindWorkoutService()
+        }
+    }
+
+    private fun moveMapCameraToLocation(location: Location) {
+        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), GOOGLE_MAP_DEFAULT_ZOOM))
     }
 
     @SuppressLint("MissingPermission")
-    private fun getLastKnownLocation() {
+    private fun getLastLocation() {
         //Check location permissions before get last location
         val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         if (havePermissions(permissions, RC_PERMISSION_LOCATION)) {
@@ -84,7 +225,7 @@ class WorkoutScreen : BaseScreen() {
             when (LocationUtil.isGpsEnabled(requireContext())) {
                 true -> {
                     //TODO("May be update ui to detecting location")
-                    LocationUtil.getLastKnownLocation(requireContext()) { location ->
+                    LocationUtil.getLastLocation(requireContext()) { location ->
                         if (location != null) {
                             googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), GOOGLE_MAP_DEFAULT_ZOOM))
                         }
@@ -95,11 +236,24 @@ class WorkoutScreen : BaseScreen() {
         }
     }
 
+    @SuppressLint("MissingPermission")
+    private fun checkLocationPermissionsAndOpenGps(): Boolean {
+        val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
+        if (havePermissions(permissions, RC_PERMISSION_LOCATION)) {
+            googleMap?.isMyLocationEnabled = true
+            when (LocationUtil.isGpsEnabled(requireContext())) {
+                true -> return true
+                false -> LocationUtil.openGps(requireActivity())
+            }
+        }
+        return false
+    }
+
     override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
         when (requestCode) {
             RC_PERMISSION_LOCATION -> when {
                 //User allow to access location.
-                allPermissionsGranted(grantResults) -> getLastKnownLocation()
+                allPermissionsGranted(grantResults) -> bindWorkoutService()
                 //User denied access to location.
                 shouldShowPermissionRationale(permissions) -> showToast(R.string.location_permission_denied)
                 //User tick Don't ask again.
@@ -114,7 +268,7 @@ class WorkoutScreen : BaseScreen() {
             RC_OPEN_GPS -> if (resultCode == Activity.RESULT_OK) {
                 launch {
                     delay(100)
-                    getLastKnownLocation()
+                    bindWorkoutService()
                 }
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
@@ -131,5 +285,15 @@ class WorkoutScreen : BaseScreen() {
             addCategory(Intent.CATEGORY_DEFAULT)
             addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
         })
+    }
+
+    override fun onDestroyView() {
+        super.onDestroyView()
+        Logger.warning(simpleName(), "onDestroyView")
+    }
+
+    override fun onDestroy() {
+        super.onDestroy()
+        Logger.error(simpleName(), "onDestroy")
     }
 }

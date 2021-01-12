@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+    <!-- Start Old -->
     <!--  Login  -->
     <dimen name="login_title_size">48dp</dimen>
     <dimen name="login_social_button_description_size">14dp</dimen>
@@ -7,4 +8,5 @@
     <!-- Event -->
     <dimen name="event_image_width">256dp</dimen>
     <dimen name="event_image_height">128dp</dimen>
+    <!-- End Old -->
 </resources>
