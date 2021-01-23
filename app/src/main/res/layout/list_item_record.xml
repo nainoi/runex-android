@@ -13,7 +13,7 @@
         android:layout_width="40dp"
         android:layout_height="40dp"
         android:adjustViewBounds="true"
-        android:background="@drawable/shape_activity_type"
+        android:background="@drawable/shape_circle_accent"
         android:padding="6dp"
         android:scaleType="centerInside"
         android:src="@drawable/ic_my_event"

@@ -23,6 +23,7 @@ const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 10) AppleW
 /**
  * Global Key
  */
+const val KEY_ACTION = "action"
 const val KEY_API = "api"
 const val KEY_ACCESS_TOKEN = "access_token"
 const val KEY_CODE = "code"
@@ -33,8 +34,10 @@ const val KEY_FIREBASE_TOKEN = "firebase_token"
 const val KEY_LOCATION = "location"
 const val KEY_MESSAGE = "msg"
 const val KEY_REFRESH_TOKEN = "refresh_token"
+const val KEY_SCREEN = "screen"
 const val KEY_STATUS = "status"
 const val KEY_STATUS_CODE = "code"
+const val KEY_TYPE = "type"
 const val KEY_VERSION = "version"
 
 

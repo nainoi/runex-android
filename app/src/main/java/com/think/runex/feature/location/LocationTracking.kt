@@ -17,6 +17,17 @@ class LocationTracking(private val context: Context,
                        locationCallback: LocationCallback? = null) {
 
     companion object {
+
+        /**
+         * Error maximum value of accuracy
+         * if [Location.getAccuracy] returns 50f, that means there is a 68% probability
+         * that you are within 50 meter of the GPS location reported.
+         * So [Location.getAccuracy] it returns 1f that means the object location is accurate to within 1 meter radius
+         * Lower the integer better the accuracy
+         */
+        const val MAX_ERROR_ACCURACY = 50f
+
+
         /**
          * The desired interval for location updates. Inexact. Updates may be more or less frequent.
          */
@@ -27,8 +38,6 @@ class LocationTracking(private val context: Context,
          * than this value.
          */
         private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
-
-        private const val KEY_REQUESTING_LOCATION_UPDATES = "requesting_location_updates"
     }
 
     /**

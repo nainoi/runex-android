@@ -67,7 +67,7 @@
                     android:layout_gravity="end"
                     android:layout_marginTop="@dimen/space_8dp"
                     android:layout_marginEnd="@dimen/space_8dp"
-                    android:background="@drawable/shape_btn_add_activity"
+                    android:background="@drawable/shape_circle_white"
                     android:scaleType="centerCrop"
                     android:src="@mipmap/ic_plus" />
 

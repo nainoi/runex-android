@@ -1,45 +1,59 @@
 package com.think.runex.common
 
+import androidx.annotation.IntRange
+
 fun Int.displayFormat(): String = try {
     String.format("%,d", this)
-} catch (e: Exception) {
-    e.printStackTrace()
-    ""
+} catch (error: Throwable) {
+    error.printStackTrace()
+    toString()
+}
+
+fun Int.displayFormat(@IntRange(from = 1, to = 10) decimalCount: Int): String = try {
+    String.format("%,.${decimalCount}f", this.toFloat())
+} catch (error: Throwable) {
+    error.printStackTrace()
+    toString()
 }
 
 fun Long.displayFormat(): String = try {
     String.format("%,d", this)
-} catch (e: Exception) {
-    e.printStackTrace()
-    ""
+} catch (error: Throwable) {
+    error.printStackTrace()
+    toString()
 }
 
-fun Float.displayFormat(): String = try {
-    String.format("%,.2f", this).remove00Decimal()
-} catch (e: Exception) {
-    e.printStackTrace()
-    ""
+fun Long.displayFormat(@IntRange(from = 1, to = 10) decimalCount: Int): String = try {
+    String.format("%,.${decimalCount}f", this)
+} catch (error: Throwable) {
+    error.printStackTrace()
+    toString()
 }
 
-fun Double.displayFormat(): String = try {
-    String.format("%,.2f", this).remove00Decimal()
-} catch (e: Exception) {
-    e.printStackTrace()
-    ""
-}
 
-fun String.remove00Decimal(): String = this.let {
-    when {
-        it.contains(".00") -> it.replace(".00", "")
-        it[it.lastIndex] == '0' -> it.substring(0, it.lastIndex)
-        else -> it
+fun Float.displayFormat(@IntRange(from = 1, to = 10) decimalCount: Int = 2,
+                        awaysShowDecimal: Boolean = false): String {
+    return try {
+        when (this % 1 != 0f || awaysShowDecimal) {
+            true -> String.format("%,.${decimalCount}f", this)
+            false -> String.format("%,d", this.toInt())
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        toString()
     }
 }
 
-/**
- * Convert number 0-9 to 00 - 09 at string.
- */
-fun Int.to2Digits(): String = when (this < 10) {
-    true -> "0$this"
-    false -> this.toString()
+fun Double.displayFormat(@IntRange(from = 1, to = 10) decimalCount: Int = 2,
+                         awaysShowDecimal: Boolean = false): String {
+
+    return try {
+        when (this % 1 != 0.0 || awaysShowDecimal) {
+            true -> String.format("%,.${decimalCount}f", this)
+            false -> String.format("%,d", this.toInt())
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
+        toString()
+    }
 }

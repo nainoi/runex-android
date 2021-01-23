@@ -7,7 +7,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.ImageView
-import androidx.appcompat.widget.AppCompatImageView
 import androidx.appcompat.widget.AppCompatTextView
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.commit
@@ -16,16 +15,25 @@ import com.jozzee.android.core.fragment.childFragmentCount
 import com.jozzee.android.core.fragment.childFragments
 import com.jozzee.android.core.resource.getColor
 import com.think.runex.R
+import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.event.AllEventsScreen
 import com.think.runex.ui.event.MyEventsScreen
 import com.think.runex.ui.profile.ProfileScreen
-import com.think.runex.ui.workout.WorkoutHistoryScreen
+import com.think.runex.ui.workout.history.WorkoutHistoryScreen
 import com.think.runex.ui.workout.WorkoutScreen
 import kotlinx.android.synthetic.main.screen_main.*
 
 class MainScreen : BaseScreen() {
+
+    companion object {
+        fun newInstance(initialScreen: String? = null) = MainScreen().apply {
+            arguments = Bundle().apply {
+                putString(KEY_SCREEN, initialScreen)
+            }
+        }
+    }
 
     private var selectedBottomBarPosition: Int = 1
 
@@ -43,8 +51,19 @@ class MainScreen : BaseScreen() {
         super.onStart()
         //If not have any screen will be initial screen.
         if (childFragmentCount() == 0) {
-            selectedBottomBarPosition = 1
-            setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
+            //Check request screen from click notification.
+            when (arguments?.getString(KEY_SCREEN)) {
+                //When initial screen is WorkoutScreen
+                WorkoutScreen::class.java.simpleName -> {
+                    selectedBottomBarPosition = 3
+                    setActiveScreen<WorkoutScreen>(bottom_bar_menu_workout, bottom_bar_menu_workout_label)
+                }
+                //Default set home screen (AllEventsScreen)
+                else -> {
+                    selectedBottomBarPosition = 1
+                    setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
+                }
+            }
         }
     }
 
@@ -83,6 +102,9 @@ class MainScreen : BaseScreen() {
         }
     }
 
+    fun forceToWorkoutScreen() {
+        bottom_bar_menu_workout?.callOnClick()
+    }
 
     private fun disableAllMenuInBottomBar() {
         val iconColor = getColor(R.color.iconColorSecondary)

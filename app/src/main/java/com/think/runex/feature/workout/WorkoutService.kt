@@ -1,26 +1,26 @@
 package com.think.runex.feature.workout
 
 import android.annotation.SuppressLint
-import android.app.ActivityManager
-import android.app.NotificationChannel
-import android.app.NotificationManager
-import android.app.Service
-import android.content.Context
+import android.app.*
 import android.content.Intent
 import android.content.res.Configuration
 import android.location.Location
 import android.os.*
+import android.util.Log
+import androidx.core.app.NotificationCompat
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
 import com.google.android.gms.location.LocationCallback
 import com.google.android.gms.location.LocationResult
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.jozzee.android.core.view.showToast
-import com.think.runex.config.KEY_LOCATION
-import com.think.runex.config.KEY_STATUS
-import com.think.runex.config.NOTIFICATION_WORKOUT_CHANEL_ID
+import com.think.runex.R
+import com.think.runex.config.*
 import com.think.runex.feature.location.LocationTracking
-import com.think.runex.util.launchMainThread
+import com.think.runex.ui.MainActivity
+import com.think.runex.ui.workout.WorkoutScreen
+import java.util.concurrent.Executors
+import java.util.concurrent.ScheduledExecutorService
+import java.util.concurrent.TimeUnit
 
 open class WorkoutService : Service() {
 
@@ -36,15 +36,19 @@ open class WorkoutService : Service() {
      */
     private var changingConfiguration = false
 
-    private val messenger = Messenger(IncomingHandler())
+    private var scheduler: ScheduledExecutorService? = null
 
-    private lateinit var notificationManager: NotificationManager
+    private val workoutMessenger = Messenger(IncomingHandler())
+
+    private var notificationManager: NotificationManager? = null
 
     private lateinit var locationTracking: LocationTracking
+    private var newLocation: Location? = null
 
-    private var lastLocation: Location? = null
-
-    private var status: Int = WorkoutStatus.READY
+    private var record: WorkoutRecord? = null
+    private var status: Int = WorkoutStatus.UNKNOWN
+    private var lastUpdateTimeMillis: Long = 0
+    private var lastUpdateLocation: Location? = null
 
     /**
      * Callback for changes in location.
@@ -54,10 +58,13 @@ open class WorkoutService : Service() {
             override fun onLocationResult(result: LocationResult?) {
                 super.onLocationResult(result)
                 result?.lastLocation?.let { location ->
-                    Logger.info(simpleName(), "On location update : latitude: ${location.latitude}, longitude: ${location.longitude}")
-                    lastLocation = location
+                    Logger.info("WorkoutService", "Location update : latitude: ${location.latitude}, longitude: ${location.longitude}, accuracy: ${location.accuracy} at time: ${location.time}")
+                    newLocation = location
+                    if (status == WorkoutStatus.UNKNOWN) {
+                        status = WorkoutStatus.READY
+                    }
                     if (status == WorkoutStatus.READY || status == WorkoutStatus.PAUSE) {
-                        senUpdateLocationBroadcast()
+                        broadcastWorkingOutUpdate(WorkingOutLocation(newLocation))
                     }
                 }
             }
@@ -66,23 +73,22 @@ open class WorkoutService : Service() {
 
     override fun onCreate() {
         Logger.info(simpleName(), "onCreate")
-
-        //Set up notification manager
-        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
-        // Android O requires a Notification Channel.
-        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
-            // Create the channel for the notification
-            val channel = NotificationChannel(NOTIFICATION_WORKOUT_CHANEL_ID, "Workout", NotificationManager.IMPORTANCE_DEFAULT)
-            // Set the Notification Channel for the Notification Manager.
-            notificationManager.createNotificationChannel(channel)
-        }
-
         //Setup location tracking
         locationTracking = LocationTracking(this, locationCallback)
+
+        //broadcast initial status
+        val intent = Intent(ACTION_BROADCAST)
+        intent.putExtra(KEY_STATUS, status)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
     override fun onStartCommand(intent: Intent?, flags: Int, startId: Int): Int {
-        Logger.info(simpleName(), "onStartCommand")
+        Logger.info(simpleName(), "onStartCommand, startId: $startId")
+        //Check click action from notification
+        when (intent?.getIntExtra(KEY_ACTION, 0)) {
+            WorkoutAction.PAUSE -> onPauseWorkingOut()
+            WorkoutAction.RESUME -> onResumeWorkingOut()
+        }
         return START_STICKY
     }
 
@@ -97,7 +103,7 @@ open class WorkoutService : Service() {
         Logger.info(simpleName(), "Start request location update")
         locationTracking.requestLocationUpdates()
         changingConfiguration = false
-        return messenger.binder
+        return workoutMessenger.binder
     }
 
     override fun onRebind(intent: Intent?) {
@@ -124,18 +130,134 @@ open class WorkoutService : Service() {
         Logger.error(simpleName(), "onDestroy")
     }
 
-    private fun startWorkingOut() {
-
+    private fun onStartWorkingOut(type: String) {
+        if (isRunningInForeground()) return
+        setupNotificationManager()
+        record = WorkoutRecord(type, System.currentTimeMillis())
+        status = WorkoutStatus.WORKING_OUT
+        startService(Intent(applicationContext, WorkoutService::class.java))
+        startForeground(NOTIFICATION_WORKOUT_ID, getNotification())
+        startScheduledThread()
     }
 
+    private fun onPauseWorkingOut() {
+        Log.d(simpleName(), "Action Pause")
+        status = WorkoutStatus.PAUSE
+        stopScheduledThread()
+        broadcastWorkingOutUpdate(WorkingOutLocation(lastUpdateLocation), record?.getDisplayData())
+    }
 
-    private fun senUpdateLocationBroadcast() {
+    private fun onResumeWorkingOut() {
+        Log.d(simpleName(), "Action Resume")
+        status = WorkoutStatus.WORKING_OUT
+        startScheduledThread()
+        broadcastWorkingOutUpdate(WorkingOutLocation(lastUpdateLocation), record?.getDisplayData())
+    }
+
+    private fun onStopWorkingOut() {
+        Log.d(simpleName(), "Action Stop")
+        status = WorkoutStatus.STOP
+        stopScheduledThread()
+        //TODO("Stop and clear data in service and stop for ground service")
+    }
+
+    private fun startScheduledThread() {
+        if (scheduler != null) {
+            stopScheduledThread()
+        }
+
+        //Set last update time and location
+        lastUpdateTimeMillis = System.currentTimeMillis()
+        lastUpdateLocation = newLocation
+
+        scheduler = Executors.newScheduledThreadPool(1)
+        scheduler?.scheduleAtFixedRate({
+
+            //Update working out record
+            record?.apply {
+                durationMillis += System.currentTimeMillis() - lastUpdateTimeMillis
+                newLocation?.also {
+                    distance += lastUpdateLocation?.distanceTo(it) ?: 0f
+                }
+            }
+
+            //Set last update time and location
+            lastUpdateTimeMillis = System.currentTimeMillis()
+            lastUpdateLocation = newLocation
+
+            //Send broadcast to update ui and update notification.
+            broadcastWorkingOutUpdate(WorkingOutLocation(lastUpdateLocation), record?.getDisplayData())
+
+        }, 0, 1, TimeUnit.SECONDS)
+    }
+
+    private fun stopScheduledThread() {
+        scheduler?.shutdownNow()
+        scheduler = null
+    }
+
+    private fun broadcastWorkingOutUpdate(location: WorkingOutLocation?, displayData: WorkingOutDisplayData? = null) {
         val intent = Intent(ACTION_BROADCAST)
         intent.putExtra(KEY_STATUS, status)
-        intent.putExtra(KEY_LOCATION, lastLocation)
+        location?.also { intent.putExtra(KEY_LOCATION, it) }
+        displayData?.also {
+            intent.putExtra(KEY_DATA, it)
+            notificationManager?.notify(NOTIFICATION_WORKOUT_ID, getNotification(it.notificationContent(resources)))
+        }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
+
+    private fun setupNotificationManager() {
+        //Set up notification manager
+        notificationManager = getSystemService(NOTIFICATION_SERVICE) as NotificationManager
+        // Android O requires a Notification Channel.
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
+            // Create the channel for the notification
+            val channel = NotificationChannel(NOTIFICATION_WORKOUT_CHANEL_ID, getString(R.string.workout), NotificationManager.IMPORTANCE_DEFAULT)
+            // Set the Notification Channel for the Notification Manager.
+            notificationManager?.createNotificationChannel(channel)
+        }
+    }
+
+    private fun getNotification(contentText: String = "00:00:00, 0.00 km"): Notification {
+
+        val activityIntent = Intent(this, MainActivity::class.java).apply {
+            addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP)
+            putExtra(KEY_SCREEN, WorkoutScreen::class.java.simpleName)
+        }
+        val pendingIntent = PendingIntent.getActivity(this, 0, activityIntent, PendingIntent.FLAG_ONE_SHOT)
+
+        val builder = NotificationCompat.Builder(this, NOTIFICATION_WORKOUT_CHANEL_ID)
+                .setOngoing(true)
+                .setOnlyAlertOnce(true)
+                .setSmallIcon(R.mipmap.ic_logo_runex)
+                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+                .setContentTitle(record?.type ?: "")
+                .setContentText(contentText)
+                .setContentIntent(pendingIntent)
+
+        if (status == WorkoutStatus.WORKING_OUT || status == WorkoutStatus.PAUSE) {
+            val intent = Intent(this, WorkoutService::class.java)
+            var icon: Int = R.drawable.ic_pause
+            var title: String = ""
+            when (status) {
+                WorkoutStatus.WORKING_OUT -> {
+                    intent.putExtra(KEY_ACTION, WorkoutAction.PAUSE)
+                    icon = R.drawable.ic_pause
+                    title = getString(R.string.pause_recording)
+                }
+                WorkoutStatus.PAUSE -> {
+                    intent.putExtra(KEY_ACTION, WorkoutAction.RESUME)
+                    icon = R.drawable.ic_play
+                    title = getString(R.string.resume_recording)
+                }
+            }
+            val servicePendingIntent = PendingIntent.getService(this, 0, intent, PendingIntent.FLAG_UPDATE_CURRENT)
+            builder.addAction(icon, title, servicePendingIntent)
+        }
+        return builder.build()
+    }
 
     /**
      * Returns true if this is a foreground service.
@@ -145,10 +267,12 @@ open class WorkoutService : Service() {
         for (service in manager.getRunningServices(Int.MAX_VALUE)) {
             if (javaClass.name == service.service.className) {
                 if (service.foreground) {
+                    Logger.debug(simpleName(), "isRunningInForeground: true")
                     return true
                 }
             }
         }
+        Logger.debug(simpleName(), "isRunningInForeground: false")
         return false
     }
 
@@ -163,13 +287,21 @@ open class WorkoutService : Service() {
     }
 
 
+    /**
+     * Handler message from [WorkoutScreen]
+     */
     @SuppressLint("HandlerLeak")
     private inner class IncomingHandler : Handler() {
         override fun handleMessage(message: Message) {
             when (message.what) {
-                //TODO("Do something when received the incoming message")
+                WorkoutAction.START -> {
+                    val type = message.data?.getString(KEY_TYPE) ?: WorkoutType.RUNNING
+                    onStartWorkingOut(type)
+                }
+                WorkoutAction.PAUSE -> onPauseWorkingOut()
+                WorkoutAction.RESUME -> onResumeWorkingOut()
+                WorkoutAction.STOP -> onStopWorkingOut()
             }
         }
     }
-
 }

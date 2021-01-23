@@ -5,20 +5,24 @@ import android.os.Bundle
 import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.Observer
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.connection.NetworkStatus
 import com.jozzee.android.core.fragment.fragmentBackStackCount
+import com.jozzee.android.core.fragment.fragmentCount
 import com.jozzee.android.core.fragment.fragments
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
 import com.think.runex.common.fadeIn
+import com.think.runex.common.findFragment
 import com.think.runex.common.getViewModel
 import com.think.runex.feature.auth.*
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.ui.workout.WorkoutScreen
 import com.think.runex.config.KEY_MESSAGE
+import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_LOGIN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.util.launch
@@ -55,19 +59,49 @@ class MainActivity : BaseActivity() {
         }
     }
 
+    /**
+     * When click notification while app is running
+     * will be call [onNewIntent] check have a request screen?
+     */
+    override fun onNewIntent(intent: Intent?) {
+        super.onNewIntent(intent)
+        Logger.warning(simpleName(), "On new intent")
+        when (intent?.getStringExtra(KEY_SCREEN)) {
+            WorkoutScreen::class.java.simpleName -> gotoWorkoutScreen()
+        }
+    }
+
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
-            true -> gotoMainScreen()
+            true -> gotoMainScreen(intent?.getStringExtra(KEY_SCREEN))
             false -> gotoOnBoardingScreen()
         }
     }
 
-    private fun gotoMainScreen() {
-        replaceFragment(MainScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
+    private fun gotoMainScreen(initialScreen: String? = null) {
+        //Add argument request screen when open app from notification
+        replaceFragment(MainScreen.newInstance(initialScreen), fadeIn(), addToBackStack = false, clearFragment = false)
     }
 
     private fun gotoOnBoardingScreen() {
         replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
+    }
+
+    private fun gotoWorkoutScreen() {
+        for (i in fragmentCount() - 1 downTo 0) {
+            supportFragmentManager.fragments[i]?.also { fragment ->
+                if (fragment is SupportRequestManagerFragment) {
+                    return@also
+                }
+                if (fragment is MainScreen) {
+                    fragment.forceToWorkoutScreen()
+                    return
+                } else {
+                    gotoMainScreen(WorkoutScreen::class.java.simpleName)
+                    return
+                }
+            }
+        }
     }
 
     override fun onBackPressed() {
@@ -103,12 +137,7 @@ class MainActivity : BaseActivity() {
                  * [WorkoutScreen] it a only screen that request [RC_OPEN_GPS] for now,
                  * which that is child fragment of [MainScreen]
                  */
-                fragments()?.forEach { childFragment ->
-                    if (childFragment is MainScreen) {
-                        childFragment.onActivityResult(requestCode, resultCode, data)
-                        return@forEach
-                    }
-                }
+                findFragment<MainScreen>()?.onActivityResult(requestCode, resultCode, data)
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }

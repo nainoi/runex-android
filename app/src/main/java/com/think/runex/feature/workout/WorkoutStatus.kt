@@ -4,7 +4,7 @@ import androidx.annotation.IntDef
 import com.think.runex.feature.event.EventItemType
 
 @IntDef(value = [WorkoutStatus.UNKNOWN, WorkoutStatus.READY, WorkoutStatus.WORKING_OUT,
-    WorkoutStatus.PAUSE, WorkoutStatus.STOP, WorkoutStatus.FINISH])
+    WorkoutStatus.PAUSE, WorkoutStatus.STOP])
 annotation class WorkoutStatus {
     companion object {
 
@@ -15,9 +15,22 @@ annotation class WorkoutStatus {
          * ready to start working out
          */
         const val READY = 0
+
+        /**
+         * On working out such as running
+         */
         const val WORKING_OUT = 1
+
         const val PAUSE = 2
         const val STOP = 3
-        const val FINISH = 4
+        //const val FINISH = 4
+
+        fun statusText(@WorkoutStatus status: Int): String = when (status) {
+            0 -> "Ready"
+            1 -> "Working Out"
+            2 -> "Pause"
+            3 -> "Stop"
+            else -> "Unknown"
+        }
     }
 }

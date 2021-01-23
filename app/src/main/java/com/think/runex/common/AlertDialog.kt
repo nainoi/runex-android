@@ -145,6 +145,17 @@ fun FragmentActivity.showAlertDialog(
             cancelable = isCancelEnable)
 }
 
+fun Fragment.showAlertDialog(title: String?,
+                             message: String?,
+                             positiveText: String? = null,
+                             negativeText: String? = null,
+                             onPositiveClick: (() -> Unit)? = null,
+                             onNegativeClick: (() -> Unit)? = null,
+                             onDialogDismiss: (() -> Unit)? = null,
+                             cancelable: Boolean = true) {
+    requireContext().showAlertDialog(title, message, positiveText, negativeText, onPositiveClick, onNegativeClick, onDialogDismiss, cancelable)
+}
+
 fun Fragment.showAlertDialog(
         message: String,
         isCancelEnable: Boolean = true,

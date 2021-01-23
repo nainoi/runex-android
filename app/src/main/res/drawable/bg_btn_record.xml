@@ -7,5 +7,5 @@
 
         </shape>
     </item>
-    <item android:drawable="@drawable/shape_btn_record" />
+    <item android:drawable="@drawable/shape_circle_white" />
 </ripple>

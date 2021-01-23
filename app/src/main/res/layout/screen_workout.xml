@@ -46,7 +46,7 @@
         android:id="@+id/workout_details_layout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/control_layout"
+        android:layout_above="@+id/action_control"
         android:layout_marginStart="@dimen/workout_margin"
         android:layout_marginEnd="@dimen/workout_margin"
         android:orientation="horizontal"
@@ -142,88 +142,15 @@
 
     </LinearLayout>
 
-    <LinearLayout
-        android:id="@+id/control_layout"
+    <fragment
+        android:id="@+id/action_control"
+        android:name="com.think.runex.ui.workout.ActionControlsFragment"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginStart="@dimen/workout_margin"
-        android:layout_marginTop="@dimen/space_8dp"
-        android:layout_marginEnd="@dimen/workout_margin"
-        android:layout_marginBottom="@dimen/space_40dp"
-        android:orientation="horizontal">
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_32dp"
+        tools:layout="@layout/fragment_action_controls" />
 
-        <RelativeLayout
-            android:id="@+id/main_control_button_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1">
-
-            <FrameLayout
-                android:id="@+id/main_control_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/shape_circle_border"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="@drawable/ripple_circle"
-                android:padding="@dimen/space_4dp">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/workout_control_button_size"
-                    android:layout_height="@dimen/workout_control_button_size"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shape_circle_accent"
-                    app:srcCompat="@drawable/ic_play" />
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/main_control_label"
-                style="@style/TextBody.Thirdly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/main_control_button"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/space_8dp"
-                android:text="@string/start_recording" />
-        </RelativeLayout>
-
-        <RelativeLayout
-            android:id="@+id/resume_control_button_layout"
-            android:layout_width="0dp"
-            android:layout_height="wrap_content"
-            android:layout_weight="1"
-            android:visibility="gone">
-
-            <FrameLayout
-                android:id="@+id/resume_control_button"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_centerHorizontal="true"
-                android:background="@drawable/shape_circle_border"
-                android:clickable="true"
-                android:focusable="true"
-                android:foreground="?selectableItemBackgroundBorderless"
-                android:padding="@dimen/space_4dp">
-
-                <androidx.appcompat.widget.AppCompatImageView
-                    android:layout_width="@dimen/workout_control_button_size"
-                    android:layout_height="@dimen/workout_control_button_size"
-                    android:layout_gravity="center"
-                    android:background="@drawable/shape_circle_accent"
-                    app:srcCompat="@drawable/ic_play" />
-            </FrameLayout>
-
-            <TextView
-                android:id="@+id/resume_control_label"
-                style="@style/TextCaption.Thirdly"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/resume_control_button"
-                android:layout_centerHorizontal="true"
-                android:layout_marginTop="@dimen/space_8dp"
-                android:text="@string/resume_recording" />
-        </RelativeLayout>
-    </LinearLayout>
 </RelativeLayout>

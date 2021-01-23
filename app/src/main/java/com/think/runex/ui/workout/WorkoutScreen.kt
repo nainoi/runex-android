@@ -4,10 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
-import android.location.Location
 import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
+import android.os.Message
 import android.os.Messenger
 import android.provider.Settings
 import android.view.LayoutInflater
@@ -25,36 +25,37 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
-import com.think.runex.common.serviceIsRunning
-import com.think.runex.common.serviceIsRunningInForeground
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.showAlertDialog
+import com.think.runex.common.*
 import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
-import com.think.runex.feature.workout.WorkoutReceiver
-import com.think.runex.feature.workout.WorkoutService
-import com.think.runex.feature.workout.WorkoutStatus
+import com.think.runex.feature.workout.*
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.launch
-import com.think.runex.util.launchMainThread
 import com.think.runex.util.runOnUiThread
+import kotlinx.android.synthetic.main.screen_workout.*
 import kotlinx.coroutines.delay
 import java.lang.Exception
 
-class WorkoutScreen : BaseScreen() {
+class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListener {
 
     private var googleMap: GoogleMap? = null
+    private var workoutMessenger: Messenger? = null
+    private var actionControlFragment: ActionControlsFragment? = null
 
-    private var workoutServiceMessenger: Messenger? = null
+    private var workoutStatus: Int = WorkoutStatus.UNKNOWN
+        set(value) {
+            field = value
+            actionControlFragment?.status = field
+        }
 
     //Monitors the state of the connection to the service.
     private val serviceConnection = object : ServiceConnection {
         override fun onServiceDisconnected(name: ComponentName?) {
-            workoutServiceMessenger = null
+            workoutMessenger = null
         }
 
         override fun onServiceConnected(name: ComponentName?, service: IBinder?) {
-            workoutServiceMessenger = Messenger(service)
+            workoutMessenger = Messenger(service)
         }
     }
 
@@ -63,22 +64,34 @@ class WorkoutScreen : BaseScreen() {
             override fun onReceive(context: Context?, intent: Intent?) {
                 if (view == null || isAdded.not()) return
                 if (intent?.action != WorkoutService.ACTION_BROADCAST) return
-
-                when (intent.getIntExtra(KEY_STATUS, WorkoutStatus.UNKNOWN)) {
-                    WorkoutStatus.READY -> {
-                        //Update location when have location data from intent
-                        intent.getParcelableExtra<Location>(KEY_LOCATION)?.also { location ->
-                            runOnUiThread { moveMapCameraToLocation(location) }
+                runOnUiThread {
+                    workoutStatus = intent.getIntExtra(KEY_STATUS, WorkoutStatus.UNKNOWN)
+                    when (workoutStatus) {
+                        WorkoutStatus.UNKNOWN -> {
+                            //Nothing for now
                         }
-                    }
-                    WorkoutStatus.WORKING_OUT -> {
+                        WorkoutStatus.READY -> {
+                            //Update location when have location data from intent
+                            intent.getParcelableExtra<WorkingOutLocation>(KEY_LOCATION)?.also { location ->
+                                moveMapCameraToLocation(location)
+                            }
+                        }
+                        WorkoutStatus.WORKING_OUT -> {
+                            intent.getParcelableExtra<WorkingOutDisplayData>(KEY_DATA)?.also { displayData ->
+                                updateUi(displayData)
+                            }
 
-                    }
-                    WorkoutStatus.PAUSE -> {
-
-                    }
-                    WorkoutStatus.STOP -> {
-
+                            //TODO("For test show current location")
+                            intent.getParcelableExtra<WorkingOutLocation>(KEY_LOCATION)?.also { location ->
+                                moveMapCameraToLocation(location)
+                            }
+                        }
+                        WorkoutStatus.PAUSE -> {
+                            //Nothing for now
+                        }
+                        WorkoutStatus.STOP -> {
+                            //Nothing for now
+                        }
                     }
                 }
             }
@@ -150,10 +163,51 @@ class WorkoutScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = true)
+        actionControlFragment = childFragmentManager.findFragmentById(R.id.action_control) as ActionControlsFragment
     }
 
     private fun subscribeUi() {
+    }
 
+    //TODO("Have only workout type 'running' for now ")
+    override fun onActionStart() {
+        workoutMessenger?.run {
+            send(Message.obtain(null, WorkoutAction.START).apply {
+                data = Bundle().apply {
+                    putString(KEY_TYPE, WorkoutType.RUNNING)
+                }
+            })
+        }
+    }
+
+    override fun onActionPause() {
+        workoutMessenger?.run {
+            send(Message.obtain(null, WorkoutAction.PAUSE))
+        }
+    }
+
+    override fun onActionResume() {
+        workoutMessenger?.run {
+            send(Message.obtain(null, WorkoutAction.RESUME))
+        }
+    }
+
+    override fun onActionStop() {
+        showAlertDialog(title = getString(R.string.confirm),
+                message = getString(R.string.confirm_to_ending_run),
+                positiveText = getString(R.string.confirm),
+                negativeText = getString(R.string.cancel),
+                onPositiveClick = {
+                    workoutMessenger?.run {
+                        send(Message.obtain(null, WorkoutAction.STOP))
+                    }
+                })
+
+    }
+
+    private fun updateUi(displayData: WorkingOutDisplayData) {
+        time_duration_label?.text = displayData.duration
+        distance_label?.text = displayData.distance
     }
 
     private fun initGoogleMap(callbacks: () -> Unit) {
@@ -191,6 +245,9 @@ class WorkoutScreen : BaseScreen() {
         if (requireContext().serviceIsRunning(WorkoutService::class.java).not()) {
             Logger.warning(simpleName(), "Workout service not running")
             bindWorkoutService()
+        } else {
+            //Service is running will be enable my location on map
+            checkLocationPermissionsAndOpenGps()
         }
     }
 
@@ -212,9 +269,10 @@ class WorkoutScreen : BaseScreen() {
         }
     }
 
-    private fun moveMapCameraToLocation(location: Location) {
+    private fun moveMapCameraToLocation(location: WorkingOutLocation) {
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), GOOGLE_MAP_DEFAULT_ZOOM))
     }
+
 
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
