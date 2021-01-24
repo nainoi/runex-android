@@ -8,14 +8,14 @@ import com.think.runex.R
 
 data class WorkingOutDisplayData(
         /**
-         * Time durations from start to last or stop.
-         */
-        @SerializedName("duration") var duration: String = "00:00:00",
-
-        /**
          * Distance from start to last or stop in kilometers.
          */
         @SerializedName("distances") var distances: String = "0.00",
+
+        /**
+         * Time durations from start to last or stop.
+         */
+        @SerializedName("duration") var duration: String = "00:00:00",
 
         /**
          * Time duration in minutes or hour per kilometer.
@@ -30,7 +30,7 @@ data class WorkingOutDisplayData(
         @SerializedName("durationPerKilometerUnit") var durationPerKilometerUnit: String = "(min/km)",
 
         /**
-         *
+         * calories in working out
          */
         @SerializedName("calories") var calories: String = "0.00") : Parcelable {
 
@@ -48,12 +48,14 @@ data class WorkingOutDisplayData(
             parcel.readString() ?: "",
             parcel.readString() ?: "",
             parcel.readString() ?: "",
+            parcel.readString() ?: "",
             parcel.readString() ?: "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
-        parcel.writeString(duration)
         parcel.writeString(distances)
+        parcel.writeString(duration)
         parcel.writeString(durationPerKilometer)
+        parcel.writeString(durationPerKilometerUnit)
         parcel.writeString(calories)
     }
 

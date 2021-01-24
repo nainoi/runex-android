@@ -210,6 +210,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         duration_label?.text = displayData.duration
         duration_per_kilometer_label?.text = displayData.durationPerKilometer
         duration_per_kilometer_placeholder?.text = ("Pace${displayData.durationPerKilometerUnit}")
+        calorie_label?.text = displayData.calories
     }
 
     private fun initGoogleMap(callbacks: () -> Unit) {

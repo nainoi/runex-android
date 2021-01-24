@@ -2,6 +2,7 @@ package com.think.runex.feature.workout
 
 import com.think.runex.common.displayFormat
 import com.think.runex.common.timeDisplayFormat
+import java.util.concurrent.TimeUnit
 
 data class WorkoutRecord(
 
@@ -36,9 +37,14 @@ data class WorkoutRecord(
     fun getDisplayData(): WorkingOutDisplayData {
 
         val displayData = WorkingOutDisplayData()
-        displayData.duration = durationMillis.timeDisplayFormat()
+
+        //Update distance
         displayData.distances = getDistancesKilometers()
 
+        //Update duration
+        displayData.duration = durationMillis.timeDisplayFormat()
+
+        //Update duration per kilometer
         if (distances > 0f) {
             val millisPerKilometer: Long = ((durationMillis / distances) * 1000).toLong()
             //Check durations millisecond per kilometer more than 1 hour (3600000 millisecond)
@@ -54,6 +60,25 @@ data class WorkoutRecord(
                     displayData.durationPerKilometerUnit = "(hr/km)"
                 }
             }
+        }
+
+        //TODO("Unreliable calculation!")
+        //Update calories
+        if (distances > 0) {
+            //TODO("don't know the reference, from old java code")
+            val caloriesPerHour = 450.0
+
+            val hour = TimeUnit.MILLISECONDS.toHours(durationMillis)
+            val minutesAsPercentage: Float = (TimeUnit.MILLISECONDS.toMinutes(durationMillis) - TimeUnit.HOURS.toMinutes(hour)).let { minutes ->
+                (minutes * 100) / 60f
+            }
+
+            val caloriesFromHour = caloriesPerHour * hour
+            val caloriesFromMinute = (minutesAsPercentage * caloriesPerHour) / 100
+
+            displayData.calories = (caloriesFromHour + caloriesFromMinute).toInt().displayFormat()
+        } else {
+            displayData.calories = "0"
         }
 
         return displayData
