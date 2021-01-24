@@ -25,7 +25,7 @@
         android:layout_marginStart="@dimen/workout_margin"
         android:layout_marginTop="@dimen/workout_margin"
         android:layout_marginEnd="@dimen/workout_margin"
-        android:text="@string/distance_kg" />
+        android:text="@string/distances_kg" />
 
     <TextView
         android:id="@+id/distance_label"
@@ -50,7 +50,8 @@
         android:layout_marginStart="@dimen/workout_margin"
         android:layout_marginEnd="@dimen/workout_margin"
         android:orientation="horizontal"
-        android:padding="@dimen/workout_detail_layout_padding">
+        android:paddingTop="@dimen/workout_detail_layout_padding"
+        android:paddingBottom="@dimen/workout_detail_layout_padding">
 
         <RelativeLayout
             android:layout_width="0dp"
@@ -58,26 +59,26 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/time_duration_placeholder"
+                android:id="@+id/duration_placeholder"
                 style="@style/TextBody.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/time_duration" />
+                android:text="@string/duration" />
 
             <TextView
-                android:id="@+id/time_duration_label"
+                android:id="@+id/duration_label"
                 style="@style/TextTitle.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/time_duration_placeholder"
+                android:layout_below="@+id/duration_placeholder"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/space_4dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="00:00:00" />
+                android:text="@string/time_hint" />
 
         </RelativeLayout>
 
@@ -88,26 +89,26 @@
             android:layout_weight="1">
 
             <TextView
-                android:id="@+id/pace_placeholder"
+                android:id="@+id/duration_per_kilometer_placeholder"
                 style="@style/TextBody.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/pace" />
+                android:text="@string/minutes_per_kilometer_placeholder" />
 
             <TextView
-                android:id="@+id/pace_label"
+                android:id="@+id/duration_per_kilometer_label"
                 style="@style/TextTitle.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/pace_placeholder"
+                android:layout_below="@+id/duration_per_kilometer_placeholder"
                 android:layout_centerHorizontal="true"
                 android:layout_marginTop="@dimen/space_4dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="0.00" />
+                android:text="@string/time_hint_minute" />
 
         </RelativeLayout>
 
@@ -124,7 +125,7 @@
                 android:layout_centerHorizontal="true"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/calorie" />
+                android:text="@string/calories_kg" />
 
             <TextView
                 android:id="@+id/calorie_label"
@@ -136,10 +137,8 @@
                 android:layout_marginTop="@dimen/space_4dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="0" />
-
+                android:text="@string/zero_hint" />
         </RelativeLayout>
-
     </LinearLayout>
 
     <fragment
@@ -151,6 +150,7 @@
         android:layout_marginStart="@dimen/space_16dp"
         android:layout_marginEnd="@dimen/space_16dp"
         android:layout_marginBottom="@dimen/space_32dp"
+        tools:ignore="FragmentTagUsage"
         tools:layout="@layout/fragment_action_controls" />
 
 </RelativeLayout>

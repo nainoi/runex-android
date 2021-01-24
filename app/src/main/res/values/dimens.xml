@@ -59,7 +59,7 @@
     <dimen name="workout_control_button_size">72dp</dimen>
     <dimen name="workout_detail_layout_padding">16dp</dimen>
     <dimen name="workout_distance_label_size">48sp</dimen>
-    <dimen name="workout_margin">24dp</dimen>
+    <dimen name="workout_margin">16dp</dimen>
 
 
     <!-- Start Old -->

@@ -206,8 +206,10 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     }
 
     private fun updateUi(displayData: WorkingOutDisplayData) {
-        time_duration_label?.text = displayData.duration
-        distance_label?.text = displayData.distance
+        distance_label?.text = displayData.distances
+        duration_label?.text = displayData.duration
+        duration_per_kilometer_label?.text = displayData.durationPerKilometer
+        duration_per_kilometer_placeholder?.text = ("Pace${displayData.durationPerKilometerUnit}")
     }
 
     private fun initGoogleMap(callbacks: () -> Unit) {

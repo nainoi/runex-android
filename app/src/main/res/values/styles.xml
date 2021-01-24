@@ -133,7 +133,7 @@
 
     <style name="TextInput.Distance" parent="TextInput">
         <item name="android:inputType">numberDecimal</item>
-        <item name="android:hint">@string/distance_kg</item>
+        <item name="android:hint">@string/distances_kg</item>
     </style>
 
     <style name="TextInput.Note" parent="TextInput">

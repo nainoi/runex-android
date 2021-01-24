@@ -177,7 +177,7 @@ open class WorkoutService : Service() {
             record?.apply {
                 durationMillis += System.currentTimeMillis() - lastUpdateTimeMillis
                 newLocation?.also {
-                    distance += lastUpdateLocation?.distanceTo(it) ?: 0f
+                    distances += lastUpdateLocation?.distanceTo(it) ?: 0f
                 }
             }
 
@@ -202,7 +202,7 @@ open class WorkoutService : Service() {
         location?.also { intent.putExtra(KEY_LOCATION, it) }
         displayData?.also {
             intent.putExtra(KEY_DATA, it)
-            notificationManager?.notify(NOTIFICATION_WORKOUT_ID, getNotification(it.notificationContent(resources)))
+            notificationManager?.notify(NOTIFICATION_WORKOUT_ID, getNotification(it.getNotificationContent(resources)))
         }
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }

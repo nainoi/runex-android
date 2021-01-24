@@ -4,12 +4,12 @@
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
 
-    <string name="add_distance">เพิ่มระยะวิ่ง</string>
+    <string name="add_distance">Add</string>
     <string name="add_image">Add image</string>
     <string name="add_activity_success">Add activity success</string>
     <string name="activity">Activity</string>
     <string name="activity_record">Activity record</string>
-    <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
+    <string name="activity_record_empty">Activity record is empty</string>
     <string name="all_event">All Events</string>
     <string name="active">Active</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
@@ -26,24 +26,22 @@
     <string name="confirm_register">Confirm register</string>
     <string name="confirm_to_ending_run">You confirm to ending run?</string>
     <string name="connection_timed_out">Connection timed out</string>
-    <string name="calorie">Calorie</string>
+    <string name="calories">Calories</string>
+    <string name="calories_kg">Calories(kcal)</string>
 
     <!-- D -->
     <string name="detail">Detail</string>
     <string name="delete">Delete</string>
-    <string name="distance">Distance</string>
-    <string name="distance_kg">Distance (km.)</string>
-    <string name="distance_required">กรุณาระบุระยะทาง</string>
+    <string name="distances">Distances</string>
+    <string name="distances_kg">Distances(km)</string>
+    <string name="distance_required">Please enter distance</string>
     <string name="delete_image">Delete image</string>
-    <string name="date_required">กรุณาเลือกวันที่</string>
+    <string name="date_required">Please select date</string>
+    <string name="duration">Duration</string>
 
     <!-- E -->
     <string name="edit">Edit</string>
     <string name="email">Email</string>
-    <string name="email_address">ที่อยู่อีเมล</string>
-    <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
-    <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
-    <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="events">Events</string>
     <string name="event_date">Event Date</string>
     <string name="event_detail">Event Detail</string>
@@ -67,14 +65,13 @@
     <!-- J -->
 
     <!-- K -->
-    <string name="km">km.</string>
+    <string name="km">km</string>
 
     <!-- L -->
     <string name="latest">Latest</string>
     <string name="last_name">Last name</string>
     <string name="login">Login</string>
-    <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
-    <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
+    <string name="login_info_email_message">Login with Email</string>
     <string name="login_with_facebook">Login with Facebook</string>
     <string name="login_with_google">Login with Google</string>
     <string name="login_with_email">Email Login</string>
@@ -88,11 +85,13 @@
     <string name="my_events">My Events</string>
     <string name="my_events_list">My event list</string>
 
+    <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->
+    <string name="minutes_per_kilometer_placeholder">Pace(min/km)</string>
+
     <!-- N -->
     <string name="name">Name</string>
     <string name="notification_display_info">Run %s %s %s %s km</string>
     <string name="no_internet_connection">No Internet Connection</string>
-    <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
     <string name="note">Note</string>
 
     <!-- O -->
@@ -101,13 +100,13 @@
     <string name="other">Other</string>
 
     <!-- P -->
-    <string name="password">รหัสผ่าน</string>
-    <string name="password_required">กรุณาระบุรหัสผ่าน</string>
+    <string name="password">Password</string>
+    <string name="password_required">Please enter password</string>
     <string name="pause_recording">Pause</string>
     <string name="profile">Profile</string>
-    <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
-    <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
-    <string name="please_login">กรุณาเข้าสู่ระบบ</string>
+    <string name="please_specify_your_ebib">Please enter your EBIB</string>
+    <string name="please_select_your_gender">Please select your gender</string>
+    <string name="please_login">Please Login</string>
     <string name="passed">Passed</string>
     <string name="pace">Pace</string>
 
@@ -117,8 +116,7 @@
     <string name="register_date">Register date</string>
     <string name="register_event">Register event</string>
     <string name="register_event_success">Register event success</string>
-    <string name="resume_recording">Resume</string>
-    <string name="runex_sync">RUNEX Sync</string>
+    <string name="resume_recording">Resume</string>>
     <string name="running_summary">Summary</string>
     <string name="running_date">Running date</string>
 
@@ -134,7 +132,8 @@
 
     <!-- T -->
     <string name="time">Time</string>
-    <string name="time_duration">Time</string>
+    <string name="time_hint" translatable="false">00:00:00</string>
+    <string name="time_hint_minute" translatable="false">00:00</string>
 
     <!-- U -->
 
@@ -143,13 +142,14 @@
 
     <!-- W -->
     <string name="warning">Warning</string>
-    <string name="waiting_for_approve">รอการตรวจสอบ</string>
-    <string name="waiting_for_payment">รอชำระเงิน</string>
+    <string name="waiting_for_approve">Waiting for approve</string>
+    <string name="waiting_for_payment">Waiting for payment</string>
     <string name="workout">Workout</string>
 
     <!-- Y -->
 
     <!-- Z -->
+    <string name="zero_hint" translatable="false">0</string>
 
     <string name="u250">·</string>
 

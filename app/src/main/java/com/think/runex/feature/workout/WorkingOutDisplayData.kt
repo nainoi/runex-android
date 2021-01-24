@@ -8,19 +8,26 @@ import com.think.runex.R
 
 data class WorkingOutDisplayData(
         /**
-         * Time durations from start to last or stop
+         * Time durations from start to last or stop.
          */
         @SerializedName("duration") var duration: String = "00:00:00",
 
         /**
-         * Distance from start to last or stop in kilometers
+         * Distance from start to last or stop in kilometers.
          */
-        @SerializedName("distance") var distance: String = "0.00",
+        @SerializedName("distances") var distances: String = "0.00",
 
         /**
-         *
+         * Time duration in minutes or hour per kilometer.
+         * Format 00:00 (min/km) or 00:00:00 (hr/km)
          */
-        @SerializedName("distancePerHour") var distancePerHour: String = "0.00",
+        @SerializedName("durationPerKilometer") var durationPerKilometer: String = "00:00",
+
+        /**
+         * The unit of time duration per kilometer
+         * (min/km) or (hr/km)
+         */
+        @SerializedName("durationPerKilometerUnit") var durationPerKilometerUnit: String = "(min/km)",
 
         /**
          *
@@ -45,8 +52,8 @@ data class WorkingOutDisplayData(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(duration)
-        parcel.writeString(distance)
-        parcel.writeString(distancePerHour)
+        parcel.writeString(distances)
+        parcel.writeString(durationPerKilometer)
         parcel.writeString(calories)
     }
 
@@ -54,7 +61,7 @@ data class WorkingOutDisplayData(
         return 0
     }
 
-    fun notificationContent(resources: Resources): String {
-        return "$duration, $distance ${resources.getString(R.string.km)}"
+    fun getNotificationContent(resources: Resources): String {
+        return "$duration, $distances ${resources.getString(R.string.km)}"
     }
 }

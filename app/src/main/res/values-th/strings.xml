@@ -11,7 +11,7 @@
     <string name="add_image">เพิ่มรูปภาพ</string>
     <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
     <string name="all_event">งานวิ่งทั้งหมด</string>
-    <string name="active">Active</string>
+    <string name="active">เปิดใช้งาน</string>
     <string name="allow_permission_in_setting">หากต้องการใช้ฟีเจอร์นี้ คุณต้องให้การอนุญาตในการตั้งค่า</string>
 
     <!-- B -->
@@ -26,30 +26,28 @@
     <string name="confirm_register">ยืนยันการสมัคร</string>
     <string name="confirm_to_ending_run">คุณยืนยันที่จะสิ้นสุดการวิ่ง?</string>
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
-    <string name="calorie">แคลอรี่</string>
+    <string name="calories">แคลอรี่</string>
+    <string name="calories_kg">แคลอรี่(kcal)</string>
 
     <!-- D -->
     <string name="detail">รายละเอียด</string>
     <string name="delete">ลบ</string>
-    <string name="distance">ระยะทาง</string>
-    <string name="distance_kg">ระยะทาง (กม.)</string>
+    <string name="distances">ระยะทาง</string>
+    <string name="distances_kg">ระยะทาง(km)</string>
     <string name="distance_required">กรุณาระบุระยะทาง</string>
     <string name="delete_image">ลบรูปภาพ</string>
     <string name="date_required">กรุณาเลือกวันที่</string>
+    <string name="duration">ระยะเวลา</string>
 
     <!-- E -->
     <string name="edit">แก้ไข</string>
     <string name="email">อีเมล</string>
-    <string name="email_address">ที่อยู่อีเมล</string>
-    <string name="email_required">กรุณาระบุอีเมลผู้ใช้งาน</string>
-    <string name="email_not_valid">รูปแบบอีเมลไม่ถูกต้อง</string>
-    <string name="email_password_is_invalid">อีเมลหรือรหัสผ่านไม่ถูกต้อง</string>
     <string name="events">อีเว้นท์</string>
     <string name="event_date">วันที่จัดงาน</string>
     <string name="event_detail">รายละเอียด</string>
 
     <!-- F -->
-    <string name="female">Female</string>
+    <string name="female">หญิง</string>
     <string name="finish_recording">จบการจับเวลา</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>
     <string name="free">ฟรี</string>
@@ -67,13 +65,12 @@
     <!-- J -->
 
     <!-- K -->
-    <string name="km">กม.</string>
+    <string name="km">km</string>
 
     <!-- L -->
     <string name="latest">ล่าสุด</string>
     <string name="last_name">นามสกุล</string>
     <string name="login">เข้าสู่ระบบ</string>
-    <string name="login_info_message">ลงชื่อเข้าใช้งานเพื่อบันทึกและส่งระยะวิ่ง</string>
     <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
     <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
     <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
@@ -83,22 +80,24 @@
 
 
     <!-- M -->
-    <string name="male">Male</string>
+    <string name="male">ชาย</string>
     <string name="menu">เมนู</string>
     <string name="my_events">อีเว้นท์ของฉัน</string>
     <string name="my_events_list">รายการวิ่งของฉัน</string>
 
+    <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->
+    <string name="minutes_per_kilometer_placeholder">Pace(min/km)</string>
+
     <!-- N -->
     <string name="name">ชื่อ</string>
-    <string name="notification_display_info">Run %s %s %s %s km</string>
+    <string name="notification_display_info">วิ่ง %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
-    <string name="not_a_member">ยังไม่ได้เป็นสมาชิกในระบบ?</string>
     <string name="note">จดบันทึก</string>
 
     <!-- O -->
     <string name="ok">ตกลง</string>
     <string name="or">หรือ</string>
-    <string name="other">Other</string>
+    <string name="other">อื่นๆ</string>
 
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
@@ -108,8 +107,8 @@
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
     <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
-    <string name="passed">Passed</string>
-    <string name="pace">Pace</string>
+    <string name="passed">ผ่านมาแล้ว</string>
+    <string name="pace">ก้าว</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>
@@ -118,7 +117,6 @@
     <string name="register_event">ลงสมัครวิ่ง</string>
     <string name="register_event_success">ลงสมัครวิ่งสำเร็จ</string>
     <string name="resume_recording">จับเวลาต่อ</string>
-    <string name="runex_sync">RUNEX Sync</string>
     <string name="running_summary">สรุปผล</string>
     <string name="running_date">วันที่วิ่ง</string>
 
@@ -134,7 +132,6 @@
 
     <!-- T -->
     <string name="time">เวลา</string>
-    <string name="time_duration">ระยะเวลา</string>
 
     <!-- U -->
 
