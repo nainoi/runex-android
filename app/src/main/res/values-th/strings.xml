@@ -118,7 +118,6 @@
     <string name="register_event">ลงสมัครวิ่ง</string>
     <string name="register_event_success">ลงสมัครวิ่งสำเร็จ</string>
     <string name="resume_recording">จับเวลาต่อ</string>
-    <string name="running_summary">สรุปผล</string>
     <string name="running_date">วันที่วิ่ง</string>
 
     <!-- S -->
@@ -128,6 +127,7 @@
     <string name="stop_recording">จบการจับเวลา</string>
     <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>
+    <string name="summary">สรุปผล</string>
     <string name="success">สำเร็จ</string>
     <string name="share">แชร์</string>
 

@@ -58,7 +58,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbarDarkBackground(toolbar, R.string.event_detail, R.mipmap.ic_navigation_back)
+        setupToolbar(toolbar, R.string.event_detail, R.drawable.ic_navigation_back)
     }
 
     private fun subscribeUi() {

@@ -124,7 +124,7 @@
                 android:foreground="?selectableItemBackground"
                 android:padding="@dimen/space_4dp"
                 android:scaleType="centerCrop"
-                android:src="@drawable/ic_record" />
+                android:src="@mipmap/ic_record" />
 
         </LinearLayout>
 

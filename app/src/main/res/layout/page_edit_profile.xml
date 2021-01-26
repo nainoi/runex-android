@@ -23,7 +23,7 @@
             android:background="@android:color/transparent"
             android:foreground="?selectableItemBackground"
             android:scaleType="centerInside"
-            app:srcCompat="@mipmap/ic_navigation_back"
+            app:srcCompat="@drawable/ic_navigation_back"
             app:tint="@color/textColorPrimary" />
 
         <!--        <TextView-->
@@ -84,7 +84,7 @@
                     app:layout_constraintEnd_toEndOf="parent"
                     app:layout_constraintStart_toStartOf="parent"
                     app:layout_constraintTop_toBottomOf="@+id/cover_image"
-                    app:srcCompat="@drawable/ic_my_profile" />
+                    app:srcCompat="@mipmap/ic_profile" />
 
                 <androidx.appcompat.widget.AppCompatImageButton
                     android:id="@+id/change_profile_image_button"

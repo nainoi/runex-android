@@ -116,7 +116,7 @@
         <service
             android:name=".java.Services.BackgroundService"
             android:foregroundServiceType="location"
-            android:icon="@drawable/ic_logo_small"
+            android:icon="@mipmap/ic_logo_runex"
             android:label="BackgroundService" />
 
         <service
@@ -124,7 +124,7 @@
             android:enabled="true"
             android:exported="true"
             android:foregroundServiceType="location"
-            android:icon="@drawable/ic_logo_small"
+            android:icon="@mipmap/ic_logo_runex"
             android:label="@string/workout_service_name" />
 
         <provider

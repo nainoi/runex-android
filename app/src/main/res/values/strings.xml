@@ -118,7 +118,6 @@
     <string name="register_event">Register event</string>
     <string name="register_event_success">Register event success</string>
     <string name="resume_recording">Resume</string>>
-    <string name="running_summary">Summary</string>
     <string name="running_date">Running date</string>
 
     <!-- S -->
@@ -128,6 +127,7 @@
     <string name="stop_recording">Stop</string>
     <string name="stop_and_submit_running_result">Stop and Submit</string>
     <string name="submit_result">Submit result</string>
+    <string name="summary">Summary</string>
     <string name="success">Success</string>
     <string name="share">Share</string>
 

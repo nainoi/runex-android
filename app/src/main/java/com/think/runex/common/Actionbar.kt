@@ -83,16 +83,6 @@ fun Fragment.setupToolbar(toolbar: Toolbar,
     activity?.setupToolbar(toolbar, title, homeButton, titleTextAppearance)
 }
 
-fun Fragment.setupToolbarDarkBackground(toolbar: Toolbar,
-                                        @StringRes title: Int? = null,
-                                        @DrawableRes homeButton: Int? = null) {
-    if (activity == null || view == null) return
-    val toolbarTitle = title?.let { getString(it) }
-    val toolbarHomeButton = homeButton?.let { getDrawable(it) }
-    toolbarHomeButton?.setColorFilter(getColor(R.color.iconColorPrimaryInDarkBackground))
-    activity?.setupToolbar(toolbar, toolbarTitle, toolbarHomeButton, R.style.TextTitle_Primary_InDarkBackground)
-}
-
 fun Fragment.setupToolbar(toolbar: Toolbar,
                           title: String? = null,
                           homeButton: Drawable? = null,

@@ -891,11 +891,11 @@ public class BackgroundService extends Service {
                 NOTIF_CHANNEL_ID) // don't forget create a notification channel first
                 .setOngoing(true)
                 //--> display
-                .setSmallIcon(R.drawable.ic_logo_small)
+                .setSmallIcon(R.mipmap.ic_logo_runex)
                 .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
 
                 //--> actions
-                .addAction(R.drawable.ic_record, "STOP", intentBroadcastReceiverService())
+                .addAction(R.mipmap.ic_record, "STOP", intentBroadcastReceiverService())
                 //--> custom
 //                .setShowWhen(false)
                 .setOnlyAlertOnce(true)

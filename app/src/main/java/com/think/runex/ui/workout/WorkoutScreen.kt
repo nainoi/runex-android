@@ -33,6 +33,8 @@ import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.event.EventDetailsScreen
+import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_workout.*
@@ -137,26 +139,6 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         }
     }
 
-    override fun onStart() {
-        super.onStart()
-        Logger.warning(simpleName(), "onStart")
-    }
-
-    override fun onResume() {
-        super.onResume()
-        Logger.warning(simpleName(), "onResume")
-    }
-
-    override fun onPause() {
-        super.onPause()
-        Logger.warning(simpleName(), "onPause")
-    }
-
-    override fun onStop() {
-        super.onStop()
-        Logger.warning(simpleName(), "onStop")
-    }
-
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = true)
         actionControlFragment = childFragmentManager.findFragmentById(R.id.action_control) as ActionControlsFragment
@@ -167,13 +149,14 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
 
     //TODO("Have only workout type 'running' for now ")
     override fun onActionStart() {
-        workoutMessenger?.run {
-            send(Message.obtain(null, WorkoutAction.START).apply {
-                data = Bundle().apply {
-                    putString(KEY_TYPE, WorkoutType.RUNNING)
-                }
-            })
-        }
+        addFragment(WorkoutSummaryScreen.newInstance(WorkoutRecord(WorkoutType.RUNNING)))
+//        workoutMessenger?.run {
+//            send(Message.obtain(null, WorkoutAction.START).apply {
+//                data = Bundle().apply {
+//                    putString(KEY_TYPE, WorkoutType.RUNNING)
+//                }
+//            })
+//        }
     }
 
     override fun onActionPause() {

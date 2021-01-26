@@ -1,5 +1,7 @@
 package com.think.runex.feature.workout
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.think.runex.common.displayFormat
 import com.think.runex.common.timeDisplayFormat
 import java.util.concurrent.TimeUnit
@@ -29,7 +31,36 @@ data class WorkoutRecord(
         /**
          * Distances on working out in meters
          */
-        var distances: Float = 0f) {
+        var distances: Float = 0f) : Parcelable {
+
+    companion object CREATOR : Parcelable.Creator<WorkoutRecord> {
+        override fun createFromParcel(parcel: Parcel): WorkoutRecord {
+            return WorkoutRecord(parcel)
+        }
+
+        override fun newArray(size: Int): Array<WorkoutRecord?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readString() ?: "",
+            parcel.readLong(),
+            parcel.readLong(),
+            parcel.readLong(),
+            parcel.readFloat())
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(type)
+        parcel.writeLong(startMillis)
+        parcel.writeLong(stopMillis)
+        parcel.writeLong(durationMillis)
+        parcel.writeFloat(distances)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
 
     fun getDistancesKilometers(): String = (distances / 1000f).displayFormat(awaysShowDecimal = true)
 
@@ -73,7 +104,7 @@ data class WorkoutRecord(
             val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMillis) - TimeUnit.MINUTES.toSeconds(minutes)
 
             val percentageOfMinutes: Float = (minutes * 100) / 60f
-            val percentageOfSeconds:Float = (seconds * 100) / 3600f
+            val percentageOfSeconds: Float = (seconds * 100) / 3600f
 
             val caloriesFromHour = caloriesBurnPerHour * hour
             val caloriesFromMinute = (percentageOfMinutes * caloriesBurnPerHour) / 100

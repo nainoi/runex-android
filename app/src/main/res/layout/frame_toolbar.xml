@@ -10,8 +10,8 @@
         android:layout_width="?attr/actionBarSize"
         android:layout_height="?attr/actionBarSize"
         android:background="?android:attr/selectableItemBackgroundBorderless"
-        android:padding="18dp"
-        android:src="@mipmap/ic_navigation_back" />
+        android:padding="12dp"
+        app:srcCompat="@drawable/ic_navigation_back" />
 
     <LinearLayout
         android:id="@+id/frame_toolbar_title"

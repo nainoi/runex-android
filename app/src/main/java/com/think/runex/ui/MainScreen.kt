@@ -14,7 +14,10 @@ import com.jozzee.android.core.fragment.addChildFragment
 import com.jozzee.android.core.fragment.childFragmentCount
 import com.jozzee.android.core.fragment.childFragments
 import com.jozzee.android.core.resource.getColor
+import com.jozzee.android.core.util.Logger
+import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
+import com.think.runex.common.setStatusBarColor
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.ui.base.BaseScreen
@@ -45,6 +48,13 @@ class MainScreen : BaseScreen() {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        childFragments().forEach { childFragment ->
+            childFragment.onHiddenChanged(hidden)
+        }
     }
 
     override fun onStart() {
