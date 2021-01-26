@@ -14,6 +14,7 @@ import com.jozzee.android.core.fragment.replaceFragment
 import com.jozzee.android.core.fragment.addFragment
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
+import com.think.runex.R
 import com.think.runex.common.showAlertDialog
 import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.ui.component.ProgressDialog
@@ -83,7 +84,7 @@ open class BaseActivity : AppCompatActivity() {
             hideProgressDialog()
             if (errorMessage.isNotBlank()) {
                 //Show alert dialog if have error message.
-                showAlertDialog(errorMessage)
+                showAlertDialog(getString(R.string.error), errorMessage)
             }
         }
     }

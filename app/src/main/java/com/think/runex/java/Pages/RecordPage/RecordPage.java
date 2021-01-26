@@ -588,7 +588,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         mMap = googleMap;
 
         //--> Map utils
-        mMapUtils = GoogleMapUtils.newInstance(activity, mMap);
+        mMapUtils = GoogleMapUtils.newInstance(mMap);
         //--> should redraw
         shouldRedrawPolyline();
 

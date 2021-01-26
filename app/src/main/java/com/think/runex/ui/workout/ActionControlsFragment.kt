@@ -11,6 +11,7 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.setColorFilter
+import com.think.runex.common.showAlertDialog
 import com.think.runex.feature.workout.WorkoutStatus
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.fragment_action_controls.*
@@ -97,13 +98,19 @@ class ActionControlsFragment : Fragment() {
         main_action_label?.setTextColor(getColor(R.color.textColorThirdly))
         main_action_label?.setText(R.string.stop_recording)
         main_action_button?.setOnClickListener {
-            getActionControlsListener()?.onActionStop()
+            showConfirmToStopDialog()
         }
 
         resume_action_button_layout?.visible()
         resume_action_button?.setOnClickListener {
             getActionControlsListener()?.onActionResume()
         }
+    }
+
+    private fun showConfirmToStopDialog() {
+        showAlertDialog(R.string.confirm, R.string.confirm_to_ending_run, R.string.confirm, R.string.cancel, onPositiveClick = {
+            getActionControlsListener()?.onActionStop()
+        })
     }
 
     private fun getActionControlsListener(): ActionControlsListener? {

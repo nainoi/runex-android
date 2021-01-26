@@ -10,6 +10,7 @@ import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
 import android.provider.Settings
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -21,6 +22,8 @@ import com.google.android.libraries.maps.model.LatLng
 import com.jozzee.android.core.permission.allPermissionsGranted
 import com.jozzee.android.core.permission.havePermissions
 import com.jozzee.android.core.permission.shouldShowPermissionRationale
+import com.jozzee.android.core.resource.getColor
+import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
@@ -38,7 +41,7 @@ import java.lang.Exception
 
 class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListener {
 
-    private var googleMap: GoogleMap? = null
+    private var mapPresenter: MapPresenter? = null
     private var workoutMessenger: Messenger? = null
     private var actionControlFragment: ActionControlsFragment? = null
 
@@ -66,6 +69,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                 if (intent?.action != WorkoutService.ACTION_BROADCAST) return
                 runOnUiThread {
                     workoutStatus = intent.getIntExtra(KEY_STATUS, WorkoutStatus.UNKNOWN)
+                    Log.d(simpleName(), "Workout status: ${WorkoutStatus.statusText(workoutStatus)}")
                     when (workoutStatus) {
                         WorkoutStatus.UNKNOWN -> {
                             //Nothing for now
@@ -73,7 +77,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                         WorkoutStatus.READY -> {
                             //Update location when have location data from intent
                             intent.getParcelableExtra<WorkingOutLocation>(KEY_LOCATION)?.also { location ->
-                                moveMapCameraToLocation(location)
+                                mapPresenter?.animateCamera(location.toLatLng())
                             }
                         }
                         WorkoutStatus.WORKING_OUT -> {
@@ -81,9 +85,9 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                                 updateUi(displayData)
                             }
 
-                            //TODO("For test show current location")
                             intent.getParcelableExtra<WorkingOutLocation>(KEY_LOCATION)?.also { location ->
-                                moveMapCameraToLocation(location)
+                                mapPresenter?.addPolyline(location)
+                                mapPresenter?.animateCamera(location.toLatLng(), GOOGLE_MAP_WORKING_OUT_ZOOM)
                             }
                         }
                         WorkoutStatus.PAUSE -> {
@@ -91,6 +95,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                         }
                         WorkoutStatus.STOP -> {
                             //Nothing for now
+                            mapPresenter?.zoomToFitWorkoutLine()
                         }
                     }
                 }
@@ -111,18 +116,23 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
+
+        //Initial google map and bind workout service.
+        initMaps {
+            bindWorkoutService()
+            LocalBroadcastManager.getInstance(requireContext())
+                    .registerReceiver(workoutReceiver, IntentFilter(WorkoutService.ACTION_BROADCAST))
+        }
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         Logger.warning(simpleName(), "onHiddenChanged: $hidden")
         when (hidden) {
-            true -> {
-                unbindWorkoutServiceWhenNotForeGround()
-            }
+            true -> unbindWorkoutService()
             false -> {
                 setStatusBarColor(isLightStatusBar = true)
-                bindWorkoutServiceIfNotRunning()
+                bindWorkoutService()
             }
         }
     }
@@ -130,13 +140,6 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     override fun onStart() {
         super.onStart()
         Logger.warning(simpleName(), "onStart")
-
-        //Initial google map and bind workout service.
-        initGoogleMap {
-            bindWorkoutServiceIfNotRunning()
-            LocalBroadcastManager.getInstance(requireContext())
-                    .registerReceiver(workoutReceiver, IntentFilter(WorkoutService.ACTION_BROADCAST))
-        }
     }
 
     override fun onResume() {
@@ -152,13 +155,6 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     override fun onStop() {
         super.onStop()
         Logger.warning(simpleName(), "onStop")
-        try {
-            unbindWorkoutServiceWhenNotForeGround()
-            LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(workoutReceiver)
-
-        } catch (error: Exception) {
-            error.printStackTrace()
-        }
     }
 
     private fun setupComponents() {
@@ -193,16 +189,9 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     }
 
     override fun onActionStop() {
-        showAlertDialog(title = getString(R.string.confirm),
-                message = getString(R.string.confirm_to_ending_run),
-                positiveText = getString(R.string.confirm),
-                negativeText = getString(R.string.cancel),
-                onPositiveClick = {
-                    workoutMessenger?.run {
-                        send(Message.obtain(null, WorkoutAction.STOP))
-                    }
-                })
-
+        workoutMessenger?.run {
+            send(Message.obtain(null, WorkoutAction.STOP))
+        }
     }
 
     private fun updateUi(displayData: WorkingOutDisplayData) {
@@ -213,44 +202,27 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         calorie_label?.text = displayData.calories
     }
 
-    private fun initGoogleMap(callbacks: () -> Unit) {
-        if (googleMap != null) {
+    private fun initMaps(callbacks: () -> Unit) {
+        if (mapPresenter != null) {
             callbacks.invoke()
             return
         }
+        Logger.warning(simpleName(), "initialMaps...")
         (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment ->
             mapFragment.getMapAsync { googleMap: GoogleMap ->
-                onMapReady(googleMap)
+                googleMap.uiSettings?.isMyLocationButtonEnabled = false
+                mapPresenter = MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
+                Logger.warning(simpleName(), "Setup mapPresenter")
                 callbacks.invoke()
             }
         }
     }
-
-    private fun onMapReady(googleMap: GoogleMap) {
-        this.googleMap = googleMap
-        this.googleMap?.uiSettings?.isMyLocationButtonEnabled = false
-    }
-
 
     private fun bindWorkoutService() {
         if (checkLocationPermissionsAndOpenGps()) {
             val intent = Intent(requireContext(), WorkoutService::class.java)
             requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
             Logger.info(simpleName(), "bindWorkoutService")
-        }
-    }
-
-    /**
-     * Check workout service is running, if not runnig
-     * will be bind service
-     */
-    private fun bindWorkoutServiceIfNotRunning() {
-        if (requireContext().serviceIsRunning(WorkoutService::class.java).not()) {
-            Logger.warning(simpleName(), "Workout service not running")
-            bindWorkoutService()
-        } else {
-            //Service is running will be enable my location on map
-            checkLocationPermissionsAndOpenGps()
         }
     }
 
@@ -261,34 +233,19 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         error.printStackTrace()
     }
 
-    /**
-     * Check workout service is running in foreground (On working out?)
-     * if service is not foreground will be unbind service
-     */
-    private fun unbindWorkoutServiceWhenNotForeGround() {
-        if (requireContext().serviceIsRunningInForeground(WorkoutService::class.java).not()) {
-            Logger.warning(simpleName(), "Workout service not running in foreground")
-            unbindWorkoutService()
-        }
-    }
-
-    private fun moveMapCameraToLocation(location: WorkingOutLocation) {
-        googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), GOOGLE_MAP_DEFAULT_ZOOM))
-    }
-
 
     @SuppressLint("MissingPermission")
     private fun getLastLocation() {
         //Check location permissions before get last location
         val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         if (havePermissions(permissions, RC_PERMISSION_LOCATION)) {
-            googleMap?.isMyLocationEnabled = true
+            mapPresenter?.setMyLocationEnabled(true)
             when (LocationUtil.isGpsEnabled(requireContext())) {
                 true -> {
                     //TODO("May be update ui to detecting location")
                     LocationUtil.getLastLocation(requireContext()) { location ->
                         if (location != null) {
-                            googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(LatLng(location.latitude, location.longitude), GOOGLE_MAP_DEFAULT_ZOOM))
+                            mapPresenter?.animateCamera(location.toLatLng())
                         }
                     }
                 }
@@ -301,7 +258,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     private fun checkLocationPermissionsAndOpenGps(): Boolean {
         val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
         if (havePermissions(permissions, RC_PERMISSION_LOCATION)) {
-            googleMap?.isMyLocationEnabled = true
+            mapPresenter?.setMyLocationEnabled(true)
             when (LocationUtil.isGpsEnabled(requireContext())) {
                 true -> return true
                 false -> LocationUtil.openGps(requireActivity())
@@ -337,20 +294,28 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     }
 
     private fun showSettingPermissionInSettingDialog() = showAlertDialog(
-            message = R.string.allow_permission_in_setting,
-            positiveText = R.string.setting) {
-
-        //On positive click, go to permission setting screen.
-        val uri = Uri.parse("package:${requireContext().packageName}")
-        startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri).apply {
-            addCategory(Intent.CATEGORY_DEFAULT)
-            addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-        })
-    }
+            title = getString(R.string.app_name),
+            message = getString(R.string.allow_permission_in_setting),
+            positiveText = getString(R.string.setting),
+            onPositiveClick = {
+                //On positive click, go to permission setting screen.
+                val uri = Uri.parse("package:${requireContext().packageName}")
+                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri).apply {
+                    addCategory(Intent.CATEGORY_DEFAULT)
+                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+                })
+            })
 
     override fun onDestroyView() {
-        super.onDestroyView()
         Logger.warning(simpleName(), "onDestroyView")
+        super.onDestroyView()
+        try {
+            unbindWorkoutService()
+            LocalBroadcastManager.getInstance(requireContext()).unregisterReceiver(workoutReceiver)
+
+        } catch (error: Exception) {
+            error.printStackTrace()
+        }
     }
 
     override fun onDestroy() {

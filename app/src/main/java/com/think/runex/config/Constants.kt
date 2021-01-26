@@ -13,6 +13,7 @@ const val APP_SCHEME = "runex"
 const val AUTHORIZATION = "Authorization"
 
 const val GOOGLE_MAP_DEFAULT_ZOOM = 16f
+const val GOOGLE_MAP_WORKING_OUT_ZOOM = 17f
 
 /**
  * Update last user-agent from https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome

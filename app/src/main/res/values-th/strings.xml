@@ -27,7 +27,7 @@
     <string name="confirm_to_ending_run">คุณยืนยันที่จะสิ้นสุดการวิ่ง?</string>
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
     <string name="calories">แคลอรี่</string>
-    <string name="calories_kg">แคลอรี่(kcal)</string>
+    <string name="calories_cal">แคลอรี่(cal)</string>
 
     <!-- D -->
     <string name="detail">รายละเอียด</string>
@@ -45,6 +45,7 @@
     <string name="events">อีเว้นท์</string>
     <string name="event_date">วันที่จัดงาน</string>
     <string name="event_detail">รายละเอียด</string>
+    <string name="error">ผิดพลาด</string>
 
     <!-- F -->
     <string name="female">หญิง</string>

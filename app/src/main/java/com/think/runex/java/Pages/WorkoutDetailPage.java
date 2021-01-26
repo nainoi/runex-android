@@ -212,7 +212,7 @@ public class WorkoutDetailPage extends xActivity implements OnMapReadyCallback, 
         mMap = googleMap;
 
         //--> Map utils
-        mMapUtils = GoogleMapUtils.newInstance(this, mMap);
+        mMapUtils = GoogleMapUtils.newInstance(mMap);
         //--> should redraw
         shouldRedrawPolyline();
     }

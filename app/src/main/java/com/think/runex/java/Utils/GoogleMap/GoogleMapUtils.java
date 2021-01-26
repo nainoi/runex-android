@@ -27,7 +27,7 @@ public class GoogleMapUtils {
 
     // instance variables
     public List<LatLng> points = new ArrayList<>();
-    private Activity mActivity;
+
     private GoogleMap mMap;
     private Polyline mLastPolyline;
     public double distance = 0.0;
@@ -35,13 +35,12 @@ public class GoogleMapUtils {
     // explicit variables
     private final float MAP_TRACKING_ZOOM_LEVEL = 17f;
 
-    private GoogleMapUtils(Activity activity, GoogleMap map) {
-        this.mActivity = activity;
+    private GoogleMapUtils( GoogleMap map) {
         this.mMap = map;
     }
 
-    public static GoogleMapUtils newInstance(Activity activity, GoogleMap map) {
-        return new GoogleMapUtils(activity, map);
+    public static GoogleMapUtils newInstance(GoogleMap map) {
+        return new GoogleMapUtils( map);
     }
 
     /**

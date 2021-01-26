@@ -66,17 +66,20 @@ data class WorkoutRecord(
         //Update calories
         if (distances > 0) {
             //TODO("don't know the reference, from old java code")
-            val caloriesPerHour = 450.0
+            val caloriesBurnPerHour = 450.0
 
             val hour = TimeUnit.MILLISECONDS.toHours(durationMillis)
-            val minutesAsPercentage: Float = (TimeUnit.MILLISECONDS.toMinutes(durationMillis) - TimeUnit.HOURS.toMinutes(hour)).let { minutes ->
-                (minutes * 100) / 60f
-            }
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis) - TimeUnit.HOURS.toMinutes(hour)
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMillis) - TimeUnit.MINUTES.toSeconds(minutes)
 
-            val caloriesFromHour = caloriesPerHour * hour
-            val caloriesFromMinute = (minutesAsPercentage * caloriesPerHour) / 100
+            val percentageOfMinutes: Float = (minutes * 100) / 60f
+            val percentageOfSeconds:Float = (seconds * 100) / 3600f
 
-            displayData.calories = (caloriesFromHour + caloriesFromMinute).toInt().displayFormat()
+            val caloriesFromHour = caloriesBurnPerHour * hour
+            val caloriesFromMinute = (percentageOfMinutes * caloriesBurnPerHour) / 100
+            val caloriesFromSecond = (percentageOfSeconds * caloriesBurnPerHour) / 100
+
+            displayData.calories = (caloriesFromHour + caloriesFromMinute + caloriesFromSecond).displayFormat()
         } else {
             displayData.calories = "0"
         }

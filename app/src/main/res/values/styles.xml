@@ -8,7 +8,8 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- Set windowBackground to dark color for dark mode default.-->
-        <item name="android:windowBackground">@color/backgroundDark</item>
+        <!-- <item name="android:windowBackground">@color/backgroundDark</item> -->
+        <item name="android:windowBackground">@color/background</item>
     </style>
 
     <style name="AppTheme.TransparentStatus" parent="AppTheme">

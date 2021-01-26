@@ -251,6 +251,10 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
+    <style name="TextSubTitle.Primary.Bold" parent="TextSubTitle.Primary">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextSubTitle.Primary.InLightBackground" parent="TextSubTitle">
         <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
     </style>

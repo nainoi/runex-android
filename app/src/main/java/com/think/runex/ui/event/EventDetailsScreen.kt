@@ -136,7 +136,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 //    }
 
     private fun showRegisterSuccessDialog() {
-        showAlertDialog(R.string.register_event_success, false) {
+        showAlertDialog(R.string.register_event_success, isCancelEnable = false) {
             //On positive click
             onBackPressed()
         }

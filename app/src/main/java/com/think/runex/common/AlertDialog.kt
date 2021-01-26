@@ -3,14 +3,14 @@ package com.think.runex.common
 import android.annotation.SuppressLint
 import android.content.Context
 import android.view.LayoutInflater
+import android.view.ViewGroup
+import android.widget.LinearLayout
 import androidx.annotation.StringRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
-import com.jozzee.android.core.view.gone
-import com.jozzee.android.core.view.hideKeyboard
-import com.jozzee.android.core.view.setVisible
-import com.jozzee.android.core.view.visible
+import com.jozzee.android.core.resource.getDimension
+import com.jozzee.android.core.view.*
 import com.think.runex.R
 import kotlinx.android.synthetic.main.dialog_default.view.*
 
@@ -95,7 +95,14 @@ fun Context.showAlertDialog(
             }
             false -> {
                 //view.guideline_center_horizontal?.gone()
+                view.warpContent()
                 view.negative_button?.gone()
+                view.positive_button?.layoutParams = LinearLayout.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT, 0f).apply {
+                    setMargins(0, 0, 0, 0)
+                }
+                getDimension(R.dimen.space_56dp).also { space50Dp ->
+                    view.positive_button?.setPadding(space50Dp, 0, space50Dp, 0)
+                }
             }
         }
 
@@ -112,7 +119,8 @@ fun Context.showAlertDialog(
 }
 
 fun FragmentActivity.showAlertDialog(
-        message: String,
+        title: String?,
+        message: String?,
         isCancelEnable: Boolean = true,
         positiveText: String? = null,
         onPositiveClick: (() -> Unit)? = null) {
@@ -120,22 +128,21 @@ fun FragmentActivity.showAlertDialog(
     if (isDestroyed) return
     hideKeyboard()
 
-    showAlertDialog(title = getString(R.string.app_name),
-            message = message, positiveText = positiveText, negativeText = null,
+    showAlertDialog(title = title, message = message, positiveText = positiveText, negativeText = null,
             onPositiveClick = onPositiveClick, onNegativeClick = null, onDialogDismiss = null,
             cancelable = isCancelEnable)
 }
 
 fun FragmentActivity.showAlertDialog(
         @StringRes message: Int,
-        isCancelEnable: Boolean = true,
         @StringRes positiveText: Int? = null,
+        isCancelEnable: Boolean = true,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isDestroyed) return
     hideKeyboard()
 
-    showAlertDialog(title = getString(R.string.app_name),
+    showAlertDialog(title = null,
             message = getString(message),
             positiveText = if (positiveText != null) getString(positiveText) else null,
             negativeText = null,
@@ -143,6 +150,26 @@ fun FragmentActivity.showAlertDialog(
             onNegativeClick = null,
             onDialogDismiss = null,
             cancelable = isCancelEnable)
+}
+
+fun Fragment.showAlertDialog(@StringRes title: Int?,
+                             @StringRes message: Int?,
+                             @StringRes positiveText: Int? = null,
+                             @StringRes negativeText: Int? = null,
+                             onPositiveClick: (() -> Unit)? = null,
+                             onNegativeClick: (() -> Unit)? = null,
+                             onDialogDismiss: (() -> Unit)? = null,
+                             cancelable: Boolean = true) {
+    if (isAdded.not() || view == null) return
+    requireContext().showAlertDialog(
+            title = if (title != null) getString(title) else null,
+            message = if (message != null) getString(message) else null,
+            positiveText = if (positiveText != null) getString(positiveText) else null,
+            negativeText = if (negativeText != null) getString(negativeText) else null,
+            onPositiveClick = onPositiveClick,
+            onNegativeClick = onNegativeClick,
+            onDialogDismiss = onDialogDismiss,
+            cancelable = cancelable)
 }
 
 fun Fragment.showAlertDialog(title: String?,
@@ -153,20 +180,22 @@ fun Fragment.showAlertDialog(title: String?,
                              onNegativeClick: (() -> Unit)? = null,
                              onDialogDismiss: (() -> Unit)? = null,
                              cancelable: Boolean = true) {
+    if (isAdded.not() || view == null) return
     requireContext().showAlertDialog(title, message, positiveText, negativeText, onPositiveClick, onNegativeClick, onDialogDismiss, cancelable)
 }
 
 fun Fragment.showAlertDialog(
-        message: String,
-        isCancelEnable: Boolean = true,
+        title: String?,
+        message: String?,
         positiveText: String? = null,
+        isCancelEnable: Boolean = true,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isAdded.not() || view == null) return
     view?.hideKeyboard()
 
-    requireContext().showAlertDialog(title = getString(R.string.app_name),
-            message = message, positiveText = positiveText, negativeText = null,
+    requireContext().showAlertDialog(title = title, message = message,
+            positiveText = positiveText, negativeText = null,
             onPositiveClick = onPositiveClick, onNegativeClick = null, onDialogDismiss = null,
             cancelable = isCancelEnable)
 }
@@ -174,14 +203,14 @@ fun Fragment.showAlertDialog(
 
 fun Fragment.showAlertDialog(
         @StringRes message: Int,
-        isCancelEnable: Boolean = true,
         @StringRes positiveText: Int? = null,
+        isCancelEnable: Boolean = true,
         onPositiveClick: (() -> Unit)? = null) {
 
     if (isAdded.not() || view == null) return
     view?.hideKeyboard()
 
-    requireContext().showAlertDialog(title = getString(R.string.app_name),
+    requireContext().showAlertDialog(title = null,
             message = getString(message),
             positiveText = if (positiveText != null) getString(positiveText) else null,
             negativeText = null,

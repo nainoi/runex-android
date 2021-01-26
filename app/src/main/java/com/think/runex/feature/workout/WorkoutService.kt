@@ -18,6 +18,7 @@ import com.think.runex.config.*
 import com.think.runex.feature.location.LocationTracking
 import com.think.runex.ui.MainActivity
 import com.think.runex.ui.workout.WorkoutScreen
+import io.realm.Realm
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
@@ -64,7 +65,7 @@ open class WorkoutService : Service() {
                         status = WorkoutStatus.READY
                     }
                     if (status == WorkoutStatus.READY || status == WorkoutStatus.PAUSE) {
-                        broadcastWorkingOutUpdate(WorkingOutLocation(newLocation))
+                        broadcastWorkingOutUpdate(newLocation)
                     }
                 }
             }
@@ -132,6 +133,7 @@ open class WorkoutService : Service() {
 
     private fun onStartWorkingOut(type: String) {
         if (isRunningInForeground()) return
+        clearTempLocation()
         setupNotificationManager()
         record = WorkoutRecord(type, System.currentTimeMillis())
         status = WorkoutStatus.WORKING_OUT
@@ -144,49 +146,41 @@ open class WorkoutService : Service() {
         Log.d(simpleName(), "Action Pause")
         status = WorkoutStatus.PAUSE
         stopScheduledThread()
-        broadcastWorkingOutUpdate(WorkingOutLocation(lastUpdateLocation), record?.getDisplayData())
+        updateWorkingOutRecord()
+        broadcastWorkingOutUpdate(lastUpdateLocation, record?.getDisplayData())
     }
 
     private fun onResumeWorkingOut() {
         Log.d(simpleName(), "Action Resume")
         status = WorkoutStatus.WORKING_OUT
         startScheduledThread()
-        broadcastWorkingOutUpdate(WorkingOutLocation(lastUpdateLocation), record?.getDisplayData())
+        broadcastWorkingOutUpdate(lastUpdateLocation, record?.getDisplayData())
     }
 
     private fun onStopWorkingOut() {
         Log.d(simpleName(), "Action Stop")
+        stopSelf()
+        stopForeground(true)
+        notificationManager = null
         status = WorkoutStatus.STOP
         stopScheduledThread()
-        //TODO("Stop and clear data in service and stop for ground service")
+        updateWorkingOutRecord()
+        broadcastWorkingOutUpdate(lastUpdateLocation, record?.getDisplayData())
     }
 
     private fun startScheduledThread() {
         if (scheduler != null) {
             stopScheduledThread()
         }
-
         //Set last update time and location
         lastUpdateTimeMillis = System.currentTimeMillis()
         lastUpdateLocation = newLocation
 
         scheduler = Executors.newScheduledThreadPool(1)
         scheduler?.scheduleAtFixedRate({
-
-            //Update working out record
-            record?.apply {
-                durationMillis += System.currentTimeMillis() - lastUpdateTimeMillis
-                newLocation?.also {
-                    distances += lastUpdateLocation?.distanceTo(it) ?: 0f
-                }
-            }
-
-            //Set last update time and location
-            lastUpdateTimeMillis = System.currentTimeMillis()
-            lastUpdateLocation = newLocation
-
+            updateWorkingOutRecord()
             //Send broadcast to update ui and update notification.
-            broadcastWorkingOutUpdate(WorkingOutLocation(lastUpdateLocation), record?.getDisplayData())
+            broadcastWorkingOutUpdate(lastUpdateLocation, record?.getDisplayData())
 
         }, 0, 1, TimeUnit.SECONDS)
     }
@@ -196,14 +190,36 @@ open class WorkoutService : Service() {
         scheduler = null
     }
 
-    private fun broadcastWorkingOutUpdate(location: WorkingOutLocation?, displayData: WorkingOutDisplayData? = null) {
+    private fun updateWorkingOutRecord() {
+        record?.apply {
+            durationMillis += System.currentTimeMillis() - lastUpdateTimeMillis
+            newLocation?.also {
+                distances += lastUpdateLocation?.distanceTo(it) ?: 0f
+            }
+        }
+
+        //Set last update time, location and add location to realm
+        lastUpdateTimeMillis = System.currentTimeMillis()
+        if (newLocation?.latitude != lastUpdateLocation?.latitude || newLocation?.longitude != lastUpdateLocation?.longitude) {
+            addTempLocation(newLocation)
+        }
+        lastUpdateLocation = newLocation
+
+    }
+
+    private fun broadcastWorkingOutUpdate(location: Location?, displayData: WorkingOutDisplayData? = null) {
         val intent = Intent(ACTION_BROADCAST)
         intent.putExtra(KEY_STATUS, status)
-        location?.also { intent.putExtra(KEY_LOCATION, it) }
-        displayData?.also {
-            intent.putExtra(KEY_DATA, it)
-            notificationManager?.notify(NOTIFICATION_WORKOUT_ID, getNotification(it.getNotificationContent(resources)))
+
+        if (location != null) {
+            intent.putExtra(KEY_LOCATION, WorkingOutLocation(record?.startMillis, location))
         }
+
+        if (displayData != null) {
+            intent.putExtra(KEY_DATA, displayData)
+            notificationManager?.notify(NOTIFICATION_WORKOUT_ID, getNotification(displayData.getNotificationContent(resources)))
+        }
+
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
     }
 
@@ -257,6 +273,26 @@ open class WorkoutService : Service() {
             builder.addAction(icon, title, servicePendingIntent)
         }
         return builder.build()
+    }
+
+    //Update last location to realm data base
+    private fun addTempLocation(location: Location?) {
+        if (location == null) return
+        Realm.getDefaultInstance()?.run {
+            beginTransaction()
+            val tempLocation = createObject(WorkingOutLocation::class.java)
+            tempLocation.startMillis = record?.startMillis ?: 0
+            tempLocation.copy(location)
+            commitTransaction()
+        }
+    }
+
+    private fun clearTempLocation() {
+        Realm.getDefaultInstance().run {
+            beginTransaction()
+            delete(WorkingOutLocation::class.java)
+            commitTransaction()
+        }
     }
 
     /**

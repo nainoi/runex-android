@@ -31,13 +31,13 @@ class LocationTracking(private val context: Context,
         /**
          * The desired interval for location updates. Inexact. Updates may be more or less frequent.
          */
-        private const val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 3000
+        private const val UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
 
         /**
          * The fastest rate for active location updates. Updates will never be more frequent
          * than this value.
          */
-        private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS: Long = 1000
+        private const val FASTEST_UPDATE_INTERVAL_IN_MILLISECONDS: Long = 750
     }
 
     /**
