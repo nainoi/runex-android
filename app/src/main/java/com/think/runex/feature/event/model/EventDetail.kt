@@ -34,12 +34,13 @@ data class EventDetail(
         @SerializedName("photoShirt") var photoShirt: String? = null,
         @SerializedName("photoShirtThumbnail") var photoShirtThumbnail: String? = null,
         @SerializedName("place") var place: String? = "",
-        @SerializedName("prizes") var prizes: List<Any>? = null,
+        @SerializedName("prizes") var prizes: List<Prize>? = null,
         @SerializedName("registerEndDate") var registerEndDate: String? = "",
         @SerializedName("registerEndDateText") var registerEndDateDisplay: String? = "",
         @SerializedName("registerStartDate") var registerStartDate: String? = "",
         @SerializedName("registerStartDateText") var registerStartDateDisplay: String? = "",
-        @SerializedName("schedules") var schedules: List<Any>? = null,
+        @SerializedName("schedules") var schedules: List<Schedule>? = null,
+        @SerializedName("shirts") var shirts: List<Shirts>? = null,
         @SerializedName("title") var title: String? = "",
         @SerializedName("userId") var userId: String? = "") {
 

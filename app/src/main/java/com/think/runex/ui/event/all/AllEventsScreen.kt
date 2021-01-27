@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.all
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
-import com.jozzee.android.core.view.gone
-import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.common.observe
@@ -17,6 +15,7 @@ import com.think.runex.feature.event.AllEventListViewModel
 import com.think.runex.feature.event.AllEventListViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.recyclerview.MarginItemDecoration
+import com.think.runex.ui.event.detail.EventDetailsScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_all_events.*
 
@@ -56,7 +55,7 @@ class AllEventsScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        //Set update recycler view
+        //Set up recycler view
         adapter = AllEventsAdapter()
         layoutManager = LinearLayoutManager(requireContext())
         event_list?.addItemDecoration(MarginItemDecoration(getDimension(R.dimen.space_16dp)))

@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:minHeight="@dimen/space_56dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/running_icon"
+        android:layout_width="@dimen/icon_size_system"
+        android:layout_height="@dimen/icon_size_system"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/space_8dp"
+        android:layout_marginEnd="@dimen/space_8dp"
+        app:srcCompat="@mipmap/ic_running"
+        app:tint="@color/iconColorPrimary" />
+
+    <TextView
+        android:id="@+id/title_label"
+        style="@style/TextBody.Secondary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_centerVertical="true"
+        android:layout_toStartOf="@+id/price_label"
+        android:layout_toEndOf="@+id/running_icon"
+        android:ellipsize="end"
+        android:maxLines="1" />
+
+    <TextView
+        android:id="@+id/price_label"
+        style="@style/TextBody.Secondary.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentEnd="true"
+        android:layout_centerVertical="true"
+        android:layout_marginStart="@dimen/space_8dp"
+        android:layout_marginEnd="@dimen/space_8dp" />
+
+</RelativeLayout>

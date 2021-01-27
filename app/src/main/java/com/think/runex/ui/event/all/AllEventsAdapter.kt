@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.all
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,7 +8,6 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.loadEventsImage
-import com.think.runex.common.requireContext
 import com.think.runex.feature.event.model.EventItem
 import kotlinx.android.synthetic.main.list_item_all_event.view.*
 

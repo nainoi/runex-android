@@ -65,4 +65,13 @@ data class TicketEventDetail(
     override fun describeContents(): Int {
         return 0
     }
+
+    fun getTitle(unit: String): String {
+        return "$title $distance $unit"
+    }
+
+    @JvmName("getPriceDisplay")
+    fun getPrice(): String {
+        return "$price THB"
+    }
 }

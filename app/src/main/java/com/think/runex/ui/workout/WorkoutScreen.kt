@@ -15,10 +15,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.GoogleMap
 import com.google.android.libraries.maps.SupportMapFragment
-import com.google.android.libraries.maps.model.LatLng
 import com.jozzee.android.core.permission.allPermissionsGranted
 import com.jozzee.android.core.permission.havePermissions
 import com.jozzee.android.core.permission.shouldShowPermissionRationale
@@ -33,7 +31,6 @@ import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.ui.event.EventDetailsScreen
 import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread

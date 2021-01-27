@@ -98,6 +98,10 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
+    <style name="TextBody.Secondary.Bold" parent="TextBody.Secondary">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="TextBody.Secondary.InLightBackground" parent="TextBody">
         <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
     </style>

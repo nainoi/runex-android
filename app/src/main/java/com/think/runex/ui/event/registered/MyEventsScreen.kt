@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.registered
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
-import com.jozzee.android.core.view.gone
-import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.common.observe

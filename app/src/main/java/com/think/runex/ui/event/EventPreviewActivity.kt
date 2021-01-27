@@ -1,31 +1,16 @@
 package com.think.runex.ui.event
 
-import android.annotation.SuppressLint
-import android.graphics.Color
 import android.os.Bundle
-import android.view.MenuItem
-import android.webkit.WebSettings
-import android.webkit.WebView
-import android.webkit.WebViewClient
-import com.jozzee.android.core.util.Logger
-import com.jozzee.android.core.util.simpleName
-import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
-import com.jozzee.android.core.view.showDialog
 import com.think.runex.R
 import com.think.runex.common.getViewModel
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.setupToolbar
-import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.event.EventDetailsViewModel
 import com.think.runex.feature.event.EventDetailsViewModelFactory
 import com.think.runex.feature.event.model.EventItem
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.config.KEY_EVENT
-import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.ui.event.registered.RegisterEventWithEBIBDialog
 import kotlinx.android.synthetic.main.activity_event_preview.*
-import kotlinx.android.synthetic.main.toolbar.*
 
 class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
 

@@ -1,29 +1,27 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.detail
 
-import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.fragment.app.viewModels
+import androidx.core.content.ContextCompat
+import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.fragment.onBackPressed
+import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
-import com.jozzee.android.core.view.showDialog
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.*
 import com.think.runex.config.KEY_CODE
-import com.think.runex.config.KEY_EVENT
-import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.event.EventDetailsViewModel
 import com.think.runex.feature.event.EventDetailsViewModelFactory
-import com.think.runex.feature.event.model.EventItem
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration
+import com.think.runex.ui.event.registered.RegisterEventWithEBIBDialog
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_event_details.*
-import kotlinx.android.synthetic.main.screen_event_details.register_button
 import kotlinx.android.synthetic.main.toolbar.*
 
 class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
@@ -39,6 +37,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     private lateinit var viewModel: EventDetailsViewModel
 
+    private lateinit var adapter: TicketTypeAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -59,6 +58,15 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar, R.string.event_detail, R.drawable.ic_navigation_back)
+
+        //Set up recycler view
+        adapter = TicketTypeAdapter()
+        val lineSeparator = ContextCompat.getDrawable(requireContext(), R.drawable.line_separator_list_item)?.apply {
+            setColorFilter(getColor(R.color.border))
+        }
+        tickets_list?.addItemDecoration(LineSeparatorItemDecoration(lineSeparator))
+        tickets_list?.layoutManager = LinearLayoutManager(requireContext())
+        tickets_list?.adapter = adapter
     }
 
     private fun subscribeUi() {
@@ -87,12 +95,12 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     private fun updateEventDetails() {
         //Set event details to views
-
         event_image?.loadEventsImage(viewModel.eventDetail?.coverImage())
         event_period_label?.text = viewModel.eventDetail?.eventPeriodWithTime() ?: ""
         event_title_label?.text = viewModel.eventDetail?.title ?: ""
-        event_detail_label?.text = viewModel.eventDetail?.contact ?: ""
+        event_detail_label?.text = viewModel.eventDetail?.content ?: ""
         register_button?.isEnabled = false
+        adapter.submitList(viewModel.tickets?.toMutableList())
 
         //Set register button if event not free
         if (viewModel.eventDetail?.isFreeEvent == true) {

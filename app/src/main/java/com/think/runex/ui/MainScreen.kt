@@ -14,15 +14,12 @@ import com.jozzee.android.core.fragment.addChildFragment
 import com.jozzee.android.core.fragment.childFragmentCount
 import com.jozzee.android.core.fragment.childFragments
 import com.jozzee.android.core.resource.getColor
-import com.jozzee.android.core.util.Logger
-import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
-import com.think.runex.common.setStatusBarColor
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.ui.event.AllEventsScreen
-import com.think.runex.ui.event.MyEventsScreen
+import com.think.runex.ui.event.all.AllEventsScreen
+import com.think.runex.ui.event.registered.MyEventsScreen
 import com.think.runex.ui.profile.ProfileScreen
 import com.think.runex.ui.workout.history.WorkoutHistoryScreen
 import com.think.runex.ui.workout.WorkoutScreen

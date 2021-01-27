@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.registered
 
 import android.view.LayoutInflater
 import android.view.View
@@ -13,7 +13,7 @@ import com.think.runex.common.loadEventsImage
 import com.think.runex.feature.event.model.EventRegistered
 import kotlinx.android.synthetic.main.list_item_my_event.view.*
 
-class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(MyEventsAdapter.EventsListDiffCallback()) {
+class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
     private var onItemClick: ((position: Int, event: EventRegistered) -> Unit)? = null
 

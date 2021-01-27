@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.event.EventDetailsScreen">
+    tools:context=".ui.event.detail.EventDetailsScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
@@ -74,8 +74,8 @@
                 android:layout_marginEnd="@dimen/space_16dp"
                 android:maxLines="2" />
 
-            <RelativeLayout
-                android:id="@+id/event_tickets_layout"
+            <androidx.recyclerview.widget.RecyclerView
+                android:id="@+id/tickets_list"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/event_title_label"
@@ -85,14 +85,14 @@
                 android:layout_marginBottom="@dimen/space_24dp"
                 android:background="@drawable/shape_rectangle_border_grey_rounded_4dp">
 
-            </RelativeLayout>
+            </androidx.recyclerview.widget.RecyclerView>
 
             <TextView
                 android:id="@+id/event_detail_label"
                 style="@style/TextBody.Secondary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/event_tickets_layout"
+                android:layout_below="@+id/tickets_list"
                 android:layout_marginStart="@dimen/space_16dp"
                 android:layout_marginEnd="@dimen/space_16dp" />
 
