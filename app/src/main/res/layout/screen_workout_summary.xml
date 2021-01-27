@@ -1,21 +1,243 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
-    tools:context=".ui.workout.summary.WorkoutSummaryScreen">
+    tools:context=".ui.workout.WorkoutSummaryScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
-        app:elevation="0dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:background="@color/background"
-        android:paddingTop="@dimen/space_24dp">
+        android:paddingTop="@dimen/space_24dp"
+        app:elevation="0dp">
 
         <include layout="@layout/toolbar" />
     </com.google.android.material.appbar.AppBarLayout>
+
+    <RelativeLayout
+        android:id="@+id/map_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/distance_label"
+        android:layout_below="@+id/top_bar">
+
+        <fragment
+            android:id="@+id/map_fragment"
+            android:name="com.google.android.libraries.maps.SupportMapFragment"
+            android:layout_width="match_parent"
+            android:layout_height="match_parent"
+            tools:ignore="FragmentTagUsage" />
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/distance_and_duration_in_map_layout"
+            android:layout_alignBottom="@+id/distance_and_duration_in_map_layout"
+            android:alpha="0.68"
+            android:background="@drawable/bg_fading_black_vertical" />
+
+        <RelativeLayout
+            android:id="@+id/distance_and_duration_in_map_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignParentBottom="true">
+
+            <View
+                android:id="@+id/guideline_center_horizontal"
+                android:layout_width="0dp"
+                android:layout_height="0dp"
+                android:layout_centerHorizontal="true" />
+
+            <TextView
+                android:id="@+id/duration_in_map_placeholder"
+                style="@style/TextSubTitle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_4dp"
+                android:gravity="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/duration" />
+
+            <TextView
+                android:id="@+id/duration_in_map_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/duration_in_map_placeholder"
+                android:layout_alignParentEnd="true"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_16dp"
+                android:layout_toEndOf="@+id/guideline_center_horizontal"
+                android:gravity="end"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/time_hint"
+                android:textColor="@color/textColorWhite"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+
+
+            <TextView
+                android:id="@+id/distance_in_map_placeholder"
+                style="@style/TextSubTitle.White"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_4dp"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="@string/distances" />
+
+            <TextView
+                android:id="@+id/distance_in_map_label"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/distance_in_map_placeholder"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:layout_marginBottom="@dimen/space_16dp"
+                android:layout_toStartOf="@+id/guideline_center_horizontal"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="0.00"
+                android:textColor="@color/textColorWhite"
+                android:textSize="28sp"
+                android:textStyle="bold" />
+        </RelativeLayout>
+
+
+    </RelativeLayout>
+
+    <TextView
+        android:id="@+id/distance_placeholder"
+        style="@style/TextBodyHeading.Thirdly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/distance_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:gravity="end"
+        android:text="@string/distances_kg" />
+
+    <TextView
+        android:id="@+id/distance_label"
+        style="@style/TextTitle.Primary.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/duration_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_4dp"
+        android:layout_toEndOf="@+id/distance_placeholder"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="0.00" />
+
+    <TextView
+        android:id="@+id/duration_placeholder"
+        style="@style/TextBodyHeading.Thirdly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/duration_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="@string/duration" />
+
+    <TextView
+        android:id="@+id/duration_label"
+        style="@style/TextTitle.Primary.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/duration_per_kilometer_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_4dp"
+        android:layout_toEndOf="@+id/duration_placeholder"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="@string/time_hint" />
+
+    <TextView
+        android:id="@+id/duration_per_kilometer_placeholder"
+        style="@style/TextBodyHeading.Thirdly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/duration_per_kilometer_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:gravity="end"
+        android:text="@string/minutes_per_kilometer_placeholder" />
+
+    <TextView
+        android:id="@+id/duration_per_kilometer_label"
+        style="@style/TextTitle.Primary.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/calorie_label"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_4dp"
+        android:layout_toEndOf="@+id/duration_per_kilometer_placeholder"
+        android:gravity="end"
+        android:text="@string/time_hint_minute" />
+
+    <TextView
+        android:id="@+id/calorie_placeholder"
+        style="@style/TextBodyHeading.Thirdly"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignBaseline="@+id/calorie_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="@string/calories_cal" />
+
+    <TextView
+        android:id="@+id/calorie_label"
+        style="@style/TextTitle.Primary.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/line_above_submit_button"
+        android:layout_alignParentEnd="true"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_16dp"
+        android:layout_toEndOf="@+id/calorie_placeholder"
+        android:gravity="end"
+        android:maxLines="1"
+        android:text="@string/zero_hint" />
+
+    <View
+        android:id="@+id/line_above_submit_button"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_above="@+id/submit_button"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:background="@color/line" />
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/submit_button"
+        style="@style/Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_margin="@dimen/space_16dp"
+        android:paddingStart="@dimen/space_48dp"
+        android:paddingEnd="@dimen/space_48dp"
+        android:text="@string/submit_result" />
 
 </RelativeLayout>

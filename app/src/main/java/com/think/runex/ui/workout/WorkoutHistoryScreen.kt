@@ -1,4 +1,4 @@
-package com.think.runex.ui.workout.history
+package com.think.runex.ui.workout
 
 import android.os.Bundle
 import androidx.fragment.app.Fragment

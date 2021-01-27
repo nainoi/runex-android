@@ -36,6 +36,11 @@ class MapPresenter(private var googleMap: GoogleMap?,
         googleMap?.moveCamera(CameraUpdateFactory.newLatLngZoom(latLng, zoom))
     }
 
+    /**
+     * Add location and draw polyline to map
+     * In first time [points] is null will be get temp location from
+     * Realm data base adn redraw polyline
+     */
     fun addPolyline(location: WorkingOutLocation) {
         if (points == null) {
             Realm.getDefaultInstance().run {
@@ -44,6 +49,19 @@ class MapPresenter(private var googleMap: GoogleMap?,
             }
         }
         points?.add(location)
+        drawPolyline()
+    }
+
+    fun drawPolylineFromDatabase(/*startTimeMillis: Long*/) {
+        points?.clear()
+        Realm.getDefaultInstance().run {
+            points = ArrayList(copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync())
+                    ?: emptyList())
+        }
+        drawPolyline()
+    }
+
+    private fun drawPolyline() {
         val polyline = googleMap?.addPolyline(PolylineOptions().apply {
             width(widthLine)
             this@MapPresenter.points?.forEach {
@@ -51,9 +69,18 @@ class MapPresenter(private var googleMap: GoogleMap?,
             }
         })
         polyline?.color = colorLine
-
         lastPolyline?.remove()
         lastPolyline = polyline
+    }
+
+    /**
+     * Clear polyline on map
+     */
+    fun clearPolyline() {
+        lastPolyline?.remove()
+        lastPolyline = null
+        points?.clear()
+        points = null
     }
 
     fun zoomToFitWorkoutLine() {
@@ -67,7 +94,7 @@ class MapPresenter(private var googleMap: GoogleMap?,
 
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 65))
         launchMainThread {
-            delay(1000)
+            delay(200)
             val zoom = (googleMap?.cameraPosition?.zoom ?: GOOGLE_MAP_DEFAULT_ZOOM) - 1
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.center, zoom))
         }

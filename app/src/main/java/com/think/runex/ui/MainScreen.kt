@@ -21,7 +21,7 @@ import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.event.AllEventsScreen
 import com.think.runex.ui.event.MyEventsScreen
 import com.think.runex.ui.profile.ProfileScreen
-import com.think.runex.ui.workout.history.WorkoutHistoryScreen
+import com.think.runex.ui.workout.WorkoutHistoryScreen
 import com.think.runex.ui.workout.WorkoutScreen
 import kotlinx.android.synthetic.main.screen_main.*
 

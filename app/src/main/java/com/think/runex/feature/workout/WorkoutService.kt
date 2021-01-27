@@ -164,8 +164,21 @@ open class WorkoutService : Service() {
         notificationManager = null
         status = WorkoutStatus.STOP
         stopScheduledThread()
+        record?.stopMillis = System.currentTimeMillis()
         updateWorkingOutRecord()
-        broadcastWorkingOutUpdate(lastUpdateLocation, record?.getDisplayData())
+
+        //Send broadcast to update ui in [WorkoutScreen]
+        val intent = Intent(ACTION_BROADCAST)
+        intent.putExtra(KEY_STATUS, status)
+        intent.putExtra(KEY_DATA, record)
+        LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
+    }
+
+    private fun onClearWorkingOut() {
+        record = null
+        lastUpdateTimeMillis = 0
+        lastUpdateLocation = null
+        status = WorkoutStatus.UNKNOWN
     }
 
     private fun startScheduledThread() {
@@ -337,6 +350,7 @@ open class WorkoutService : Service() {
                 WorkoutAction.PAUSE -> onPauseWorkingOut()
                 WorkoutAction.RESUME -> onResumeWorkingOut()
                 WorkoutAction.STOP -> onStopWorkingOut()
+                WorkoutAction.CLEAR -> onClearWorkingOut()
             }
         }
     }

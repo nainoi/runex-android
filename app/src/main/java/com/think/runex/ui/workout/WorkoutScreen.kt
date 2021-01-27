@@ -31,7 +31,6 @@ import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_workout.*
@@ -68,7 +67,6 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                 if (intent?.action != WorkoutService.ACTION_BROADCAST) return
                 runOnUiThread {
                     workoutStatus = intent.getIntExtra(KEY_STATUS, WorkoutStatus.UNKNOWN)
-                    Log.d(simpleName(), "Workout status: ${WorkoutStatus.statusText(workoutStatus)}")
                     when (workoutStatus) {
                         WorkoutStatus.UNKNOWN -> {
                             //Nothing for now
@@ -93,8 +91,17 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                             //Nothing for now
                         }
                         WorkoutStatus.STOP -> {
-                            //Nothing for now
                             mapPresenter?.zoomToFitWorkoutLine()
+                            intent.getParcelableExtra<WorkoutRecord>(KEY_DATA)?.also { record ->
+                                launch {
+                                    addFragment(WorkoutSummaryScreen.newInstance(record))
+                                    resetUi()
+                                    delay(1000)
+                                    workoutMessenger?.run {
+                                        send(Message.obtain(null, WorkoutAction.CLEAR))
+                                    }
+                                }
+                            }
                         }
                     }
                 }
@@ -146,14 +153,16 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
 
     //TODO("Have only workout type 'running' for now ")
     override fun onActionStart() {
-        addFragment(WorkoutSummaryScreen.newInstance(WorkoutRecord(WorkoutType.RUNNING)))
-//        workoutMessenger?.run {
-//            send(Message.obtain(null, WorkoutAction.START).apply {
-//                data = Bundle().apply {
-//                    putString(KEY_TYPE, WorkoutType.RUNNING)
-//                }
-//            })
-//        }
+        workoutMessenger?.run {
+            send(Message.obtain(null, WorkoutAction.START).apply {
+                data = Bundle().apply {
+                    putString(KEY_TYPE, WorkoutType.RUNNING)
+                }
+            })
+        }
+
+        //TODO("Force test workout summary screen")
+        //addFragment(WorkoutSummaryScreen.newInstance(WorkoutRecord(WorkoutType.RUNNING)))
     }
 
     override fun onActionPause() {
@@ -180,6 +189,15 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         duration_per_kilometer_label?.text = displayData.durationPerKilometer
         duration_per_kilometer_placeholder?.text = ("Pace${displayData.durationPerKilometerUnit}")
         calorie_label?.text = displayData.calories
+    }
+
+    private fun resetUi() {
+        distance_label?.text = ("0.00")
+        duration_label?.text = getString(R.string.time_hint)
+        duration_per_kilometer_label?.text = getString(R.string.time_hint_minute)
+        duration_per_kilometer_placeholder?.text = getString(R.string.minutes_per_kilometer_placeholder)
+        calorie_label?.text = "0"
+        mapPresenter?.clearPolyline()
     }
 
     private fun initMaps(callbacks: () -> Unit) {

@@ -202,6 +202,11 @@
         <item name="android:ellipsize">end</item>
     </style>
 
+
+    <style name="TextBodyHeading.Thirdly" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorThirdly</item>
+    </style>
+
     <style name="TextBodyHeading.Thirdly.InDarkBackground" parent="TextBodyHeading">
         <item name="android:textColor">@color/textColorThirdlyInDarkBackground</item>
     </style>

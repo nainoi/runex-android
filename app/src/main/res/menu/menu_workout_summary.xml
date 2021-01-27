@@ -5,6 +5,6 @@
         android:id="@+id/menu_share"
         android:icon="@drawable/ic_share_workout"
         android:orderInCategory="1"
-        android:title="@string/menu"
+        android:title="@string/share"
         app:showAsAction="always" />
 </menu>

@@ -19,7 +19,7 @@ class ExampleUnitTest {
 
     @Test
     fun time_milliseconds_to_time_display() {
-        val timeMillis: Long = 3599999
+        val timeMillis: Long = 42364
 
 
         var timeLeft = Duration.ofMillis(timeMillis)
