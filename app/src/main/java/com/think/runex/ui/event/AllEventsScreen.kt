@@ -1,4 +1,4 @@
-package com.think.runex.ui.event.all
+package com.think.runex.ui.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -15,7 +15,6 @@ import com.think.runex.feature.event.AllEventListViewModel
 import com.think.runex.feature.event.AllEventListViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.recyclerview.MarginItemDecoration
-import com.think.runex.ui.event.detail.EventDetailsScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_all_events.*
 

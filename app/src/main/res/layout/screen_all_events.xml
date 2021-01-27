@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:paddingTop="@dimen/space_24dp"
-    tools:context=".ui.event.all.AllEventsScreen">
+    tools:context=".ui.event.AllEventsScreen">
 
     <TextView
         android:id="@+id/top_bar"

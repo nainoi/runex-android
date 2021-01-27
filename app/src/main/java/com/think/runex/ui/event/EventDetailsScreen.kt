@@ -1,4 +1,4 @@
-package com.think.runex.ui.event.detail
+package com.think.runex.ui.event
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -18,7 +18,6 @@ import com.think.runex.feature.event.EventDetailsViewModel
 import com.think.runex.feature.event.EventDetailsViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration
-import com.think.runex.ui.event.registered.RegisterEventWithEBIBDialog
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_event_details.*

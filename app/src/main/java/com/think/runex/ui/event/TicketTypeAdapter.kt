@@ -1,4 +1,4 @@
-package com.think.runex.ui.event.detail
+package com.think.runex.ui.event
 
 import android.view.LayoutInflater
 import android.view.View
@@ -8,9 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.requireContext
-import com.think.runex.feature.event.model.EventItem
 import com.think.runex.feature.event.model.TicketEventDetail
-import com.think.runex.ui.event.all.AllEventsAdapter
 import kotlinx.android.synthetic.main.list_item_ticket_type.view.*
 
 class TicketTypeAdapter : ListAdapter<TicketEventDetail, TicketTypeAdapter.ViewHolder>(TicketTypeDiffCallback()) {

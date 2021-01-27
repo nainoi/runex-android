@@ -9,7 +9,6 @@ import com.think.runex.feature.event.EventDetailsViewModelFactory
 import com.think.runex.feature.event.model.EventItem
 import com.think.runex.ui.base.BaseActivity
 import com.think.runex.config.KEY_EVENT
-import com.think.runex.ui.event.registered.RegisterEventWithEBIBDialog
 import kotlinx.android.synthetic.main.activity_event_preview.*
 
 class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {

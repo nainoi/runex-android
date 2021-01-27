@@ -1,4 +1,4 @@
-package com.think.runex.ui.event.registered
+package com.think.runex.ui.event
 
 import android.annotation.SuppressLint
 import android.app.Dialog
