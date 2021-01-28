@@ -1,4 +1,4 @@
-package com.think.runex.feature.workout
+package com.think.runex.feature.workout.model
 
 import android.content.res.Resources
 import android.os.Parcel

@@ -16,6 +16,7 @@ import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
 import com.think.runex.config.*
 import com.think.runex.feature.location.LocationTracking
+import com.think.runex.feature.workout.model.*
 import com.think.runex.ui.MainActivity
 import com.think.runex.ui.workout.WorkoutScreen
 import io.realm.Realm
@@ -46,7 +47,7 @@ open class WorkoutService : Service() {
     private lateinit var locationTracking: LocationTracking
     private var newLocation: Location? = null
 
-    private var record: WorkoutRecord? = null
+    private var record: WorkingOutRecord? = null
     private var status: Int = WorkoutStatus.UNKNOWN
     private var lastUpdateTimeMillis: Long = 0
     private var lastUpdateLocation: Location? = null
@@ -135,7 +136,7 @@ open class WorkoutService : Service() {
         if (isRunningInForeground()) return
         clearTempLocation()
         setupNotificationManager()
-        record = WorkoutRecord(type, System.currentTimeMillis())
+        record = WorkingOutRecord(type, System.currentTimeMillis())
         status = WorkoutStatus.WORKING_OUT
         startService(Intent(applicationContext, WorkoutService::class.java))
         startForeground(NOTIFICATION_WORKOUT_ID, getNotification())
@@ -225,7 +226,7 @@ open class WorkoutService : Service() {
         intent.putExtra(KEY_STATUS, status)
 
         if (location != null) {
-            intent.putExtra(KEY_LOCATION, WorkingOutLocation(record?.startMillis, location))
+            intent.putExtra(KEY_LOCATION, WorkingOutLocation(location))
         }
 
         if (displayData != null) {
@@ -294,7 +295,6 @@ open class WorkoutService : Service() {
         Realm.getDefaultInstance()?.run {
             beginTransaction()
             val tempLocation = createObject(WorkingOutLocation::class.java)
-            tempLocation.startMillis = record?.startMillis ?: 0
             tempLocation.copy(location)
             commitTransaction()
         }

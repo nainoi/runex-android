@@ -113,6 +113,7 @@
 
     <!-- R -->
     <string name="record">บันทึก</string>
+    <string name="recording">กำลังบันทึก</string>
     <string name="register">สมัครสมาชิก</string>
     <string name="register_date">รับสมัคร</string>
     <string name="register_event">ลงสมัครวิ่ง</string>

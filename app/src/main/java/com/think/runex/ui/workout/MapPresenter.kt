@@ -11,7 +11,7 @@ import com.google.android.libraries.maps.model.LatLngBounds
 import com.google.android.libraries.maps.model.Polyline
 import com.google.android.libraries.maps.model.PolylineOptions
 import com.think.runex.config.GOOGLE_MAP_DEFAULT_ZOOM
-import com.think.runex.feature.workout.WorkingOutLocation
+import com.think.runex.feature.workout.model.WorkingOutLocation
 import com.think.runex.util.launchMainThread
 import io.realm.Realm
 import kotlinx.coroutines.delay
@@ -94,7 +94,7 @@ class MapPresenter(private var googleMap: GoogleMap?,
 
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 65))
         launchMainThread {
-            delay(200)
+            delay(900)
             val zoom = (googleMap?.cameraPosition?.zoom ?: GOOGLE_MAP_DEFAULT_ZOOM) - 1
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.center, zoom))
         }

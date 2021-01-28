@@ -9,43 +9,46 @@ import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
+import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
+import com.think.runex.common.toJson
 import com.think.runex.config.KEY_DATA
-import com.think.runex.feature.workout.WorkoutRecord
+import com.think.runex.feature.workout.model.WorkingOutRecord
+import com.think.runex.feature.workout.WorkoutViewModel
+import com.think.runex.feature.workout.WorkoutViewModelFactory
+import com.think.runex.feature.workout.model.WorkingOutLocation
+import com.think.runex.feature.workout.model.WorkoutInfo
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.NightMode
+import com.think.runex.util.launch
+import io.realm.Realm
 import kotlinx.android.synthetic.main.screen_workout_summary.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.delay
 
 class WorkoutSummaryScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(record: WorkoutRecord) = WorkoutSummaryScreen().apply {
+        fun newInstance(record: WorkingOutRecord) = WorkoutSummaryScreen().apply {
             arguments = Bundle().apply {
                 putParcelable(KEY_DATA, record)
             }
         }
     }
 
+    private lateinit var viewModel: WorkoutViewModel
     private var mapPresenter: MapPresenter? = null
 
-    private var record: WorkoutRecord? = null
+    private var record: WorkingOutRecord? = null
+    private var info: WorkoutInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        viewModel = getViewModel(WorkoutViewModelFactory(requireContext()))
         record = arguments?.getParcelable(KEY_DATA)
-
-        //TODO("Force set record fro test")
-        //{"distances":168.84119,"durationMillis":42364,"startMillis":1611761954202,"stopMillis":0,"type":"Running"}​
-        //record = WorkoutRecord(WorkoutType.RUNNING).apply {
-        //    distances = 210.57405f
-        //    durationMillis = 25148
-        //    startMillis = 1611762302729
-        //    stopMillis = 1611762327895
-        //}
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -56,26 +59,38 @@ class WorkoutSummaryScreen : BaseScreen() {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
-
-        //Initial google map and update views.
         initMaps {
             mapPresenter?.drawPolylineFromDatabase()
             mapPresenter?.zoomToFitWorkoutLine()
-            record?.getDisplayData()?.also { displayDate ->
-                distance_in_map_label?.text = displayDate.distances
-                duration_in_map_label?.text = displayDate.duration
-                distance_label?.text = displayDate.distances
-                duration_label?.text = displayDate.duration
-                duration_per_kilometer_label?.text = displayDate.durationPerKilometer
-                duration_per_kilometer_placeholder?.text = displayDate.durationPerKilometerUnit
-                calorie_label?.text = displayDate.calories
-            }
+            performAddWorkout()
         }
+    }
+
+    private fun performAddWorkout() = launch {
+        showProgressDialog(R.string.recording)
+        val locations = Realm.getDefaultInstance().run {
+            copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync()) ?: emptyList()
+        }
+        val workout = WorkoutInfo(record, locations)
+        Logger.warning(simpleName(), "Workout: ${workout.toJson()}")
+        info = viewModel.addWorkout(workout)
+        hideProgressDialog()
     }
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar, R.string.summary, R.drawable.ic_navigation_back)
+
+        //Update record data to views.
+        record?.getDisplayData()?.also { displayDate ->
+            distance_in_map_label?.text = displayDate.distances
+            duration_in_map_label?.text = displayDate.duration
+            distance_label?.text = displayDate.distances
+            duration_label?.text = displayDate.duration
+            duration_per_kilometer_label?.text = displayDate.durationPerKilometer
+            duration_per_kilometer_placeholder?.text = displayDate.durationPerKilometerUnit
+            calorie_label?.text = displayDate.calories
+        }
     }
 
     private fun subscribeUi() {

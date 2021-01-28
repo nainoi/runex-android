@@ -12,10 +12,8 @@ import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.setColorFilter
 import com.think.runex.common.showAlertDialog
-import com.think.runex.feature.workout.WorkoutStatus
-import com.think.runex.util.launch
+import com.think.runex.feature.workout.model.WorkoutStatus
 import kotlinx.android.synthetic.main.fragment_action_controls.*
-import kotlinx.coroutines.delay
 
 class ActionControlsFragment : Fragment() {
 

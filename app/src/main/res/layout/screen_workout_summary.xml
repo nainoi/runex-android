@@ -32,6 +32,13 @@
             android:layout_height="match_parent"
             tools:ignore="FragmentTagUsage" />
 
+        <androidx.appcompat.widget.AppCompatImageView
+            android:layout_width="@dimen/space_96dp"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_16dp"
+            android:adjustViewBounds="true"
+            app:srcCompat="@mipmap/ic_logo_runex" />
+
         <View
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

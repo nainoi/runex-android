@@ -1,7 +1,6 @@
-package com.think.runex.feature.workout
+package com.think.runex.feature.workout.model
 
 import androidx.annotation.IntDef
-import com.think.runex.feature.event.EventItemType
 
 @IntDef(value = [WorkoutStatus.UNKNOWN, WorkoutStatus.READY, WorkoutStatus.WORKING_OUT,
     WorkoutStatus.PAUSE, WorkoutStatus.STOP])

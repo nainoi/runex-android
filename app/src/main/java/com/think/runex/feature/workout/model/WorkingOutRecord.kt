@@ -1,12 +1,13 @@
-package com.think.runex.feature.workout
+package com.think.runex.feature.workout.model
 
 import android.os.Parcel
 import android.os.Parcelable
+import com.jozzee.android.core.text.toDoubleOrZero
 import com.think.runex.common.displayFormat
 import com.think.runex.common.timeDisplayFormat
 import java.util.concurrent.TimeUnit
 
-data class WorkoutRecord(
+data class WorkingOutRecord(
 
         /**
          * Type of workout such as running, walking, clicking
@@ -33,12 +34,12 @@ data class WorkoutRecord(
          */
         var distances: Float = 0f) : Parcelable {
 
-    companion object CREATOR : Parcelable.Creator<WorkoutRecord> {
-        override fun createFromParcel(parcel: Parcel): WorkoutRecord {
-            return WorkoutRecord(parcel)
+    companion object CREATOR : Parcelable.Creator<WorkingOutRecord> {
+        override fun createFromParcel(parcel: Parcel): WorkingOutRecord {
+            return WorkingOutRecord(parcel)
         }
 
-        override fun newArray(size: Int): Array<WorkoutRecord?> {
+        override fun newArray(size: Int): Array<WorkingOutRecord?> {
             return arrayOfNulls(size)
         }
     }
@@ -62,15 +63,46 @@ data class WorkoutRecord(
         return 0
     }
 
-    fun getDistancesKilometers(): String = (distances / 1000f).displayFormat(awaysShowDecimal = true)
+    fun getDistancesKilometers(): Float = (distances / 1000f)
 
+    fun getDurationSecond(): Long = durationMillis / 1000
+
+    fun getDurationMinutePerKilometer(): Double {
+        val secPerKilometer: Long = ((durationMillis / distances)).toLong()
+        val minutes = TimeUnit.SECONDS.toMinutes(secPerKilometer)
+        val second = TimeUnit.SECONDS.toSeconds(secPerKilometer) - TimeUnit.MINUTES.toSeconds(minutes)
+        return ("$minutes.$second").toDoubleOrZero()
+    }
+
+
+    //TODO("Unreliable calculation!")
+    fun getCalories(): Double {
+        if (distances > 0) {
+            //TODO("don't know the reference, from old java code")
+            val caloriesBurnPerHour = 450.0
+
+            val hour = TimeUnit.MILLISECONDS.toHours(durationMillis)
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis) - TimeUnit.HOURS.toMinutes(hour)
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMillis) - TimeUnit.MINUTES.toSeconds(minutes)
+
+            val percentageOfMinutes: Float = (minutes * 100) / 60f
+            val percentageOfSeconds: Float = (seconds * 100) / 3600f
+
+            val caloriesFromHour = caloriesBurnPerHour * hour
+            val caloriesFromMinute = (percentageOfMinutes * caloriesBurnPerHour) / 100
+            val caloriesFromSecond = (percentageOfSeconds * caloriesBurnPerHour) / 100
+
+            return (caloriesFromHour + caloriesFromMinute + caloriesFromSecond)
+        }
+        return 0.0
+    }
 
     fun getDisplayData(): WorkingOutDisplayData {
 
         val displayData = WorkingOutDisplayData()
 
         //Update distance
-        displayData.distances = getDistancesKilometers()
+        displayData.distances = getDistancesKilometers().displayFormat(awaysShowDecimal = true)
 
         //Update duration
         displayData.duration = durationMillis.timeDisplayFormat()
@@ -93,27 +125,8 @@ data class WorkoutRecord(
             }
         }
 
-        //TODO("Unreliable calculation!")
         //Update calories
-        if (distances > 0) {
-            //TODO("don't know the reference, from old java code")
-            val caloriesBurnPerHour = 450.0
-
-            val hour = TimeUnit.MILLISECONDS.toHours(durationMillis)
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis) - TimeUnit.HOURS.toMinutes(hour)
-            val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMillis) - TimeUnit.MINUTES.toSeconds(minutes)
-
-            val percentageOfMinutes: Float = (minutes * 100) / 60f
-            val percentageOfSeconds: Float = (seconds * 100) / 3600f
-
-            val caloriesFromHour = caloriesBurnPerHour * hour
-            val caloriesFromMinute = (percentageOfMinutes * caloriesBurnPerHour) / 100
-            val caloriesFromSecond = (percentageOfSeconds * caloriesBurnPerHour) / 100
-
-            displayData.calories = (caloriesFromHour + caloriesFromMinute + caloriesFromSecond).displayFormat()
-        } else {
-            displayData.calories = "0"
-        }
+        displayData.calories = getCalories().displayFormat()
 
         return displayData
     }

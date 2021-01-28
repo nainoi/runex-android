@@ -10,7 +10,6 @@ import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
 import android.provider.Settings
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,6 +29,7 @@ import com.think.runex.common.*
 import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
+import com.think.runex.feature.workout.model.*
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread
@@ -92,7 +92,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                         }
                         WorkoutStatus.STOP -> {
                             mapPresenter?.zoomToFitWorkoutLine()
-                            intent.getParcelableExtra<WorkoutRecord>(KEY_DATA)?.also { record ->
+                            intent.getParcelableExtra<WorkingOutRecord>(KEY_DATA)?.also { record ->
                                 launch {
                                     addFragment(WorkoutSummaryScreen.newInstance(record))
                                     resetUi()

@@ -113,6 +113,7 @@
 
     <!-- R -->
     <string name="record">Record</string>
+    <string name="recording">Recording</string>
     <string name="register">Register</string>
     <string name="register_date">Register date</string>
     <string name="register_event">Register event</string>
