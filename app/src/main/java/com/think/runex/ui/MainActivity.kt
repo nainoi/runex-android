@@ -2,7 +2,6 @@ package com.think.runex.ui
 
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.MenuItem
 import androidx.lifecycle.Observer
 import com.bumptech.glide.manager.SupportRequestManagerFragment
@@ -10,7 +9,6 @@ import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.connection.NetworkStatus
 import com.jozzee.android.core.fragment.fragmentBackStackCount
 import com.jozzee.android.core.fragment.fragmentCount
-import com.jozzee.android.core.fragment.fragments
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
@@ -20,7 +18,7 @@ import com.think.runex.common.findFragment
 import com.think.runex.common.getViewModel
 import com.think.runex.feature.auth.*
 import com.think.runex.ui.base.BaseActivity
-import com.think.runex.ui.workout.WorkoutScreen
+import com.think.runex.ui.workout.record.WorkoutScreen
 import com.think.runex.config.KEY_MESSAGE
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_LOGIN

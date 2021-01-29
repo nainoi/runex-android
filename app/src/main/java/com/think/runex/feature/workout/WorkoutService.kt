@@ -18,7 +18,7 @@ import com.think.runex.config.*
 import com.think.runex.feature.location.LocationTracking
 import com.think.runex.feature.workout.model.*
 import com.think.runex.ui.MainActivity
-import com.think.runex.ui.workout.WorkoutScreen
+import com.think.runex.ui.workout.record.WorkoutScreen
 import io.realm.Realm
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
@@ -165,7 +165,7 @@ open class WorkoutService : Service() {
         notificationManager = null
         status = WorkoutStatus.STOP
         stopScheduledThread()
-        record?.stopMillis = System.currentTimeMillis()
+        record?.stop = System.currentTimeMillis()
         updateWorkingOutRecord()
 
         //Send broadcast to update ui in [WorkoutScreen]
@@ -206,7 +206,7 @@ open class WorkoutService : Service() {
 
     private fun updateWorkingOutRecord() {
         record?.apply {
-            durationMillis += System.currentTimeMillis() - lastUpdateTimeMillis
+            duration += System.currentTimeMillis() - lastUpdateTimeMillis
             newLocation?.also {
                 distances += lastUpdateLocation?.distanceTo(it) ?: 0f
             }

@@ -17,17 +17,17 @@ data class WorkingOutRecord(
         /**
          * Start working out time in millisecond.
          */
-        var startMillis: Long = 0,
+        var start: Long = 0,
 
         /**
          * Stop working out time in millisecond.
          */
-        var stopMillis: Long = 0,
+        var stop: Long = 0,
 
         /**
          * Time durations on working out in millisecond.
          */
-        var durationMillis: Long = 0,
+        var duration: Long = 0,
 
         /**
          * Distances on working out in meters
@@ -53,9 +53,9 @@ data class WorkingOutRecord(
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(type)
-        parcel.writeLong(startMillis)
-        parcel.writeLong(stopMillis)
-        parcel.writeLong(durationMillis)
+        parcel.writeLong(start)
+        parcel.writeLong(stop)
+        parcel.writeLong(duration)
         parcel.writeFloat(distances)
     }
 
@@ -65,10 +65,10 @@ data class WorkingOutRecord(
 
     fun getDistancesKilometers(): Float = (distances / 1000f)
 
-    fun getDurationSecond(): Long = durationMillis / 1000
+    fun getDurationSecond(): Long = duration / 1000
 
     fun getDurationMinutePerKilometer(): Double {
-        val secPerKilometer: Long = ((durationMillis / distances)).toLong()
+        val secPerKilometer: Long = ((duration / distances)).toLong()
         val minutes = TimeUnit.SECONDS.toMinutes(secPerKilometer)
         val second = TimeUnit.SECONDS.toSeconds(secPerKilometer) - TimeUnit.MINUTES.toSeconds(minutes)
         return ("$minutes.$second").toDoubleOrZero()
@@ -81,9 +81,9 @@ data class WorkingOutRecord(
             //TODO("don't know the reference, from old java code")
             val caloriesBurnPerHour = 450.0
 
-            val hour = TimeUnit.MILLISECONDS.toHours(durationMillis)
-            val minutes = TimeUnit.MILLISECONDS.toMinutes(durationMillis) - TimeUnit.HOURS.toMinutes(hour)
-            val seconds = TimeUnit.MILLISECONDS.toSeconds(durationMillis) - TimeUnit.MINUTES.toSeconds(minutes)
+            val hour = TimeUnit.MILLISECONDS.toHours(duration)
+            val minutes = TimeUnit.MILLISECONDS.toMinutes(duration) - TimeUnit.HOURS.toMinutes(hour)
+            val seconds = TimeUnit.MILLISECONDS.toSeconds(duration) - TimeUnit.MINUTES.toSeconds(minutes)
 
             val percentageOfMinutes: Float = (minutes * 100) / 60f
             val percentageOfSeconds: Float = (seconds * 100) / 3600f
@@ -105,11 +105,11 @@ data class WorkingOutRecord(
         displayData.distances = getDistancesKilometers().displayFormat(awaysShowDecimal = true)
 
         //Update duration
-        displayData.duration = durationMillis.timeDisplayFormat()
+        displayData.duration = duration.timeDisplayFormat()
 
         //Update duration per kilometer
         if (distances > 0f) {
-            val millisPerKilometer: Long = ((durationMillis / distances) * 1000).toLong()
+            val millisPerKilometer: Long = ((duration / distances) * 1000).toLong()
             //Check durations millisecond per kilometer more than 1 hour (3600000 millisecond)
             when (millisPerKilometer < 3600000) {
                 true -> displayData.durationPerKilometer = millisPerKilometer.timeDisplayFormat().let {

@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.registered
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -23,7 +23,7 @@ class MyEventsScreen : BaseScreen() {
     private lateinit var viewModel: MyEventListViewModel
 
     private lateinit var adapter: MyEventsAdapter
-    private lateinit var layoutManager: LinearLayoutManager
+    private lateinit var layoutManager: LinearLayoutManager //For load more in the feature!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)

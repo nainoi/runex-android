@@ -30,7 +30,7 @@ public class EventCheckerViewHolder extends RecyclerView.ViewHolder {
 
     public static EventCheckerViewHolder create(@NonNull ViewGroup parent) {
         return new EventCheckerViewHolder(LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.list_item_event_send_distance, parent, false));
+                .inflate(R.layout.list_item_my_event_for_selection, parent, false));
     }
 
     public void bind(EventRegistered data, OnCheckedChangeListener checkedChangeListener) {

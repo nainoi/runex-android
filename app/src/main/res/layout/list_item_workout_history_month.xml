@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content">
+
+    <RelativeLayout
+        android:id="@+id/summary_month_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:minHeight="@dimen/space_72dp">
+
+        <RelativeLayout
+            android:id="@+id/workout_times_in_month_layout"
+            android:layout_width="@dimen/space_56dp"
+            android:layout_height="@dimen/space_56dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:background="@drawable/shape_circle_thirdly">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/workout_times_in_month_label"
+                style="@style/TextTitle.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="0"
+                app:autoSizeMaxTextSize="@dimen/text_size_title"
+                app:autoSizeMinTextSize="@dimen/text_size_body"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/workout_times_in_month_placeholder"
+                style="@style/TextCaption.Thirdly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/workout_times_in_month_label"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:gravity="center"
+                android:text="@string/number_of_time"
+                app:autoSizeMaxTextSize="@dimen/text_size_caption"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeTextType="uniform" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_toEndOf="@+id/workout_times_in_month_layout">
+
+            <TextView
+                android:id="@+id/month_year_label"
+                style="@style/TextSubTitle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/running_icon"
+                android:layout_width="@dimen/space_16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/distance_label"
+                android:layout_alignBottom="@+id/distance_label"
+                android:adjustViewBounds="true"
+                app:srcCompat="@mipmap/ic_history_run" />
+
+            <TextView
+                android:id="@+id/distance_label"
+                style="@style/TextBody.Thirdly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/month_year_label"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_toEndOf="@+id/running_icon"
+                android:text="0.00" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/time_icon"
+                android:layout_width="@dimen/space_16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/duration_label"
+                android:layout_alignBottom="@+id/duration_label"
+                android:layout_toEndOf="@+id/distance_label"
+                android:adjustViewBounds="true"
+                app:srcCompat="@mipmap/ic_history_time" />
+
+            <TextView
+                android:id="@+id/duration_label"
+                style="@style/TextBody.Thirdly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/month_year_label"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_toEndOf="@+id/time_icon"
+                android:text="00:00" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/calorie_icon"
+                android:layout_width="@dimen/space_16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/calorie_label"
+                android:layout_alignBottom="@+id/calorie_label"
+                android:layout_toEndOf="@+id/duration_label"
+                android:adjustViewBounds="true"
+                app:srcCompat="@mipmap/ic_history_calorie" />
+
+            <TextView
+                android:id="@+id/calorie_label"
+                style="@style/TextBody.Thirdly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/month_year_label"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_toEndOf="@+id/calorie_icon"
+                android:text="0" />
+        </RelativeLayout>
+
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/workout_day_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/summary_month_layout"
+        android:visibility="gone" />
+</RelativeLayout>

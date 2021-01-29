@@ -36,7 +36,7 @@ public class RecordViewHolder extends RecyclerView.ViewHolder {
     }
 
     public static RecordViewHolder create(ViewGroup parent) {
-        return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record, parent, false));
+        return new RecordViewHolder(LayoutInflater.from(parent.getContext()).inflate(R.layout.list_item_record_java, parent, false));
     }
 
     public void bind(WorkoutInfo data,

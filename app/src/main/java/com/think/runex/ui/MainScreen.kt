@@ -18,11 +18,11 @@ import com.think.runex.R
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.ui.event.AllEventsScreen
-import com.think.runex.ui.event.MyEventsScreen
+import com.think.runex.ui.event.all.AllEventsScreen
+import com.think.runex.ui.event.registered.MyEventsScreen
 import com.think.runex.ui.profile.ProfileScreen
-import com.think.runex.ui.workout.WorkoutHistoryScreen
-import com.think.runex.ui.workout.WorkoutScreen
+import com.think.runex.ui.workout.history.WorkoutHistoryScreen
+import com.think.runex.ui.workout.record.WorkoutScreen
 import kotlinx.android.synthetic.main.screen_main.*
 
 class MainScreen : BaseScreen() {

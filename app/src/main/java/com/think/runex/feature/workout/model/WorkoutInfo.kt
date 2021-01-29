@@ -30,14 +30,14 @@ data class WorkoutInfo(
             caption = "",
             distanceKilometers = record?.getDistancesKilometers() ?: 0f,
             durationSecond = record?.getDurationSecond() ?: 0,
-            endDate = record?.stopMillis?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
+            endDate = record?.stop?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
             id = "",
             isSync = false,
             netElevationGain = 0.0,
             locations = locations ?: emptyList(),
             durationMinutePerKilometer = record?.getDurationMinutePerKilometer() ?: 0.0,
             refId = "",
-            startDate = record?.startMillis?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
-            workoutDate = record?.startMillis?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
-            timeDisplay = record?.durationMillis?.timeDisplayFormat() ?: "")
+            startDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
+            workoutDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
+            timeDisplay = record?.duration?.timeDisplayFormat() ?: "")
 }

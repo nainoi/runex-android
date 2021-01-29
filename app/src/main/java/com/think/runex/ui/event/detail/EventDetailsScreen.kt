@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.detail
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -8,6 +8,7 @@ import androidx.core.content.ContextCompat
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.resource.getColor
+import com.jozzee.android.core.resource.getDrawable
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
@@ -60,7 +61,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
         //Set up recycler view
         adapter = TicketTypeAdapter()
-        val lineSeparator = ContextCompat.getDrawable(requireContext(), R.drawable.line_separator_list_item)?.apply {
+        val lineSeparator = getDrawable(R.drawable.line_separator_list_item)?.apply {
             setColorFilter(getColor(R.color.border))
         }
         tickets_list?.addItemDecoration(LineSeparatorItemDecoration(lineSeparator))

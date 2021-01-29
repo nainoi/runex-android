@@ -94,6 +94,8 @@
     <string name="notification_display_info">วิ่ง %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
     <string name="note">จดบันทึก</string>
+    <string name="number_of_time">ครั้ง</string>
+    <string name="number_of_times">ครั้ง</string>
 
     <!-- O -->
     <string name="ok">ตกลง</string>

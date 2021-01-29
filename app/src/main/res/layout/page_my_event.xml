@@ -57,7 +57,7 @@
         android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        layout="@layout/list_item_event_divider"/>
+        layout="@layout/list_item_event_divider_java"/>
 
     <FrameLayout
         android:id="@+id/summary_page_container"

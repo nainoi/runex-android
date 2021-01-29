@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.registered
 
 import android.view.LayoutInflater
 import android.view.View

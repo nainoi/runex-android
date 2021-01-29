@@ -1,4 +1,4 @@
-package com.think.runex.ui.workout
+package com.think.runex.ui.workout.record
 
 import android.Manifest
 import android.annotation.SuppressLint
@@ -31,6 +31,7 @@ import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
 import com.think.runex.feature.workout.model.*
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_workout.*

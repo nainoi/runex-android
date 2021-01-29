@@ -6,4 +6,6 @@ import com.think.runex.feature.workout.model.WorkoutInfo
 class WorkoutRepository(private val api: WorkoutApi) : RemoteDataSource() {
 
     suspend fun addWorkout(body: WorkoutInfo) = call(api.addWorkoutAsync(body))
+
+    suspend fun getWorkoutHistory() = call(api.getWorkoutHistoryAsync())
 }

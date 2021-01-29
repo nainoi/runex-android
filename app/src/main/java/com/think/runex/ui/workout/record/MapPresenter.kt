@@ -1,4 +1,4 @@
-package com.think.runex.ui.workout
+package com.think.runex.ui.workout.record
 
 import android.annotation.SuppressLint
 import android.graphics.Color

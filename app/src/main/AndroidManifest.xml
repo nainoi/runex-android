@@ -60,7 +60,7 @@
             android:theme="@style/AppTheme.LoginActivity" />
 
         <activity
-            android:name=".ui.event.EventPreviewActivity"
+            android:name=".ui.event.detail.EventPreviewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 

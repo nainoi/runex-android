@@ -1,4 +1,4 @@
-package com.think.runex.ui.event
+package com.think.runex.ui.event.detail
 
 import android.os.Bundle
 import com.jozzee.android.core.view.visible

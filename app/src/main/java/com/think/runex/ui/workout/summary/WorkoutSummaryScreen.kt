@@ -1,4 +1,4 @@
-package com.think.runex.ui.workout
+package com.think.runex.ui.workout.summary
 
 import android.os.Bundle
 import android.view.*
@@ -20,12 +20,12 @@ import com.think.runex.feature.workout.WorkoutViewModelFactory
 import com.think.runex.feature.workout.model.WorkingOutLocation
 import com.think.runex.feature.workout.model.WorkoutInfo
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.workout.record.MapPresenter
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import io.realm.Realm
 import kotlinx.android.synthetic.main.screen_workout_summary.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.coroutines.delay
 
 class WorkoutSummaryScreen : BaseScreen() {
 

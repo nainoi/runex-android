@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.workout.WorkoutSummaryScreen">
+    tools:context=".ui.workout.summary.WorkoutSummaryScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"

@@ -43,7 +43,7 @@
         android:layout_height="match_parent"
         android:layout_above="@+id/btn_confirm"
         android:layout_below="@+id/v_title"
-        tools:listitem="@layout/list_item_event_send_distance" />
+        tools:listitem="@layout/list_item_my_event_for_selection" />
 
     <androidx.appcompat.widget.AppCompatButton
         android:id="@+id/btn_confirm"

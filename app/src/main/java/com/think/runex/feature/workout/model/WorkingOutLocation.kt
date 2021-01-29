@@ -10,6 +10,9 @@ import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import io.realm.RealmObject
 
 open class WorkingOutLocation(
+        /**
+         * Date tine string format [SERVER_DATE_TIME_FORMAT]
+         */
         @SerializedName("timestamp") var timeServerFormat: String? = "",
         @SerializedName("latitude") var latitude: Double? = 0.0,
         @SerializedName("longitude") var longitude: Double? = 0.0,
