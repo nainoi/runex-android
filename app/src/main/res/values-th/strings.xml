@@ -136,11 +136,14 @@
 
     <!-- T -->
     <string name="time">เวลา</string>
+    <string name="total_distances">ระยะสะสม</string>
 
     <!-- U -->
+    <string name="username">ชื่อผู้ใช้</string>
 
     <!-- V -->
     <string name="version">เวอร์ชัน</string>
+
 
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>

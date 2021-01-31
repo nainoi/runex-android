@@ -1,9 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:background="@color/background"
     tools:context=".java.Pages.ReviewEvent.ActiveRegisteredEventCheckerPage">
 
@@ -21,6 +21,7 @@
             android:layout_height="@dimen/icon_size_in_action_bar"
             android:layout_gravity="center_vertical"
             android:background="@drawable/bg_btn_circle"
+            android:padding="@dimen/padding_icon_in_action_bar"
             android:scaleType="centerCrop"
             android:src="@drawable/ic_navigation_back" />
     </FrameLayout>

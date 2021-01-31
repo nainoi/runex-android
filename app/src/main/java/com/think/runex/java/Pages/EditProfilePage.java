@@ -147,7 +147,7 @@ public class EditProfilePage extends xFragment
         if (birthDateCalendar.get(Calendar.YEAR) < 1000) {
             birthDateButton.setText("");
         } else {
-            birthDateButton.setText(userInfo.birthDate());
+            birthDateButton.setText(userInfo.getBirthDateDisplay());
         }
     }
 

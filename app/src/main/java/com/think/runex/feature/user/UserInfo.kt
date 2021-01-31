@@ -1,24 +1,26 @@
 package com.think.runex.feature.user
 
+import android.content.Context
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.think.runex.common.displayFormat
 import com.think.runex.feature.event.model.EventItem
 import com.think.runex.feature.address.Address
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
 data class UserInfo(
-        @SerializedName("email") var email: String = "",
-        @SerializedName("fullname") var fullName: String = "",
+        @SerializedName("email") var email: String? = null,
+        @SerializedName("fullname") var fullName: String? = null,
         @SerializedName("firstname") var firstName: String? = null,
         @SerializedName("firstname_th") var firstNameTh: String? = null,
         @SerializedName("lastname") var lastName: String? = null,
         @SerializedName("lastname_th") var lastNameTh: String? = null,
-        @SerializedName("phone") var phone: String = "",
-        @SerializedName("avatar") var avatar: String = "",
-        @SerializedName("role") var role: String = "",
+        @SerializedName("phone") var phone: String? = null,
+        @SerializedName("avatar") var avatar: String? = null,
+        @SerializedName("role") var role: String? = null,
         @SerializedName("birthdate") var birthDate: String? = null,
-        @SerializedName("gender") var gender: String = "",
+        @SerializedName("gender") var gender: String? = null,
         @SerializedName("created_at") var createdAt: String? = null,
         @SerializedName("updated_at") var updatedAt: String? = null,
         @SerializedName("confirm") var isConfirmed: Boolean = false,
@@ -37,6 +39,13 @@ data class UserInfo(
         @SerializedName("strava_firstname") var stravaFirstName: String? = null,
         @SerializedName("strava_latname") var stravaLatName: String? = null) {
 
-    fun birthDate(): String = birthDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+    var totalDistance: Double? = 0.0
+
+    @JvmName("getBirthDateDisplay")
+    fun getBirthDate(): String = birthDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
             ?: ""
+
+    fun getTotalDistance(unit: String): String {
+        return ("${totalDistance?.displayFormat() ?: ""} $unit")
+    }
 }

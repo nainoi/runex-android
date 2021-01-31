@@ -55,6 +55,8 @@ class AllEventsScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
+        refresh_layout?.setColorSchemeResources(R.color.colorPrimary)
+
         //Set up recycler view
         adapter = AllEventsAdapter()
         layoutManager = LinearLayoutManager(requireContext())

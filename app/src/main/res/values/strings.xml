@@ -138,8 +138,10 @@
     <string name="time">Time</string>
     <string name="time_hint" translatable="false">00:00:00</string>
     <string name="time_hint_minute" translatable="false">00:00</string>
+    <string name="total_distances">Total Distances</string>
 
     <!-- U -->
+    <string name="username">Username</string>
 
     <!-- V -->
     <string name="version">Version</string>

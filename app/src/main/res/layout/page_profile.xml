@@ -137,6 +137,11 @@
                     android:layout_width="match_parent"
                     android:layout_height="match_parent" />
 
+                <FrameLayout
+                    android:id="@+id/display_fragment_frame"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
             </androidx.cardview.widget.CardView>
 
             <!-- Sign out frame -->
@@ -168,9 +173,5 @@
     </androidx.swiperefreshlayout.widget.SwipeRefreshLayout>
 
     <!-- Frame fragment display container -->
-    <FrameLayout
-        android:id="@+id/display_fragment_frame"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent" />
 
 </FrameLayout>

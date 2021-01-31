@@ -47,7 +47,9 @@
     <dimen name="icon_size_product">48dp</dimen>
     <dimen name="icon_size_system">24dp</dimen>
     <dimen name="icon_size_system_dense">20dp</dimen>
-    <dimen name="icon_size_in_action_bar">32dp</dimen>
+    <dimen name="icon_size_in_action_bar">40dp</dimen>
+
+    <dimen name="padding_icon_in_action_bar">4dp</dimen>
 
     <!-- Components -->
     <dimen name="bottom_bar_height">56dp</dimen>
