@@ -210,7 +210,7 @@
         android:layout_marginEnd="@dimen/space_16dp"
         android:gravity="end"
         android:maxLines="1"
-        android:text="@string/calories_cal" />
+        android:text="@string/calories_kcal" />
 
     <TextView
         android:id="@+id/calorie_label"

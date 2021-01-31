@@ -91,7 +91,7 @@
         <item name="android:gravity">center</item>
         <item name="android:paddingStart">@dimen/space_16dp</item>
         <item name="android:paddingEnd">@dimen/space_16dp</item>
-        <item name="android:minHeight">@dimen/space_48dp</item>
+        <item name="android:minHeight">@dimen/button_height_default</item>
         <item name="autoSizeTextType">uniform</item>
         <item name="autoSizeMaxTextSize">@dimen/text_size_body_heading</item>
         <item name="autoSizeMinTextSize">@dimen/text_size_body</item>
@@ -102,10 +102,16 @@
         <item name="android:textColor">@drawable/text_color_btn_primary</item>
     </style>
 
+    <style name="Button.Text" parent="Button">
+        <item name="android:background">@drawable/bg_btn_text</item>
+        <item name="android:textColor">@drawable/text_color_btn_text</item>
+    </style>
+
     <style name="Button.BorderGrey" parent="Button">
         <item name="android:background">@drawable/bg_btn_border_grey</item>
         <item name="android:textColor">@drawable/text_color_btn_border_grey</item>
     </style>
+
 
     <!-- Text Input -->
     <style name="TextInput">

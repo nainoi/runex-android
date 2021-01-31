@@ -5,24 +5,10 @@ import android.content.SharedPreferences
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.think.runex.config.KEY_FIREBASE_TOKEN
 import com.think.runex.config.PREFERENCES_NAME
 
 object AppPreference {
-
-//    fun getFirebaseToken(context: Context): String? {
-//        return createPreferenceEncrypted(context).getString(KEY_FIREBASE_TOKEN, null)
-//    }
-//
-//    fun setFirebaseToken(context: Context, firebaseToken: String) {
-//        createPreferenceEncrypted(context).edit {
-//            putString(KEY_FIREBASE_TOKEN, firebaseToken)
-//        }
-//    }
-//
-//    fun removeFireBaseToken(context: Context) = createPreferenceEncrypted(context).edit {
-//        remove(KEY_FIREBASE_TOKEN)
-//    }
-//
 
     fun isFirstOpen(context: Context): Boolean = createPreference(context).getBoolean("firstOpen", true)
 

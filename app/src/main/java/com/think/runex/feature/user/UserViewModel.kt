@@ -1,8 +1,15 @@
 package com.think.runex.feature.user
 
+import android.content.Context
+import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
+import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.datasource.BaseViewModel
+import com.think.runex.feature.auth.TokenManager
+import com.think.runex.feature.event.model.EventItem
+import com.think.runex.util.AppPreference
+import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
@@ -10,15 +17,18 @@ import kotlinx.coroutines.withContext
 
 class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
 
+    val userInfo: MutableLiveData<UserInfo> by lazy {
+        MutableLiveData<UserInfo>()
+    }
 
-    suspend fun getUSerInfo(): UserInfo? = withContext(IO) {
+    fun getUSerInfo() = launchIoThread {
         val userInfoResult = repo.userInfo()
         if (userInfoResult.isSuccessful()) {
             val totalDistanceResult = repo.getTotalDistances()
             userInfoResult.data?.totalDistance = totalDistanceResult.data?.totalDistance
+            userInfo.postValue(userInfoResult.data)
         } else {
             onHandleError(userInfoResult.statusCode, userInfoResult.message)
         }
-        return@withContext userInfoResult.data
     }
 }

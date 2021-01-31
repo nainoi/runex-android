@@ -110,7 +110,7 @@
                     android:layout_alignParentEnd="true"
                     android:layout_centerVertical="true"
                     android:adjustViewBounds="true"
-                    android:src="@drawable/ic_navigate_next" />
+                    android:src="@drawable/ic_control_next" />
             </RelativeLayout>
 
             <View

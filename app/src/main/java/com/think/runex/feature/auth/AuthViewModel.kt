@@ -1,8 +1,10 @@
 package com.think.runex.feature.auth
 
 import android.content.Context
+import androidx.core.content.edit
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
+import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.datasource.BaseViewModel
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
@@ -10,6 +12,7 @@ import com.think.runex.feature.auth.request.AuthenWithCodeRequest
 import com.think.runex.feature.user.UserInfo
 import com.think.runex.java.App.App
 import com.think.runex.java.App.AppEntity
+import com.think.runex.util.AppPreference
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -29,32 +32,67 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         return@withContext result.isSuccessful()
     }
 
-    fun initialToken() {
+    suspend fun initialToken() = withContext(IO) {
         Logger.warning(simpleName(), "initialToken")
         val accessToken = repo.getLocalAccessToken()
         TokenManager.updateToken(accessToken)
         Logger.warning(simpleName(), "Initial token completed, Token is alive: ${TokenManager.isAlive()}")
+
+        //Check updated firebase token to server
+        if (TokenManager.isAlive() && repo.isUpdatedFirebaseToken().not()) {
+            repo.getFirebaseToken()?.also { firebaseToken ->
+                Logger.warning(simpleName(), "Update firebase token to server")
+                val result = repo.sendFirebaseTokenToServer(firebaseToken)
+                if (result.isSuccessful()) {
+                    repo.setUpdatedFirebaseToken(true)
+                }
+            }
+        }
     }
 
-    suspend fun loginWithCode(context: Context, code: String): Result<AccessToken>? = withContext(IO) {
+    suspend fun loginWithCode(context: Context, code: String): Boolean = withContext(IO) {
         val loginResult = repo.loginWithCode(AuthenWithCodeRequest(code))
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.statusCode, loginResult.message)
             TokenManager.clearToken()
-            return@withContext null
+            return@withContext false
         }
         loginResult.data?.also {
             updateAccessToken(it)
         }
 
-        //Get User info
+        //Check updated firebase token to server
+        if (TokenManager.isAlive() && repo.isUpdatedFirebaseToken().not()) {
+            repo.getFirebaseToken()?.also { firebaseToken ->
+                Logger.warning(simpleName(), "Update firebase token to server")
+                val sendFirebaseResult = repo.sendFirebaseTokenToServer(firebaseToken)
+                if (sendFirebaseResult.isSuccessful()) {
+                    repo.setUpdatedFirebaseToken(true)
+                }
+            }
+        }
+
+        //Get User info for old java code
         val userResult = repo.getUserInfo()
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.statusCode, loginResult.message)
         }
-
         setUserForJavaCode(context, userResult.data)
-        return@withContext loginResult
+
+        return@withContext loginResult.isSuccessful()
+    }
+
+    suspend fun logout(): Boolean = withContext(IO) {
+        val result = repo.logout()
+        when (result.isSuccessful()) {
+            true -> {
+                //Clear access token
+                TokenManager.clearToken()
+                repo.removeLocalAccessToken()
+            }
+            false -> onHandleError(result.statusCode, result.message)
+        }
+        return@withContext result.isSuccessful()
     }
 
     private fun updateAccessToken(accessToken: AccessToken) {

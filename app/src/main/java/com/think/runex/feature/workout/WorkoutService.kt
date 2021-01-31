@@ -269,17 +269,17 @@ open class WorkoutService : Service() {
 
         if (status == WorkoutStatus.WORKING_OUT || status == WorkoutStatus.PAUSE) {
             val intent = Intent(this, WorkoutService::class.java)
-            var icon: Int = R.drawable.ic_pause
+            var icon: Int = R.drawable.ic_control_pause
             var title: String = ""
             when (status) {
                 WorkoutStatus.WORKING_OUT -> {
                     intent.putExtra(KEY_ACTION, WorkoutAction.PAUSE)
-                    icon = R.drawable.ic_pause
+                    icon = R.drawable.ic_control_pause
                     title = getString(R.string.pause_recording)
                 }
                 WorkoutStatus.PAUSE -> {
                     intent.putExtra(KEY_ACTION, WorkoutAction.RESUME)
-                    icon = R.drawable.ic_play
+                    icon = R.drawable.ic_control_play
                     title = getString(R.string.resume_recording)
                 }
             }

@@ -43,7 +43,7 @@
             android:layout_height="wrap_content"
             android:layout_marginEnd="@dimen/space_8dp"
             android:layout_weight="1"
-            android:minHeight="@dimen/space_40dp"
+            android:minHeight="@dimen/button_height_dense"
             android:text="@string/cancel" />
 
         <androidx.appcompat.widget.AppCompatButton
@@ -53,7 +53,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_8dp"
             android:layout_weight="1"
-            android:minHeight="@dimen/space_40dp"
+            android:minHeight="@dimen/button_height_dense"
             android:text="@string/ok" />
     </LinearLayout>
 

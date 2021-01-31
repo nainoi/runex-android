@@ -62,7 +62,7 @@ class ActionControlsFragment : Fragment() {
         main_action_button?.isEnabled = true
         main_action_button?.setBackgroundResource(R.drawable.shape_circle_border)
         main_action_icon?.setBackgroundResource(R.drawable.shape_circle_accent)
-        main_action_icon?.setImageResource(R.drawable.ic_play)
+        main_action_icon?.setImageResource(R.drawable.ic_control_play)
         main_action_label?.setTextColor(getColor(R.color.textColorThirdly))
         main_action_label?.setText(R.string.start_recording)
         main_action_button?.setOnClickListener {
@@ -76,7 +76,7 @@ class ActionControlsFragment : Fragment() {
         main_action_button?.isEnabled = true
         main_action_button?.setBackgroundResource(R.drawable.shape_circle_border_asscent)
         main_action_icon?.setBackgroundResource(R.drawable.shape_circle_secondary)
-        main_action_icon?.setImageDrawable(getDrawable(R.drawable.ic_pause)?.apply {
+        main_action_icon?.setImageDrawable(getDrawable(R.drawable.ic_control_pause)?.apply {
             setColorFilter(getColor(R.color.iconColorAccent))
         })
         main_action_label?.setTextColor(getColor(R.color.textColorThirdly))
@@ -92,7 +92,7 @@ class ActionControlsFragment : Fragment() {
         main_action_button?.isEnabled = true
         main_action_button?.setBackgroundResource(R.drawable.shape_circle_border_secondary)
         main_action_icon?.setBackgroundResource(R.drawable.shape_circle_secondary)
-        main_action_icon?.setImageResource(R.drawable.ic_stop)
+        main_action_icon?.setImageResource(R.drawable.ic_control_stop)
         main_action_label?.setTextColor(getColor(R.color.textColorThirdly))
         main_action_label?.setText(R.string.stop_recording)
         main_action_button?.setOnClickListener {

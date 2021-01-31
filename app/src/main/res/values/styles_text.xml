@@ -189,6 +189,11 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
+    <style name="TextBodyHeading.Secondary.Bold" parent="TextBodyHeading.Secondary">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
     <style name="TextBodyHeading.Secondary.InLightBackground" parent="TextBodyHeading">
         <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
     </style>
@@ -398,7 +403,7 @@
         <item name="android:maxLines">1</item>
         <item name="android:ellipsize">end</item>
         <item name="android:gravity">center</item>
-        <item name="android:textColor">@drawable/selector_bottom_bar_text_color</item>
+        <item name="android:textColor">@drawable/text_color_bottom_bar</item>
     </style>
 
 

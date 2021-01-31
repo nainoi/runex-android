@@ -72,17 +72,13 @@ class MainActivity : BaseActivity() {
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
             true -> gotoMainScreen(intent?.getStringExtra(KEY_SCREEN))
-            false -> gotoOnBoardingScreen()
+            false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = true)
         }
     }
 
     private fun gotoMainScreen(initialScreen: String? = null) {
         //Add argument request screen when open app from notification
-        replaceFragment(MainScreen.newInstance(initialScreen), fadeIn(), addToBackStack = false, clearFragment = false)
-    }
-
-    private fun gotoOnBoardingScreen() {
-        replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = false)
+        replaceFragment(MainScreen.newInstance(initialScreen), fadeIn(), addToBackStack = false, clearFragment = true)
     }
 
     private fun gotoWorkoutScreen() {
@@ -123,12 +119,6 @@ class MainActivity : BaseActivity() {
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
         when (requestCode) {
-            RC_LOGIN -> when (resultCode == RESULT_OK) {
-                true -> gotoMainScreen()
-                false -> data?.getStringExtra(KEY_MESSAGE)?.also {
-                    showToast(it)
-                }
-            }
             RC_OPEN_GPS -> {
                 /**
                  * Find [MainScreen] and send onActivityResult.

@@ -412,7 +412,7 @@
                                 android:layout_height="35dp"
                                 android:layout_gravity="center"
                                 android:padding="4dp"
-                                app:srcCompat="@drawable/ic_play"
+                                app:srcCompat="@drawable/ic_control_play"
                                 app:tint="@android:color/white" />
 
                         </FrameLayout>
@@ -461,7 +461,7 @@
                                 android:layout_width="25dp"
                                 android:layout_height="25dp"
                                 android:layout_gravity="center"
-                                android:background="@drawable/ic_stop"
+                                android:background="@drawable/ic_control_stop"
                                 android:padding="4dp" />
 
                         </FrameLayout>

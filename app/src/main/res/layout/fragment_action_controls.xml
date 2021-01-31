@@ -22,7 +22,7 @@
             android:background="@drawable/shape_circle_border_disable"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@drawable/ripple_circle"
+            android:foreground="@drawable/bg_btn_circle"
             android:padding="@dimen/space_4dp"
             tools:background="@drawable/shape_circle_border">
 
@@ -33,7 +33,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/shape_circle_disable"
                 android:padding="@dimen/space_12dp"
-                app:srcCompat="@drawable/ic_play"
+                app:srcCompat="@drawable/ic_control_play"
                 tools:background="@drawable/shape_circle_accent" />
         </FrameLayout>
 
@@ -72,7 +72,7 @@
                 android:layout_gravity="center"
                 android:background="@drawable/shape_circle_accent"
                 android:padding="@dimen/space_12dp"
-                app:srcCompat="@drawable/ic_play" />
+                app:srcCompat="@drawable/ic_control_play" />
         </FrameLayout>
 
         <TextView

@@ -29,6 +29,7 @@
     <!-- Icon colors -->
     <color name="iconColorPrimary">#FFFFFF</color>
     <color name="iconColorSecondary">#EEEEEE</color>
+    <color name="iconColorThirdly">#C4C4C4</color>
     <color name="iconColorDisable">#797979</color>
 
     <!-- Others -->

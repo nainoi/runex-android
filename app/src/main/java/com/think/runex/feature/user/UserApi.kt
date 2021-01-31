@@ -8,12 +8,15 @@ import com.think.runex.feature.workout.model.TotalDistanceResponse
 import kotlinx.coroutines.Deferred
 import retrofit2.http.GET
 import retrofit2.http.Header
+import retrofit2.http.POST
 
 interface UserApi {
 
     @GET("/api/${ApiConfig.API_VERSION}/user")
-    fun getUserInfoAsync(@Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+    fun getUserInfoAsync(
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
 
     @GET("/api/${ApiConfig.API_VERSION}/workouts")
-    fun getTotalDistancesAsync(@Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<TotalDistanceResponse>>
+    fun getTotalDistancesAsync(
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<TotalDistanceResponse>>
 }

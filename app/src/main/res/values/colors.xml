@@ -74,6 +74,10 @@
     <color name="iconColorSecondaryInLightBackground">#C4CDD5</color>
     <color name="iconColorSecondaryInDarkBackground">#EEEEEE</color>
 
+    <color name="iconColorThirdly">#666666</color>
+    <color name="iconColorThirdlyInLightBackground">#666666</color>
+    <color name="iconColorThirdlyInDarkBackground">#C4C4C4</color>
+
     <color name="iconColorDisable">#4DA8B6C8</color>
     <color name="iconColorDisableInLightBackground">#4DA8B6C8</color>
     <color name="iconColorDisableInDarkBackground">#797979</color>

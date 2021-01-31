@@ -51,11 +51,19 @@
 
     <dimen name="padding_icon_in_action_bar">4dp</dimen>
 
+    <!-- Default Images -->
+    <dimen name="image_profile_size">84dp</dimen>
+
+    <!-- Default Button -->
+    <dimen name="button_height_default">48dp</dimen>
+    <dimen name="button_height_dense">40dp</dimen>
+
     <!-- Components -->
     <dimen name="bottom_bar_height">56dp</dimen>
     <dimen name="bottom_bar_center_menu_size">64dp</dimen>
     <dimen name="bottom_bar_center_menu_icon_size">48dp</dimen>
     <dimen name="bottom_bar_center_menu_margin_bottom">24dp</dimen>
+
 
     <!-- Workout Screen -->
     <dimen name="workout_control_button_size">72dp</dimen>

@@ -13,6 +13,9 @@
     <string name="all_event">All Events</string>
     <string name="active">Active</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
+    <string name="application_service_and_devices">Application Service and Devices</string>
+    <string name="about_us">About us</string>
+    <string name="action">Action</string>
 
     <!-- B -->
     <string name="back">Back</string>
@@ -25,13 +28,16 @@
     <string name="confirm">Confirm</string>
     <string name="confirm_register">Confirm register</string>
     <string name="confirm_to_ending_run">You confirm to ending run?</string>
+    <string name="confirm_to_logout">You confirm to logout?</string>
     <string name="connection_timed_out">Connection timed out</string>
     <string name="calories">Calories</string>
-    <string name="calories_cal">Calories(cal)</string>
+    <string name="calories_kcal">Calories(kcal)</string>
+    <string name="contract">Contract</string>
 
     <!-- D -->
     <string name="detail">Detail</string>
     <string name="delete">Delete</string>
+    <string name="default_">Default</string>
     <string name="distances">Distances</string>
     <string name="distances_kg">Distances(km)</string>
     <string name="distance_required">Please enter distance</string>
@@ -144,7 +150,7 @@
     <string name="username">Username</string>
 
     <!-- V -->
-    <string name="version">Version</string>
+    <string name="app_version">App version</string>
 
     <!-- W -->
     <string name="warning">Warning</string>

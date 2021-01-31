@@ -24,7 +24,6 @@ import android.provider.MediaStore;
 import android.text.Editable;
 import android.text.TextUtils;
 import android.text.TextWatcher;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -52,7 +51,7 @@ import com.think.runex.java.Utils.RxBus;
 import com.think.runex.java.event.UpdateProfileEvent;
 import com.think.runex.ui.component.ProgressDialog;
 import com.think.runex.ui.component.SelectImageSourceDialog;
-import com.think.runex.ui.profile.GenderDialog;
+import com.think.runex.ui.component.GenderDialog;
 
 import org.jetbrains.annotations.NotNull;
 

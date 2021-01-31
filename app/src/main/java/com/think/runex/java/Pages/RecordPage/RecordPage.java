@@ -218,7 +218,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 mOnRecording = false;
 
                                 // anim pause
-                                anim(R.drawable.ic_play);
+                                anim(R.drawable.ic_control_play);
 
                                 // display on paused
                                 displayOnPaused(record);
@@ -230,7 +230,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
                                 mOnRecording = true;
 
                                 // anim pause
-                                anim(R.drawable.ic_pause);
+                                anim(R.drawable.ic_control_pause);
 
                                 // display on started
                                 displayOnStarted(record);
@@ -1146,7 +1146,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
         } else startService();
 
         // anim
-        anim(R.drawable.ic_pause);
+        anim(R.drawable.ic_control_pause);
 
         // recording state description
         lbRecordingState.setText(getString(R.string.pause_recording));
@@ -1160,7 +1160,7 @@ public class RecordPage extends xFragment implements OnMapReadyCallback
 
     private void paused() {
         // anim pause
-        anim(R.drawable.ic_play);
+        anim(R.drawable.ic_control_play);
 
         // pause recording
         pauseRecording();

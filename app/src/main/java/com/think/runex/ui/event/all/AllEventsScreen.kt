@@ -78,6 +78,8 @@ class AllEventsScreen : BaseScreen() {
         viewModel.setOnHandleError(::errorHandler)
 
         observe(viewModel.eventList) { eventList ->
+            if (view == null || isAdded.not()) return@observe
+
             refresh_layout?.isRefreshing = false
             adapter.submitList(eventList?.toMutableList())
         }

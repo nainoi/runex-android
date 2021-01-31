@@ -1,56 +1,37 @@
 package com.think.runex.ui
 
-
-import android.app.Activity
-import android.content.Intent
+import android.annotation.SuppressLint
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.lifecycleScope
-import com.facebook.internal.CallbackManagerImpl
-import com.jozzee.android.core.util.Logger
-import com.jozzee.android.core.util.simpleName
+import android.webkit.*
+import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.inVisible
+import com.jozzee.android.core.view.visible
 import com.think.runex.R
+import com.think.runex.common.fadeIn
 import com.think.runex.common.getViewModel
+import com.think.runex.common.setStatusBarColor
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
-import com.think.runex.feature.auth.TokenManager
-import com.think.runex.feature.social.SocialLoginListener
-import com.think.runex.feature.social.SocialLoginManger
-import com.think.runex.feature.social.SocialLoginManger.Companion.RC_GOOGLE_LOGIN
-import com.think.runex.feature.social.SocialPlatform
-import com.think.runex.feature.user.UserProvider
-import com.think.runex.java.App.Configs
-import com.think.runex.java.Constants.APIs
-import com.think.runex.java.Constants.Constants
-import com.think.runex.java.Constants.Globals
-import com.think.runex.java.Utils.Network.NetworkProps
-import com.think.runex.java.Utils.Network.NetworkUtils
-import com.think.runex.java.Utils.Network.Request.rqLogin
-import com.think.runex.java.Utils.Network.Response.xResponse
-import com.think.runex.java.Utils.Network.onNetworkCallback
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.config.ANDROID
+import com.think.runex.config.APP_SCHEME
+import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
+import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_login.*
-import kotlinx.coroutines.launch
-import java.lang.Exception
 
-class LoginScreen : BaseScreen(), SocialLoginListener, onNetworkCallback {
+class LoginScreen : BaseScreen() {
 
-    private lateinit var authViewModel: AuthViewModel
-    private val socialLoginManger: SocialLoginManger by lazy { SocialLoginManger() }
+    private lateinit var viewModel: AuthViewModel
 
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        authViewModel = getViewModel(AuthViewModelFactory(requireContext()))
+        viewModel = getViewModel(AuthViewModelFactory(requireContext()))
 
-        //Initial social login manage.
-        socialLoginManger.setSocialLoginListener(this)
-        socialLoginManger.registerLoginCallback()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,127 +40,74 @@ class LoginScreen : BaseScreen(), SocialLoginListener, onNetworkCallback {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-
         setupComponents()
         subscribeUi()
     }
 
+    @SuppressLint("SetJavaScriptEnabled")
     private fun setupComponents() {
-        //TODO("mock up user, email")
-        edt_email.setText("jozzeezaadee@gmail.com")
-        edt_password.setText("12345678")
+        setStatusBarColor(isLightStatusBar = true)
+
+        web_view?.settings?.apply {
+            setAppCacheEnabled(false)
+            cacheMode = WebSettings.LOAD_NO_CACHE
+            javaScriptEnabled = true
+            //Set face user agent for google sign in.
+            userAgentString = FACE_USER_AGENT_FOR_WEB_VIEW
+        }
+        web_view.webViewClient = object : WebViewClient() {
+            override fun onPageFinished(view: WebView?, url: String?) {
+                super.onPageFinished(view, url)
+                progress_bar?.gone()
+            }
+
+            override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
+                request?.url?.also { uri ->
+                    if (uri.scheme == APP_SCHEME) {
+                        val parameters = request.url?.getQueryParameters("code")
+                        if (parameters?.isNotEmpty() == true) {
+                            performLogin(parameters[0])
+                        }
+                    } else if (uri.scheme == "auth.runex.co") {
+                        web_view?.inVisible()
+                    }
+                }
+                return super.shouldOverrideUrlLoading(view, request)
+            }
+        }
+        web_view.loadUrl("${ApiConfig.LOGIN_URL}?device=android")
     }
 
     private fun subscribeUi() {
-        btn_login_with_facebook.setOnClickListener {
-            socialLoginManger.loginWithFacebook(this)
-        }
+        viewModel.setOnHandleError(::errorHandler)
+    }
 
-        btn_login_with_google.setOnClickListener {
-            socialLoginManger.loginWithGoogle(this)
-        }
-
-        btn_login.setOnClickListener {
-            if (isDataValid()) {
-                // request login
-                apiLogin()
-            }
+    private fun performLogin(code: String) = launch {
+        progress_bar?.visible()
+        web_view?.inVisible()
+        val isSuccess = viewModel.loginWithCode(requireContext(), code)
+        progress_bar?.gone()
+        if(isSuccess){
+            replaceFragment(MainScreen.newInstance(), fadeIn(), addToBackStack = false, clearFragment = false)
         }
     }
 
-
-    /** API methods  */
-    private fun apiLogin() {
-        val nw = NetworkUtils.newInstance(activity)
-        val props = NetworkProps()
-
-        // update props
-        props.addHeader("Authorization", TokenManager.accessToken)
-        props.setJsonAsObject(rqLogin("fakespmh.21@gmail.com", "p@ss1234", ANDROID))
-        props.setUrl(APIs.LOGIN.VAL)
-
-        // call api
-        nw.postJSON(props, this)
+    override fun errorHandler(statusCode: Int, message: String) {
+        super.errorHandler(statusCode, message)
+        progress_bar?.gone()
     }
 
-    private fun performLogin() = viewLifecycleOwner.lifecycleScope.launch {
-//        authViewModel.login(edt_email.content(), edt_password.content())?.also { profile ->
-//            replaceFragment(MainScreen(), fadeIn(), clearFragment = true, addToBackStack = false)
-//
-//        }
-    }
-
-    private fun isDataValid(): Boolean {
-        return true
-    }
-
-    private fun resultCallback() {
-        requireActivity().setResult(Activity.RESULT_OK)
-    }
-
-    //  Interface Methods
-    override fun onSuccess(jsonString: xResponse?) {
-//        Toast.makeText(activity, "success", Toast.LENGTH_SHORT).show()
-//
-//        // activity result
-//        activity!!.setResult( Activity.RESULT_OK );
-
-
-    }
-
-    override fun onFailure(jsonString: xResponse?) {
-//        Toast.makeText(activity, "fail", Toast.LENGTH_SHORT).show()
-//
-//        // activity result
-//        activity!!.setResult( Activity.RESULT_CANCELED );
-
-    }
-
-    override fun onLoginWithSocialCompleted(platform: Int, userProvider: UserProvider) {
-        // prepare usage variables
-        val tag: String = Constants.TAG.VAL
-
-        Logger.info(tag, "Social login completed with: ${SocialPlatform.platformText(platform)}")
-        Logger.info(tag, "User: $userProvider")
-
-//        replaceFragment(MainScreen(), fadeIn(), clearStack = true, addToBackStack = false)
-
-        // activity result
-        requireActivity().setResult(Activity.RESULT_OK);
-
-        // exit from this process
-        requireActivity().finish()
-
-        // result
-//        resultCallback()
-
-        // Bridge file activity
-//        val intent = Intent(context, BridgeFile::class.java)
-//        startActivity( intent );
-
-    }
-
-    override fun onLoginWithSocialCancel() {
-        //TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
-    }
-
-    override fun onLoginWithSocialError(exception: Exception) {
-        Logger.error(simpleName(), "Social login error: ${exception.message}")
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        if (requestCode == RC_GOOGLE_LOGIN ||
-                requestCode == CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode()) {
-            socialLoginManger.handleLogInResult(requestCode, resultCode, data)
-
-        } else {
-            super.onActivityResult(requestCode, resultCode, data)
-
-        }
+    override fun onDestroyView() {
+        web_view?.clearCache(true)
+        web_view?.clearFormData()
+        web_view?.clearHistory()
+        web_view?.clearSslPreferences()
+        super.onDestroyView()
     }
 
     override fun onDestroy() {
-        socialLoginManger.unRegisterLoginCallback()
+        CookieManager.getInstance().removeAllCookies(null)
+        CookieManager.getInstance().flush()
         super.onDestroy()
     }
 

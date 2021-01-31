@@ -25,7 +25,7 @@ class OnBoardingScreen : BaseScreen() {
 
         //Subscribe Ui
         get_started_button.setOnClickListener {
-            requireActivity().startActivityForResult(Intent(requireContext(), LoginActivity::class.java), RC_LOGIN)
+            replaceFragment(LoginScreen(), addToBackStack = false, clearFragment = false)
         }
     }
 }
