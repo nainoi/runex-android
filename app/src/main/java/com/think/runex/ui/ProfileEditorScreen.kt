@@ -1,6 +1,7 @@
 package com.think.runex.ui
 
 import android.os.Bundle
+import android.util.Log
 import android.view.*
 import androidx.appcompat.widget.AppCompatButton
 import androidx.core.view.MenuItemCompat
@@ -10,6 +11,7 @@ import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.util.NightMode
+import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
 
 class ProfileEditorScreen : BaseScreen() {
@@ -38,6 +40,9 @@ class ProfileEditorScreen : BaseScreen() {
 
     private fun subscribeUi() {
 
+        birth_date_input?.setOnClickListener {
+            Log.e("Jozzee","Click")
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

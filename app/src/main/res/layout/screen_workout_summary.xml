@@ -86,7 +86,7 @@
                 android:gravity="end"
                 android:includeFontPadding="false"
                 android:maxLines="1"
-                android:text="@string/time_hint"
+                android:text="@string/hint_time"
                 android:textColor="@color/textColorWhite"
                 android:textSize="28sp"
                 android:textStyle="bold" />
@@ -174,7 +174,7 @@
         android:layout_toEndOf="@+id/duration_placeholder"
         android:gravity="end"
         android:maxLines="1"
-        android:text="@string/time_hint" />
+        android:text="@string/hint_time" />
 
     <TextView
         android:id="@+id/duration_per_kilometer_placeholder"
@@ -198,7 +198,7 @@
         android:layout_marginBottom="@dimen/space_4dp"
         android:layout_toEndOf="@+id/duration_per_kilometer_placeholder"
         android:gravity="end"
-        android:text="@string/time_hint_minute" />
+        android:text="@string/hint_time_minute" />
 
     <TextView
         android:id="@+id/calorie_placeholder"
@@ -224,7 +224,7 @@
         android:layout_toEndOf="@+id/calorie_placeholder"
         android:gravity="end"
         android:maxLines="1"
-        android:text="@string/zero_hint" />
+        android:text="@string/hint_zero" />
 
     <View
         android:id="@+id/line_above_submit_button"

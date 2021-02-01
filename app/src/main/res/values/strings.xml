@@ -45,6 +45,7 @@
     <string name="date_required">Please select date</string>
     <string name="duration">Duration</string>
 
+
     <!-- E -->
     <string name="edit">Edit</string>
     <string name="edit_info">Edit info</string>
@@ -143,8 +144,6 @@
 
     <!-- T -->
     <string name="time">Time</string>
-    <string name="time_hint" translatable="false">00:00:00</string>
-    <string name="time_hint_minute" translatable="false">00:00</string>
     <string name="total_distances">Total Distances</string>
 
     <!-- U -->
@@ -162,9 +161,14 @@
     <!-- Y -->
 
     <!-- Z -->
-    <string name="zero_hint" translatable="false">0</string>
 
     <string name="u250">·</string>
+
+    <!-- Hint -->
+    <string name="hint_time" translatable="false">00:00:00</string>
+    <string name="hint_time_minute" translatable="false">00:00</string>
+    <string name="hint_date" translatable="false">dd MMMM yyyy</string>
+    <string name="hint_zero" translatable="false">0</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

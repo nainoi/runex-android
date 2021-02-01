@@ -47,12 +47,14 @@
     <dimen name="icon_size_product">48dp</dimen>
     <dimen name="icon_size_system">24dp</dimen>
     <dimen name="icon_size_system_dense">20dp</dimen>
+    <dimen name="icon_size_menu">32dp</dimen>
     <dimen name="icon_size_in_action_bar">40dp</dimen>
 
     <dimen name="padding_icon_in_action_bar">4dp</dimen>
 
     <!-- Default Images -->
     <dimen name="image_profile_size">84dp</dimen>
+    <dimen name="image_profile_size_large">120dp</dimen>
 
     <!-- Default Button -->
     <dimen name="button_height_default">48dp</dimen>

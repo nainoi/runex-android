@@ -41,7 +41,7 @@
     </style>
 
     <style name="AppAlertDialog.BodyTextStyle">
-        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textSize">@dimen/text_size_body_heading</item>
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
@@ -120,22 +120,14 @@
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:minHeight">@dimen/space_48dp</item>
         <item name="android:gravity">center_vertical</item>
-        <item name="android:paddingStart">@dimen/space_16dp</item>
-        <item name="android:paddingEnd">@dimen/space_16dp</item>
+<!--        <item name="android:paddingStart">@dimen/space_16dp</item>-->
+<!--        <item name="android:paddingEnd">@dimen/space_16dp</item>-->
         <item name="android:inputType">text</item>
-        <item name="android:background">@drawable/bg_text_input</item>
+        <item name="backgroundTint">@color/line</item>
     </style>
 
-    <style name="TextInput.Email" parent="TextInput">
-        <item name="android:inputType">textEmailAddress</item>
-    </style>
-
-    <style name="TextInput.Password" parent="TextInput">
-        <item name="android:inputType">textPassword</item>
-    </style>
-
-    <style name="TextInput.Password.Done" parent="TextInput.Password">
-        <item name="android:imeOptions">actionDone</item>
+    <style name="TextInput.Bold" parent="TextInput">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <style name="TextInput.Distance" parent="TextInput">
@@ -167,5 +159,15 @@
 
     <style name="Icon.BottomBar" parent="Icon">
         <item name="tint">@color/iconColorSecondary</item>
+    </style>
+
+    <!-- Images -->
+    <style name="Image">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Image.Profile">
+        <item name="srcCompat">@mipmap/ic_profile</item>
+        <item name="android:adjustViewBounds">true</item>
     </style>
 </resources>

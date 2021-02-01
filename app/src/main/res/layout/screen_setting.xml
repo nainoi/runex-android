@@ -27,9 +27,9 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profile_image"
+            style="@style/Image.Profile"
             android:layout_width="@dimen/image_profile_size"
-            android:layout_height="@dimen/image_profile_size"
-            app:srcCompat="@mipmap/ic_profile" />
+            android:layout_height="@dimen/image_profile_size" />
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/username_label"

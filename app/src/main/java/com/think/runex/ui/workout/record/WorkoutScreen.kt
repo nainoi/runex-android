@@ -194,8 +194,8 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
 
     private fun resetUi() {
         distance_label?.text = ("0.00")
-        duration_label?.text = getString(R.string.time_hint)
-        duration_per_kilometer_label?.text = getString(R.string.time_hint_minute)
+        duration_label?.text = getString(R.string.hint_time)
+        duration_per_kilometer_label?.text = getString(R.string.hint_time_minute)
         duration_per_kilometer_placeholder?.text = getString(R.string.minutes_per_kilometer_placeholder)
         calorie_label?.text = "0"
         mapPresenter?.clearPolyline()

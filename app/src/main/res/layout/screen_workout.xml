@@ -78,7 +78,7 @@
                 android:layout_marginTop="@dimen/space_4dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/time_hint" />
+                android:text="@string/hint_time" />
 
         </RelativeLayout>
 
@@ -108,7 +108,7 @@
                 android:layout_marginTop="@dimen/space_4dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/time_hint_minute" />
+                android:text="@string/hint_time_minute" />
 
         </RelativeLayout>
 
@@ -137,7 +137,7 @@
                 android:layout_marginTop="@dimen/space_4dp"
                 android:gravity="center"
                 android:maxLines="1"
-                android:text="@string/zero_hint" />
+                android:text="@string/hint_zero" />
         </RelativeLayout>
     </LinearLayout>
 
