@@ -47,6 +47,7 @@
 
     <!-- E -->
     <string name="edit">แก้ไข</string>
+    <string name="edit_info">แก้ไขข้อมูล</string>
     <string name="email">อีเมล</string>
     <string name="events">อีเว้นท์</string>
     <string name="event_date">วันที่จัดงาน</string>

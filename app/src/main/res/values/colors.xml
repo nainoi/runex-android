@@ -24,7 +24,7 @@
 
     <color name="disableSecondary">#EAEAEA</color>
     <color name="disableSecondaryLight">#EAEAEA</color>
-    <color name="disableSecondaryDark">#797979</color>
+    <color name="disableSecondaryDark">#474D51</color>
 
     <color name="grey">#9A9A9A</color>
     <color name="error">#CC2E2E</color>

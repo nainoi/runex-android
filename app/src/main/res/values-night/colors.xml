@@ -11,7 +11,7 @@
     <color name="backgroundWorkoutScreen">@color/backgroundThirdly</color>
 
     <color name="disable">#494E52</color>
-    <color name="disableSecondary">#797979</color>
+    <color name="disableSecondary">#474D51</color>
 
     <color name="line">#42979797</color>
     <color name="border">#42979797</color>

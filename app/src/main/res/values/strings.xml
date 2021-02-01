@@ -47,6 +47,7 @@
 
     <!-- E -->
     <string name="edit">Edit</string>
+    <string name="edit_info">Edit info</string>
     <string name="email">Email</string>
     <string name="events">Events</string>
     <string name="event_date">Event Date</string>

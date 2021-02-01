@@ -50,7 +50,7 @@ class SettingScreen : BaseScreen() {
 
     private fun subscribeUi() {
         edit_button?.setOnClickListener {
-
+            addFragment(ProfileEditorScreen())
         }
 
         applications_menu_layout?.setOnClickListener {

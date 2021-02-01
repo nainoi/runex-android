@@ -1,0 +1,17 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="wrap_content"
+    android:layout_height="wrap_content">
+
+    <androidx.appcompat.widget.AppCompatButton
+        android:id="@+id/confirm_button"
+        style="@style/Button.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:enabled="false"
+        android:minHeight="@dimen/space_32dp"
+        android:paddingStart="@dimen/space_4dp"
+        android:paddingEnd="@dimen/space_4dp"
+        android:text="@string/confirm" />
+</FrameLayout>
