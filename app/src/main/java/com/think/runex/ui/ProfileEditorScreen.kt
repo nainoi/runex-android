@@ -1,26 +1,47 @@
 package com.think.runex.ui
 
+import android.app.DatePickerDialog
 import android.os.Bundle
-import android.util.Log
+import android.text.Editable
+import android.text.TextWatcher
 import android.view.*
+import android.widget.DatePicker
 import androidx.appcompat.widget.AppCompatButton
-import androidx.core.view.MenuItemCompat
-import androidx.fragment.app.Fragment
+import com.jozzee.android.core.datetime.dateTimeFormat
+import com.jozzee.android.core.datetime.toCalendar
+import com.jozzee.android.core.datetime.year
+import com.jozzee.android.core.view.content
+import com.jozzee.android.core.view.showDialog
 import com.think.runex.R
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.setupToolbar
+import com.think.runex.common.*
+import com.think.runex.config.DISPLAY_DATE_FORMAT_FULL_MONTH
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.feature.user.Gender
+import com.think.runex.feature.user.UserInfo
+import com.think.runex.feature.user.UserViewModel
+import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.component.GenderDialog
 import com.think.runex.util.NightMode
+import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.delay
+import java.util.*
 
-class ProfileEditorScreen : BaseScreen() {
+class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, GenderDialog.OnGenderSelectedListener {
+
+    private lateinit var viewModel: UserViewModel
 
     private var confirmButton: AppCompatButton? = null
+
+    private var currentBirthDate: String? = null
+    private var currentGender: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
+        viewModel = requireActivity().getViewModel(UserViewModelFactory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,6 +52,11 @@ class ProfileEditorScreen : BaseScreen() {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
+
+        //Get user info initial
+        if (viewModel.userInfo.value == null) {
+            viewModel.getUSerInfo()
+        }
     }
 
     private fun setupComponents() {
@@ -41,8 +67,85 @@ class ProfileEditorScreen : BaseScreen() {
     private fun subscribeUi() {
 
         birth_date_input?.setOnClickListener {
-            Log.e("Jozzee","Click")
+            showDatePicker()
         }
+
+        gender_input?.setOnClickListener {
+            showDialog(GenderDialog())
+        }
+
+        viewModel.setOnHandleError(::errorHandler)
+
+        observe(viewModel.userInfo) { userInfo ->
+            if (view == null || isAdded.not()) return@observe
+            updateUserInfo(userInfo)
+        }
+    }
+
+    private fun updateUserInfo(userInfo: UserInfo?) {
+        first_name_input?.removeTextChangedListener(textWatcher)
+        last_name_input?.removeTextChangedListener(textWatcher)
+        first_name_input?.clearFocus()
+        last_name_input?.clearFocus()
+
+        profile_image?.loadProfileImage(userInfo?.avatar)
+        email_label?.text = userInfo?.email ?: ""
+        first_name_input?.setText(userInfo?.firstName ?: "")
+        last_name_input?.setText(userInfo?.lastName ?: "")
+
+        //Birth date
+        currentBirthDate = userInfo?.birthDate
+        userInfo?.getBirthDateCalendar()?.also { calendar ->
+            when (calendar.year() > 1000) {
+                true -> birth_date_input?.setText(userInfo.getBirthDate(DISPLAY_DATE_FORMAT_FULL_MONTH))
+                false -> birth_date_input?.setText("")
+            }
+        }
+
+        //Gender
+        currentGender = userInfo?.gender
+        gender_input?.setText(userInfo?.gender ?: "")
+
+        first_name_input?.addTextChangedListener(textWatcher)
+        last_name_input?.addTextChangedListener(textWatcher)
+    }
+
+    private fun showDatePicker() {
+        var calendar = currentBirthDate?.toCalendar(SERVER_DATE_TIME_FORMAT)
+                ?: Calendar.getInstance()
+        if (calendar.year() < 1000) {
+            calendar = Calendar.getInstance()
+        }
+        DatePickerDialog(requireContext(), this, calendar.get(Calendar.YEAR),
+                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).run {
+            datePicker.maxDate = System.currentTimeMillis()
+            show()
+        }
+    }
+
+    override fun onDateSet(view: DatePicker?, year: Int, month: Int, dayOfMonth: Int) {
+        val calendar = Calendar.getInstance().apply {
+            set(year, month, dayOfMonth, 0, 0, 0)
+        }
+        currentBirthDate = calendar.dateTimeFormat(SERVER_DATE_TIME_FORMAT)
+        birth_date_input?.setText(calendar.dateTimeFormat(DISPLAY_DATE_FORMAT_FULL_MONTH))
+        isDataValid()
+    }
+
+    override fun onGenderSelected(gender: String) {
+        currentGender = gender
+        when (gender) {
+            Gender.FEMALE -> gender_input.setText(getString(R.string.female))
+            Gender.MALE -> gender_input.setText(getString(R.string.male))
+            else -> gender_input.setText(getString(R.string.other))
+        }
+        isDataValid()
+    }
+
+    private fun performUpdateProfile(userInfo: UserInfo) = launch {
+        showProgressDialog(R.string.update_info)
+        viewModel.updateUserInfo(userInfo)
+        hideProgressDialog()
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -51,6 +154,73 @@ class ProfileEditorScreen : BaseScreen() {
 
     override fun onPrepareOptionsMenu(menu: Menu) {
         confirmButton = menu.findItem(R.id.menu_confirm).actionView.findViewById(R.id.confirm_button)
+        confirmButton?.setOnClickListener {
+            isDataValid()?.also { performUpdateProfile(it) }
+        }
         super.onPrepareOptionsMenu(menu)
+    }
+
+    private fun isDataValid(): UserInfo? {
+        val currentUserInfo = UserInfo(viewModel.userInfo.value)
+
+        /**
+         * First name must not empty
+         */
+        first_name_input?.content().also { firstName ->
+            if (firstName.isNullOrBlank()) {
+                confirmButton?.isEnabled = false
+                return null
+            }
+            currentUserInfo.firstName = firstName
+        }
+        /**
+         * Last name can empty
+         */
+        currentUserInfo.lastName = last_name_input?.content()
+        currentUserInfo.fullName = "${currentUserInfo.firstName ?: ""} ${currentUserInfo.lastName ?: ""}"
+
+        //Birth date
+        currentUserInfo.birthDate = currentBirthDate
+
+        //Gender
+        currentUserInfo.gender = currentGender
+
+        //Update state of confirm button
+        confirmButton?.isEnabled = currentUserInfo != viewModel.userInfo.value
+        return if (confirmButton?.isEnabled == true) currentUserInfo else null
+    }
+
+    private var textWatcher: TextWatcher? = null
+        get() {
+            if (field == null) {
+                field = object : TextWatcher {
+                    override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {
+                    }
+
+                    override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
+                        isDataValid()
+                    }
+
+                    override fun afterTextChanged(s: Editable?) {
+                    }
+                }
+            }
+            return field
+        }
+
+    override fun errorHandler(statusCode: Int, message: String) {
+        super.errorHandler(statusCode, message)
+    }
+
+    override fun onDestroyView() {
+        first_name_input?.removeTextChangedListener(textWatcher)
+        last_name_input?.removeTextChangedListener(textWatcher)
+        super.onDestroyView()
+    }
+
+    override fun onDestroy() {
+        removeObservers(viewModel.userInfo)
+        textWatcher = null
+        super.onDestroy()
     }
 }

@@ -11,6 +11,7 @@ import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.jozzee.android.core.view.content
 import com.think.runex.R
+import com.think.runex.feature.user.Gender
 import kotlinx.android.synthetic.main.dialog_gender.view.*
 
 class GenderDialog : DialogFragment() {
@@ -43,17 +44,17 @@ class GenderDialog : DialogFragment() {
 
         //Subscribe Ui
         rootView.female_label.setOnClickListener {
-            getOnGenderSelectedListener()?.onGenderSelected(rootView.female_label.content())
+            getOnGenderSelectedListener()?.onGenderSelected(Gender.FEMALE)
             dismissAllowingStateLoss()
         }
 
         rootView.male_label.setOnClickListener {
-            getOnGenderSelectedListener()?.onGenderSelected(rootView.male_label.content())
+            getOnGenderSelectedListener()?.onGenderSelected(Gender.MALE)
             dismissAllowingStateLoss()
         }
 
         rootView.other_label.setOnClickListener {
-            getOnGenderSelectedListener()?.onGenderSelected(rootView.other_label.content())
+            getOnGenderSelectedListener()?.onGenderSelected(Gender.OTHER)
             dismissAllowingStateLoss()
         }
     }

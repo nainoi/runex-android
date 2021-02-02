@@ -148,6 +148,7 @@
 
     <!-- U -->
     <string name="username">Username</string>
+    <string name="update_info">Update info</string>
 
     <!-- V -->
     <string name="app_version">App version</string>

@@ -31,4 +31,14 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
             onHandleError(userInfoResult.statusCode, userInfoResult.message)
         }
     }
+
+    suspend fun updateUserInfo(userInfo: UserInfo): Boolean = withContext(IO) {
+        val result = repo.updateUserInfo(userInfo)
+        when (result.isSuccessful()) {
+            true -> this@UserViewModel.userInfo.postValue(result.data)
+            false -> onHandleError(result.statusCode, result.message)
+        }
+        return@withContext result.isSuccessful()
+    }
+
 }

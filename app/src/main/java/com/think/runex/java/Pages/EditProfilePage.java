@@ -65,6 +65,7 @@ import java.util.Locale;
 import java.util.Objects;
 
 
+import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT_FULL_MONTH;
 import static com.think.runex.config.ConstantsKt.DISPLAY_DATE_FORMAT_SHOT_MONTH;
 import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
@@ -146,7 +147,7 @@ public class EditProfilePage extends xFragment
         if (birthDateCalendar.get(Calendar.YEAR) < 1000) {
             birthDateButton.setText("");
         } else {
-            birthDateButton.setText(userInfo.getBirthDateDisplay());
+            birthDateButton.setText(userInfo.getBirthDateDisplay(DISPLAY_DATE_FORMAT_FULL_MONTH));
         }
     }
 

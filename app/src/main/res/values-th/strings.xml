@@ -147,6 +147,7 @@
 
     <!-- U -->
     <string name="username">ชื่อผู้ใช้</string>
+    <string name="update_info">อัพเดทข้อมูล</string>
 
     <!-- V -->
     <string name="app_version">เวอร์ชัน</string>

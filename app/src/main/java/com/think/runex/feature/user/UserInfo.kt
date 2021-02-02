@@ -3,11 +3,14 @@ package com.think.runex.feature.user
 import android.content.Context
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.jozzee.android.core.datetime.toCalendar
 import com.think.runex.common.displayFormat
 import com.think.runex.feature.event.model.EventItem
 import com.think.runex.feature.address.Address
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import java.util.*
+import java.util.regex.Pattern
 
 data class UserInfo(
         @SerializedName("email") var email: String? = null,
@@ -39,11 +42,43 @@ data class UserInfo(
         @SerializedName("strava_firstname") var stravaFirstName: String? = null,
         @SerializedName("strava_latname") var stravaLatName: String? = null) {
 
+    constructor(userInfo: UserInfo?) : this(
+            userInfo?.email,
+            userInfo?.fullName,
+            userInfo?.firstName,
+            userInfo?.firstNameTh,
+            userInfo?.lastName,
+            userInfo?.lastNameTh,
+            userInfo?.phone,
+            userInfo?.avatar,
+            userInfo?.role,
+            userInfo?.birthDate,
+            userInfo?.gender,
+            userInfo?.createdAt,
+            userInfo?.updatedAt,
+            userInfo?.isConfirmed ?: false,
+            userInfo?.address,
+            userInfo?.emergencyContact,
+            userInfo?.emergencyPhone,
+            userInfo?.nationality,
+            userInfo?.passport,
+            userInfo?.citizenId,
+            userInfo?.bloodType,
+            userInfo?.pf,
+            userInfo?.events,
+            userInfo?.stravaId,
+            userInfo?.stravaAvatar,
+            userInfo?.stravaFirstName,
+            userInfo?.stravaLatName)
+
     var totalDistance: Double? = 0.0
 
     @JvmName("getBirthDateDisplay")
-    fun getBirthDate(): String = birthDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
-            ?: ""
+    fun getBirthDate(pattern: String = DISPLAY_DATE_FORMAT_SHOT_MONTH): String {
+        return birthDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, pattern) ?: ""
+    }
+
+    fun getBirthDateCalendar(): Calendar? = birthDate?.toCalendar(SERVER_DATE_TIME_FORMAT)
 
     fun getTotalDistance(unit: String): String {
         return ("${totalDistance?.displayFormat() ?: ""} $unit")

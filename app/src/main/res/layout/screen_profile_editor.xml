@@ -82,7 +82,7 @@
                 android:layout_marginEnd="@dimen/space_16dp"
                 android:hint="@string/name"
                 android:imeOptions="actionNext"
-                android:inputType="textAutoComplete"
+                android:inputType="text|textNoSuggestions"
                 android:maxLines="1" />
 
             <TextView
@@ -108,7 +108,7 @@
                 android:layout_marginEnd="@dimen/space_16dp"
                 android:hint="@string/last_name"
                 android:imeOptions="actionDone"
-                android:inputType="textAutoComplete"
+                android:inputType="text|textNoSuggestions"
                 android:maxLines="1" />
 
             <TextView

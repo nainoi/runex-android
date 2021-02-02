@@ -9,6 +9,8 @@ class UserRepository(private val api: UserApi) : RemoteDataSource() {
 
     suspend fun userInfo(): Result<UserInfo> = call(api.getUserInfoAsync())
 
+    suspend fun updateUserInfo(userInfo: UserInfo): Result<UserInfo> = call(api.updateUserInfoAsync(userInfo))
+
     suspend fun getTotalDistances(): Result<TotalDistanceResponse> = call(api.getTotalDistancesAsync())
 
 }
