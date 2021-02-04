@@ -6,6 +6,7 @@ import com.think.runex.feature.auth.TokenManager
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.feature.workout.model.TotalDistanceResponse
 import kotlinx.coroutines.Deferred
+import okhttp3.MultipartBody
 import retrofit2.http.*
 
 interface UserApi {
@@ -18,6 +19,11 @@ interface UserApi {
     fun updateUserInfoAsync(
             @Body userInfo: UserInfo,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+
+    @POST("/api/${ApiConfig.API_VERSION}/uploads")
+    fun updateProfileImageAsync(
+            @Body body: MultipartBody,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UpdateProfileImageResponse>>
 
     @GET("/api/${ApiConfig.API_VERSION}/workouts")
     fun getTotalDistancesAsync(

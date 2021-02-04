@@ -23,6 +23,7 @@
 
     <!-- c -->
     <string name="camera">กล้อง</string>
+    <string name="camera_permission_denied">ไม่สามารถเข้าถึงกล้องถ่ายรูปของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="cancel">ยกเลิก</string>
     <string name="close">ปิด</string>
     <string name="confirm">ยืนยัน</string>
@@ -148,6 +149,7 @@
     <!-- U -->
     <string name="username">ชื่อผู้ใช้</string>
     <string name="update_info">อัพเดทข้อมูล</string>
+    <string name="update_profile_image">อัปเดตรูปโปรไฟล์…</string>
 
     <!-- V -->
     <string name="app_version">เวอร์ชัน</string>

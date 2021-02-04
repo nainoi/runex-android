@@ -3,6 +3,7 @@
     android:id="@+id/dialog_default"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
+    android:background="@color/backgroundDialog"
     android:padding="@dimen/space_24dp">
 
     <TextView

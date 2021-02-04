@@ -1,6 +1,7 @@
 package com.think.runex.feature.user
 
 import android.content.Context
+import android.net.Uri
 import androidx.core.content.edit
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.viewModelScope
@@ -39,6 +40,31 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
             false -> onHandleError(result.statusCode, result.message)
         }
         return@withContext result.isSuccessful()
+    }
+
+    suspend fun updateProfileImage(context: Context, uri: Uri): Boolean = withContext(IO) {
+
+        //Upload profile image
+        val uploadImageResult = repo.uploadProfileImage(context, uri)
+        if (uploadImageResult.isSuccessful().not()) {
+            onHandleError(uploadImageResult.statusCode, uploadImageResult.message)
+            return@withContext false
+        }
+
+        if (userInfo.value == null) {
+            return@withContext false
+        }
+
+        //Update user info (update avatar)
+        val userInfoUpdate = UserInfo(userInfo.value)
+        userInfoUpdate.avatar = uploadImageResult.data?.url
+        val userInfoUpdateResult = repo.updateUserInfo(userInfoUpdate)
+        if (userInfoUpdateResult.isSuccessful().not()) {
+            onHandleError(userInfoUpdateResult.statusCode, userInfoUpdateResult.message)
+            return@withContext false
+        }
+        userInfo.postValue(userInfoUpdateResult.data)
+        return@withContext userInfoUpdateResult.isSuccessful()
     }
 
 }

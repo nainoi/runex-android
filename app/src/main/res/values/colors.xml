@@ -18,6 +18,8 @@
     <color name="backgroundThirdlyLight">#EDF1F5</color>
     <color name="backgroundThirdlyDark">#313338</color>
 
+    <color name="backgroundDialog">#FFFFFF</color>
+
     <color name="disable">#9A9A9A</color>
     <color name="disableLight">#9A9A9A</color>
     <color name="disableDark">#494E52</color>

@@ -10,6 +10,8 @@
     <color name="backgroundThirdly">#313338</color>
     <color name="backgroundWorkoutScreen">@color/backgroundThirdly</color>
 
+    <color name="backgroundDialog">@color/backgroundSecondary</color>
+
     <color name="disable">#494E52</color>
     <color name="disableSecondary">#474D51</color>
 

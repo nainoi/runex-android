@@ -1,35 +1,47 @@
 package com.think.runex.ui
 
+import android.Manifest
+import android.app.Activity
 import android.app.DatePickerDialog
+import android.content.Intent
+import android.net.Uri
 import android.os.Bundle
+import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.DatePicker
 import androidx.appcompat.widget.AppCompatButton
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toCalendar
 import com.jozzee.android.core.datetime.year
+import com.jozzee.android.core.permission.allPermissionsGranted
+import com.jozzee.android.core.permission.havePermissions
+import com.jozzee.android.core.permission.shouldShowPermissionRationale
 import com.jozzee.android.core.view.content
 import com.jozzee.android.core.view.showDialog
+import com.jozzee.android.core.view.showToast
 import com.think.runex.R
 import com.think.runex.common.*
-import com.think.runex.config.DISPLAY_DATE_FORMAT_FULL_MONTH
-import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.config.*
 import com.think.runex.feature.user.Gender
 import com.think.runex.feature.user.UserInfo
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.GenderDialog
+import com.think.runex.ui.component.SelectImageSourceDialog
 import com.think.runex.util.NightMode
+import com.think.runex.util.TakePictureHelper
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.delay
 import java.util.*
 
-class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, GenderDialog.OnGenderSelectedListener {
+class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
+        GenderDialog.OnGenderSelectedListener, SelectImageSourceDialog.OnSelectImageSourceListener {
 
     private lateinit var viewModel: UserViewModel
 
@@ -37,6 +49,7 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, Ge
 
     private var currentBirthDate: String? = null
     private var currentGender: String? = null
+    private var tempProfileImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -65,6 +78,10 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, Ge
     }
 
     private fun subscribeUi() {
+
+        change_profile_image_button?.setOnClickListener {
+            showDialog(SelectImageSourceDialog())
+        }
 
         birth_date_input?.setOnClickListener {
             showDatePicker()
@@ -148,18 +165,6 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, Ge
         hideProgressDialog()
     }
 
-    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_profile_editor, menu)
-    }
-
-    override fun onPrepareOptionsMenu(menu: Menu) {
-        confirmButton = menu.findItem(R.id.menu_confirm).actionView.findViewById(R.id.confirm_button)
-        confirmButton?.setOnClickListener {
-            isDataValid()?.also { performUpdateProfile(it) }
-        }
-        super.onPrepareOptionsMenu(menu)
-    }
-
     private fun isDataValid(): UserInfo? {
         val currentUserInfo = UserInfo(viewModel.userInfo.value)
 
@@ -188,6 +193,74 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, Ge
         //Update state of confirm button
         confirmButton?.isEnabled = currentUserInfo != viewModel.userInfo.value
         return if (confirmButton?.isEnabled == true) currentUserInfo else null
+    }
+
+
+    override fun onSelectImageSource(source: Int) {
+        when (source) {
+            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionAnOpCamera()
+            SelectImageSourceDialog.SOURCE_GALLERY -> {
+
+            }
+        }
+    }
+
+    private fun checkPermissionAnOpCamera() {
+        val permissions = arrayOf(Manifest.permission.CAMERA,
+                Manifest.permission.READ_EXTERNAL_STORAGE,
+                Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        if (havePermissions(permissions, RC_PERMISSION_TAKE_PICTURE)) {
+            TakePictureHelper.provideCameraIntent(requireContext())?.also { intent ->
+                //Store temp uri for preview and upload
+                intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString()
+                tempProfileImageUri = Uri.parse( intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString())
+                startActivityForResult(intent, RC_TAKE_PICTURE)
+            }
+        }
+    }
+
+    private fun performUploadProfileImage(uri: Uri) = launch {
+        showProgressDialog(R.string.update_profile_image)
+        viewModel.updateProfileImage(requireContext(), uri)
+        hideProgressDialog()
+    }
+
+    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
+        when (requestCode) {
+            RC_TAKE_PICTURE -> if (resultCode == Activity.RESULT_OK) {
+                tempProfileImageUri?.also { performUploadProfileImage(it) }
+            }
+            else -> super.onActivityResult(requestCode, resultCode, data)
+        }
+    }
+
+    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
+        when (requestCode) {
+            RC_PERMISSION_TAKE_PICTURE -> when {
+                //User allow to access location.
+                allPermissionsGranted(grantResults) -> checkPermissionAnOpCamera()
+                //User denied access to location.
+                shouldShowPermissionRationale(permissions) -> showToast(R.string.camera_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
+            }
+            RC_PERMISSION_OPEN_GALLERY -> {
+
+            }
+            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        inflater.inflate(R.menu.menu_profile_editor, menu)
+    }
+
+    override fun onPrepareOptionsMenu(menu: Menu) {
+        confirmButton = menu.findItem(R.id.menu_confirm).actionView.findViewById(R.id.confirm_button)
+        confirmButton?.setOnClickListener {
+            isDataValid()?.also { performUpdateProfile(it) }
+        }
+        super.onPrepareOptionsMenu(menu)
     }
 
     private var textWatcher: TextWatcher? = null
@@ -221,6 +294,7 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener, Ge
     override fun onDestroy() {
         removeObservers(viewModel.userInfo)
         textWatcher = null
+        TakePictureHelper.clearTempFile(requireContext())
         super.onDestroy()
     }
 }

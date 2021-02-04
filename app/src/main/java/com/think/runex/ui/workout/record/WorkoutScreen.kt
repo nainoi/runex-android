@@ -274,7 +274,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
                 //User denied access to location.
                 shouldShowPermissionRationale(permissions) -> showToast(R.string.location_permission_denied)
                 //User tick Don't ask again.
-                else -> showSettingPermissionInSettingDialog()
+                else -> requireContext().showSettingPermissionInSettingDialog()
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
@@ -291,19 +291,6 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
-
-    private fun showSettingPermissionInSettingDialog() = showAlertDialog(
-            title = getString(R.string.app_name),
-            message = getString(R.string.allow_permission_in_setting),
-            positiveText = getString(R.string.setting),
-            onPositiveClick = {
-                //On positive click, go to permission setting screen.
-                val uri = Uri.parse("package:${requireContext().packageName}")
-                startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri).apply {
-                    addCategory(Intent.CATEGORY_DEFAULT)
-                    addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
-                })
-            })
 
     override fun onDestroyView() {
         Logger.warning(simpleName(), "onDestroyView")

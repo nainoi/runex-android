@@ -62,8 +62,12 @@ const val DISPLAY_TIME_FORMAT = "HH:mm"
  */
 const val RC_LOGIN = 2000
 const val RC_OPEN_GPS = 2001
+const val RC_TAKE_PICTURE = 2002
+const val RC_IMAGE_PICKER = 2003
 
 const val RC_PERMISSION_LOCATION = 3000
+const val RC_PERMISSION_TAKE_PICTURE = 3010
+const val RC_PERMISSION_OPEN_GALLERY = 3011
 
 /**
  * Notification chanel id and request code

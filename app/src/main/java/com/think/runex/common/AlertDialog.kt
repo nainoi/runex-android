@@ -2,6 +2,9 @@ package com.think.runex.common
 
 import android.annotation.SuppressLint
 import android.content.Context
+import android.content.Intent
+import android.net.Uri
+import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.ViewGroup
 import android.widget.LinearLayout
@@ -219,3 +222,17 @@ fun Fragment.showAlertDialog(
             onDialogDismiss = null,
             cancelable = isCancelEnable)
 }
+
+fun Context.showSettingPermissionInSettingDialog() = showAlertDialog(
+        title = getString(R.string.app_name),
+        message = getString(R.string.allow_permission_in_setting),
+        positiveText = getString(R.string.setting),
+        onPositiveClick = {
+            //On positive click, go to permission setting screen.
+            val uri = Uri.parse("package:${packageName}")
+            startActivity(Intent(Settings.ACTION_APPLICATION_DETAILS_SETTINGS, uri).apply {
+                addCategory(Intent.CATEGORY_DEFAULT)
+                addFlags(Intent.FLAG_ACTIVITY_NEW_TASK)
+            })
+        })
+
