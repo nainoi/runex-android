@@ -66,6 +66,7 @@
     <!-- G -->
     <string name="get_started">Get started</string>
     <string name="gender">Gender</string>
+    <string name="gallery_permission_denied">Unable to access your gallery due to being denied.</string>
 
     <!-- H -->
     <string name="history">History</string>

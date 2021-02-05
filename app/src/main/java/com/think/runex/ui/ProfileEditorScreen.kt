@@ -9,7 +9,6 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.*
 import android.widget.DatePicker
 import androidx.appcompat.widget.AppCompatButton
@@ -17,6 +16,7 @@ import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toCalendar
 import com.jozzee.android.core.datetime.year
 import com.jozzee.android.core.permission.allPermissionsGranted
+import com.jozzee.android.core.permission.havePermission
 import com.jozzee.android.core.permission.havePermissions
 import com.jozzee.android.core.permission.shouldShowPermissionRationale
 import com.jozzee.android.core.view.content
@@ -32,12 +32,11 @@ import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.GenderDialog
 import com.think.runex.ui.component.SelectImageSourceDialog
+import com.think.runex.util.ImagePickerHelper
 import com.think.runex.util.NightMode
-import com.think.runex.util.TakePictureHelper
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.coroutines.delay
 import java.util.*
 
 class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
@@ -47,6 +46,7 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
 
     private var confirmButton: AppCompatButton? = null
 
+    private var helper: ImagePickerHelper? = null
     private var currentBirthDate: String? = null
     private var currentGender: String? = null
     private var tempProfileImageUri: Uri? = null
@@ -55,6 +55,7 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = requireActivity().getViewModel(UserViewModelFactory(requireContext()))
+        helper = ImagePickerHelper()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -198,24 +199,28 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
 
     override fun onSelectImageSource(source: Int) {
         when (source) {
-            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionAnOpCamera()
-            SelectImageSourceDialog.SOURCE_GALLERY -> {
-
-            }
+            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionAndOpenCamera()
+            SelectImageSourceDialog.SOURCE_GALLERY -> checkPermissionAndOpenGallery()
         }
     }
 
-    private fun checkPermissionAnOpCamera() {
+    private fun checkPermissionAndOpenCamera() {
         val permissions = arrayOf(Manifest.permission.CAMERA,
                 Manifest.permission.READ_EXTERNAL_STORAGE,
                 Manifest.permission.WRITE_EXTERNAL_STORAGE)
         if (havePermissions(permissions, RC_PERMISSION_TAKE_PICTURE)) {
-            TakePictureHelper.provideCameraIntent(requireContext())?.also { intent ->
+            helper?.provideCameraIntent(requireContext())?.also { intent ->
                 //Store temp uri for preview and upload
                 intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString()
-                tempProfileImageUri = Uri.parse( intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString())
+                tempProfileImageUri = Uri.parse(intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString())
                 startActivityForResult(intent, RC_TAKE_PICTURE)
             }
+        }
+    }
+
+    private fun checkPermissionAndOpenGallery() {
+        if (havePermission(Manifest.permission.READ_EXTERNAL_STORAGE, RC_PERMISSION_OPEN_GALLERY)) {
+            startActivityForResult(helper?.provideGalleryIntent(), RC_IMAGE_PICKER)
         }
     }
 
@@ -230,6 +235,10 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
             RC_TAKE_PICTURE -> if (resultCode == Activity.RESULT_OK) {
                 tempProfileImageUri?.also { performUploadProfileImage(it) }
             }
+            RC_IMAGE_PICKER -> if (resultCode == Activity.RESULT_OK) {
+                tempProfileImageUri = data?.data
+                tempProfileImageUri?.also { performUploadProfileImage(it) }
+            }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -238,14 +247,19 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
         when (requestCode) {
             RC_PERMISSION_TAKE_PICTURE -> when {
                 //User allow to access location.
-                allPermissionsGranted(grantResults) -> checkPermissionAnOpCamera()
+                allPermissionsGranted(grantResults) -> checkPermissionAndOpenCamera()
                 //User denied access to location.
                 shouldShowPermissionRationale(permissions) -> showToast(R.string.camera_permission_denied)
                 //User denied and select don't ask again.
                 else -> requireContext().showSettingPermissionInSettingDialog()
             }
-            RC_PERMISSION_OPEN_GALLERY -> {
-
+            RC_PERMISSION_OPEN_GALLERY -> when {
+                //User allow to access location.
+                allPermissionsGranted(grantResults) -> checkPermissionAndOpenGallery()
+                //User denied access to location.
+                shouldShowPermissionRationale(permissions) -> showToast(R.string.gallery_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
             }
             else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
@@ -294,7 +308,8 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
     override fun onDestroy() {
         removeObservers(viewModel.userInfo)
         textWatcher = null
-        TakePictureHelper.clearTempFile(requireContext())
+        helper?.clearTempFile(requireContext())
+        helper = null
         super.onDestroy()
     }
 }
