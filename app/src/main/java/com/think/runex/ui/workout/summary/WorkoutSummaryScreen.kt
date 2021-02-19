@@ -8,12 +8,15 @@ import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
+import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
 import com.think.runex.common.toJson
 import com.think.runex.config.KEY_DATA
+import com.think.runex.config.KEY_ID
 import com.think.runex.feature.workout.model.WorkingOutRecord
 import com.think.runex.feature.workout.WorkoutViewModel
 import com.think.runex.feature.workout.WorkoutViewModelFactory
@@ -36,19 +39,29 @@ class WorkoutSummaryScreen : BaseScreen() {
                 putParcelable(KEY_DATA, record)
             }
         }
+
+        @JvmStatic
+        fun newInstance(workoutId: String) = WorkoutSummaryScreen().apply {
+            arguments = Bundle().apply {
+                putString(KEY_ID, workoutId)
+            }
+        }
     }
 
     private lateinit var viewModel: WorkoutViewModel
     private var mapPresenter: MapPresenter? = null
 
     private var record: WorkingOutRecord? = null
-    private var info: WorkoutInfo? = null
+    private var workoutId: String? = null
+    private var workoutInfo: WorkoutInfo? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = getViewModel(WorkoutViewModelFactory(requireContext()))
+
         record = arguments?.getParcelable(KEY_DATA)
+        workoutId = arguments?.getString(KEY_ID)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -59,30 +72,65 @@ class WorkoutSummaryScreen : BaseScreen() {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
-        initMaps {
-            mapPresenter?.drawPolylineFromDatabase()
-            mapPresenter?.zoomToFitWorkoutLine()
-            performAddWorkout()
-        }
-    }
 
-    private fun performAddWorkout() = launch {
-        showProgressDialog(R.string.recording)
-        val locations = Realm.getDefaultInstance().run {
-            copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync()) ?: emptyList()
+        when (workoutId.isNullOrBlank() && record != null) {
+            true -> performAddWorkout()
+            false -> performGetWorkoutInfo()
         }
-        val workout = WorkoutInfo(record, locations)
-        Logger.warning(simpleName(), "Workout: ${workout.toJson()}")
-        info = viewModel.addWorkout(workout)
-        hideProgressDialog()
+
+//        when (workoutId.isNullOrBlank() && record != null) {
+//            true -> initMaps {
+//                mapPresenter?.drawPolylineFromDatabase()
+//                mapPresenter?.zoomToFitWorkoutLine()
+//                performAddWorkout()
+//            }
+//            false -> performGetWorkoutInfo(workoutId ?: "")
+//        }
     }
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar, R.string.summary, R.drawable.ic_navigation_back)
+    }
 
+    private fun subscribeUi() {
+        submit_button?.setOnClickListener {
+
+        }
+    }
+
+    private fun performAddWorkout() = launch {
+        progress_layout?.visible()
+        val locations = Realm.getDefaultInstance().run {
+            copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync()) ?: emptyList()
+        }
+        val workout = WorkoutInfo(record, locations)
+        //Logger.warning(simpleName(), "Workout: ${workout.toJson()}")
+        workoutInfo = viewModel.addWorkout(workout)
+        workoutId = workoutInfo?.id
+        if (workoutInfo != null) {
+            //Clear temp locations
+            Realm.getDefaultInstance().run {
+                beginTransaction()
+                delete(WorkingOutLocation::class.java)
+                commitTransaction()
+            }
+        }
+        progress_layout?.gone()
+        updateUi()
+    }
+
+    private fun performGetWorkoutInfo() = launch {
+        progress_layout?.visible()
+        workoutInfo = viewModel.getWorkoutInfo(workoutId ?: "")
+        //workoutId = workoutInfo?.id
+        progress_layout?.gone()
+        updateUi()
+    }
+
+    private fun updateUi() {
         //Update record data to views.
-        record?.getDisplayData()?.also { displayDate ->
+        workoutInfo?.getDisplayData()?.also { displayDate ->
             distance_in_map_label?.text = displayDate.distances
             duration_in_map_label?.text = displayDate.duration
             distance_label?.text = displayDate.distances
@@ -91,13 +139,14 @@ class WorkoutSummaryScreen : BaseScreen() {
             duration_per_kilometer_placeholder?.text = displayDate.durationPerKilometerUnit
             calorie_label?.text = displayDate.calories
         }
-    }
-
-    private fun subscribeUi() {
-        submit_button?.setOnClickListener {
-
+        initMaps {
+            workoutInfo?.locations?.also {
+                mapPresenter?.drawPolyline(it)
+                mapPresenter?.zoomToFitWorkoutLine()
+            }
         }
     }
+
 
     private fun initMaps(callbacks: () -> Unit) {
         if (mapPresenter != null) {
@@ -110,6 +159,7 @@ class WorkoutSummaryScreen : BaseScreen() {
                 googleMap.uiSettings?.isMyLocationButtonEnabled = false
                 mapPresenter = MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
                 Logger.warning(simpleName(), "Setup mapPresenter")
+                map_layout?.visible()
                 callbacks.invoke()
             }
         }

@@ -7,10 +7,7 @@ import com.think.runex.feature.auth.TokenManager
 import com.think.runex.feature.workout.model.WorkoutHistoryMonth
 import com.think.runex.feature.workout.model.WorkoutInfo
 import kotlinx.coroutines.Deferred
-import retrofit2.http.Body
-import retrofit2.http.GET
-import retrofit2.http.Header
-import retrofit2.http.POST
+import retrofit2.http.*
 
 interface WorkoutApi {
 
@@ -22,4 +19,9 @@ interface WorkoutApi {
     @GET("/api/${ApiConfig.API_VERSION}/workouts/historyAll")
     fun getWorkoutHistoryAsync(
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<WorkoutHistoryMonth>>>
+
+    @GET("/api/${ApiConfig.API_VERSION}/workoutDetail/{workoutId}")
+    fun getWorkoutInfoAsync(
+            @Path("workoutId") workoutId: String,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<WorkoutInfo>>
 }

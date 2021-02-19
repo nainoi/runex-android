@@ -15,4 +15,12 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         }
         return@withContext result.data
     }
+
+    suspend fun getWorkoutInfo(workoutId: String): WorkoutInfo? = withContext(IO) {
+        val result = repo.getWorkoutInfo(workoutId)
+        if (result.isSuccessful().not()) {
+            onHandleError(result.statusCode, result.message)
+        }
+        return@withContext result.data
+    }
 }

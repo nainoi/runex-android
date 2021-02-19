@@ -71,7 +71,7 @@ class AllEventsScreen : BaseScreen() {
             viewModel.getEventList()
         }
 
-        adapter.setOnItemClick { _, event ->
+        adapter.setOnItemClickListener { _, event ->
             addFragment(EventDetailsScreen.newInstance(event.code))
         }
 

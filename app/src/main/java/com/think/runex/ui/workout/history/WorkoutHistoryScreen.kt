@@ -13,8 +13,12 @@ import com.think.runex.common.removeObservers
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.feature.workout.WorkoutHistoryListViewModel
 import com.think.runex.feature.workout.WorkoutHistoryListViewModelFactory
+import com.think.runex.feature.workout.model.WorkoutHistoryDay
 import com.think.runex.ui.base.BaseScreen
 import com.think.runex.ui.component.recyclerview.MarginItemDecoration
+import com.think.runex.ui.component.recyclerview.OnItemClickListener
+import com.think.runex.ui.event.detail.EventDetailsScreen
+import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_workout_history.*
 
@@ -66,6 +70,10 @@ class WorkoutHistoryScreen : BaseScreen() {
     private fun subscribeUi() {
         refresh_layout?.setOnRefreshListener {
             viewModel.getHistoryList()
+        }
+
+        adapter.setOnItemClickListener { workoutHistory ->
+            addFragment(WorkoutSummaryScreen.newInstance(workoutHistory.id ?: ""))
         }
 
         viewModel.setOnHandleError(::errorHandler)

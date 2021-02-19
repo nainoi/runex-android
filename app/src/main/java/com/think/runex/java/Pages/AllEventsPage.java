@@ -102,7 +102,7 @@ public class AllEventsPage extends xFragment {
     }
 
     private void viewEventListener() {
-        adapter.setOnItemClick(new Function2<Integer, EventItem, Unit>() {
+        adapter.setOnItemClickListenerJava(new Function2<Integer, EventItem, Unit>() {
             @Override
             public Unit invoke(Integer position, EventItem event) {
                 Intent intent = new Intent(activity, EventPreviewActivity.class);

@@ -73,6 +73,11 @@ class MapPresenter(private var googleMap: GoogleMap?,
         lastPolyline = polyline
     }
 
+    fun drawPolyline(points: List<WorkingOutLocation>) {
+        this.points = ArrayList(points)
+        drawPolyline()
+    }
+
     /**
      * Clear polyline on map
      */
@@ -95,7 +100,7 @@ class MapPresenter(private var googleMap: GoogleMap?,
         googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 65))
         launchMainThread {
             delay(900)
-            val zoom = (googleMap?.cameraPosition?.zoom ?: GOOGLE_MAP_DEFAULT_ZOOM) - 1
+            val zoom = (googleMap?.cameraPosition?.zoom ?: GOOGLE_MAP_DEFAULT_ZOOM) - 0.5f
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.center, zoom))
         }
     }

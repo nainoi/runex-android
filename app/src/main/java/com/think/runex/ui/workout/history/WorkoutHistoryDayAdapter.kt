@@ -9,16 +9,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.requireContext
 import com.think.runex.feature.workout.model.WorkoutHistoryDay
+import com.think.runex.ui.component.recyclerview.OnItemClickListener
 import kotlinx.android.synthetic.main.list_item_workout_history_day.view.*
 
-class WorkoutHistoryDayAdapter : ListAdapter<WorkoutHistoryDay, WorkoutHistoryDayAdapter.ViewHolder>(WorkoutHistoryDayDiffCallback()) {
+class WorkoutHistoryDayAdapter(private var onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null) : ListAdapter<WorkoutHistoryDay, WorkoutHistoryDayAdapter.ViewHolder>(WorkoutHistoryDayDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
-        return ViewHolder.create(parent)
+        return ViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(getItem(position), onItemClickListener)
     }
 
     class WorkoutHistoryDayDiffCallback : DiffUtil.ItemCallback<WorkoutHistoryDay>() {
@@ -33,14 +34,24 @@ class WorkoutHistoryDayAdapter : ListAdapter<WorkoutHistoryDay, WorkoutHistoryDa
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
-        companion object {
-            fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_workout_history_day, parent, false))
-        }
+//        companion object {
+//            fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
+//                    .inflate(R.layout.list_item_workout_history_day, parent, false))
+//        }
 
-        fun bind(data: WorkoutHistoryDay?) {
+        constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_workout_history_day, parent, false))
+
+        fun bind(data: WorkoutHistoryDay?, onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null) {
             itemView.workout_time_label?.text = data?.getWorkoutDateTime() ?: ""
             itemView.distance_label?.text = data?.getDistances(requireContext()) ?: ""
+            itemView.list_item_workout_day?.setOnClickListener {
+                data?.also { onItemClickListener?.invoke(it) }
+            }
         }
+    }
+
+    interface OnItemClickListener {
+        fun onItemClick(workoutHistoryDay: WorkoutHistoryDay)
     }
 }

@@ -6,6 +6,7 @@ import com.think.runex.R
 import com.think.runex.common.displayFormat
 
 data class WorkoutHistoryDay(
+        @SerializedName("id") var id: String? = "",
         /**
          * Distance in Kilometers
          */

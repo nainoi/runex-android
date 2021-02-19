@@ -13,10 +13,11 @@ import kotlinx.android.synthetic.main.list_item_all_event.view.*
 
 class AllEventsAdapter : ListAdapter<EventItem, AllEventsAdapter.ViewHolder>(EventsListDiffCallback()) {
 
-    private var onItemClick: ((position: Int, event: EventItem) -> Unit)? = null
+    var onItemClickListener: ((position: Int, event: EventItem) -> Unit)? = null
 
-    fun setOnItemClick(block: (position: Int, event: EventItem) -> Unit) {
-        onItemClick = block
+    @JvmName("setOnItemClickListenerJava")
+    fun setOnItemClickListener(onItemClickListener: (position: Int, event: EventItem) -> Unit) {
+        this.onItemClickListener = onItemClickListener
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -24,7 +25,7 @@ class AllEventsAdapter : ListAdapter<EventItem, AllEventsAdapter.ViewHolder>(Eve
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClick)
+        holder.bind(getItem(position), onItemClickListener)
     }
 
     class EventsListDiffCallback : DiffUtil.ItemCallback<EventItem>() {

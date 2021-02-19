@@ -14,12 +14,13 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
 import com.think.runex.common.*
+import com.think.runex.feature.workout.model.WorkoutHistoryDay
 import com.think.runex.feature.workout.model.WorkoutHistoryMonth
 import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration
 import kotlinx.android.synthetic.main.list_item_workout_history_month.view.*
 
-class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView)
-    : ListAdapter<WorkoutHistoryMonth, WorkoutHistoryMonthAdapter.ViewHolder>(WorkoutHistoryMonthDiffCallback()) {
+class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView,
+                                 var onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null) : ListAdapter<WorkoutHistoryMonth, WorkoutHistoryMonthAdapter.ViewHolder>(WorkoutHistoryMonthDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): WorkoutHistoryMonthAdapter.ViewHolder {
         return ViewHolder(parent)
@@ -27,6 +28,11 @@ class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position))
+    }
+
+    @JvmName("setOnItemClickListenerJava")
+    fun setOnItemClickListener(onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null) {
+        this.onItemClickListener = onItemClickListener
     }
 
     class WorkoutHistoryMonthDiffCallback : DiffUtil.ItemCallback<WorkoutHistoryMonth>() {
@@ -75,7 +81,7 @@ class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView)
             }
             itemView.workout_day_list?.addItemDecoration(itemDecoration)
             itemView.workout_day_list?.layoutManager = LinearLayoutManager(requireContext())
-            itemView.workout_day_list?.adapter = WorkoutHistoryDayAdapter().apply {
+            itemView.workout_day_list?.adapter = WorkoutHistoryDayAdapter(onItemClickListener).apply {
                 submitList(data?.workouts?.toMutableList())
             }
 

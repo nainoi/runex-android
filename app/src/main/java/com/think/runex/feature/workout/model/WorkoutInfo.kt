@@ -1,7 +1,9 @@
 package com.think.runex.feature.workout.model
 
+import android.util.Log
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.think.runex.common.displayFormat
 import com.think.runex.common.timeDisplayFormat
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
@@ -40,4 +42,39 @@ data class WorkoutInfo(
             startDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
             workoutDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
             timeDisplay = record?.duration?.timeDisplayFormat() ?: "")
+
+
+    fun getDisplayData(): WorkingOutDisplayData {
+
+        val displayData = WorkingOutDisplayData()
+
+        //Update distance
+        displayData.distances = distanceKilometers?.displayFormat(awaysShowDecimal = true) ?: "0.00"
+
+        //Update duration
+        displayData.duration = timeDisplay ?: "00:00:00"//((durationSecond ?: 0L) * 1000).timeDisplayFormat()
+
+        //Update duration per kilometer
+        if (distanceKilometers ?: 0f > 0) {
+            val millisPerKilometer: Long = (((durationSecond ?: 0) / (distanceKilometers ?: 0f)) * 1000).toLong()
+            //Check durations millisecond per kilometer more than 1 hour (3600000 millisecond)
+            when (millisPerKilometer < 3600000) {
+                true -> displayData.durationPerKilometer = millisPerKilometer.timeDisplayFormat().let {
+                    if (it.length >= 3) {
+                        return@let it.substring(3, it.length)
+                    }
+                    return@let it
+                }
+                false -> {
+                    displayData.durationPerKilometer = millisPerKilometer.timeDisplayFormat()
+                    displayData.durationPerKilometerUnit = "(hr/km)"
+                }
+            }
+        }
+
+        //Update calories
+        displayData.calories = calories?.displayFormat() ?: "0"
+
+        return displayData
+    }
 }

@@ -23,7 +23,9 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_above="@+id/distance_label"
-        android:layout_below="@+id/top_bar">
+        android:layout_below="@+id/top_bar"
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <fragment
             android:id="@+id/map_fragment"
@@ -120,8 +122,6 @@
                 android:textSize="28sp"
                 android:textStyle="bold" />
         </RelativeLayout>
-
-
     </RelativeLayout>
 
     <TextView
@@ -246,5 +246,13 @@
         android:paddingStart="@dimen/space_48dp"
         android:paddingEnd="@dimen/space_48dp"
         android:text="@string/submit_result" />
+
+    <com.think.runex.ui.component.ProgressLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_bar"
+        android:background="@color/background"
+        android:visibility="visible" />
 
 </RelativeLayout>
