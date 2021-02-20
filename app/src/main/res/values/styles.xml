@@ -81,6 +81,15 @@
         <!-- <item name="android:windowNoTitle">true</item>-->
     </style>
 
+    <!-- Bottom Sheet -->
+    <style name="AppBottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
+        <item name="bottomSheetStyle">@style/BottomSheetBackground</item>
+    </style>
+
+    <style name="BottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
+        <item name="android:background">@android:color/transparent</item>
+    </style>
+
     <!-- Base Button -->
     <style name="Button" parent="@style/Widget.AppCompat.Button.Borderless">
         <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
@@ -120,8 +129,8 @@
         <item name="android:textColor">@color/textColorPrimary</item>
         <item name="android:minHeight">@dimen/space_48dp</item>
         <item name="android:gravity">center_vertical</item>
-<!--        <item name="android:paddingStart">@dimen/space_16dp</item>-->
-<!--        <item name="android:paddingEnd">@dimen/space_16dp</item>-->
+        <!--        <item name="android:paddingStart">@dimen/space_16dp</item>-->
+        <!--        <item name="android:paddingEnd">@dimen/space_16dp</item>-->
         <item name="android:inputType">text</item>
         <item name="backgroundTint">@color/line</item>
     </style>

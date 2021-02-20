@@ -10,12 +10,12 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
-    <style name="TextCaption.Primary.InLightBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    <style name="TextCaption.Primary.OnLightBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorPrimaryOnLightBackground</item>
     </style>
 
-    <style name="TextCaption.Primary.InDarkBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    <style name="TextCaption.Primary.OnDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorPrimaryOnDarkBackground</item>
     </style>
 
     <style name="TextCaption.Primary.SingleLine" parent="TextCaption.Primary">
@@ -27,32 +27,32 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
-    <style name="TextCaption.Secondary.InLightBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    <style name="TextCaption.Secondary.OnLightBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorSecondaryOnLightBackground</item>
     </style>
 
-    <style name="TextCaption.Secondary.InDarkBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    <style name="TextCaption.Secondary.OnDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorSecondaryOnDarkBackground</item>
     </style>
 
     <style name="TextCaption.Thirdly" parent="TextCaption">
         <item name="android:textColor">@color/textColorThirdly</item>
     </style>
 
-    <style name="TextCaption.Thirdly.InDarkBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorThirdlyInDarkBackground</item>
+    <style name="TextCaption.Thirdly.OnDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorThirdlyOnDarkBackground</item>
     </style>
 
     <style name="TextCaption.Hint" parent="TextCaption">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
-    <style name="TextCaption.Hint.InLightBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    <style name="TextCaption.Hint.OnLightBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorHintOnLightBackground</item>
     </style>
 
-    <style name="TextCaption.Hint.InDarkBackground" parent="TextCaption">
-        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    <style name="TextCaption.Hint.OnDarkBackground" parent="TextCaption">
+        <item name="android:textColor">@color/textColorHintOnDarkBackground</item>
     </style>
 
     <style name="TextCaption.Hint.SingleLine" parent="TextCaption.Hint">
@@ -81,12 +81,12 @@
         <item name="android:textColor">@color/textColorPrimary</item>
     </style>
 
-    <style name="TextBody.Primary.InLightBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    <style name="TextBody.Primary.OnLightBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorPrimaryOnLightBackground</item>
     </style>
 
-    <style name="TextBody.Primary.InDarkBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    <style name="TextBody.Primary.OnDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorPrimaryOnDarkBackground</item>
     </style>
 
     <style name="TextBody.Primary.SingleLine" parent="TextBody.Primary">
@@ -102,12 +102,12 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextBody.Secondary.InLightBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    <style name="TextBody.Secondary.OnLightBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorSecondaryOnLightBackground</item>
     </style>
 
-    <style name="TextBody.Secondary.InDarkBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    <style name="TextBody.Secondary.OnDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorSecondaryOnDarkBackground</item>
     </style>
 
     <style name="TextBody.Secondary.SingleLine" parent="TextBody.Secondary">
@@ -119,20 +119,20 @@
         <item name="android:textColor">@color/textColorThirdly</item>
     </style>
 
-    <style name="TextBody.Thirdly.InDarkBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorThirdlyInDarkBackground</item>
+    <style name="TextBody.Thirdly.OnDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorThirdlyOnDarkBackground</item>
     </style>
 
     <style name="TextBody.Hint" parent="TextBody">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
-    <style name="TextBody.Hint.InLightBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    <style name="TextBody.Hint.OnLightBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorHintOnLightBackground</item>
     </style>
 
-    <style name="TextBody.Hint.InDarkBackground" parent="TextBody">
-        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    <style name="TextBody.Hint.OnDarkBackground" parent="TextBody">
+        <item name="android:textColor">@color/textColorHintOnDarkBackground</item>
     </style>
 
     <style name="TextBody.Hint.SingleLine" parent="TextBody.Hint">
@@ -168,15 +168,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextBodyHeading.Primary.InLightBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    <style name="TextBodyHeading.Primary.OnLightBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorPrimaryOnLightBackground</item>
     </style>
 
-    <style name="TextBodyHeading.Primary.InDarkBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    <style name="TextBodyHeading.Primary.OnDarkBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorPrimaryOnDarkBackground</item>
     </style>
 
-    <style name="TextBodyHeading.Primary.InDarkBackground.Bold" parent="TextBodyHeading.Primary.InDarkBackground">
+    <style name="TextBodyHeading.Primary.OnDarkBackground.Bold" parent="TextBodyHeading.Primary.OnDarkBackground">
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -194,12 +194,12 @@
     </style>
 
 
-    <style name="TextBodyHeading.Secondary.InLightBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    <style name="TextBodyHeading.Secondary.OnLightBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorSecondaryOnLightBackground</item>
     </style>
 
-    <style name="TextBodyHeading.Secondary.InDarkBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    <style name="TextBodyHeading.Secondary.OnDarkBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorSecondaryOnDarkBackground</item>
     </style>
 
     <style name="TextBodyHeading.Secondary.SingleLine" parent="TextBodyHeading.Secondary">
@@ -212,20 +212,20 @@
         <item name="android:textColor">@color/textColorThirdly</item>
     </style>
 
-    <style name="TextBodyHeading.Thirdly.InDarkBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorThirdlyInDarkBackground</item>
+    <style name="TextBodyHeading.Thirdly.OnDarkBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorThirdlyOnDarkBackground</item>
     </style>
 
     <style name="TextBodyHeading.Hint" parent="TextBodyHeading">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
-    <style name="TextBodyHeading.Hint.InLightBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    <style name="TextBodyHeading.Hint.OnLightBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorHintOnLightBackground</item>
     </style>
 
-    <style name="TextBodyHeading.Hint.InDarkBackground" parent="TextBodyHeading">
-        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    <style name="TextBodyHeading.Hint.OnDarkBackground" parent="TextBodyHeading">
+        <item name="android:textColor">@color/textColorHintOnDarkBackground</item>
     </style>
 
     <style name="TextBodyHeading.Hint.SingleLine" parent="TextBodyHeading.Hint">
@@ -269,36 +269,36 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextSubTitle.Primary.InLightBackground" parent="TextSubTitle">
-        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    <style name="TextSubTitle.Primary.OnLightBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorPrimaryOnLightBackground</item>
     </style>
 
-    <style name="TextSubTitle.Primary.InDarkBackground" parent="TextSubTitle">
-        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    <style name="TextSubTitle.Primary.OnDarkBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorPrimaryOnDarkBackground</item>
     </style>
 
     <style name="TextSubTitle.Secondary" parent="TextSubTitle">
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
-    <style name="TextSubTitle.Secondary.InLightBackground" parent="TextSubTitle">
-        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    <style name="TextSubTitle.Secondary.OnLightBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorSecondaryOnLightBackground</item>
     </style>
 
-    <style name="TextSubTitle.Secondary.InDarkBackground" parent="TextSubTitle">
-        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    <style name="TextSubTitle.Secondary.OnDarkBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorSecondaryOnDarkBackground</item>
     </style>
 
     <style name="TextSubTitle.Hint" parent="TextSubTitle">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
-    <style name="TextSubTitle.Hint.InLightBackground" parent="TextSubTitle">
-        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    <style name="TextSubTitle.Hint.OnLightBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorHintOnLightBackground</item>
     </style>
 
-    <style name="TextSubTitle.Hint.InDarkBackground" parent="TextSubTitle">
-        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    <style name="TextSubTitle.Hint.OnDarkBackground" parent="TextSubTitle">
+        <item name="android:textColor">@color/textColorHintOnDarkBackground</item>
     </style>
 
     <style name="TextSubTitle.White" parent="TextSubTitle">
@@ -321,15 +321,15 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="TextTitle.Primary.InLightBackground" parent="TextTitle">
-        <item name="android:textColor">@color/textColorPrimaryInLightBackground</item>
+    <style name="TextTitle.Primary.OnLightBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorPrimaryOnLightBackground</item>
     </style>
 
-    <style name="TextTitle.Primary.InDarkBackground" parent="TextTitle">
-        <item name="android:textColor">@color/textColorPrimaryInDarkBackground</item>
+    <style name="TextTitle.Primary.OnDarkBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorPrimaryOnDarkBackground</item>
     </style>
 
-    <style name="TextTitle.Primary.InDarkBackground.Bold" parent="TextTitle.Primary.InDarkBackground">
+    <style name="TextTitle.Primary.OnDarkBackground.Bold" parent="TextTitle.Primary.OnDarkBackground">
         <item name="android:textStyle">bold</item>
     </style>
 
@@ -337,24 +337,24 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
-    <style name="TextTitle.Secondary.InLightBackground" parent="TextTitle">
-        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    <style name="TextTitle.Secondary.OnLightBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorSecondaryOnLightBackground</item>
     </style>
 
-    <style name="TextTitle.Secondary.InDarkBackground" parent="TextTitle">
-        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    <style name="TextTitle.Secondary.OnDarkBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorSecondaryOnDarkBackground</item>
     </style>
 
     <style name="TextTitle.Hint" parent="TextTitle">
         <item name="android:textColor">@color/textColorHint</item>
     </style>
 
-    <style name="TextTitle.Hint.InLightBackground" parent="TextTitle">
-        <item name="android:textColor">@color/textColorHintInLightBackground</item>
+    <style name="TextTitle.Hint.OnLightBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorHintOnLightBackground</item>
     </style>
 
-    <style name="TextTitle.Hint.InDarkBackground" parent="TextTitle">
-        <item name="android:textColor">@color/textColorHintInDarkBackground</item>
+    <style name="TextTitle.Hint.OnDarkBackground" parent="TextTitle">
+        <item name="android:textColor">@color/textColorHintOnDarkBackground</item>
     </style>
 
     <style name="TextTitle.White" parent="TextTitle">
@@ -381,12 +381,12 @@
         <item name="android:textColor">@color/textColorSecondary</item>
     </style>
 
-    <style name="TextHeadLine.Secondary.InLightBackground" parent="TextHeadLine">
-        <item name="android:textColor">@color/textColorSecondaryInLightBackground</item>
+    <style name="TextHeadLine.Secondary.OnLightBackground" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorSecondaryOnLightBackground</item>
     </style>
 
-    <style name="TextHeadLine.Secondary.InDarkBackground" parent="TextHeadLine">
-        <item name="android:textColor">@color/textColorSecondaryInDarkBackground</item>
+    <style name="TextHeadLine.Secondary.OnDarkBackground" parent="TextHeadLine">
+        <item name="android:textColor">@color/textColorSecondaryOnDarkBackground</item>
     </style>
 
     <style name="TextHeadLine.Hint" parent="TextHeadLine">

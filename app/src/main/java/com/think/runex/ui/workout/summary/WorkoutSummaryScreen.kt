@@ -11,10 +11,7 @@ import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.getViewModel
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.setupToolbar
-import com.think.runex.common.toJson
+import com.think.runex.common.*
 import com.think.runex.config.KEY_DATA
 import com.think.runex.config.KEY_ID
 import com.think.runex.feature.workout.model.WorkingOutRecord
@@ -77,15 +74,6 @@ class WorkoutSummaryScreen : BaseScreen() {
             true -> performAddWorkout()
             false -> performGetWorkoutInfo()
         }
-
-//        when (workoutId.isNullOrBlank() && record != null) {
-//            true -> initMaps {
-//                mapPresenter?.drawPolylineFromDatabase()
-//                mapPresenter?.zoomToFitWorkoutLine()
-//                performAddWorkout()
-//            }
-//            false -> performGetWorkoutInfo(workoutId ?: "")
-//        }
     }
 
     private fun setupComponents() {
@@ -171,6 +159,7 @@ class WorkoutSummaryScreen : BaseScreen() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_share -> {
+            showBottomSheet(ShareWorkoutBottomSheet.newInstance())
             true
         }
         else -> super.onOptionsItemSelected(item)

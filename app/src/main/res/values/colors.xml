@@ -32,12 +32,12 @@
     <color name="error">#CC2E2E</color>
 
     <color name="line">#DDDDDD</color>
-    <color name="lineInLightBackground">#DDDDDD</color>
-    <color name="lineInDarkBackground">#42979797</color>
+    <color name="lineOnLightBackground">#DDDDDD</color>
+    <color name="lineOnDarkBackground">#42979797</color>
 
     <color name="border">#B2B4B5</color>
-    <color name="borderInLightBackground">#B2B4B5</color>
-    <color name="borderInDarkBackground">#42979797</color>
+    <color name="borderOnLightBackground">#B2B4B5</color>
+    <color name="borderOnDarkBackground">#42979797</color>
 
     <color name="colorSkeleton">#EEEEEE</color>
     <color name="skeletonLight">#EEEEEE</color>
@@ -45,20 +45,20 @@
 
     <!-- Text Colors -->
     <color name="textColorPrimary">#333333</color>
-    <color name="textColorPrimaryInLightBackground">#333333</color>
-    <color name="textColorPrimaryInDarkBackground">#FFFFFF</color>
+    <color name="textColorPrimaryOnLightBackground">#333333</color>
+    <color name="textColorPrimaryOnDarkBackground">#FFFFFF</color>
 
     <color name="textColorSecondary">#494E52</color>
-    <color name="textColorSecondaryInLightBackground">#494E52</color>
-    <color name="textColorSecondaryInDarkBackground">#EEEEEE</color>
+    <color name="textColorSecondaryOnLightBackground">#494E52</color>
+    <color name="textColorSecondaryOnDarkBackground">#EEEEEE</color>
 
     <color name="textColorThirdly">#666666</color>
-    <color name="textColorThirdlyInLightBackground">#666666</color>
-    <color name="textColorThirdlyInDarkBackground">#C4C4C4</color>
+    <color name="textColorThirdlyOnLightBackground">#666666</color>
+    <color name="textColorThirdlyOnDarkBackground">#C4C4C4</color>
 
     <color name="textColorHint">#9A9A9A</color>
-    <color name="textColorHintInLightBackground">#9A9A9A</color>
-    <color name="textColorHintInDarkBackground">#797979</color>
+    <color name="textColorHintOnLightBackground">#9A9A9A</color>
+    <color name="textColorHintOnDarkBackground">#797979</color>
 
     <color name="textColorWhite">#FFFFFF</color>
     <color name="textColorBlack">#000000</color>
@@ -69,20 +69,20 @@
 
     <!-- Icon colors -->
     <color name="iconColorPrimary">#55595C</color>
-    <color name="iconColorPrimaryInLightBackground">#55595C</color>
-    <color name="iconColorPrimaryInDarkBackground">#FFFFFF</color>
+    <color name="iconColorPrimaryOnLightBackground">#55595C</color>
+    <color name="iconColorPrimaryOnDarkBackground">#FFFFFF</color>
 
     <color name="iconColorSecondary">#C4CDD5</color>
-    <color name="iconColorSecondaryInLightBackground">#C4CDD5</color>
-    <color name="iconColorSecondaryInDarkBackground">#EEEEEE</color>
+    <color name="iconColorSecondaryOnLightBackground">#C4CDD5</color>
+    <color name="iconColorSecondaryOnDarkBackground">#EEEEEE</color>
 
     <color name="iconColorThirdly">#666666</color>
-    <color name="iconColorThirdlyInLightBackground">#666666</color>
-    <color name="iconColorThirdlyInDarkBackground">#C4C4C4</color>
+    <color name="iconColorThirdlyOnLightBackground">#666666</color>
+    <color name="iconColorThirdlyOnDarkBackground">#C4C4C4</color>
 
     <color name="iconColorDisable">#4DA8B6C8</color>
-    <color name="iconColorDisableInLightBackground">#4DA8B6C8</color>
-    <color name="iconColorDisableInDarkBackground">#797979</color>
+    <color name="iconColorDisableOnLightBackground">#4DA8B6C8</color>
+    <color name="iconColorDisableOnDarkBackground">#797979</color>
 
     <color name="iconColorAccent">@color/colorAccent</color>
 

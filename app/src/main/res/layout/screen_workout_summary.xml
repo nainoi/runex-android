@@ -253,6 +253,6 @@
         android:layout_height="match_parent"
         android:layout_below="@+id/top_bar"
         android:background="@color/background"
-        android:visibility="visible" />
+        android:visibility="gone" />
 
 </RelativeLayout>

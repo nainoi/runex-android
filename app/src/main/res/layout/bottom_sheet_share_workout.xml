@@ -3,13 +3,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".ui.ShareWorkoutBottomSheet">
+    tools:context=".ui.workout.summary.ShareWorkoutBottomSheet">
 
     <!--  app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" -->
     <RelativeLayout
         android:id="@+id/content_container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:background="@drawable/bg_bottom_sheet_share_workout">
 
         <FrameLayout
             android:id="@+id/top_bar"
@@ -22,23 +23,24 @@
                 android:layout_width="@dimen/icon_size_in_action_bar"
                 android:layout_height="@dimen/icon_size_in_action_bar"
                 android:layout_gravity="center|start"
-                android:layout_marginStart="@dimen/space_16dp"
-                android:background="@drawable/bg_btn_circle"
-                android:foreground="@drawable/bg_btn_circle"
-                android:padding="4dp"
+                android:layout_marginStart="@dimen/space_12dp"
+                android:background="@android:color/transparent"
+                android:foreground="@drawable/bg_btn_circle_on_light_background"
+                android:padding="8dp"
                 android:scaleType="fitCenter"
-                android:src="@drawable/ic_navigation_back" />
+                android:src="@drawable/ic_navigation_back"
+                android:tint="@color/iconColorPrimaryOnLightBackground" />
 
             <TextView
                 android:id="@+id/top_bar_title"
-                style="@style/TextTitle.Secondary"
+                style="@style/TextTitle.Secondary.OnLightBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center_vertical"
                 android:paddingStart="@dimen/space_16dp"
                 android:paddingEnd="@dimen/space_16dp"
-                android:text="@string/all_event" />
+                android:text="@string/share" />
         </FrameLayout>
 
     </RelativeLayout>
