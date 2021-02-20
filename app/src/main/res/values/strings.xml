@@ -57,6 +57,7 @@
     <string name="error">Error</string>
 
     <!-- F -->
+    <string name="facebook">Facebook</string>
     <string name="female">Female</string>
     <string name="finish_recording">Finish recording</string>
     <string name="forgot_password">Forgot password</string>
@@ -143,6 +144,7 @@
     <string name="summary">Summary</string>
     <string name="success">Success</string>
     <string name="share">Share</string>
+    <string name="save_to_device">Save to device</string>
 
     <!-- T -->
     <string name="time">Time</string>

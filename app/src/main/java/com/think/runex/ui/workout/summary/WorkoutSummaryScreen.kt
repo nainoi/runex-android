@@ -24,6 +24,7 @@ import com.think.runex.ui.workout.record.MapPresenter
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import io.realm.Realm
+import kotlinx.android.synthetic.main.layout_workout_summary_on_map.*
 import kotlinx.android.synthetic.main.screen_workout_summary.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -119,8 +120,8 @@ class WorkoutSummaryScreen : BaseScreen() {
     private fun updateUi() {
         //Update record data to views.
         workoutInfo?.getDisplayData()?.also { displayDate ->
-            distance_in_map_label?.text = displayDate.distances
-            duration_in_map_label?.text = displayDate.duration
+            distance_on_map_label?.text = displayDate.distances
+            duration_on_map_label?.text = displayDate.duration
             distance_label?.text = displayDate.distances
             duration_label?.text = displayDate.duration
             duration_per_kilometer_label?.text = displayDate.durationPerKilometer
@@ -145,6 +146,7 @@ class WorkoutSummaryScreen : BaseScreen() {
         (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment ->
             mapFragment.getMapAsync { googleMap: GoogleMap ->
                 googleMap.uiSettings?.isMyLocationButtonEnabled = false
+                googleMap.uiSettings.setAllGesturesEnabled(false)
                 mapPresenter = MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
                 Logger.warning(simpleName(), "Setup mapPresenter")
                 map_layout?.visible()
@@ -159,7 +161,7 @@ class WorkoutSummaryScreen : BaseScreen() {
 
     override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
         R.id.menu_share -> {
-            showBottomSheet(ShareWorkoutBottomSheet.newInstance())
+            showBottomSheet(ShareWorkoutBottomSheet.newInstance(workoutInfo))
             true
         }
         else -> super.onOptionsItemSelected(item)

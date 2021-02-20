@@ -56,6 +56,7 @@
     <string name="error">ผิดพลาด</string>
 
     <!-- F -->
+    <string name="facebook">Facebook</string>
     <string name="female">หญิง</string>
     <string name="finish_recording">จบการจับเวลา</string>
     <string name="forgot_password">ลืมรหัสผ่าน</string>
@@ -142,6 +143,7 @@
     <string name="summary">สรุปผล</string>
     <string name="success">สำเร็จ</string>
     <string name="share">แชร์</string>
+    <string name="save_to_device">บันทึกภาพลงอุปกรณ์</string>
 
     <!-- T -->
     <string name="time">เวลา</string>

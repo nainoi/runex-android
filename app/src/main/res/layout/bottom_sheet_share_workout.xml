@@ -1,48 +1,137 @@
 <?xml version="1.0" encoding="utf-8"?>
 <androidx.coordinatorlayout.widget.CoordinatorLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     tools:context=".ui.workout.summary.ShareWorkoutBottomSheet">
 
-    <!--  app:layout_behavior="com.google.android.material.bottomsheet.BottomSheetBehavior" -->
-    <RelativeLayout
-        android:id="@+id/content_container"
+    <androidx.core.widget.NestedScrollView
+        android:id="@+id/share_workout_bottom_sheet"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:background="@drawable/bg_bottom_sheet_share_workout">
+        android:layout_height="wrap_content">
 
-        <FrameLayout
-            android:id="@+id/top_bar"
+        <RelativeLayout
+            android:id="@+id/content_layout"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:minHeight="?actionBarSize">
+            android:background="@drawable/bg_bottom_sheet_share_workout">
 
-            <androidx.appcompat.widget.AppCompatImageButton
-                android:id="@+id/setting_button"
-                android:layout_width="@dimen/icon_size_in_action_bar"
-                android:layout_height="@dimen/icon_size_in_action_bar"
-                android:layout_gravity="center|start"
-                android:layout_marginStart="@dimen/space_12dp"
-                android:background="@android:color/transparent"
-                android:foreground="@drawable/bg_btn_circle_on_light_background"
-                android:padding="8dp"
-                android:scaleType="fitCenter"
-                android:src="@drawable/ic_navigation_back"
-                android:tint="@color/iconColorPrimaryOnLightBackground" />
+            <FrameLayout
+                android:id="@+id/top_bar"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:minHeight="?actionBarSize">
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/back_button"
+                    android:layout_width="@dimen/icon_size_in_action_bar"
+                    android:layout_height="@dimen/icon_size_in_action_bar"
+                    android:layout_gravity="center|start"
+                    android:layout_marginStart="@dimen/space_12dp"
+                    android:background="@android:color/transparent"
+                    android:foreground="@drawable/bg_btn_circle_on_light_background"
+                    android:padding="8dp"
+                    android:scaleType="fitCenter"
+                    android:src="@drawable/ic_navigation_back"
+                    android:tint="@color/iconColorPrimaryOnLightBackground" />
+
+                <TextView
+                    android:id="@+id/top_bar_title"
+                    style="@style/TextTitle.Secondary.OnLightBackground"
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:gravity="center_vertical"
+                    android:paddingStart="@dimen/space_16dp"
+                    android:paddingEnd="@dimen/space_16dp"
+                    android:text="@string/share" />
+            </FrameLayout>
+
+            <com.think.runex.ui.component.SquareRelativeLayout
+                android:id="@+id/map_layout"
+                android:layout_width="@dimen/share_workout_image_width"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/top_bar">
+
+                <fragment
+                    android:id="@+id/map_fragment"
+                    android:name="com.google.android.libraries.maps.SupportMapFragment"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent"
+                    tools:ignore="FragmentTagUsage" />
+
+                <androidx.appcompat.widget.AppCompatImageView
+                    android:layout_width="@dimen/space_96dp"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="@dimen/space_16dp"
+                    android:adjustViewBounds="true"
+                    app:srcCompat="@mipmap/ic_logo_runex" />
+
+                <androidx.appcompat.widget.AppCompatImageButton
+                    android:id="@+id/add_image_button"
+                    android:layout_width="@dimen/icon_size_in_action_bar"
+                    android:layout_height="@dimen/icon_size_in_action_bar"
+                    android:layout_alignParentEnd="true"
+                    android:layout_marginTop="@dimen/space_16dp"
+                    android:layout_marginEnd="@dimen/space_16dp"
+                    android:background="@android:color/transparent"
+                    android:foreground="@drawable/bg_btn_circle_on_light_background"
+                    android:scaleType="fitCenter"
+                    android:src="@mipmap/ic_add_image" />
+
+                <View
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignTop="@+id/layout_workout_summary_on_map"
+                    android:layout_alignBottom="@+id/layout_workout_summary_on_map"
+                    android:alpha="0.68"
+                    android:background="@drawable/bg_fading_black_vertical" />
+
+                <include
+                    android:id="@+id/layout_workout_summary_on_map"
+                    layout="@layout/layout_workout_summary_on_map"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_alignParentBottom="true" />
+
+            </com.think.runex.ui.component.SquareRelativeLayout>
 
             <TextView
-                android:id="@+id/top_bar_title"
-                style="@style/TextTitle.Secondary.OnLightBackground"
+                android:id="@+id/share_label"
+                style="@style/TextBodyHeading.Secondary.OnLightBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_gravity="center"
-                android:gravity="center_vertical"
-                android:paddingStart="@dimen/space_16dp"
-                android:paddingEnd="@dimen/space_16dp"
+                android:layout_below="@+id/map_layout"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_16dp"
                 android:text="@string/share" />
-        </FrameLayout>
 
-    </RelativeLayout>
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/share_to_facebook_button"
+                style="@style/Button.Facebook"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/share_label"
+                android:layout_alignStart="@+id/save_button"
+                android:layout_alignEnd="@+id/save_button"
+                android:layout_centerHorizontal="true"
+                android:paddingStart="@dimen/space_48dp"
+                android:paddingEnd="@dimen/space_48dp"
+                android:text="@string/facebook" />
 
+            <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/save_button"
+                style="@style/Button.BorderGrey.OnLightBackground"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/share_to_facebook_button"
+                android:layout_centerHorizontal="true"
+                android:layout_margin="@dimen/space_16dp"
+                android:paddingStart="@dimen/space_48dp"
+                android:paddingEnd="@dimen/space_48dp"
+                android:text="@string/save_to_device" />
+        </RelativeLayout>
+    </androidx.core.widget.NestedScrollView>
 </androidx.coordinatorlayout.widget.CoordinatorLayout>

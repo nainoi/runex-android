@@ -73,6 +73,8 @@
     <dimen name="workout_distance_label_size">48sp</dimen>
     <dimen name="workout_margin">16dp</dimen>
 
+    <!-- Share Workout Screen -->
+    <dimen name="share_workout_image_width">@dimen/match_parent</dimen>
 
     <!-- Start Old -->
     <!-- Text paragraph -->

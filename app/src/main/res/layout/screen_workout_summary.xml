@@ -44,84 +44,17 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignTop="@+id/distance_and_duration_in_map_layout"
-            android:layout_alignBottom="@+id/distance_and_duration_in_map_layout"
+            android:layout_alignTop="@+id/layout_workout_summary_on_map"
+            android:layout_alignBottom="@+id/layout_workout_summary_on_map"
             android:alpha="0.68"
             android:background="@drawable/bg_fading_black_vertical" />
 
-        <RelativeLayout
-            android:id="@+id/distance_and_duration_in_map_layout"
+        <include
+            android:id="@+id/layout_workout_summary_on_map"
+            layout="@layout/layout_workout_summary_on_map"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true">
-
-            <View
-                android:id="@+id/guideline_center_horizontal"
-                android:layout_width="0dp"
-                android:layout_height="0dp"
-                android:layout_centerHorizontal="true" />
-
-            <TextView
-                android:id="@+id/duration_in_map_placeholder"
-                style="@style/TextSubTitle.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_alignParentEnd="true"
-                android:layout_marginTop="@dimen/space_16dp"
-                android:layout_marginEnd="@dimen/space_16dp"
-                android:layout_marginBottom="@dimen/space_4dp"
-                android:gravity="end"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:text="@string/duration" />
-
-            <TextView
-                android:id="@+id/duration_in_map_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/duration_in_map_placeholder"
-                android:layout_alignParentEnd="true"
-                android:layout_marginStart="@dimen/space_8dp"
-                android:layout_marginEnd="@dimen/space_16dp"
-                android:layout_marginBottom="@dimen/space_16dp"
-                android:layout_toEndOf="@+id/guideline_center_horizontal"
-                android:gravity="end"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:text="@string/hint_time"
-                android:textColor="@color/textColorWhite"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-
-
-            <TextView
-                android:id="@+id/distance_in_map_placeholder"
-                style="@style/TextSubTitle.White"
-                android:layout_width="wrap_content"
-                android:layout_height="wrap_content"
-                android:layout_marginStart="@dimen/space_16dp"
-                android:layout_marginTop="@dimen/space_16dp"
-                android:layout_marginBottom="@dimen/space_4dp"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:text="@string/distances" />
-
-            <TextView
-                android:id="@+id/distance_in_map_label"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_below="@+id/distance_in_map_placeholder"
-                android:layout_marginStart="@dimen/space_16dp"
-                android:layout_marginEnd="@dimen/space_8dp"
-                android:layout_marginBottom="@dimen/space_16dp"
-                android:layout_toStartOf="@+id/guideline_center_horizontal"
-                android:includeFontPadding="false"
-                android:maxLines="1"
-                android:text="0.00"
-                android:textColor="@color/textColorWhite"
-                android:textSize="28sp"
-                android:textStyle="bold" />
-        </RelativeLayout>
+            android:layout_alignParentBottom="true" />
     </RelativeLayout>
 
     <TextView

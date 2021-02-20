@@ -1,6 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
+    <!-- Share Workout Screen -->
+    <dimen name="share_workout_image_width">@dimen/match_parent</dimen>
+
     <!-- Start Old -->
     <!--  Login  -->
     <dimen name="login_title_size">32dp</dimen>

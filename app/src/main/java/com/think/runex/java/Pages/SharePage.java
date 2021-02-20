@@ -86,7 +86,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
                     intentToGallery();
                 } else {
                     customImageUri = null;
-                    addPhotoButton.setImageResource(R.drawable.ic_add_image);
+                    addPhotoButton.setImageResource(R.mipmap.ic_add_image);
                     updateImage();
                 }
                 break;
@@ -322,7 +322,7 @@ public class SharePage extends xFragment implements View.OnClickListener {
                     .into(previewImage)
                     .clearOnDetach();
         } else {
-            addPhotoButton.setImageResource(R.drawable.ic_add_image);
+            addPhotoButton.setImageResource(R.mipmap.ic_add_image);
             // image bitmap
             if (previewMapImage != null) {
                 previewImage.setScaleType(ImageView.ScaleType.FIT_XY);

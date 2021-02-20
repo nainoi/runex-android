@@ -132,7 +132,7 @@
         android:background="@android:color/transparent"
         android:padding="@dimen/space_8dp"
         android:scaleType="centerCrop"
-        android:src="@drawable/ic_add_image" />
+        android:src="@mipmap/ic_add_image" />
     <!-- Frame feature buttons -->
     <LinearLayout
         android:id="@+id/frame_feature_buttons"

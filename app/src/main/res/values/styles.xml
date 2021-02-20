@@ -121,6 +121,15 @@
         <item name="android:textColor">@drawable/text_color_btn_border_grey</item>
     </style>
 
+    <style name="Button.BorderGrey.OnLightBackground" parent="Button">
+        <item name="android:background">@drawable/bg_btn_border_grey_on_light_background</item>
+        <item name="android:textColor">@drawable/text_color_btn_border_grey_on_light_background</item>
+    </style>
+
+    <style name="Button.Facebook" parent="Button">
+        <item name="android:background">@drawable/bg_btn_facebook</item>
+        <item name="android:textColor">@color/textColorWhite</item>
+    </style>
 
     <!-- Text Input -->
     <style name="TextInput">
