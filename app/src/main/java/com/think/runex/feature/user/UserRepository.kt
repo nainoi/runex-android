@@ -6,7 +6,7 @@ import com.think.runex.common.getDisplayName
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.workout.model.TotalDistanceResponse
-import com.think.runex.util.ImageUtil
+import com.think.runex.util.UploadImageUtil
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
 
@@ -23,7 +23,7 @@ class UserRepository(private val api: UserApi) : RemoteDataSource() {
                 .addFormDataPart(
                         name = "upload",
                         filename = uri.getDisplayName(context) ?: "profile-image",
-                        body = ImageUtil().reduceImageSize(context, uri).toRequestBody())
+                        body = UploadImageUtil().reduceImageSize(context, uri).toRequestBody())
                 .build()
 
         return call(api.updateProfileImageAsync(multipartBody))

@@ -112,6 +112,7 @@
     <string name="ok">OK</string>
     <string name="or">Or</string>
     <string name="other">Other</string>
+    <string name="open">Open</string>
 
     <!-- P -->
     <string name="password">Password</string>
@@ -145,6 +146,7 @@
     <string name="success">Success</string>
     <string name="share">Share</string>
     <string name="save_to_device">Save to device</string>
+    <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
 
     <!-- T -->
     <string name="time">Time</string>

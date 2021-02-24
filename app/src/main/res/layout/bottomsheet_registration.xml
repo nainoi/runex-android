@@ -16,7 +16,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/btn_close"
-            android:src="@drawable/ic_close"
+            android:src="@mipmap/ic_close"
             android:padding="18dp"
 
             android:tint="@android:color/black"

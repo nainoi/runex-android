@@ -11,7 +11,7 @@ import com.think.runex.common.toByteArray
 import java.io.IOException
 import java.io.InputStream
 
-open class ImageUtil {
+open class UploadImageUtil {
     /**
      * [maxWidthOrHeight] Default size to reduce
      */

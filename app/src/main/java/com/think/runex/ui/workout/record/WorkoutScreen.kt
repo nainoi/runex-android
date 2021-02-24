@@ -4,12 +4,10 @@ import android.Manifest
 import android.annotation.SuppressLint
 import android.app.Activity
 import android.content.*
-import android.net.Uri
 import android.os.Bundle
 import android.os.IBinder
 import android.os.Message
 import android.os.Messenger
-import android.provider.Settings
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -31,6 +29,7 @@ import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
 import com.think.runex.feature.workout.model.*
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.workout.MapPresenter
 import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread
@@ -306,6 +305,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
 
     override fun onDestroy() {
         super.onDestroy()
+        mapPresenter?.clear()
         Logger.error(simpleName(), "onDestroy")
     }
 }

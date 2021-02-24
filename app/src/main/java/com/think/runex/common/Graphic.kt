@@ -1,10 +1,9 @@
 package com.think.runex.common
 
-import android.graphics.Bitmap
-import android.graphics.BlendMode
-import android.graphics.BlendModeColorFilter
-import android.graphics.PorterDuff
+import android.content.Context
+import android.graphics.*
 import android.graphics.drawable.Drawable
+import android.net.Uri
 import android.os.Build
 import androidx.annotation.ColorInt
 import java.io.ByteArrayOutputStream
@@ -26,3 +25,9 @@ fun Bitmap.toByteArray(): ByteArray = try {
     throwable.printStackTrace()
     ByteArray(0)
 }
+
+//fun Uri.toBitmap(context: Context) {
+//    if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+//        ImageDecoder.createSource(context.contentResolver, this)
+//    }
+//}

@@ -18,7 +18,7 @@
             android:layout_height="?attr/actionBarSize"
             android:paddingRight="36dp"
             android:paddingBottom="36dp"
-            android:src="@drawable/ic_close" />
+            android:src="@mipmap/ic_close" />
 
         <!-- Login with email frame -->
         <LinearLayout

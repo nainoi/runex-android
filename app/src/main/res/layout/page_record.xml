@@ -27,7 +27,7 @@
                 android:id="@+id/btn_cancel_submit"
                 android:layout_width="?attr/actionBarSize"
                 android:layout_height="match_parent"
-                android:src="@drawable/ic_close"
+                android:src="@mipmap/ic_close"
                 app:tint="@color/textColorAccent" />
 
             <ImageView

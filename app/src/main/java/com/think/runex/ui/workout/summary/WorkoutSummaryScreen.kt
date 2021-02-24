@@ -20,7 +20,7 @@ import com.think.runex.feature.workout.WorkoutViewModelFactory
 import com.think.runex.feature.workout.model.WorkingOutLocation
 import com.think.runex.feature.workout.model.WorkoutInfo
 import com.think.runex.ui.base.BaseScreen
-import com.think.runex.ui.workout.record.MapPresenter
+import com.think.runex.ui.workout.MapPresenter
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import io.realm.Realm
@@ -165,5 +165,10 @@ class WorkoutSummaryScreen : BaseScreen() {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun onDestroy() {
+        mapPresenter?.clear()
+        super.onDestroy()
     }
 }

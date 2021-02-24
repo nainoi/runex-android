@@ -77,7 +77,7 @@
                         android:adjustViewBounds="true"
                         android:padding="@dimen/space_4dp"
                         android:scaleType="centerCrop"
-                        android:src="@drawable/ic_close"
+                        android:src="@mipmap/ic_close"
                         android:visibility="gone" />
 
                     <TextView

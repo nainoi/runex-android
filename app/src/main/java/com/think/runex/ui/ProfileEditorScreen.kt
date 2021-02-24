@@ -9,6 +9,7 @@ import android.os.Bundle
 import android.provider.MediaStore
 import android.text.Editable
 import android.text.TextWatcher
+import android.util.Log
 import android.view.*
 import android.widget.DatePicker
 import androidx.appcompat.widget.AppCompatButton
@@ -30,23 +31,24 @@ import com.think.runex.feature.user.UserInfo
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.base.PermissionsLauncherScreen
 import com.think.runex.ui.component.GenderDialog
 import com.think.runex.ui.component.SelectImageSourceDialog
-import com.think.runex.util.ImagePickerHelper
-import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.*
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
-class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
+class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSetListener,
         GenderDialog.OnGenderSelectedListener, SelectImageSourceDialog.OnSelectImageSourceListener {
 
     private lateinit var viewModel: UserViewModel
 
     private var confirmButton: AppCompatButton? = null
 
-    private var helper: ImagePickerHelper? = null
+    private var takePictureHelper: TakePictureHelper? = null
+    private var getContentHelper: GetContentHelper? = null
+
     private var currentBirthDate: String? = null
     private var currentGender: String? = null
     private var tempProfileImageUri: Uri? = null
@@ -55,7 +57,9 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
         viewModel = requireActivity().getViewModel(UserViewModelFactory(requireContext()))
-        helper = ImagePickerHelper()
+
+        takePictureHelper = TakePictureHelper(this)
+        getContentHelper = GetContentHelper(this)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -199,28 +203,37 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
 
     override fun onSelectImageSource(source: Int) {
         when (source) {
-            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionAndOpenCamera()
-            SelectImageSourceDialog.SOURCE_GALLERY -> checkPermissionAndOpenGallery()
+            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()
+            SelectImageSourceDialog.SOURCE_GALLERY -> checkPermissionAndGetImageContent()
         }
     }
 
-    private fun checkPermissionAndOpenCamera() {
-        val permissions = arrayOf(Manifest.permission.CAMERA,
-                Manifest.permission.READ_EXTERNAL_STORAGE,
-                Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        if (havePermissions(permissions, RC_PERMISSION_TAKE_PICTURE)) {
-            helper?.provideCameraIntent(requireContext())?.also { intent ->
-                //Store temp uri for preview and upload
-                intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString()
-                tempProfileImageUri = Uri.parse(intent.extras?.get(MediaStore.EXTRA_OUTPUT).toString())
-                startActivityForResult(intent, RC_TAKE_PICTURE)
+    private fun checkPermissionsAndTakePicture() {
+        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        requestPermissions(permissions) { resultsMap ->
+            when {
+                //User allow all permissions (camera, storage) will be take picture
+                allPermissionsGranted(resultsMap) -> takePictureHelper?.takePicture(requireContext()) { pictureUri ->
+                    pictureUri?.also { performUploadProfileImage(it) }
+                }
+                //User denied access to camera or storage.
+                shouldShowPermissionRationale(permissions) -> showToast(R.string.camera_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
             }
         }
     }
 
-    private fun checkPermissionAndOpenGallery() {
-        if (havePermission(Manifest.permission.READ_EXTERNAL_STORAGE, RC_PERMISSION_OPEN_GALLERY)) {
-            startActivityForResult(helper?.provideGalleryIntent(), RC_IMAGE_PICKER)
+    private fun checkPermissionAndGetImageContent() = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+        when {
+            //User allow all permissions storage
+            isGranted -> getContentHelper?.getImage { imageUri ->
+                imageUri?.also { performUploadProfileImage(it) }
+            }
+            //User denied access to storage.
+            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
+            //User denied and select don't ask again.
+            else -> requireContext().showSettingPermissionInSettingDialog()
         }
     }
 
@@ -228,41 +241,6 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
         showProgressDialog(R.string.update_profile_image)
         viewModel.updateProfileImage(requireContext(), uri)
         hideProgressDialog()
-    }
-
-    override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
-        when (requestCode) {
-            RC_TAKE_PICTURE -> if (resultCode == Activity.RESULT_OK) {
-                tempProfileImageUri?.also { performUploadProfileImage(it) }
-            }
-            RC_IMAGE_PICKER -> if (resultCode == Activity.RESULT_OK) {
-                tempProfileImageUri = data?.data
-                tempProfileImageUri?.also { performUploadProfileImage(it) }
-            }
-            else -> super.onActivityResult(requestCode, resultCode, data)
-        }
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            RC_PERMISSION_TAKE_PICTURE -> when {
-                //User allow to access location.
-                allPermissionsGranted(grantResults) -> checkPermissionAndOpenCamera()
-                //User denied access to location.
-                shouldShowPermissionRationale(permissions) -> showToast(R.string.camera_permission_denied)
-                //User denied and select don't ask again.
-                else -> requireContext().showSettingPermissionInSettingDialog()
-            }
-            RC_PERMISSION_OPEN_GALLERY -> when {
-                //User allow to access location.
-                allPermissionsGranted(grantResults) -> checkPermissionAndOpenGallery()
-                //User denied access to location.
-                shouldShowPermissionRationale(permissions) -> showToast(R.string.gallery_permission_denied)
-                //User denied and select don't ask again.
-                else -> requireContext().showSettingPermissionInSettingDialog()
-            }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
-        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
@@ -308,8 +286,9 @@ class ProfileEditorScreen : BaseScreen(), DatePickerDialog.OnDateSetListener,
     override fun onDestroy() {
         removeObservers(viewModel.userInfo)
         textWatcher = null
-        helper?.clearTempFile(requireContext())
-        helper = null
+        takePictureHelper?.unregisterTakePictureResult()
+        takePictureHelper?.clear(requireContext())
+        getContentHelper?.unregisterAllResult()
         super.onDestroy()
     }
 }

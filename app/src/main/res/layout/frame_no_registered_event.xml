@@ -20,7 +20,7 @@
             android:layout_width="0dp"
             android:layout_weight="0.39"
             android:layout_height="wrap_content"
-            android:src="@drawable/ic_events_empty" />
+            android:src="@drawable/ic_my_event" />
 
 
     </LinearLayout>

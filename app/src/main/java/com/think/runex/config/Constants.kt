@@ -10,6 +10,7 @@ const val PREFERENCES_NAME = "app_preference"
  */
 const val ANDROID = "Android"
 const val APP_SCHEME = "runex"
+const val APP_NAME = "Runex"
 const val AUTHORIZATION = "Authorization"
 
 const val GOOGLE_MAP_DEFAULT_ZOOM = 16f
@@ -33,6 +34,7 @@ const val KEY_EVENT = "event"
 const val KEY_ERROR = "error"
 const val KEY_DATA = "data"
 const val KEY_ID = "id"
+const val KEY_IMAGE = "image"
 const val KEY_FIREBASE_TOKEN = "firebase_token"
 const val KEY_LOCATION = "location"
 const val KEY_MESSAGE = "msg"

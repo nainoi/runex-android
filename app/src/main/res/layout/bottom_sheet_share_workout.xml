@@ -24,7 +24,7 @@
                 android:minHeight="?actionBarSize">
 
                 <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/back_button"
+                    android:id="@+id/close_button"
                     android:layout_width="@dimen/icon_size_in_action_bar"
                     android:layout_height="@dimen/icon_size_in_action_bar"
                     android:layout_gravity="center|start"
@@ -33,7 +33,7 @@
                     android:foreground="@drawable/bg_btn_circle_on_light_background"
                     android:padding="8dp"
                     android:scaleType="fitCenter"
-                    android:src="@drawable/ic_navigation_back"
+                    android:src="@mipmap/ic_close"
                     android:tint="@color/iconColorPrimaryOnLightBackground" />
 
                 <TextView
@@ -62,23 +62,16 @@
                     tools:ignore="FragmentTagUsage" />
 
                 <androidx.appcompat.widget.AppCompatImageView
+                    android:id="@+id/workout_image"
+                    android:layout_width="match_parent"
+                    android:layout_height="match_parent" />
+
+                <androidx.appcompat.widget.AppCompatImageView
                     android:layout_width="@dimen/space_96dp"
                     android:layout_height="wrap_content"
                     android:layout_margin="@dimen/space_16dp"
                     android:adjustViewBounds="true"
                     app:srcCompat="@mipmap/ic_logo_runex" />
-
-                <androidx.appcompat.widget.AppCompatImageButton
-                    android:id="@+id/add_image_button"
-                    android:layout_width="@dimen/icon_size_in_action_bar"
-                    android:layout_height="@dimen/icon_size_in_action_bar"
-                    android:layout_alignParentEnd="true"
-                    android:layout_marginTop="@dimen/space_16dp"
-                    android:layout_marginEnd="@dimen/space_16dp"
-                    android:background="@android:color/transparent"
-                    android:foreground="@drawable/bg_btn_circle_on_light_background"
-                    android:scaleType="fitCenter"
-                    android:src="@mipmap/ic_add_image" />
 
                 <View
                     android:layout_width="match_parent"
@@ -96,6 +89,36 @@
                     android:layout_alignParentBottom="true" />
 
             </com.think.runex.ui.component.SquareRelativeLayout>
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/add_image_button"
+                android:layout_width="@dimen/icon_size_in_action_bar"
+                android:layout_height="@dimen/icon_size_in_action_bar"
+                android:layout_below="@id/top_bar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/add_image"
+                android:foreground="@drawable/bg_btn_circle_on_light_background"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_add_image" />
+
+            <androidx.appcompat.widget.AppCompatImageButton
+                android:id="@+id/remove_image_button"
+                android:layout_width="@dimen/icon_size_in_action_bar"
+                android:layout_height="@dimen/icon_size_in_action_bar"
+                android:layout_below="@id/top_bar"
+                android:layout_alignParentEnd="true"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:background="@android:color/transparent"
+                android:contentDescription="@string/add_image"
+                android:foreground="@drawable/bg_btn_circle_on_light_background"
+                android:padding="@dimen/space_8dp"
+                android:scaleType="fitCenter"
+                android:src="@mipmap/ic_close"
+                android:visibility="gone" />
 
             <TextView
                 android:id="@+id/share_label"
@@ -122,11 +145,26 @@
                 android:text="@string/facebook" />
 
             <androidx.appcompat.widget.AppCompatButton
+                android:id="@+id/share_to_other_button"
+                style="@style/Button.BorderGrey.OnLightBackground"
+                android:layout_width="wrap_content"
+                android:visibility="gone"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/share_to_facebook_button"
+                android:layout_alignStart="@+id/save_button"
+                android:layout_alignEnd="@+id/save_button"
+                android:layout_centerHorizontal="true"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:paddingStart="@dimen/space_48dp"
+                android:paddingEnd="@dimen/space_48dp"
+                android:text="@string/other" />
+
+            <androidx.appcompat.widget.AppCompatButton
                 android:id="@+id/save_button"
                 style="@style/Button.BorderGrey.OnLightBackground"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/share_to_facebook_button"
+                android:layout_below="@+id/share_to_other_button"
                 android:layout_centerHorizontal="true"
                 android:layout_margin="@dimen/space_16dp"
                 android:paddingStart="@dimen/space_48dp"

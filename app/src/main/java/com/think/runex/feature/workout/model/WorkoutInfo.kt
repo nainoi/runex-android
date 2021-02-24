@@ -7,6 +7,7 @@ import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.common.displayFormat
 import com.think.runex.common.timeDisplayFormat
+import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
 data class WorkoutInfo(
@@ -36,7 +37,7 @@ data class WorkoutInfo(
             return arrayOfNulls(size)
         }
     }
-    
+
     constructor(parcel: Parcel) : this(
             parcel.readString(),
             parcel.readString(),
@@ -131,5 +132,14 @@ data class WorkoutInfo(
         displayData.calories = calories?.displayFormat() ?: "0"
 
         return displayData
+    }
+
+    fun getWorkoutDateTime(): String {
+        return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH)
+                ?: workoutDate ?: ""
+    }
+
+    fun getWorkoutDateTimeForImageName(): String {
+        return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, "yyyyMMddHHmm") ?: "workout"
     }
 }

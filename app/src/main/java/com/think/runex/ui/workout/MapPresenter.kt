@@ -1,11 +1,13 @@
-package com.think.runex.ui.workout.record
+package com.think.runex.ui.workout
 
 import android.annotation.SuppressLint
+import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
 import com.google.android.libraries.maps.CameraUpdateFactory
 import com.google.android.libraries.maps.GoogleMap
+import com.google.android.libraries.maps.SupportMapFragment
 import com.google.android.libraries.maps.model.LatLng
 import com.google.android.libraries.maps.model.LatLngBounds
 import com.google.android.libraries.maps.model.Polyline
@@ -22,6 +24,7 @@ class MapPresenter(private var googleMap: GoogleMap?,
 
     private var points: ArrayList<WorkingOutLocation>? = null
     private var lastPolyline: Polyline? = null
+    private var snapshot: Bitmap? = null
 
     @SuppressLint("MissingPermission")
     fun setMyLocationEnabled(isEnabled: Boolean) {
@@ -78,16 +81,6 @@ class MapPresenter(private var googleMap: GoogleMap?,
         drawPolyline()
     }
 
-    /**
-     * Clear polyline on map
-     */
-    fun clearPolyline() {
-        lastPolyline?.remove()
-        lastPolyline = null
-        points?.clear()
-        points = null
-    }
-
     fun zoomToFitWorkoutLine() {
         if (points?.isNullOrEmpty() == true) return
 
@@ -104,4 +97,41 @@ class MapPresenter(private var googleMap: GoogleMap?,
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.center, zoom))
         }
     }
+
+    /**
+     * Get map ui as bitmap
+     */
+    fun snapshot(callback: (snapshot: Bitmap?) -> Unit) {
+        googleMap?.snapshot {
+            snapshot = it
+            callback.invoke(snapshot)
+        }
+    }
+
+    /**
+     * Get polyline as bitmap without map ui
+     */
+    fun snapshotPolyline(mapFragment: SupportMapFragment, callback: GoogleMap.SnapshotReadyCallback) {
+        //TODO("Handle in a feature!! ถถถถ")
+    }
+
+    /**
+     * Clear polyline on map
+     */
+    fun clearPolyline() {
+        lastPolyline?.remove()
+        lastPolyline = null
+        points?.clear()
+        points = null
+    }
+
+    fun clearSnapshot() {
+        snapshot?.recycle()
+    }
+
+    fun clear() {
+        clearPolyline()
+        clearSnapshot()
+    }
+
 }

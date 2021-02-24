@@ -61,7 +61,6 @@
         android:layout_below="@+id/distance_on_map_placeholder"
         android:layout_marginStart="@dimen/space_16dp"
         android:layout_marginEnd="@dimen/space_8dp"
-        android:layout_marginBottom="@dimen/space_16dp"
         android:layout_toStartOf="@+id/guideline_on_map_center_horizontal"
         android:includeFontPadding="false"
         android:maxLines="1"
@@ -69,5 +68,18 @@
         android:textColor="@color/textColorWhite"
         android:textSize="28sp"
         android:textStyle="bold" />
+
+    <TextView
+        android:id="@+id/workout_time_on_map_label"
+        style="@style/TextBodyHeading.White"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/distance_on_map_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_marginBottom="@dimen/space_16dp"
+        android:includeFontPadding="false"
+        android:maxLines="1"
+        android:visibility="gone" />
 
 </RelativeLayout>

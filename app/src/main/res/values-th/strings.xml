@@ -66,7 +66,7 @@
     <!-- G -->
     <string name="get_started">เริ่มใช้งาน</string>
     <string name="gender">เพศ</string>
-    <string name="gallery_permission_denied">ไม่สามารถเข้าคลังรูปของคุณได้เนื่องจากถูกปฏิเสธ</string>
+    <string name="gallery_permission_denied">ไม่สามารถเข้าถึงคลังรูปของคุณได้เนื่องจากถูกปฏิเสธ</string>
 
     <!-- H -->
     <string name="history">ประวัติ</string>
@@ -111,6 +111,7 @@
     <string name="ok">ตกลง</string>
     <string name="or">หรือ</string>
     <string name="other">อื่นๆ</string>
+    <string name="open">เปิด</string>
 
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
@@ -144,6 +145,7 @@
     <string name="success">สำเร็จ</string>
     <string name="share">แชร์</string>
     <string name="save_to_device">บันทึกภาพลงอุปกรณ์</string>
+    <string name="storage_permission_denied">ไม่สามารถเข้าถึงพื้นที่เก็บข้อมูลของคุณได้เนื่องจากถูกปฏิเสธ</string>
 
     <!-- T -->
     <string name="time">เวลา</string>
