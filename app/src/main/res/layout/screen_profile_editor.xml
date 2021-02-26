@@ -43,7 +43,7 @@
                 android:layout_alignEnd="@+id/profile_image"
                 android:layout_alignBottom="@id/profile_image"
                 android:background="@android:color/transparent"
-                android:foreground="@drawable/bg_btn_circle"
+                android:foreground="@drawable/bg_ripple_circle"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_upload" />
 

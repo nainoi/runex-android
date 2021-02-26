@@ -22,7 +22,7 @@
             android:background="@drawable/shape_circle_border_disable"
             android:clickable="true"
             android:focusable="true"
-            android:foreground="@drawable/bg_btn_circle"
+            android:foreground="@drawable/bg_ripple_circle"
             android:padding="@dimen/space_4dp"
             tools:background="@drawable/shape_circle_border">
 

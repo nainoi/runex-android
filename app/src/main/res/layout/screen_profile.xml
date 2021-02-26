@@ -30,8 +30,8 @@
             android:layout_height="@dimen/icon_size_in_action_bar"
             android:layout_gravity="center|end"
             android:layout_marginEnd="@dimen/space_16dp"
-            android:background="@drawable/bg_btn_circle"
-            android:foreground="@drawable/bg_btn_circle"
+            android:background="@drawable/bg_ripple_circle"
+            android:foreground="@drawable/bg_ripple_circle"
             android:scaleType="fitCenter"
             android:src="@mipmap/ic_setting" />
     </FrameLayout>

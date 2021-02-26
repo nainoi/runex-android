@@ -11,6 +11,7 @@
     <string name="add_image">เพิ่มรูปภาพ</string>
     <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
     <string name="all_event">งานวิ่งทั้งหมด</string>
+    <string name="all_events_to_submit">รายการวิ่งทั้งหมดที่จะส่งระยะ</string>
     <string name="active">เปิดใช้งาน</string>
     <string name="allow_permission_in_setting">หากต้องการใช้ฟีเจอร์นี้ คุณต้องให้การอนุญาตในการตั้งค่า</string>
     <string name="application_service_and_devices">แอปพลิเคชัน บริการ และแอุปกรณ์</string>
@@ -28,6 +29,7 @@
     <string name="close">ปิด</string>
     <string name="confirm">ยืนยัน</string>
     <string name="confirm_register">ยืนยันการสมัคร</string>
+    <string name="confirm_submit_result">ยืนยันการส่งผล</string>
     <string name="confirm_to_ending_run">คุณยืนยันที่จะสิ้นสุดการวิ่ง?</string>
     <string name="confirm_to_logout">คุณยืนยันที่จะออกจากระบบ?</string>
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>

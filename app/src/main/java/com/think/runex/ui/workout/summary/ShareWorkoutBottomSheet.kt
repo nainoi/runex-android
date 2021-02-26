@@ -175,8 +175,6 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), SelectImageSou
         }
     }
 
-    private fun getBottomSheetBehavior() = (dialog as? BottomSheetDialog)?.behavior
-
     override fun onSelectImageSource(source: Int) {
         when (source) {
             SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()

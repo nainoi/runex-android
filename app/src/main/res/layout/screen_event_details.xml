@@ -59,7 +59,7 @@
                     android:layout_width="@dimen/space_40dp"
                     android:layout_height="@dimen/space_40dp"
                     android:layout_alignParentEnd="true"
-                    android:background="@drawable/bg_btn_circle"
+                    android:background="@drawable/bg_ripple_circle"
                     app:srcCompat="@mipmap/ic_share" />
 
             </RelativeLayout>

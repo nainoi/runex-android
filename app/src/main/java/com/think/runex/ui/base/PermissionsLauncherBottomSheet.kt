@@ -5,7 +5,7 @@ import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 
-open class PermissionsLauncherBottomSheet : BottomSheetDialogFragment() {
+open class PermissionsLauncherBottomSheet : BaseBottomSheet() {
 
     private var requestPermissionsLauncher: ActivityResultLauncher<Array<String>>? = null
     private var requestPermissionsCallback: ((results: Map<String, Boolean>) -> Unit)? = null

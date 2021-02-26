@@ -11,6 +11,7 @@
     <string name="activity_record">Activity record</string>
     <string name="activity_record_empty">Activity record is empty</string>
     <string name="all_event">All Events</string>
+    <string name="all_events_to_submit">All events to submit</string>
     <string name="active">Active</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
     <string name="application_service_and_devices">Application Service and Devices</string>
@@ -28,6 +29,7 @@
     <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_register">Confirm register</string>
+    <string name="confirm_submit_result">Confirm to submit</string>
     <string name="confirm_to_ending_run">You confirm to ending run?</string>
     <string name="confirm_to_logout">You confirm to logout?</string>
     <string name="connection_timed_out">Connection timed out</string>
