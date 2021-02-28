@@ -40,12 +40,14 @@ data class EventDetail(
         @SerializedName("registerStartDate") var registerStartDate: String? = "",
         @SerializedName("registerStartDateText") var registerStartDateDisplay: String? = "",
         @SerializedName("schedules") var schedules: List<Schedule>? = null,
+        @SerializedName("tickets") var tickets:List<TicketEventDetail>? = null,
         @SerializedName("shirts") var shirts: List<Shirts>? = null,
         @SerializedName("title") var title: String? = "",
         @SerializedName("userId") var userId: String? = "") {
 
 
-    fun coverImage(): String {
+    @JvmName("getCoverImageJava")
+    fun getCoverImage(): String {
         return when (coverImage?.startsWith("http", false) == true) {
             true -> coverImage ?: ""
             false -> ("${ApiConfig.BASE_URL}${coverImage ?: ""}")

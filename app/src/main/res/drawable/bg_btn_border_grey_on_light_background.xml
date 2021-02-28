@@ -12,8 +12,8 @@
                         android:color="@color/border" />
                 </shape>
             </item>
-            <item android:drawable="@drawable/shape_rectangle_border_grey_rounded_24dp" />
+            <item android:drawable="@drawable/shape_rectangle_border_rounded_24dp" />
         </ripple>
     </item>
-    <item android:drawable="@drawable/shape_rectangle_border_grey_rounded_24dp" android:state_enabled="false" />
+    <item android:drawable="@drawable/shape_rectangle_border_rounded_24dp" android:state_enabled="false" />
 </selector>

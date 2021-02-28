@@ -3,12 +3,13 @@
     android:id="@+id/dialog_default"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/backgroundDialog"
-    android:padding="@dimen/space_24dp">
+    android:background="?colorBackgroundPrimary"
+    android:padding="@dimen/space_24dp"
+    android:theme="@style/Theme.Runex.Light">
 
     <TextView
         android:id="@+id/title_label"
-        style="@style/TextSubTitle.Primary.Bold"
+        style="@style/Text.SubTitle.Primary.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center" />
@@ -57,6 +58,4 @@
             android:minHeight="@dimen/button_height_dense"
             android:text="@string/ok" />
     </LinearLayout>
-
-
 </RelativeLayout>

@@ -23,7 +23,7 @@
 
     <TextView
         android:id="@+id/event_name_label"
-        style="@style/TextBodyHeading.Primary.Bold"
+        style="@style/Text.BodyHeading.Primary.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_8dp"
@@ -46,7 +46,7 @@
 
         <TextView
             android:id="@+id/event_status_label"
-            style="@style/TextBody.Hint"
+            style="@style/Text.Body.Hint"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_gravity="center_vertical"

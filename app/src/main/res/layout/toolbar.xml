@@ -16,7 +16,7 @@
         android:maxLines="1"
         android:paddingStart="@dimen/space_8dp"
         android:paddingEnd="@dimen/space_8dp"
-        android:textColor="@color/textColorPrimary"
+        android:textColor="?textColorPrimary"
         android:textSize="@dimen/text_size_title" />
 
 </com.google.android.material.appbar.MaterialToolbar>

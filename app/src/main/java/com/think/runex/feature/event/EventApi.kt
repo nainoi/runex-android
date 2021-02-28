@@ -6,6 +6,7 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.TokenManager
 import com.think.runex.feature.event.model.response.IsRegisteredEventResponse
 import com.think.runex.config.AUTHORIZATION
+import com.think.runex.feature.event.model.EventDetail
 import com.think.runex.feature.event.model.EventItem
 import com.think.runex.feature.event.model.EventRegistered
 import com.think.runex.feature.event.model.response.EventDetailResponse
@@ -25,7 +26,7 @@ interface EventApi {
     @GET("/api/${ApiConfig.API_VERSION}/event/detail/{code}")
     fun getEventDetailsAsync(
             @Path("code") code: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventDetailResponse>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventDetail>>
 
     @GET("/api/${ApiConfig.API_VERSION}/register/checkUserRegisterEvent/{code}")
     fun isRegisteredEventAsync(

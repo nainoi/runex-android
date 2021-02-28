@@ -239,7 +239,10 @@ class WorkoutScreen : PermissionsLauncherScreen(), ActionControlsFragment.Action
                 //User allow to access location.
                 allPermissionsGranted(results) -> {
                     when (LocationUtil.isGpsEnabled(requireContext())) {
-                        true -> callbacks.invoke()
+                        true -> {
+                            mapPresenter?.setMyLocationEnabled(true)
+                            callbacks.invoke()
+                        }
                         false -> LocationUtil.openGps(requireActivity())
                     }
                 }

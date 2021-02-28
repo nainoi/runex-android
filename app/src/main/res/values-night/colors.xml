@@ -5,34 +5,30 @@
     <color name="colorAccent">#F7B600</color>
 
     <!-- Background colors -->
-    <color name="background">#1C1E21</color>
-    <color name="backgroundSecondary">#26282D</color>
-    <color name="backgroundThirdly">#313338</color>
+    <color name="background">@color/backgroundOnDark</color>
+    <color name="backgroundSecondary">@color/backgroundSecondaryOnDark</color>
+    <color name="backgroundThirdly">@color/backgroundThirdlyOnDark</color>
     <color name="backgroundWorkoutScreen">@color/backgroundThirdly</color>
 
-    <color name="backgroundDialog">@color/backgroundSecondary</color>
+    <color name="disable">@color/disableOnDark</color>
+    <color name="disableSecondary">@color/disableSecondaryOnDark</color>
 
-    <color name="disable">#494E52</color>
-    <color name="disableSecondary">#474D51</color>
-
-    <color name="line">#42979797</color>
-    <color name="border">#42979797</color>
-
-    <color name="colorSkeleton">#2B2B2B</color>
+    <color name="line">@color/lineOnDark</color>
+    <color name="border">@color/borderOnDark</color>
 
     <!-- Text Colors -->
-    <color name="textColorPrimary">#FFFFFF</color>
-    <color name="textColorSecondary">#EEEEEE</color>
-    <color name="textColorThirdly">#C4C4C4</color>
-    <color name="textColorHint">#797979</color>
+    <color name="textColorPrimary">@color/textColorPrimaryOnDark</color>
+    <color name="textColorSecondary">@color/textColorSecondaryOnDark</color>
+    <color name="textColorThirdly">@color/textColorThirdlyOnDark</color>
+    <color name="textColorHint">@color/textColorHintOnDark</color>
 
     <color name="textColorBottomBar">@color/textColorSecondary</color>
 
     <!-- Icon colors -->
-    <color name="iconColorPrimary">#FFFFFF</color>
-    <color name="iconColorSecondary">#EEEEEE</color>
-    <color name="iconColorThirdly">#C4C4C4</color>
-    <color name="iconColorDisable">#797979</color>
+    <color name="iconColorPrimary">@color/iconColorPrimaryOnDark</color>
+    <color name="iconColorSecondary">@color/iconColorSecondaryOnDark</color>
+    <color name="iconColorThirdly">@color/iconColorThirdlyOnDark</color>
+    <color name="iconColorDisable">@color/iconColorDisableOnDark</color>
 
     <!-- Others -->
     <color name="bottom_bar_center_menu">#474D51</color>

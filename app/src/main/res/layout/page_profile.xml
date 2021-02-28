@@ -67,7 +67,7 @@
 
                     <TextView
                         android:id="@+id/lb_edit"
-                        style="@style/TextBody.Accent"
+                        style="@style/Text.Body.Accent"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_alignParentEnd="true"

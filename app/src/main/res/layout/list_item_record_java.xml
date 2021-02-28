@@ -62,7 +62,7 @@
 
     <TextView
         android:id="@+id/lb_caption"
-        style="@style/TextBody.Primary"
+        style="@style/Text.Body.Primary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_16dp"

@@ -25,7 +25,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/workout_times_in_month_label"
-                style="@style/TextTitle.Secondary"
+                style="@style/Text.Title.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -42,7 +42,7 @@
 
             <androidx.appcompat.widget.AppCompatTextView
                 android:id="@+id/workout_times_in_month_placeholder"
-                style="@style/TextCaption.Thirdly"
+                style="@style/Text.Caption.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/workout_times_in_month_label"
@@ -65,7 +65,7 @@
 
             <TextView
                 android:id="@+id/month_year_label"
-                style="@style/TextSubTitle.Primary"
+                style="@style/Text.SubTitle.Primary"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content" />
 
@@ -80,7 +80,7 @@
 
             <TextView
                 android:id="@+id/distance_label"
-                style="@style/TextBody.Thirdly"
+                style="@style/Text.Body.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/month_year_label"
@@ -102,7 +102,7 @@
 
             <TextView
                 android:id="@+id/duration_label"
-                style="@style/TextBody.Thirdly"
+                style="@style/Text.Body.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/month_year_label"
@@ -124,7 +124,7 @@
 
             <TextView
                 android:id="@+id/calorie_label"
-                style="@style/TextBody.Thirdly"
+                style="@style/Text.Body.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/month_year_label"

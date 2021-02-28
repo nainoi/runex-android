@@ -17,7 +17,7 @@
 
     <TextView
         android:id="@+id/distance_placeholder"
-        style="@style/TextBody.Thirdly"
+        style="@style/Text.Body.Thirdly"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_above="@+id/distance_label"
@@ -60,7 +60,7 @@
 
             <TextView
                 android:id="@+id/duration_placeholder"
-                style="@style/TextBody.Thirdly"
+                style="@style/Text.Body.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -70,7 +70,7 @@
 
             <TextView
                 android:id="@+id/duration_label"
-                style="@style/TextTitle.Primary.Bold"
+                style="@style/Text.Title.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/duration_placeholder"
@@ -90,7 +90,7 @@
 
             <TextView
                 android:id="@+id/duration_per_kilometer_placeholder"
-                style="@style/TextBody.Thirdly"
+                style="@style/Text.Body.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -100,7 +100,7 @@
 
             <TextView
                 android:id="@+id/duration_per_kilometer_label"
-                style="@style/TextTitle.Primary.Bold"
+                style="@style/Text.Title.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/duration_per_kilometer_placeholder"
@@ -119,7 +119,7 @@
 
             <TextView
                 android:id="@+id/calorie_placeholder"
-                style="@style/TextBody.Thirdly"
+                style="@style/Text.Body.Thirdly"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerHorizontal="true"
@@ -129,7 +129,7 @@
 
             <TextView
                 android:id="@+id/calorie_label"
-                style="@style/TextTitle.Primary.Bold"
+                style="@style/Text.Title.Primary.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/calorie_placeholder"

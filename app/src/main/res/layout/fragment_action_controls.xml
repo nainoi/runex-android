@@ -39,7 +39,7 @@
 
         <TextView
             android:id="@+id/main_action_label"
-            style="@style/TextBody.Thirdly"
+            style="@style/Text.Body.Thirdly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/main_action_button"
@@ -77,7 +77,7 @@
 
         <TextView
             android:id="@+id/resume_action_label"
-            style="@style/TextCaption.Thirdly"
+            style="@style/Text.Caption.Thirdly"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/resume_action_button"

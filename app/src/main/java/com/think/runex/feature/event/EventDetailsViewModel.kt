@@ -13,9 +13,6 @@ class EventDetailsViewModel(private val repo: EventRepository) : BaseViewModel()
     var eventDetail: EventDetail? = null
         private set
 
-    var tickets: List<TicketEventDetail>? = null
-        private set
-
     private var isRegisteredEvent: Boolean? = null
 
     suspend fun getEventDetail(code: String): Boolean = withContext(IO) {
@@ -23,10 +20,7 @@ class EventDetailsViewModel(private val repo: EventRepository) : BaseViewModel()
         //Get event details.
         val result = repo.getEventDetails(code)
         when (result.isSuccessful()) {
-            true -> {
-                eventDetail = result.data?.event
-                tickets = result.data?.tickets
-            }
+            true -> eventDetail = result.data
             false -> onHandleError(result.statusCode, result.message)
         }
 

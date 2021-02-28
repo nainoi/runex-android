@@ -13,11 +13,11 @@
         android:layout_marginStart="@dimen/space_8dp"
         android:layout_marginEnd="@dimen/space_8dp"
         app:srcCompat="@mipmap/ic_running"
-        app:tint="@color/iconColorPrimary" />
+        app:tint="?iconColorPrimary" />
 
     <TextView
         android:id="@+id/title_label"
-        style="@style/TextBody.Secondary"
+        style="@style/Text.Body.Secondary"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_centerVertical="true"

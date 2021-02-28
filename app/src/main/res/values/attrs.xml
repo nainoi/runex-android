@@ -1,5 +1,26 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
+
+    <attr name="colorBackgroundPrimary" format="color" />
+    <attr name="colorBackgroundSecondary" format="color" />
+    <attr name="colorBackgroundThirdly" format="color" />
+
+    <attr name="colorDisable" format="color"/>
+    <attr name="colorDisableSecondary" format="color"/>
+    <attr name="colorLine" format="color"/>
+    <attr name="colorBorder" format="color"/>
+    <attr name="textColorPrimary" format="color"/>
+    <attr name="textColorSecondary" format="color"/>
+    <attr name="textColorThirdly" format="color"/>
+    <attr name="textColorHint" format="color"/>
+    <attr name="textColorError" format="color"/>
+    <attr name="textColorAccent" format="color"/>
+
+    <attr name="iconColorPrimary" format="color"/>
+    <attr name="iconColorSecondary" format="color"/>
+    <attr name="iconColorDisable" format="color"/>
+    <attr name="iconColorAccent" format="color"/>
+
     <attr name="ratioWidth" format="float" />
     <attr name="ratioHeight" format="float" />
 

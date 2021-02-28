@@ -25,7 +25,7 @@
 
     <TextView
         android:id="@+id/description_label"
-        style="@style/TextHeadLine.Primary"
+        style="@style/Text.HeadLine.Primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_centerInParent="true"
@@ -36,7 +36,7 @@
 
     <TextView
         android:id="@+id/description_label_2"
-        style="@style/TextBodyHeading.Primary"
+        style="@style/Text.BodyHeading.Primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/description_label"
@@ -59,81 +59,4 @@
         android:paddingStart="@dimen/space_48dp"
         android:paddingEnd="@dimen/space_48dp"
         android:text="@string/get_started" />
-
-    <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:tools="http://schemas.android.com/tools"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_below="@+id/on_boarding_image"
-        android:gravity="center_horizontal"
-        android:orientation="vertical"
-        android:visibility="gone"
-        tools:context=".ui.OnBoardingScreen">
-
-
-        <!--  Banner  -->
-        <LinearLayout
-            android:id="@+id/frame_banner"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:weightSum="2">
-
-            <com.think.runex.java.Customize.Views.xBrannerImage
-                android:id="@+id/imv_welcome_runex"
-                android:layout_width="0dp"
-                android:layout_height="match_parent"
-                android:layout_weight="1"
-                android:adjustViewBounds="true"
-                android:src="@mipmap/im_app_logo" />
-
-        </LinearLayout>
-
-        <!--  Preview image  -->
-        <com.think.runex.java.Customize.Views.xBrannerImage
-            android:id="@+id/imv_preview"
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
-            android:layout_marginTop="18dp"
-            android:adjustViewBounds="true"
-            android:scaleType="centerCrop"
-            android:src="@mipmap/im_on_boarding" />
-
-        <!--  Paragraph 1  -->
-        <TextView
-            android:id="@+id/v_paragraph_1"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/textButton" />
-
-        <!--  Paragraph 2  -->
-        <TextView
-            android:id="@+id/v_paragraph_2"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="28dp"
-            android:text="แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex"
-            android:textColor="@android:color/black"
-            android:textSize="@dimen/textSmall" />
-
-        <TextView
-            android:id="@+id/btn_get_started"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="46dp"
-            android:layout_marginBottom="12dp"
-            android:background="@drawable/button_get_started_background"
-            android:minHeight="0dp"
-            android:paddingHorizontal="@dimen/buttonHorizontalPadding"
-            android:paddingVertical="@dimen/buttonVerticalPadding"
-            android:text="เริ่มใช้งาน"
-            android:textColor="@android:color/white"
-            android:textSize="@dimen/textContent"
-            android:textStyle="bold" />
-
-    </LinearLayout>
-
 </RelativeLayout>

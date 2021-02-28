@@ -5,60 +5,54 @@
     <color name="colorAccent">#F7B600</color>
 
     <!-- Background colors -->
-    <color name="background">#FFFFFF</color>
-    <color name="backgroundLight">#FFFFFF</color>
-    <color name="backgroundDark">#1C1E21</color>
+    <color name="background">@color/backgroundOnLight</color>
+    <color name="backgroundOnLight">#FFFFFF</color>
+    <color name="backgroundOnDark">#1C1E21</color>
     <color name="backgroundWorkoutScreen">@color/background</color>
 
-    <color name="backgroundSecondary">#F5F7F9</color>
-    <color name="backgroundSecondaryLight">#F5F7F9</color>
-    <color name="backgroundSecondaryDark">#26282D</color>
+    <color name="backgroundSecondary">@color/backgroundSecondaryOnLight</color>
+    <color name="backgroundSecondaryOnLight">#F5F7F9</color>
+    <color name="backgroundSecondaryOnDark">#26282D</color>
 
-    <color name="backgroundThirdly">#EDF1F5</color>
-    <color name="backgroundThirdlyLight">#EDF1F5</color>
-    <color name="backgroundThirdlyDark">#313338</color>
+    <color name="backgroundThirdly">@color/backgroundThirdlyOnLight</color>
+    <color name="backgroundThirdlyOnLight">#EDF1F5</color>
+    <color name="backgroundThirdlyOnDark">#313338</color>
 
-    <color name="backgroundDialog">#FFFFFF</color>
+    <color name="disable">@color/disableOnLight</color>
+    <color name="disableOnLight">#9A9A9A</color>
+    <color name="disableOnDark">#494E52</color>
 
-    <color name="disable">#9A9A9A</color>
-    <color name="disableLight">#9A9A9A</color>
-    <color name="disableDark">#494E52</color>
-
-    <color name="disableSecondary">#EAEAEA</color>
-    <color name="disableSecondaryLight">#EAEAEA</color>
-    <color name="disableSecondaryDark">#474D51</color>
+    <color name="disableSecondary">@color/disableSecondaryOnLight</color>
+    <color name="disableSecondaryOnLight">#EAEAEA</color>
+    <color name="disableSecondaryOnDark">#474D51</color>
 
     <color name="grey">#9A9A9A</color>
     <color name="error">#CC2E2E</color>
 
-    <color name="line">#DDDDDD</color>
-    <color name="lineOnLightBackground">#DDDDDD</color>
-    <color name="lineOnDarkBackground">#42979797</color>
+    <color name="line">@color/lineOnLight</color>
+    <color name="lineOnLight">#DDDDDD</color>
+    <color name="lineOnDark">#42979797</color>
 
-    <color name="border">#B2B4B5</color>
-    <color name="borderOnLightBackground">#B2B4B5</color>
-    <color name="borderOnDarkBackground">#42979797</color>
-
-    <color name="colorSkeleton">#EEEEEE</color>
-    <color name="skeletonLight">#EEEEEE</color>
-    <color name="skeletonDark">#2B2B2B</color>
+    <color name="border">@color/borderOnLight</color>
+    <color name="borderOnLight">#B2B4B5</color>
+    <color name="borderOnDark">#42979797</color>
 
     <!-- Text Colors -->
-    <color name="textColorPrimary">#333333</color>
-    <color name="textColorPrimaryOnLightBackground">#333333</color>
-    <color name="textColorPrimaryOnDarkBackground">#FFFFFF</color>
+    <color name="textColorPrimary">@color/textColorPrimaryOnLight</color>
+    <color name="textColorPrimaryOnLight">#333333</color>
+    <color name="textColorPrimaryOnDark">#FFFFFF</color>
 
-    <color name="textColorSecondary">#494E52</color>
-    <color name="textColorSecondaryOnLightBackground">#494E52</color>
-    <color name="textColorSecondaryOnDarkBackground">#EEEEEE</color>
+    <color name="textColorSecondary">@color/textColorSecondaryOnLight</color>
+    <color name="textColorSecondaryOnLight">#494E52</color>
+    <color name="textColorSecondaryOnDark">#EEEEEE</color>
 
-    <color name="textColorThirdly">#666666</color>
-    <color name="textColorThirdlyOnLightBackground">#666666</color>
-    <color name="textColorThirdlyOnDarkBackground">#C4C4C4</color>
+    <color name="textColorThirdly">@color/textColorThirdlyOnLight</color>
+    <color name="textColorThirdlyOnLight">#666666</color>
+    <color name="textColorThirdlyOnDark">#C4C4C4</color>
 
-    <color name="textColorHint">#9A9A9A</color>
-    <color name="textColorHintOnLightBackground">#9A9A9A</color>
-    <color name="textColorHintOnDarkBackground">#797979</color>
+    <color name="textColorHint">@color/textColorHintOnLight</color>
+    <color name="textColorHintOnLight">#9A9A9A</color>
+    <color name="textColorHintOnDark">#797979</color>
 
     <color name="textColorWhite">#FFFFFF</color>
     <color name="textColorBlack">#000000</color>
@@ -68,21 +62,21 @@
     <color name="textColorBottomBar">@color/textColorHint</color>
 
     <!-- Icon colors -->
-    <color name="iconColorPrimary">#55595C</color>
-    <color name="iconColorPrimaryOnLightBackground">#55595C</color>
-    <color name="iconColorPrimaryOnDarkBackground">#FFFFFF</color>
+    <color name="iconColorPrimary">@color/iconColorPrimaryOnLight</color>
+    <color name="iconColorPrimaryOnLight">#55595C</color>
+    <color name="iconColorPrimaryOnDark">#FFFFFF</color>
 
-    <color name="iconColorSecondary">#C4CDD5</color>
-    <color name="iconColorSecondaryOnLightBackground">#C4CDD5</color>
-    <color name="iconColorSecondaryOnDarkBackground">#EEEEEE</color>
+    <color name="iconColorSecondary">@color/iconColorSecondaryOnLight</color>
+    <color name="iconColorSecondaryOnLight">#C4CDD5</color>
+    <color name="iconColorSecondaryOnDark">#EEEEEE</color>
 
-    <color name="iconColorThirdly">#666666</color>
-    <color name="iconColorThirdlyOnLightBackground">#666666</color>
-    <color name="iconColorThirdlyOnDarkBackground">#C4C4C4</color>
+    <color name="iconColorThirdly">@color/iconColorThirdlyOnLight</color>
+    <color name="iconColorThirdlyOnLight">#666666</color>
+    <color name="iconColorThirdlyOnDark">#C4C4C4</color>
 
-    <color name="iconColorDisable">#4DA8B6C8</color>
-    <color name="iconColorDisableOnLightBackground">#4DA8B6C8</color>
-    <color name="iconColorDisableOnDarkBackground">#797979</color>
+    <color name="iconColorDisable">@color/iconColorDisableOnLight</color>
+    <color name="iconColorDisableOnLight">#4DA8B6C8</color>
+    <color name="iconColorDisableOnDark">#797979</color>
 
     <color name="iconColorAccent">@color/colorAccent</color>
 

@@ -11,6 +11,7 @@ import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDrawable
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
+import com.jozzee.android.core.view.showDialog
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.*
@@ -95,12 +96,11 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     private fun updateEventDetails() {
         //Set event details to views
-        event_image?.loadEventsImage(viewModel.eventDetail?.coverImage())
+        event_image?.loadEventsImage(viewModel.eventDetail?.getCoverImage())
         event_period_label?.text = viewModel.eventDetail?.eventPeriodWithTime() ?: ""
         event_title_label?.text = viewModel.eventDetail?.title ?: ""
         event_detail_label?.text = viewModel.eventDetail?.content ?: ""
-        register_button?.isEnabled = false
-        adapter.submitList(viewModel.tickets?.toMutableList())
+        adapter.submitList(viewModel.eventDetail?.tickets?.toMutableList())
 
         //Set register button if event not free
         if (viewModel.eventDetail?.isFreeEvent == true) {
@@ -127,7 +127,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     }
 
     override fun onEBIBSpecified(eBib: String) {
-        TODO("Disable for now")
+        //TODO("Disable for now")
         //performRegisterEventWithEBIB(eBib)
     }
 

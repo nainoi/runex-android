@@ -33,7 +33,7 @@
 
         <androidx.appcompat.widget.AppCompatTextView
             android:id="@+id/username_label"
-            style="@style/TextTitle.Secondary"
+            style="@style/Text.Title.Secondary"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_16dp"
@@ -55,12 +55,12 @@
             android:paddingEnd="@dimen/space_16dp"
             android:paddingBottom="@dimen/space_8dp"
             android:text="@string/edit"
-            android:textColor="@drawable/text_color_btn_text"
+            android:textColor="@drawable/selector_text_color_btn_text"
             android:textSize="@dimen/text_size_body_heading" />
 
         <TextView
             android:id="@+id/email_label"
-            style="@style/TextBodyHeading.Secondary"
+            style="@style/Text.BodyHeading.Secondary"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_below="@+id/username_label"
@@ -174,7 +174,7 @@
 
     <TextView
         android:id="@+id/action_placeholder"
-        style="@style/TextBody.Hint"
+        style="@style/Text.Body.Hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/contract_menu_layout"
@@ -210,7 +210,7 @@
 
     <TextView
         android:id="@+id/app_version_label"
-        style="@style/TextCaption.Hint"
+        style="@style/Text.Caption.Hint"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"

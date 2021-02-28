@@ -36,7 +36,7 @@
         android:paddingVertical="@dimen/buttonVerticalPadding"
         android:layout_marginTop="42dp"
         android:textSize="18dp"
-        android:background="@drawable/state_active_with_rounded_4corners_button"
+        android:background="@drawable/shape_rectangle_primary_rounded_24dp"
         android:text="จบการส่งผล"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"/>

@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.Runex.Light"
     tools:context=".ui.workout.summary.ShareWorkoutBottomSheet">
 
     <RelativeLayout
@@ -29,11 +30,11 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_close"
-                android:tint="@color/iconColorPrimaryOnLightBackground" />
+                android:tint="?iconColorPrimary" />
 
             <TextView
                 android:id="@+id/top_bar_title"
-                style="@style/TextTitle.Secondary.OnLightBackground"
+                style="@style/Text.Title.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -96,7 +97,7 @@
 
                 <TextView
                     android:id="@+id/share_label"
-                    style="@style/TextBodyHeading.Secondary.OnLightBackground"
+                    style="@style/Text.BodyHeading.Secondary"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/map_layout"
@@ -120,7 +121,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/share_to_other_button"
-                    style="@style/Button.BorderGrey.OnLightBackground"
+                    style="@style/Button.BorderGrey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/share_to_facebook_button"
@@ -135,7 +136,7 @@
 
                 <androidx.appcompat.widget.AppCompatButton
                     android:id="@+id/save_button"
-                    style="@style/Button.BorderGrey.OnLightBackground"
+                    style="@style/Button.BorderGrey"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_below="@+id/share_to_other_button"

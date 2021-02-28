@@ -4,6 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    android:theme="@style/Theme.Runex.Light"
     tools:context=".ui.event.SelectEventsBottomSheet">
 
     <RelativeLayout
@@ -33,11 +34,11 @@
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_close"
-                android:tint="@color/iconColorPrimaryOnLightBackground" />
+                android:tint="?iconColorPrimary" />
 
             <TextView
                 android:id="@+id/top_bar_title"
-                style="@style/TextTitle.Secondary.OnLightBackground"
+                style="@style/Text.Title.Secondary"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
