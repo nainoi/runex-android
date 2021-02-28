@@ -29,6 +29,7 @@ import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*
 import com.think.runex.feature.workout.model.*
 import com.think.runex.ui.base.BaseScreen
+import com.think.runex.ui.base.PermissionsLauncherScreen
 import com.think.runex.ui.workout.MapPresenter
 import com.think.runex.ui.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.launch
@@ -37,7 +38,7 @@ import kotlinx.android.synthetic.main.screen_workout.*
 import kotlinx.coroutines.delay
 import java.lang.Exception
 
-class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListener {
+class WorkoutScreen : PermissionsLauncherScreen(), ActionControlsFragment.ActionControlsListener {
 
     private var mapPresenter: MapPresenter? = null
     private var workoutMessenger: Messenger? = null
@@ -217,7 +218,7 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
     }
 
     private fun bindWorkoutService() {
-        if (checkLocationPermissionsAndOpenGps()) {
+        checkLocationPermissionsAndOpenGps {
             val intent = Intent(requireContext(), WorkoutService::class.java)
             requireContext().bindService(intent, serviceConnection, Context.BIND_AUTO_CREATE)
             Logger.info(simpleName(), "bindWorkoutService")
@@ -231,51 +232,22 @@ class WorkoutScreen : BaseScreen(), ActionControlsFragment.ActionControlsListene
         error.printStackTrace()
     }
 
-
-    @SuppressLint("MissingPermission")
-    private fun getLastLocation() {
-        //Check location permissions before get last location
+    private fun checkLocationPermissionsAndOpenGps(callbacks: () -> Unit) {
         val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (havePermissions(permissions, RC_PERMISSION_LOCATION)) {
-            mapPresenter?.setMyLocationEnabled(true)
-            when (LocationUtil.isGpsEnabled(requireContext())) {
-                true -> {
-                    //TODO("May be update ui to detecting location")
-                    LocationUtil.getLastLocation(requireContext()) { location ->
-                        if (location != null) {
-                            mapPresenter?.animateCamera(location.toLatLng())
-                        }
+        requestPermissions(permissions) { results ->
+            when {
+                //User allow to access location.
+                allPermissionsGranted(results) -> {
+                    when (LocationUtil.isGpsEnabled(requireContext())) {
+                        true -> callbacks.invoke()
+                        false -> LocationUtil.openGps(requireActivity())
                     }
                 }
-                false -> LocationUtil.openGps(requireActivity())
-            }
-        }
-    }
-
-    @SuppressLint("MissingPermission")
-    private fun checkLocationPermissionsAndOpenGps(): Boolean {
-        val permissions = arrayOf(Manifest.permission.ACCESS_FINE_LOCATION, Manifest.permission.ACCESS_COARSE_LOCATION)
-        if (havePermissions(permissions, RC_PERMISSION_LOCATION)) {
-            mapPresenter?.setMyLocationEnabled(true)
-            when (LocationUtil.isGpsEnabled(requireContext())) {
-                true -> return true
-                false -> LocationUtil.openGps(requireActivity())
-            }
-        }
-        return false
-    }
-
-    override fun onRequestPermissionsResult(requestCode: Int, permissions: Array<out String>, grantResults: IntArray) {
-        when (requestCode) {
-            RC_PERMISSION_LOCATION -> when {
-                //User allow to access location.
-                allPermissionsGranted(grantResults) -> bindWorkoutService()
                 //User denied access to location.
                 shouldShowPermissionRationale(permissions) -> showToast(R.string.location_permission_denied)
                 //User tick Don't ask again.
                 else -> requireContext().showSettingPermissionInSettingDialog()
             }
-            else -> super.onRequestPermissionsResult(requestCode, permissions, grantResults)
         }
     }
 

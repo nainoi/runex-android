@@ -210,10 +210,10 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
 
     private fun checkPermissionsAndTakePicture() {
         val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
-        requestPermissions(permissions) { resultsMap ->
+        requestPermissions(permissions) { results ->
             when {
                 //User allow all permissions (camera, storage) will be take picture
-                allPermissionsGranted(resultsMap) -> takePictureHelper?.takePicture(requireContext()) { pictureUri ->
+                allPermissionsGranted(results) -> takePictureHelper?.takePicture(requireContext()) { pictureUri ->
                     pictureUri?.also { performUploadProfileImage(it) }
                 }
                 //User denied access to camera or storage.
