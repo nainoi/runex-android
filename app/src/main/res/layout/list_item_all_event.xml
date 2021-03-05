@@ -20,7 +20,7 @@
             android:adjustViewBounds="true"
             android:background="@mipmap/bg_item_event" />
 
-        <com.think.runex.ui.component.AspectRatioImageView
+        <com.think.runex.component.AspectRatioImageView
             android:id="@+id/event_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

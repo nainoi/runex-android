@@ -10,7 +10,7 @@ import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 
 import com.think.runex.R;
-import com.think.runex.feature.auth.TokenManager;
+import com.think.runex.feature.auth.data.TokenManager;
 import com.think.runex.java.App.App;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.Priority;

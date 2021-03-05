@@ -5,7 +5,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:paddingTop="@dimen/space_24dp"
-    tools:context=".ui.workout.history.WorkoutHistoryScreen">
+    tools:context=".feature.workout.history.WorkoutHistoryScreen">
 
     <TextView
         android:id="@+id/top_bar_title"

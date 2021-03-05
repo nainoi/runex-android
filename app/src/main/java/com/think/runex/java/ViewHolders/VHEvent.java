@@ -8,12 +8,11 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.core.content.ContextCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.feature.event.model.EventRegistered;
+import com.think.runex.feature.event.data.EventRegistered;
 import com.think.runex.feature.payment.PaymentStatus;
 import com.think.runex.java.Pages.OnItemClickListener;
 

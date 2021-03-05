@@ -5,7 +5,9 @@ import android.net.Uri
 import com.think.runex.common.getDisplayName
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
-import com.think.runex.feature.workout.model.TotalDistanceResponse
+import com.think.runex.feature.user.data.UpdateProfileImageResult
+import com.think.runex.feature.user.data.UserInfo
+import com.think.runex.feature.workout.data.TotalDistance
 import com.think.runex.util.UploadImageUtil
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody
@@ -17,7 +19,7 @@ class UserRepository(private val api: UserApi) : RemoteDataSource() {
 
     suspend fun updateUserInfo(userInfo: UserInfo): Result<UserInfo> = call(api.updateUserInfoAsync(userInfo))
 
-    suspend fun uploadProfileImage(context: Context, uri: Uri): Result<UpdateProfileImageResponse> {
+    suspend fun uploadProfileImage(context: Context, uri: Uri): Result<UpdateProfileImageResult> {
         val multipartBody = MultipartBody.Builder()
                 .setType(MultipartBody.FORM)
                 .addFormDataPart(
@@ -29,6 +31,6 @@ class UserRepository(private val api: UserApi) : RemoteDataSource() {
         return call(api.updateProfileImageAsync(multipartBody))
     }
 
-    suspend fun getTotalDistances(): Result<TotalDistanceResponse> = call(api.getTotalDistancesAsync())
+    suspend fun getTotalDistances(): Result<TotalDistance> = call(api.getTotalDistancesAsync())
 
 }

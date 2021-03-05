@@ -6,7 +6,7 @@
     android:layout_height="wrap_content"
     android:orientation="horizontal"
     android:padding="@dimen/space_8dp"
-    tools:context=".ui.workout.record.ActionControlsFragment">
+    tools:context=".feature.workout.record.ActionControlsFragment">
 
     <RelativeLayout
         android:id="@+id/main_action_button_layout"

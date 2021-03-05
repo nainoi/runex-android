@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.Runex.Light"
-    tools:context=".ui.workout.summary.ShareWorkoutBottomSheet">
+    tools:context=".feature.workout.summary.ShareWorkoutBottomSheet">
 
     <RelativeLayout
         android:id="@+id/content_layout"
@@ -54,7 +54,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content">
 
-                <com.think.runex.ui.component.SquareRelativeLayout
+                <com.think.runex.component.SquareRelativeLayout
                     android:id="@+id/map_layout"
                     android:layout_width="@dimen/share_workout_image_width"
                     android:layout_height="wrap_content">
@@ -93,7 +93,7 @@
                         android:layout_height="wrap_content"
                         android:layout_alignParentBottom="true" />
 
-                </com.think.runex.ui.component.SquareRelativeLayout>
+                </com.think.runex.component.SquareRelativeLayout>
 
                 <TextView
                     android:id="@+id/share_label"

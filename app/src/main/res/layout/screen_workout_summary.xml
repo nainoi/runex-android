@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.workout.summary.WorkoutSummaryScreen">
+    tools:context=".feature.workout.summary.WorkoutSummaryScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
@@ -180,7 +180,7 @@
         android:paddingEnd="@dimen/space_48dp"
         android:text="@string/submit_result" />
 
-    <com.think.runex.ui.component.ProgressLayout
+    <com.think.runex.component.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"
         android:layout_height="match_parent"

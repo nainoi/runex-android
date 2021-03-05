@@ -7,7 +7,7 @@ import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.think.runex.R;
-import com.think.runex.feature.event.model.EventRegistered;
+import com.think.runex.feature.event.data.EventRegistered;
 import com.think.runex.java.Pages.OnItemClickListener;
 import com.think.runex.java.ViewHolders.VHEvent;
 

@@ -1,6 +1,6 @@
 package com.think.runex.java.Models;
 
-import com.think.runex.feature.event.model.Partner;
+import com.think.runex.feature.event.data.Partner;
 
 public class EventIdAndPartnerObject {
     private String event_id;

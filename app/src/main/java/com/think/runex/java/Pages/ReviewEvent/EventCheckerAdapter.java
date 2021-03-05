@@ -5,7 +5,7 @@ import android.view.ViewGroup;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import com.think.runex.feature.event.model.EventRegistered;
+import com.think.runex.feature.event.data.EventRegistered;
 import com.think.runex.java.Models.EventIdAndPartnerObject;
 
 import java.util.ArrayList;

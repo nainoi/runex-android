@@ -6,7 +6,7 @@
     android:background="?colorBackgroundPrimary"
     android:padding="@dimen/space_24dp"
     android:theme="@style/Theme.Runex.Light"
-    tools:context=".ui.component.GenderDialog">
+    tools:context=".component.GenderDialog">
 
     <TextView
         android:id="@+id/female_label"

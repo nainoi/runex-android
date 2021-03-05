@@ -30,7 +30,7 @@
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
-        <com.think.runex.ui.component.AspectRatioImageView
+        <com.think.runex.component.AspectRatioImageView
             android:id="@+id/event_image"
             android:layout_width="match_parent"
             android:layout_height="match_parent"

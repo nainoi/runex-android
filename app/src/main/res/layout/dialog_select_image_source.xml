@@ -5,7 +5,8 @@
     android:layout_height="wrap_content"
     android:background="?colorBackgroundPrimary"
     android:padding="@dimen/space_24dp"
-    tools:context=".ui.component.SelectImageSourceDialog">
+    android:theme="@style/Theme.Runex.Light"
+    tools:context=".component.SelectImageSourceDialog">
 
     <TextView
         android:id="@+id/camera_label"

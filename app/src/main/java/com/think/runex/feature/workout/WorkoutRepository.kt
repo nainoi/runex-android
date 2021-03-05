@@ -1,7 +1,7 @@
 package com.think.runex.feature.workout
 
 import com.think.runex.datasource.api.RemoteDataSource
-import com.think.runex.feature.workout.model.WorkoutInfo
+import com.think.runex.feature.workout.data.WorkoutInfo
 
 class WorkoutRepository(private val api: WorkoutApi) : RemoteDataSource() {
 

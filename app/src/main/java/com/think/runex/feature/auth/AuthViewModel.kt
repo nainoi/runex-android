@@ -1,34 +1,32 @@
 package com.think.runex.feature.auth
 
 import android.content.Context
-import androidx.core.content.edit
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.datasource.BaseViewModel
-import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.auth.request.AuthenWithCodeRequest
-import com.think.runex.feature.user.UserInfo
+import com.think.runex.feature.auth.data.AccessToken
+import com.think.runex.feature.auth.data.TokenManager
+import com.think.runex.feature.auth.data.request.AuthWithCodeBody
+import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.java.App.App
 import com.think.runex.java.App.AppEntity
-import com.think.runex.util.AppPreference
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
 class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
 
-    suspend fun updateApiConfig() = withContext(IO) {
-        val result = repo.getApiConfig()
+    suspend fun updateAppConfig() = withContext(IO) {
+        val result = repo.getAppConfig()
 
         /** If result have api config data will be save to shared preference
          *  but if get api failed will get api config from last config in shared preference instead.
          **/
         when (result.data != null) {
-            true -> repo.setLocalApiConfig(result.data!!)
-            false -> result.data = repo.getLocalApiConfig()
+            true -> repo.setLocalAppConfig(result.data!!)
+            false -> result.data = repo.getLocalAppConfig()
         }
-        ApiConfig.updateApiConfig(result.data)
+        ApiConfig.updateAppConfig(result.data)
         return@withContext result.isSuccessful()
     }
 
@@ -51,7 +49,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     }
 
     suspend fun loginWithCode(context: Context, code: String): Boolean = withContext(IO) {
-        val loginResult = repo.loginWithCode(AuthenWithCodeRequest(code))
+        val loginResult = repo.loginWithCode(AuthWithCodeBody(code))
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.statusCode, loginResult.message)
             TokenManager.clearToken()

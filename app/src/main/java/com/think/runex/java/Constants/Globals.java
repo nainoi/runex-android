@@ -5,7 +5,6 @@ import android.app.Activity;
 
 import com.google.android.libraries.maps.model.LatLng;
 import com.google.gson.Gson;
-import com.think.runex.java.App.Configs;
 
 import java.text.DecimalFormat;
 import java.text.SimpleDateFormat;

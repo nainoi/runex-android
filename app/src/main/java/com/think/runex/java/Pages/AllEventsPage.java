@@ -19,16 +19,16 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 import com.squareup.picasso.Callback;
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.feature.event.model.EventItem;
+import com.think.runex.feature.event.data.EventItem;
 import com.think.runex.java.Customize.Fragment.xFragment;
 import com.think.runex.java.Models.AllEventsObject;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.Response.xResponse;
 import com.think.runex.java.Utils.Network.Services.GetAllEventService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
-import com.think.runex.ui.event.detail.EventPreviewActivity;
-import com.think.runex.ui.component.recyclerview.LineSeparatorItemDecoration;
-import com.think.runex.ui.event.all.AllEventsAdapter;
+import com.think.runex.feature.event.detail.EventPreviewActivity;
+import com.think.runex.component.recyclerview.LineSeparatorItemDecoration;
+import com.think.runex.feature.event.all.AllEventsAdapter;
 
 import java.net.HttpURLConnection;
 

@@ -2,8 +2,8 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
-import com.think.runex.feature.auth.TokenManager;
-import com.think.runex.feature.user.UserInfo;
+import com.think.runex.feature.auth.data.TokenManager;
+import com.think.runex.feature.user.data.UserInfo;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.Network.NetworkProps;

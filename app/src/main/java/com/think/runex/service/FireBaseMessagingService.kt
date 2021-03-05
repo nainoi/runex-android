@@ -16,7 +16,8 @@ import com.think.runex.common.toJson
 import com.think.runex.config.*
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.auth.*
-import com.think.runex.ui.MainActivity
+import com.think.runex.feature.auth.data.TokenManager
+import com.think.runex.MainActivity
 import com.think.runex.util.AppPreference
 import com.think.runex.util.launchIoThread
 

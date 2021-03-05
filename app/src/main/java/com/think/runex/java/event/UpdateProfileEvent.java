@@ -1,6 +1,6 @@
 package com.think.runex.java.event;
 
-import com.think.runex.feature.user.UserInfo;
+import com.think.runex.feature.user.data.UserInfo;
 
 public class UpdateProfileEvent {
 

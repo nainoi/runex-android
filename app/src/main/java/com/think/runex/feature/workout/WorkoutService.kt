@@ -16,9 +16,9 @@ import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
 import com.think.runex.config.*
 import com.think.runex.feature.location.LocationTracking
-import com.think.runex.feature.workout.model.*
-import com.think.runex.ui.MainActivity
-import com.think.runex.ui.workout.record.WorkoutScreen
+import com.think.runex.feature.workout.data.*
+import com.think.runex.MainActivity
+import com.think.runex.feature.workout.record.WorkoutScreen
 import io.realm.Realm
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService

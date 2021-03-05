@@ -1,7 +1,7 @@
 package com.think.runex.datasource.api
 
 import com.think.runex.BuildConfig
-import com.think.runex.feature.auth.ApiConfigResponse
+import com.think.runex.config.AppConfig
 
 class ApiConfig {
     companion object {
@@ -28,7 +28,7 @@ class ApiConfig {
         var PREVIEW_EVENT_URL = "runex.co/m/preview"
 
 
-        fun updateApiConfig(config: ApiConfigResponse?) {
+        fun updateAppConfig(config: AppConfig?) {
             if (config == null) return
             AUTH_URL = config.authTokenUrl ?: AUTH_URL
             LOGIN_URL = config.loginUrl ?: LOGIN_URL

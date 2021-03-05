@@ -1,6 +1,6 @@
 package com.think.runex.java.App;
 
-import com.think.runex.feature.user.UserInfo;
+import com.think.runex.feature.user.data.UserInfo;
 
 public class AppEntity {
     private final String ct = "AppEntity->";

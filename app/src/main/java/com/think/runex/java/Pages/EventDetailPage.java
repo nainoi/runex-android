@@ -20,7 +20,7 @@ import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.squareup.picasso.Picasso;
 import com.think.runex.R;
-import com.think.runex.feature.event.model.EventRegistered;
+import com.think.runex.feature.event.data.EventRegistered;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Constants.xAction;
 import com.think.runex.java.Customize.Fragment.xFragment;

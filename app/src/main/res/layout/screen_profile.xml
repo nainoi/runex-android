@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@color/background"
     android:paddingTop="@dimen/space_24dp"
-    tools:context=".ui.ProfileScreen">
+    tools:context=".feature.user.profile.ProfileScreen">
 
     <FrameLayout
         android:id="@+id/top_bar"

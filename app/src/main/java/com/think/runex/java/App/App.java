@@ -4,13 +4,12 @@ import android.app.Activity;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.util.Log;
 
 import androidx.fragment.app.Fragment;
 
 import com.think.runex.java.Activities.LoginActivity;
 import com.think.runex.java.Constants.Globals;
-import com.think.runex.ui.MainActivity;
+import com.think.runex.MainActivity;
 import com.think.runex.util.AppPreference;
 
 public class App {
@@ -72,6 +71,7 @@ public class App {
         return this;
     }
 
+
     public App serveLoginPage(Fragment fragment, int requestCode) {
         Intent i = new Intent(fragment.getActivity(), MainActivity.class);
         fragment.startActivityForResult(i, requestCode);
@@ -83,5 +83,7 @@ public class App {
         activity.startActivityForResult(i, requestCode);
         return this;
     }
+
+
 
 }

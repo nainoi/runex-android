@@ -36,7 +36,7 @@ import com.bumptech.glide.load.engine.DiskCacheStrategy;
 import com.google.android.material.textfield.TextInputEditText;
 import com.think.runex.BuildConfig;
 import com.think.runex.R;
-import com.think.runex.feature.user.UserInfo;
+import com.think.runex.feature.user.data.UserInfo;
 import com.think.runex.java.App.App;
 import com.think.runex.java.App.AppEntity;
 import com.think.runex.java.Constants.Globals;
@@ -49,9 +49,9 @@ import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.RxBus;
 import com.think.runex.java.event.UpdateProfileEvent;
-import com.think.runex.ui.component.ProgressDialog;
-import com.think.runex.ui.component.SelectImageSourceDialog;
-import com.think.runex.ui.component.GenderDialog;
+import com.think.runex.component.ProgressDialog;
+import com.think.runex.component.SelectImageSourceDialog;
+import com.think.runex.component.GenderDialog;
 
 import org.jetbrains.annotations.NotNull;
 

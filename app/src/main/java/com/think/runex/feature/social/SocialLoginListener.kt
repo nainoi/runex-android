@@ -1,7 +1,6 @@
 package com.think.runex.feature.social
 
 
-import com.think.runex.feature.user.UserProvider
 import java.lang.Exception
 
 interface SocialLoginListener {

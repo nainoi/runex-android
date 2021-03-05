@@ -18,7 +18,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.think.runex.feature.user.UserProvider
 import com.think.runex.java.Constants.Constants
 import java.lang.Exception
 

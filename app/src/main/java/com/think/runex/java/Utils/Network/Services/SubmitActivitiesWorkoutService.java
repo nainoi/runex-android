@@ -1,23 +1,18 @@
 package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
-import android.graphics.Bitmap;
-import android.os.FileUtils;
 
-import com.think.runex.feature.auth.TokenManager;
+import com.think.runex.feature.auth.data.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkMultipartProps;
-import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
 import com.think.runex.java.Utils.Network.Request.rqSubmitActivitiesWorkout;
-import com.think.runex.java.Utils.Network.Request.rqSubmitMultiEvents;
 import com.think.runex.java.Utils.Network.Request.xRequest;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 
 import java.io.File;
-import java.nio.file.Files;
 
 public class SubmitActivitiesWorkoutService extends xRequest {
     /**

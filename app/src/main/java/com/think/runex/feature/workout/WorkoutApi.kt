@@ -3,9 +3,9 @@ package com.think.runex.feature.workout
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.auth.TokenManager
-import com.think.runex.feature.workout.model.WorkoutHistoryMonth
-import com.think.runex.feature.workout.model.WorkoutInfo
+import com.think.runex.feature.auth.data.TokenManager
+import com.think.runex.feature.workout.data.WorkoutHistoryMonth
+import com.think.runex.feature.workout.data.WorkoutInfo
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 

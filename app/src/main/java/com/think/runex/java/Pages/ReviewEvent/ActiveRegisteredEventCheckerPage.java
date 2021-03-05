@@ -16,7 +16,7 @@ import android.view.ViewGroup;
 import android.widget.Toast;
 
 import com.think.runex.R;
-import com.think.runex.feature.event.model.EventRegistered;
+import com.think.runex.feature.event.data.EventRegistered;
 import com.think.runex.java.Models.EventIdAndPartnerObject;
 import com.think.runex.java.Models.RegisteredEventsObject;
 import com.think.runex.java.Utils.L;

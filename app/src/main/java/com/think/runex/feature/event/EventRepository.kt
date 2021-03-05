@@ -3,10 +3,9 @@ package com.think.runex.feature.event
 import com.google.gson.JsonObject
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
-import com.think.runex.feature.event.model.EventDetail
-import com.think.runex.feature.event.model.EventItem
-import com.think.runex.feature.event.model.EventRegistered
-import com.think.runex.feature.event.model.response.EventDetailResponse
+import com.think.runex.feature.event.data.EventDetail
+import com.think.runex.feature.event.data.EventItem
+import com.think.runex.feature.event.data.EventRegistered
 
 class EventRepository(private val api: EventApi) : RemoteDataSource() {
 

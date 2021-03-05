@@ -1,19 +1,20 @@
 package com.think.runex.feature.auth
 
-import android.content.Context
 import android.content.SharedPreferences
 import androidx.core.content.edit
 import com.think.runex.common.toJson
 import com.think.runex.common.toObject
 import com.think.runex.datasource.Result
-import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.datasource.api.RemoteDataSource
-import com.think.runex.feature.auth.request.AuthenWithCodeRequest
-import com.think.runex.feature.user.UserInfo
+import com.think.runex.feature.auth.data.request.AuthWithCodeBody
+import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.config.KEY_API
 import com.think.runex.config.KEY_FIREBASE_TOKEN
-import com.think.runex.feature.auth.request.FirebaseTokenRequest
+import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.feature.auth.data.AccessToken
+import com.think.runex.config.AppConfig
+import com.think.runex.feature.auth.data.request.FirebaseTokenBody
 
 class AuthRepository(private val api: AuthApi,
                      private val preferences: SharedPreferences) : RemoteDataSource() {
@@ -35,15 +36,15 @@ class AuthRepository(private val api: AuthApi,
         }
     }
 
-    fun setLocalApiConfig(config: ApiConfigResponse) {
+    fun setLocalAppConfig(config: AppConfig) {
         preferences.edit {
             putString(KEY_API, config.toJson())
         }
     }
 
-    fun getLocalApiConfig(): ApiConfigResponse {
+    fun getLocalAppConfig(): AppConfig {
         return preferences.getString(KEY_API, "")
-                .toObject(ApiConfigResponse::class.java) ?: ApiConfigResponse()
+                .toObject(AppConfig::class.java) ?: AppConfig()
     }
 
     fun getFirebaseToken(): String? {
@@ -71,21 +72,21 @@ class AuthRepository(private val api: AuthApi,
     }
 
     suspend fun sendFirebaseTokenToServer(firebaseToken: String): Result<Any> {
-        return call(api.sendFirebaseTokenToServerAsync(FirebaseTokenRequest(firebaseToken)))
+        return call(api.sendFirebaseTokenToServerAsync(FirebaseTokenBody(firebaseToken)))
     }
 
-    suspend fun loginWithCode(body: AuthenWithCodeRequest): Result<AccessToken> {
-        return calls(api.authenWithCodeAsync(ApiConfig.AUTH_URL, body))
+    suspend fun loginWithCode(body: AuthWithCodeBody): Result<AccessToken> {
+        return calls(api.authWithCodeAsync(ApiConfig.AUTH_URL, body))
     }
 
     suspend fun getUserInfo(): Result<UserInfo> = call(api.getUserInfoAsync())
 
-    suspend fun getApiConfig(): Result<ApiConfigResponse> = call(api.getApiConfigAsync())
+    suspend fun getAppConfig(): Result<AppConfig> = call(api.getAppConfigAsync())
 
     suspend fun logout(): Result<Any> {
         val firebaseToken = getFirebaseToken()
         return when (firebaseToken?.isNotBlank() == true) {
-            true -> call(api.logoutAsync(FirebaseTokenRequest(firebaseToken)))
+            true -> call(api.logoutAsync(FirebaseTokenBody(firebaseToken)))
             false -> call(api.logoutWithoutFirebaseTokenAsync())
         }
     }

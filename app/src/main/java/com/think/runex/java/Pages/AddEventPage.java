@@ -42,7 +42,7 @@ import com.think.runex.java.Utils.Network.Services.AddEventActivityService;
 import com.think.runex.java.Utils.Network.onNetworkCallback;
 import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.UriUtils;
-import com.think.runex.ui.component.NumberTextWatcher;
+import com.think.runex.component.NumberTextWatcher;
 
 import java.io.File;
 import java.text.SimpleDateFormat;

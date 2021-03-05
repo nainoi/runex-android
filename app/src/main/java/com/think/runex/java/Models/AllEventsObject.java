@@ -1,6 +1,6 @@
 package com.think.runex.java.Models;
 
-import com.think.runex.feature.event.model.EventItem;
+import com.think.runex.feature.event.data.EventItem;
 
 import java.util.List;
 

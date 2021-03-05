@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/background"
-    tools:context=".ui.event.detail.EventDetailsScreen">
+    tools:context=".feature.event.detail.EventDetailsScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
@@ -31,7 +31,7 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent">
 
-            <com.think.runex.ui.component.AspectRatioImageView
+            <com.think.runex.component.AspectRatioImageView
                 android:id="@+id/event_image"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

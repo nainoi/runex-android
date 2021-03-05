@@ -3,13 +3,12 @@ package com.think.runex.feature.event
 import com.google.gson.JsonObject
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.auth.TokenManager
-import com.think.runex.feature.event.model.response.IsRegisteredEventResponse
+import com.think.runex.feature.auth.data.TokenManager
+import com.think.runex.feature.event.data.IsRegisteredEvent
 import com.think.runex.config.AUTHORIZATION
-import com.think.runex.feature.event.model.EventDetail
-import com.think.runex.feature.event.model.EventItem
-import com.think.runex.feature.event.model.EventRegistered
-import com.think.runex.feature.event.model.response.EventDetailResponse
+import com.think.runex.feature.event.data.EventDetail
+import com.think.runex.feature.event.data.EventItem
+import com.think.runex.feature.event.data.EventRegistered
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 
@@ -31,7 +30,7 @@ interface EventApi {
     @GET("/api/${ApiConfig.API_VERSION}/register/checkUserRegisterEvent/{code}")
     fun isRegisteredEventAsync(
             @Path("code") code: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<IsRegisteredEventResponse>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<IsRegisteredEvent>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventWithKaoAsync(

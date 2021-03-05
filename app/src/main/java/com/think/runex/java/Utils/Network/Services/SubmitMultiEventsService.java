@@ -2,13 +2,12 @@ package com.think.runex.java.Utils.Network.Services;
 
 import android.app.Activity;
 
-import com.think.runex.feature.auth.TokenManager;
+import com.think.runex.feature.auth.data.TokenManager;
 import com.think.runex.java.Constants.APIs;
 import com.think.runex.java.Constants.Globals;
 import com.think.runex.java.Utils.L;
 import com.think.runex.java.Utils.Network.NetworkProps;
 import com.think.runex.java.Utils.Network.NetworkUtils;
-import com.think.runex.java.Utils.Network.Request.rqSocialPd;
 import com.think.runex.java.Utils.Network.Request.rqSubmitMultiEvents;
 import com.think.runex.java.Utils.Network.Request.xRequest;
 import com.think.runex.java.Utils.Network.onNetworkCallback;

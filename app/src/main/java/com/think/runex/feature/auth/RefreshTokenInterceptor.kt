@@ -1,32 +1,24 @@
 package com.think.runex.feature.auth
 
 import android.content.Context
-import android.content.SharedPreferences
-import android.util.Log
 import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.jozzee.android.core.text.isJsonFormat
 import com.think.runex.common.toJson
-import com.think.runex.common.toObject
-import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.auth.request.RefreshTokenRequest
-import com.think.runex.java.App.App
-import com.think.runex.java.App.App.APP_ENTITY
-import com.think.runex.java.App.AppEntity
+import com.think.runex.feature.auth.data.request.RefreshTokenBody
 import com.think.runex.java.Constants.Globals
-import com.think.runex.java.Models.TokenObject
 import com.think.runex.util.AppPreference
 import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.config.KEY_DATA
 import com.think.runex.config.KEY_REFRESH_TOKEN
+import com.think.runex.feature.auth.data.AccessToken
+import com.think.runex.feature.auth.data.TokenManager
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.net.UnknownHostException
-import java.nio.charset.StandardCharsets
-import javax.net.ssl.HttpsURLConnection
 
 class RefreshTokenInterceptor(private val context: Context) : Interceptor {
 
@@ -45,7 +37,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
             if (response.code == 401 || response.code == 444) {
                 response.close()
                 //Log.w("RefreshTokenInterceptor", "Code: ${response.code} Auto refresh token!!")
-                val body = RefreshTokenRequest(TokenManager.accessToken, TokenManager.refreshToken)
+                val body = RefreshTokenBody(TokenManager.accessToken, TokenManager.refreshToken)
                 val refreshTokenRequest = Request.Builder()
                         .url(ApiConfig.REFRESH_TOKEN_URL)
                         .post(body.toJson().toRequestBody("application/json; charset=UTF-8".toMediaType()))
