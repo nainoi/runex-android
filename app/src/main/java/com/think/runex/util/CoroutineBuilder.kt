@@ -5,19 +5,16 @@ import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.lifecycleScope
 import androidx.lifecycle.viewModelScope
-import kotlinx.coroutines.CoroutineScope
-import kotlinx.coroutines.Dispatchers
-import kotlinx.coroutines.cancelChildren
-import kotlinx.coroutines.launch
+import kotlinx.coroutines.*
 
 
 /**
  * Build main thread with new coroutine scope.
  * @param block the coroutine code
  */
-fun launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit) {
-    CoroutineScope(Dispatchers.Main).launch {
-        kotlinx.coroutines.delay(delay)
+fun launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit): Job {
+    return CoroutineScope(Dispatchers.Main).launch {
+        delay(delay)
         block()
     }
 }
@@ -26,14 +23,14 @@ fun launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit) 
 /**
  * Build background thread with new coroutine scope.
  */
-fun launchIoThread(block: suspend CoroutineScope.() -> Unit) {
-    CoroutineScope(Dispatchers.IO).launch {
+fun launchIoThread(block: suspend CoroutineScope.() -> Unit): Job {
+    return CoroutineScope(Dispatchers.IO).launch {
         block()
     }
 }
 
-fun FragmentActivity.launch(block: suspend CoroutineScope.() -> Unit) {
-    lifecycleScope.launch {
+fun FragmentActivity.launch(block: suspend CoroutineScope.() -> Unit): Job {
+    return lifecycleScope.launch {
         block()
     }
 }
@@ -41,9 +38,9 @@ fun FragmentActivity.launch(block: suspend CoroutineScope.() -> Unit) {
 /**
  * Build main thread with activity lifecycle scope.
  */
-fun FragmentActivity.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit) {
-    if (isDestroyed) return
-    lifecycleScope.launch(Dispatchers.Main) {
+fun FragmentActivity.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit): Job {
+    //if (isDestroyed) return
+    return lifecycleScope.launch(Dispatchers.Main) {
         kotlinx.coroutines.delay(delay)
         block()
     }
@@ -52,9 +49,9 @@ fun FragmentActivity.launchMainThread(delay: Long = 0, block: suspend CoroutineS
 /**
  * Build background thread with activity lifecycle scope.
  */
-fun FragmentActivity.launchIoThread(block: suspend CoroutineScope.() -> Unit) {
-    if (isDestroyed) return
-    lifecycleScope.launch(Dispatchers.IO) {
+fun FragmentActivity.launchIoThread(block: suspend CoroutineScope.() -> Unit): Job {
+    //if (isDestroyed) return
+    return lifecycleScope.launch(Dispatchers.IO) {
         block()
     }
 }
@@ -67,8 +64,8 @@ fun FragmentActivity.cancelJobs() {
     lifecycleScope.coroutineContext.cancelChildren()
 }
 
-fun Fragment.launch(block: suspend CoroutineScope.() -> Unit) {
-    viewLifecycleOwner.lifecycleScope.launch {
+fun Fragment.launch(block: suspend CoroutineScope.() -> Unit): Job {
+    return viewLifecycleOwner.lifecycleScope.launch {
         block()
     }
 }
@@ -76,9 +73,9 @@ fun Fragment.launch(block: suspend CoroutineScope.() -> Unit) {
 /**
  * Build main thread with fragment lifecycle scope.
  */
-fun Fragment.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit) {
-    if (view == null || isAdded.not()) return
-    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
+fun Fragment.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit): Job {
+    //if (view == null || isAdded.not()) return
+    return viewLifecycleOwner.lifecycleScope.launch(Dispatchers.Main) {
         kotlinx.coroutines.delay(delay)
         block()
     }
@@ -87,9 +84,9 @@ fun Fragment.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() 
 /**
  * Build background thread with fragment lifecycle scope.
  */
-fun Fragment.launchIoThread(block: suspend CoroutineScope.() -> Unit) {
-    if (view == null || isAdded.not()) return
-    viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
+fun Fragment.launchIoThread(block: suspend CoroutineScope.() -> Unit): Job {
+    //if (view == null || isAdded.not()) return
+    return viewLifecycleOwner.lifecycleScope.launch(Dispatchers.IO) {
         block()
     }
 }
@@ -109,15 +106,15 @@ fun Fragment.runOnUiThread(block: () -> Unit) = activity?.runOnUiThread {
     block()
 }
 
-fun ViewModel.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit) {
-    viewModelScope.launch(Dispatchers.Main) {
+fun ViewModel.launchMainThread(delay: Long = 0, block: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch(Dispatchers.Main) {
         kotlinx.coroutines.delay(delay)
         block()
     }
 }
 
-fun ViewModel.launchIoThread(block: suspend CoroutineScope.() -> Unit) {
-    viewModelScope.launch(Dispatchers.Main) {
+fun ViewModel.launchIoThread(block: suspend CoroutineScope.() -> Unit): Job {
+    return viewModelScope.launch(Dispatchers.Main) {
         block()
     }
 }

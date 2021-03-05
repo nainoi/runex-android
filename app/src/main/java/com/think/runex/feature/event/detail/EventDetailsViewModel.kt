@@ -1,33 +1,34 @@
 package com.think.runex.feature.event.detail
 
+import androidx.lifecycle.MutableLiveData
 import com.google.gson.*
 import com.think.runex.datasource.BaseViewModel
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.data.EventItem
+import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
-class EventDetailsViewModel(private val repo: EventRepository) : BaseViewModel() {
+open class EventDetailsViewModel(private val repo: EventRepository) : BaseViewModel() {
 
-    var eventDetail: EventDetail? = null
-        private set
+    val eventDetail: MutableLiveData<EventDetail> by lazy { MutableLiveData() }
 
     private var isRegisteredEvent: Boolean? = null
 
-    suspend fun getEventDetail(code: String): Boolean = withContext(IO) {
+    fun getEventDetail(code: String) = launchIoThread {
 
         //Get event details.
         val result = repo.getEventDetails(code)
-        when (result.isSuccessful()) {
-            true -> eventDetail = result.data
-            false -> onHandleError(result.statusCode, result.message)
+        if (result.isSuccessful().not()) {
+            onHandleError(result.statusCode, result.message)
         }
 
         //Check registered event
         isRegisteredEvent = isRegisteredEvent(code)
-
-        return@withContext result.isSuccessful()
+        if (result.isSuccessful()) {
+            eventDetail.postValue(result.data)
+        }
     }
 
     suspend fun isRegisteredEvent(code: String): Boolean = withContext(IO) {
@@ -93,5 +94,10 @@ class EventDetailsViewModel(private val repo: EventRepository) : BaseViewModel()
 
         //TODO("Disable for now")
         return@withContext false
+    }
+
+    override fun onCleared() {
+        super.onCleared()
+        eventDetail.postValue(null)
     }
 }

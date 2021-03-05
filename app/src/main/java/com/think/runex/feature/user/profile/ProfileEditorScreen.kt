@@ -43,7 +43,6 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
 
     private var currentBirthDate: String? = null
     private var currentGender: String? = null
-    private var tempProfileImageUri: Uri? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -130,8 +129,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         if (calendar.year() < 1000) {
             calendar = Calendar.getInstance()
         }
-        DatePickerDialog(requireContext(), this, calendar.get(Calendar.YEAR),
-                calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).run {
+        DatePickerDialog(requireContext(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).run {
             datePicker.maxDate = System.currentTimeMillis()
             show()
         }

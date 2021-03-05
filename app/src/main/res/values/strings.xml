@@ -3,6 +3,7 @@
     <string name="app_name">RUNEX</string>
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
+    <string name="address">Address</string>
 
     <string name="add_distance">Add</string>
     <string name="add_image">Add image</string>
@@ -47,7 +48,7 @@
     <string name="delete_image">Delete image</string>
     <string name="date_required">Please select date</string>
     <string name="duration">Duration</string>
-
+    <string name="district">Amphoe</string>
 
     <!-- E -->
     <string name="edit">Edit</string>
@@ -65,6 +66,7 @@
     <string name="forgot_password">Forgot password</string>
     <string name="free">Free</string>
     <string name="failed">Failed</string>
+    <string name="fill_out_user_info">Fill out user info</string>
 
     <!-- G -->
     <string name="get_started">Get started</string>
@@ -75,6 +77,7 @@
     <string name="history">History</string>
 
     <!-- I -->
+    <string name="identification_number">Identification number</string>
 
     <!-- J -->
 
@@ -126,6 +129,8 @@
     <string name="please_login">Please Login</string>
     <string name="passed">Passed</string>
     <string name="pace">Pace</string>
+    <string name="phone">Phone</string>
+    <string name="province">Province</string>
 
     <!-- R -->
     <string name="record">Record</string>
@@ -139,6 +144,8 @@
 
     <!-- S -->
     <string name="select_image">Select image</string>
+    <string name="select_ticket_type">Select ticket</string>
+    <string name="select_shirt_size">Select shirt size</string>
     <string name="setting">Setting</string>
     <string name="start_recording">Start</string>
     <string name="stop_recording">Stop</string>
@@ -149,6 +156,7 @@
     <string name="share">Share</string>
     <string name="save_to_device">Save to device</string>
     <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
+    <string name="sub_district">District</string>
 
     <!-- T -->
     <string name="time">Time</string>
@@ -167,6 +175,7 @@
     <string name="waiting_for_approve">Waiting for approve</string>
     <string name="waiting_for_payment">Waiting for payment</string>
     <string name="workout">Workout</string>
+    <string name="weight">Weight</string>
 
     <!-- Y -->
 

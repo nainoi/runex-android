@@ -16,6 +16,8 @@ import com.think.runex.common.*
 import com.think.runex.config.KEY_CODE
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
+import com.think.runex.feature.event.data.EventDetail
+import com.think.runex.feature.event.register.RegisterEventScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_event_details.*
@@ -49,7 +51,8 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
-        performGetEventDetails(arguments?.getString(KEY_CODE) ?: "")
+
+        viewModel.getEventDetail(arguments?.getString(KEY_CODE) ?: "")
     }
 
     private fun setupComponents() {
@@ -72,34 +75,32 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         }
 
         register_button?.setOnClickListener {
-            //TODO("Disable for now")
+            //Register with KAO
             //if (viewModel.eventDetail?.partner?.partnerName == "KAO") {
             //     showDialog(RegisterEventWithEBIBDialog())
             //}
+            addFragment(RegisterEventScreen.newInstance(arguments?.getString(KEY_CODE) ?: ""))
         }
 
         viewModel.setOnHandleError(::errorHandler)
-    }
 
-    private fun performGetEventDetails(code: String) = launch {
-        showLoading()
-        val isSuccess = viewModel.getEventDetail(code)
-        if (isSuccess) {
+        observe(viewModel.eventDetail) { eventDetail ->
+            if (view == null || isAdded.not()) return@observe
             hideLoading()
-            updateEventDetails()
+            updateEventDetails(eventDetail)
         }
     }
 
-    private fun updateEventDetails() {
+    private fun updateEventDetails(eventDetail: EventDetail?) {
         //Set event details to views
-        event_image?.loadEventsImage(viewModel.eventDetail?.getCoverImage())
-        event_period_label?.text = viewModel.eventDetail?.eventPeriodWithTime() ?: ""
-        event_title_label?.text = viewModel.eventDetail?.title ?: ""
-        event_detail_label?.text = viewModel.eventDetail?.content ?: ""
-        adapter.submitList(viewModel.eventDetail?.tickets?.toMutableList())
+        event_image?.loadEventsImage(eventDetail?.getCoverImage())
+        event_period_label?.text = eventDetail?.eventPeriodWithTime() ?: ""
+        event_title_label?.text = eventDetail?.title ?: ""
+        event_detail_label?.text = eventDetail?.content ?: ""
+        adapter.submitList(eventDetail?.tickets?.toMutableList())
 
         //Set register button if event not free
-        if (viewModel.eventDetail?.isFreeEvent == true) {
+        if (eventDetail?.isFreeEvent == true) {
             register_button?.isEnabled = true
         }
         launch {
@@ -148,7 +149,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     override fun errorHandler(statusCode: Int, message: String) {
         super.errorHandler(statusCode, message)
-        progress_bar?.gone()
+        hideLoading()
     }
 
     private fun showLoading() {
@@ -163,4 +164,8 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         progress_bar?.gone()
     }
 
+    override fun onDestroy() {
+        removeObservers(viewModel.eventDetail)
+        super.onDestroy()
+    }
 }
