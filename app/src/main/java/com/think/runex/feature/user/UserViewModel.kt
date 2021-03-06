@@ -26,6 +26,28 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
         }
     }
 
+    suspend fun getUSerInfoInstance(): UserInfo? = withContext(IO) {
+        if (userInfo.value != null) {
+            return@withContext userInfo.value
+        }
+        val userInfoResult = repo.userInfo()
+        if (userInfoResult.isSuccessful()) {
+            val totalDistanceResult = repo.getTotalDistances()
+            userInfoResult.data?.totalDistance = totalDistanceResult.data?.totalDistance
+            userInfo.postValue(userInfoResult.data)
+        } else {
+            onHandleError(userInfoResult.statusCode, userInfoResult.message)
+        }
+
+        return@withContext userInfoResult.data
+    }
+
+    fun getUserInfoIfNotHave() {
+        if (userInfo.value == null) {
+            getUSerInfo()
+        }
+    }
+
     suspend fun updateUserInfo(userInfo: UserInfo): Boolean = withContext(IO) {
         val result = repo.updateUserInfo(userInfo)
         when (result.isSuccessful()) {

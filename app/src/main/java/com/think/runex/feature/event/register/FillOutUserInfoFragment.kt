@@ -18,7 +18,10 @@ import com.think.runex.feature.user.GenderDialog
 import com.think.runex.config.DISPLAY_DATE_FORMAT_FULL_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.feature.event.data.Shirt
+import com.think.runex.feature.user.UserViewModel
+import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.feature.user.data.Gender
+import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.fragment_fill_out_user_info.*
 import java.util.*
 import kotlin.collections.ArrayList
@@ -33,6 +36,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = requireParentFragment().getViewModel(RegisterEventViewModelFactory(requireContext()))
     }
 
@@ -47,7 +51,27 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun setupComponents() {
+        launch {
+            requireActivity().getViewModel<UserViewModel>(UserViewModelFactory(requireContext())).getUSerInfoInstance()?.also { userInfo ->
+                //Set user info form view model
+                first_name_input?.setText(userInfo.firstName ?: "")
+                last_name_input?.setText(userInfo.lastName ?: "")
+                phone_input?.setText(userInfo.phone ?: "")
 
+                //Birth date
+                currentBirthDate = userInfo.birthDate
+                userInfo.getBirthDateCalendar()?.also { calendar ->
+                    when (calendar.year() > 1000) {
+                        true -> birth_date_input?.setText(userInfo.getBirthDate(DISPLAY_DATE_FORMAT_FULL_MONTH))
+                        false -> birth_date_input?.setText("")
+                    }
+                }
+
+                //Gender
+                currentGender = userInfo.gender
+                gender_input?.setText(userInfo.gender ?: "")
+            }
+        }
     }
 
     private fun subscribeUi() {

@@ -16,6 +16,8 @@ import com.think.runex.common.*
 import com.think.runex.config.KEY_CODE
 import com.think.runex.feature.event.detail.EventDetailsViewModel
 import com.think.runex.feature.event.detail.EventDetailsViewModelFactory
+import com.think.runex.feature.user.UserViewModel
+import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_register_event.*
@@ -36,7 +38,11 @@ class RegisterEventScreen : BaseScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         viewModel = getViewModel(RegisterEventViewModelFactory(requireContext()))
+
+        //Get user info for fill out
+        requireActivity().getViewModel<UserViewModel>(UserViewModelFactory(requireContext())).getUserInfoIfNotHave()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
