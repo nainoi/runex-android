@@ -67,6 +67,7 @@
     <string name="free">ฟรี</string>
     <string name="failed">ล้มเหลว</string>
     <string name="fill_out_user_info">กรอกข้อมูลส่วนตัว</string>
+    <string name="fill_out_address">กรอกที่อยู่</string>
 
     <!-- G -->
     <string name="get_started">เริ่มใช้งาน</string>
@@ -112,6 +113,7 @@
     <string name="note">จดบันทึก</string>
     <string name="number_of_time">ครั้ง</string>
     <string name="number_of_times">ครั้ง</string>
+    <string name="no_shirts_to_choose">ไม่มีเสื้อให้เลือก</string>
 
     <!-- O -->
     <string name="ok">ตกลง</string>
@@ -157,6 +159,7 @@
     <string name="save_to_device">บันทึกภาพลงอุปกรณ์</string>
     <string name="storage_permission_denied">ไม่สามารถเข้าถึงพื้นที่เก็บข้อมูลของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="sub_district">ตำบล</string>
+    <string name="shirt_size">ขนาดเสื้อ</string>
 
     <!-- T -->
     <string name="time">เวลา</string>
@@ -181,6 +184,7 @@
     <!-- Y -->
 
     <!-- Z -->
+    <string name="zip_code">รหัสไปรษณีย์</string>
 
     <string name="u250">·</string>
 

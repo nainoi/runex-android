@@ -20,7 +20,6 @@ class RegisterEventWithEBIBDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = false
         setStyle(STYLE_NORMAL, R.style.AppAlertDialog)
     }
 

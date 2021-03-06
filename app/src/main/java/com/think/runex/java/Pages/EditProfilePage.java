@@ -50,8 +50,8 @@ import com.think.runex.java.Utils.PermissionUtils;
 import com.think.runex.java.Utils.RxBus;
 import com.think.runex.java.event.UpdateProfileEvent;
 import com.think.runex.component.ProgressDialog;
-import com.think.runex.component.SelectImageSourceDialog;
-import com.think.runex.component.GenderDialog;
+import com.think.runex.component.ImageSourcesDialog;
+import com.think.runex.feature.user.GenderDialog;
 
 import org.jetbrains.annotations.NotNull;
 
@@ -72,7 +72,7 @@ import static com.think.runex.config.ConstantsKt.SERVER_DATE_TIME_FORMAT;
 
 public class EditProfilePage extends xFragment
         implements DatePickerDialog.OnDateSetListener,
-        GenderDialog.OnGenderSelectedListener, SelectImageSourceDialog.OnSelectImageSourceListener {
+        GenderDialog.OnGenderSelectedListener, ImageSourcesDialog.OnSelectImageSourceListener {
 
     private static final int RC_CAMERA_PERMISSION = 9001;
     private static final int RC_READ_EXTERNAL_PERMISSION = 9002;
@@ -169,7 +169,7 @@ public class EditProfilePage extends xFragment
         changeProfileImageButton.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                new SelectImageSourceDialog().show(getChildFragmentManager(), "SelectImageSourceDialog");
+                new ImageSourcesDialog().show(getChildFragmentManager(), "SelectImageSourceDialog");
             }
         });
 
@@ -377,11 +377,11 @@ public class EditProfilePage extends xFragment
 
     @Override
     public void onSelectImageSource(int source) {
-        if (source == SelectImageSourceDialog.SOURCE_CAMERA) {
+        if (source == ImageSourcesDialog.SOURCE_CAMERA) {
             if (checkCameraPermission()) {
                 openCamera();
             }
-        } else if (source == SelectImageSourceDialog.SOURCE_GALLERY) {
+        } else if (source == ImageSourcesDialog.SOURCE_GALLERY) {
             if (checkGalleryPermission()) {
                 openGallery();
             }

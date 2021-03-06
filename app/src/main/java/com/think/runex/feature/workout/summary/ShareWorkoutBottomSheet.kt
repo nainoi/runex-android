@@ -42,7 +42,7 @@ import com.think.runex.config.APP_SCHEME
 import com.think.runex.config.KEY_DATA
 import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.base.PermissionsLauncherBottomSheet
-import com.think.runex.component.SelectImageSourceDialog
+import com.think.runex.component.ImageSourcesDialog
 import com.think.runex.feature.workout.MapPresenter
 import com.think.runex.util.GetContentHelper
 import com.think.runex.util.TakePictureHelper
@@ -53,7 +53,7 @@ import java.io.File
 import java.io.FileOutputStream
 import java.io.OutputStream
 
-class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), SelectImageSourceDialog.OnSelectImageSourceListener {
+class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDialog.OnSelectImageSourceListener {
 
     companion object {
         @JvmStatic
@@ -122,7 +122,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), SelectImageSou
         }
 
         add_image_button?.setOnClickListener {
-            showDialog(SelectImageSourceDialog())
+            showDialog(ImageSourcesDialog())
         }
 
         remove_image_button?.setOnClickListener {
@@ -171,8 +171,8 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), SelectImageSou
 
     override fun onSelectImageSource(source: Int) {
         when (source) {
-            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()
-            SelectImageSourceDialog.SOURCE_GALLERY -> checkPermissionAndGetImageContent()
+            ImageSourcesDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()
+            ImageSourcesDialog.SOURCE_GALLERY -> checkPermissionAndGetImageContent()
         }
     }
 

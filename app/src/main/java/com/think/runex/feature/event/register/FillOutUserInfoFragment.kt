@@ -2,7 +2,6 @@ package com.think.runex.feature.event.register
 
 import android.app.DatePickerDialog
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,22 +10,30 @@ import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toCalendar
 import com.jozzee.android.core.datetime.year
 import com.jozzee.android.core.view.showDialog
+import com.jozzee.android.core.view.showToast
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.component.GenderDialog
+import com.think.runex.common.getViewModel
+import com.think.runex.feature.user.GenderDialog
 import com.think.runex.config.DISPLAY_DATE_FORMAT_FULL_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.feature.event.data.Shirt
 import com.think.runex.feature.user.data.Gender
 import kotlinx.android.synthetic.main.fragment_fill_out_user_info.*
 import java.util.*
+import kotlin.collections.ArrayList
 
-class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener, GenderDialog.OnGenderSelectedListener {
+class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener,
+        GenderDialog.OnGenderSelectedListener, ShirtsDialog.OnShirtSelectedListener {
+
+    private lateinit var viewModel: RegisterEventViewModel
 
     private var currentBirthDate: String? = null
     private var currentGender: String? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        viewModel = requireParentFragment().getViewModel(RegisterEventViewModelFactory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -51,6 +58,13 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
 
         gender_input?.setOnClickListener {
             showDialog(GenderDialog())
+        }
+
+        shirt_size_input?.setOnClickListener {
+            when (viewModel.eventDetail.value?.shirts?.isNotEmpty() == true) {
+                true -> showDialog(ShirtsDialog.newInstance(ArrayList(viewModel.eventDetail.value?.shirts)))
+                false -> showToast(R.string.no_shirts_to_choose)
+            }
         }
     }
 
@@ -83,5 +97,9 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             else -> gender_input.setText(getString(R.string.other))
         }
         //isDataValid()
+    }
+
+    override fun onShirtSelected(shirt: Shirt) {
+        viewModel.onSelectShirt(shirt)
     }
 }

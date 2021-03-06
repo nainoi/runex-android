@@ -16,6 +16,7 @@ import com.think.runex.common.*
 import com.think.runex.config.KEY_CODE
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
+import com.think.runex.feature.event.TicketsAdapter
 import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.register.RegisterEventScreen
 import com.think.runex.util.NightMode
@@ -36,7 +37,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     private lateinit var viewModel: EventDetailsViewModel
 
-    private lateinit var adapter: TicketTypeAdapter
+    private lateinit var adapter: TicketsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -60,7 +61,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         setupToolbar(toolbar, R.string.event_detail, R.drawable.ic_navigation_back)
 
         //Set up recycler view
-        adapter = TicketTypeAdapter()
+        adapter = TicketsAdapter()
         val lineSeparator = getDrawable(R.drawable.line_separator_list_item)?.apply {
             setColorFilter(getColor(R.color.border))
         }

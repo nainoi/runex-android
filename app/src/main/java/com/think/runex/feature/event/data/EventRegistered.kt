@@ -31,7 +31,7 @@ data class EventRegistered(
         @SerializedName("start_event") var eventStartDate: String? = null,
         @SerializedName("start_reg") var registerStartDate: String? = null,
         @SerializedName("status") var status: String? = null,
-        @SerializedName("ticket") var ticket: List<TicketEventRegistered>? = null,
+        @SerializedName("ticket") var tickets: List<Ticket>? = null,
         @SerializedName("updated_time") var updatedAt: String? = null) {
 
     var isChecked: Boolean = false

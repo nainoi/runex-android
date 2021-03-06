@@ -6,7 +6,7 @@
     android:background="?colorBackgroundPrimary"
     android:padding="@dimen/space_24dp"
     android:theme="@style/Theme.Runex.Light"
-    tools:context=".component.SelectImageSourceDialog">
+    tools:context=".component.ImageSourcesDialog">
 
     <TextView
         android:id="@+id/camera_label"

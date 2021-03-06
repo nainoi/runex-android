@@ -40,8 +40,8 @@ data class EventDetail(
         @SerializedName("registerStartDate") var registerStartDate: String? = "",
         @SerializedName("registerStartDateText") var registerStartDateDisplay: String? = "",
         @SerializedName("schedules") var schedules: List<Schedule>? = null,
-        @SerializedName("tickets") var tickets:List<TicketEventDetail>? = null,
-        @SerializedName("shirts") var shirts: List<Shirts>? = null,
+        @SerializedName("tickets") var tickets:List<Ticket>? = null,
+        @SerializedName("shirts") var shirts: List<Shirt>? = null,
         @SerializedName("title") var title: String? = "",
         @SerializedName("userId") var userId: String? = "") {
 

@@ -67,6 +67,7 @@
     <string name="free">Free</string>
     <string name="failed">Failed</string>
     <string name="fill_out_user_info">Fill out user info</string>
+    <string name="fill_out_address">Fill out address</string>
 
     <!-- G -->
     <string name="get_started">Get started</string>
@@ -112,6 +113,7 @@
     <string name="note">Note</string>
     <string name="number_of_time">Time</string>
     <string name="number_of_times">Times</string>
+    <string name="no_shirts_to_choose">No shirts to choose</string>
 
     <!-- O -->
     <string name="ok">OK</string>
@@ -157,6 +159,7 @@
     <string name="save_to_device">Save to device</string>
     <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
     <string name="sub_district">District</string>
+    <string name="shirt_size">shirt size</string>
 
     <!-- T -->
     <string name="time">Time</string>
@@ -180,6 +183,7 @@
     <!-- Y -->
 
     <!-- Z -->
+    <string name="zip_code">Zip code</string>
 
     <string name="u250">·</string>
 

@@ -1,6 +1,5 @@
-package com.think.runex.feature.event.detail
+package com.think.runex.feature.event
 
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -9,17 +8,15 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.getString
-import com.think.runex.common.requireContext
-import com.think.runex.feature.event.data.EventItem
-import com.think.runex.feature.event.data.TicketEventDetail
+import com.think.runex.feature.event.data.Ticket
 import kotlinx.android.synthetic.main.list_item_ticket_type.view.*
 
-class TicketTypeAdapter(private val isClickable: Boolean = false) : ListAdapter<TicketEventDetail, TicketTypeAdapter.ViewHolder>(TicketTypeDiffCallback()) {
+class TicketsAdapter(private val isClickable: Boolean = false) : ListAdapter<Ticket, TicketsAdapter.ViewHolder>(TicketTypeDiffCallback()) {
 
-    var onItemClickListener: ((ticket: TicketEventDetail) -> Unit)? = null
+    var onItemClickListener: ((ticket: Ticket) -> Unit)? = null
 
     @JvmName("setOnItemClickListenerJava")
-    fun setOnItemClickListener(onItemClickListener: (ticket: TicketEventDetail) -> Unit) {
+    fun setOnItemClickListener(onItemClickListener: (ticket: Ticket) -> Unit) {
         this.onItemClickListener = onItemClickListener
     }
 
@@ -31,12 +28,12 @@ class TicketTypeAdapter(private val isClickable: Boolean = false) : ListAdapter<
         holder.bind(getItem(position), onItemClickListener)
     }
 
-    class TicketTypeDiffCallback : DiffUtil.ItemCallback<TicketEventDetail>() {
-        override fun areItemsTheSame(oldItem: TicketEventDetail, newItem: TicketEventDetail): Boolean {
+    class TicketTypeDiffCallback : DiffUtil.ItemCallback<Ticket>() {
+        override fun areItemsTheSame(oldItem: Ticket, newItem: Ticket): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: TicketEventDetail, newItem: TicketEventDetail): Boolean {
+        override fun areContentsTheSame(oldItem: Ticket, newItem: Ticket): Boolean {
             return oldItem == newItem
         }
     }
@@ -51,7 +48,7 @@ class TicketTypeAdapter(private val isClickable: Boolean = false) : ListAdapter<
         constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_item_ticket_type, parent, false))
 
-        fun bind(data: TicketEventDetail?, onItemClick: ((ticket: TicketEventDetail) -> Unit)? = null) {
+        fun bind(data: Ticket?, onItemClick: ((ticket: Ticket) -> Unit)? = null) {
             itemView.title_label?.text = data?.getTitle(getString(R.string.km)) ?: ""
             itemView.price_label?.text = data?.getPrice() ?: ""
 

@@ -24,15 +24,15 @@ import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.base.PermissionsLauncherScreen
-import com.think.runex.component.GenderDialog
-import com.think.runex.component.SelectImageSourceDialog
+import com.think.runex.feature.user.GenderDialog
+import com.think.runex.component.ImageSourcesDialog
 import com.think.runex.util.*
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
 
 class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSetListener,
-        GenderDialog.OnGenderSelectedListener, SelectImageSourceDialog.OnSelectImageSourceListener {
+        GenderDialog.OnGenderSelectedListener, ImageSourcesDialog.OnSelectImageSourceListener {
 
     private lateinit var viewModel: UserViewModel
 
@@ -76,7 +76,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
     private fun subscribeUi() {
 
         change_profile_image_button?.setOnClickListener {
-            showDialog(SelectImageSourceDialog())
+            showDialog(ImageSourcesDialog())
         }
 
         birth_date_input?.setOnClickListener {
@@ -193,8 +193,8 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
 
     override fun onSelectImageSource(source: Int) {
         when (source) {
-            SelectImageSourceDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()
-            SelectImageSourceDialog.SOURCE_GALLERY -> checkPermissionAndGetImageContent()
+            ImageSourcesDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()
+            ImageSourcesDialog.SOURCE_GALLERY -> checkPermissionAndGetImageContent()
         }
     }
 
