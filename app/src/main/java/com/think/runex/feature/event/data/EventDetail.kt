@@ -43,7 +43,7 @@ data class EventDetail(
         @SerializedName("tickets") var tickets:List<Ticket>? = null,
         @SerializedName("shirts") var shirts: List<Shirt>? = null,
         @SerializedName("title") var title: String? = "",
-        @SerializedName("userId") var userId: String? = "") {
+        @SerializedName("userId") var ownerId: String? = "") {
 
 
     @JvmName("getCoverImageJava")

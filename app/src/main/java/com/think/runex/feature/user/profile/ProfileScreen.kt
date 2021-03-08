@@ -75,8 +75,8 @@ class ProfileScreen : BaseScreen() {
         total_distances_label?.text = userInfo?.getTotalDistance(getString(R.string.km)) ?: ""
     }
 
-    override fun errorHandler(statusCode: Int, message: String) {
-        super.errorHandler(statusCode, message)
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        super.errorHandler(statusCode, message, tag)
         progress_bar?.gone()
     }
 

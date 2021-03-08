@@ -5,7 +5,7 @@ import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toCalendar
 import com.think.runex.common.displayFormat
 import com.think.runex.feature.event.data.EventItem
-import com.think.runex.feature.address.Address
+import com.think.runex.feature.address.data.Address
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import java.util.*

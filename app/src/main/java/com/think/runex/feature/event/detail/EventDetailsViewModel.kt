@@ -10,7 +10,7 @@ import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
-open class EventDetailsViewModel(private val repo: EventRepository) : BaseViewModel() {
+open class EventDetailsViewModel(val repo: EventRepository) : BaseViewModel() {
 
     val eventDetail: MutableLiveData<EventDetail> by lazy { MutableLiveData() }
 
@@ -25,7 +25,9 @@ open class EventDetailsViewModel(private val repo: EventRepository) : BaseViewMo
         }
 
         //Check registered event
-        isRegisteredEvent = isRegisteredEvent(code)
+        val isRegisteredResult = repo.isRegisteredEvent(code)
+        isRegisteredEvent = isRegisteredResult.data?.isRegistered
+
         if (result.isSuccessful()) {
             eventDetail.postValue(result.data)
         }

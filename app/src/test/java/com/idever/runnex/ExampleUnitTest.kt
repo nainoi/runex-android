@@ -1,6 +1,7 @@
 package com.idever.runnex
 
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.jozzee.android.core.text.isAllDigit
 import org.junit.Test
 
 import org.junit.Assert.*
@@ -52,5 +53,11 @@ class ExampleUnitTest {
     fun test_sub_string() {
         val text = "00:16:29"
         print("Minute: ${text.substring(3, text.length)}")
+    }
+
+    @Test
+    fun testStringIsAllDigit(){
+        val s = "12345"
+        print("Is All Digit: "+ s.matches("^[0-9]*\\.?[0-9]*".toRegex()))
     }
 }

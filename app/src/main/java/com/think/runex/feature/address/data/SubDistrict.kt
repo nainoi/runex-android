@@ -1,4 +1,4 @@
-package com.think.runex.feature.address
+package com.think.runex.feature.address.data
 
 import com.google.gson.annotations.SerializedName
 
@@ -10,4 +10,9 @@ data class SubDistrict(
         @SerializedName("zipcode") var zipCode: Int? = 0,
         @SerializedName("district_code") var subDistrictCode: Int? = 0,
         @SerializedName("amphoe_code") var districtCode: Int? = 0,
-        @SerializedName("province_code") var provinceCode: Int? = 0)
+        @SerializedName("province_code") var provinceCode: Int? = 0) {
+
+    fun getFullAddress(): String {
+        return "$subDistrict, $district, $province, $zipCode"
+    }
+}

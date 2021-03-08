@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.register
+package com.think.runex.feature.event.register.fragment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -13,6 +13,8 @@ import com.think.runex.common.getViewModel
 import com.think.runex.common.setColorFilter
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.feature.event.TicketsAdapter
+import com.think.runex.feature.event.register.RegisterEventViewModel
+import com.think.runex.feature.event.register.RegisterEventViewModelFactory
 import kotlinx.android.synthetic.main.fragment_choose_ticket.*
 
 class ChooseTicketFragment : BaseScreen() {
@@ -50,11 +52,8 @@ class ChooseTicketFragment : BaseScreen() {
     }
 
     private fun subscribeUi() {
-
         adapter.setOnItemClickListener { ticket ->
             viewModel.onSelectTicket(ticket)
         }
-
-        //viewModel.setOnHandleError(::errorHandler)
     }
 }

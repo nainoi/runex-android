@@ -10,16 +10,16 @@ import kotlinx.coroutines.launch
 
 open class BaseViewModel : ViewModel() {
 
-    private var handleError: ((statusCode: Int, message: String) -> Unit)? = null
+    private var handleError: ((statusCode: Int, message: String, tag: String?) -> Unit)? = null
 
-    fun setOnHandleError(block: (statusCode: Int, message: String) -> Unit) {
+    fun setOnHandleError(block: (statusCode: Int, message: String, tag: String?) -> Unit) {
         handleError = block
     }
 
-    protected fun onHandleError(statusCode: Int, message: String?) {
+    protected fun onHandleError(statusCode: Int, message: String?, tag: String? = null) {
         handleError?.run {
             viewModelScope.launch(Main) {
-                invoke(statusCode, message ?: "")
+                invoke(statusCode, message ?: "", tag)
             }
         }
     }

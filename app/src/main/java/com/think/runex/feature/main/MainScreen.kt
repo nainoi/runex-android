@@ -1,4 +1,4 @@
-package com.think.runex.feature
+package com.think.runex.feature.main
 
 import android.content.Intent
 import android.graphics.PorterDuff

@@ -18,7 +18,7 @@ interface EventApi {
     fun getAllEventAsync(
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventItem>>>
 
-    @GET("/api/${ApiConfig.API_VERSION}/event/myEvent")
+    @GET("/api/${ApiConfig.API_VERSION}/register/myRegEvent")
     fun getMyEventAsync(
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventRegistered>>>
 
@@ -27,10 +27,15 @@ interface EventApi {
             @Path("code") code: String,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventDetail>>
 
-    @GET("/api/${ApiConfig.API_VERSION}/register/checkUserRegisterEvent/{code}")
+    @GET("/api/${ApiConfig.API_VERSION}/register/checkRegEventCode/{code}")
     fun isRegisteredEventAsync(
             @Path("code") code: String,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<IsRegisteredEvent>>
+
+    @POST("/api/${ApiConfig.API_VERSION}/register/add")
+    fun registerEventAsync(
+            @Body body: JsonObject,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventWithKaoAsync(

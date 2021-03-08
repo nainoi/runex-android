@@ -13,9 +13,12 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.hideKeyboard
 import com.think.runex.R
+import com.think.runex.common.getTopFragment
+import com.think.runex.common.getViewModel
 import com.think.runex.common.showAlertDialog
 import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.component.ProgressDialog
+import com.think.runex.feature.main.MainViewModel
 
 open class BaseScreen : Fragment() {
 
@@ -96,7 +99,7 @@ open class BaseScreen : Fragment() {
         }
     }
 
-    open fun errorHandler(statusCode: Int, message: String) {
+    open fun errorHandler(statusCode: Int, message: String, tag: String? = null) {
         if (isAdded.not() || view == null) return
 
         val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, statusCode, message)
@@ -111,6 +114,9 @@ open class BaseScreen : Fragment() {
         }
     }
 
+    /**
+     * Add fragment to [BaseActivity]
+     */
     open fun addFragment(fragment: Fragment,
                          animations: FragmentAnimations? = null,
                          hidePrevious: Int = fragmentCount(),
@@ -122,6 +128,9 @@ open class BaseScreen : Fragment() {
         }
     }
 
+    /**
+     * replace fragment to [BaseActivity]
+     */
     open fun replaceFragment(fragment: Fragment,
                              animations: FragmentAnimations? = null,
                              addToBackStack: Boolean = true,
@@ -133,6 +142,18 @@ open class BaseScreen : Fragment() {
             replaceFragment(fragment, animations, FragmentContainer.id, addToBackStack, clearFragment, tag)
         }
     }
+
+    /**
+     * Get top fragment from [BaseActivity]
+     */
+    open fun getTopFragment(): Fragment? {
+        if (activity is BaseActivity) {
+            (activity as BaseActivity).getTopFragment()
+        }
+        return null
+    }
+
+    fun getMainViewModel(): MainViewModel = requireActivity().getViewModel()
 
     /**
      * Hid keyboard before destroy view.

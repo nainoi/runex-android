@@ -15,9 +15,12 @@ import com.jozzee.android.core.fragment.addFragment
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
+import com.think.runex.common.getTopFragment
+import com.think.runex.common.getViewModel
 import com.think.runex.common.showAlertDialog
 import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.component.ProgressDialog
+import com.think.runex.feature.main.MainViewModel
 import com.think.runex.util.Localization
 import com.think.runex.util.NightMode
 
@@ -74,7 +77,7 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    open fun errorHandler(statusCode: Int, message: String) {
+    open fun errorHandler(statusCode: Int, message: String, tag: String? = null) {
         if (isDestroyed || isFinishing) return
 
         val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, statusCode, message)
@@ -103,6 +106,10 @@ open class BaseActivity : AppCompatActivity() {
                              tag: String? = null) {
         replaceFragment(fragment, animations, mainFragmentContainerId, addToBackStack, clearFragment, tag)
     }
+
+    open fun getTopFragment(): Fragment? = getTopFragment(mainFragmentContainerId)
+
+    fun getMainViewModel(): MainViewModel = getViewModel()
 
     override fun onDestroy() {
         Glide.get(this).bitmapPool.clearMemory()

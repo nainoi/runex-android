@@ -17,6 +17,8 @@ class EventRepository(private val api: EventApi) : RemoteDataSource() {
 
     suspend fun isRegisteredEvent(code: String) = call(api.isRegisteredEventAsync(code))
 
+    suspend fun registerEven(body: JsonObject) = call(api.registerEventAsync(body))
+
     suspend fun registerEventWithKao(body: JsonObject) = call(api.registerEventWithKaoAsync(body))
 
 }

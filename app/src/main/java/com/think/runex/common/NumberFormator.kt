@@ -1,6 +1,7 @@
 package com.think.runex.common
 
 import androidx.annotation.IntRange
+import com.jozzee.android.core.text.toFloatOrZero
 
 fun Int.displayFormat(): String = try {
     String.format("%,d", this)
@@ -56,4 +57,11 @@ fun Double.displayFormat(@IntRange(from = 1, to = 10) decimalCount: Int = 2,
         e.printStackTrace()
         toString()
     }
+}
+
+fun String.isAllDigit() = this.matches("^[0-9]*\\.?[0-9]*".toRegex())
+
+fun String.numberDisplayFormat(): String {
+    if (this.isAllDigit().not()) return this
+    return this.toFloatOrZero().displayFormat()
 }

@@ -1,31 +1,30 @@
 <?xml version="1.0" encoding="utf-8"?>
 <FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
-        xmlns:app="http://schemas.android.com/apk/res-auto"
-        android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:background="@android:color/white"
-        android:orientation="vertical">
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@android:color/white"
+    android:orientation="vertical">
 
     <FrameLayout
         android:id="@+id/header_frame"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:orientation="horizontal"
-        android:visibility="gone"
-        android:padding="16dp">
+        android:padding="16dp"
+        android:visibility="gone">
 
         <TextView
             android:id="@+id/v_my_event"
-            android:text="@string/my_events_list"
-            android:layout_gravity="center"
-            android:textColor="@android:color/black"
             android:layout_width="wrap_content"
-            android:textStyle="bold"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="@string/my_events_list"
+            android:textColor="@android:color/black"
             android:textSize="26dp"
-            android:layout_height="wrap_content"/>
+            android:textStyle="bold" />
 
         <LinearLayout
-            android:visibility="gone"
             android:id="@+id/submit_result_frame"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -35,7 +34,8 @@
             android:paddingLeft="12dp"
             android:paddingTop="4dp"
             android:paddingRight="12dp"
-            android:paddingBottom="4dp">
+            android:paddingBottom="4dp"
+            android:visibility="gone">
 
             <ImageView
                 android:layout_width="25dp"
@@ -53,15 +53,15 @@
 
     </FrameLayout>
 
-    <include
-        android:visibility="gone"
+    <View
         android:layout_width="match_parent"
         android:layout_height="1dp"
-        layout="@layout/list_item_event_divider_java"/>
+        android:background="@color/line"
+        android:visibility="gone" />
 
     <FrameLayout
         android:id="@+id/summary_page_container"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"/>
+        android:layout_height="match_parent" />
 
 </FrameLayout>

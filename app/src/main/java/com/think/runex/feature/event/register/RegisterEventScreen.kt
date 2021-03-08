@@ -1,25 +1,21 @@
 package com.think.runex.feature.event.register
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jozzee.android.core.fragment.childFragmentCount
-import com.jozzee.android.core.fragment.replaceChildFragment
-import com.jozzee.android.core.util.simpleName
+import com.jozzee.android.core.fragment.*
 import com.jozzee.android.core.view.gone
-import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
 import com.think.runex.config.KEY_CODE
-import com.think.runex.feature.event.detail.EventDetailsViewModel
-import com.think.runex.feature.event.detail.EventDetailsViewModelFactory
+import com.think.runex.feature.event.register.fragment.ChooseTicketFragment
+import com.think.runex.feature.event.register.fragment.FillOutUserInfoFragment
+import com.think.runex.feature.event.register.fragment.RegisterConfirmationFragment
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_register_event.*
 import kotlinx.android.synthetic.main.toolbar.*
 
@@ -76,27 +72,37 @@ class RegisterEventScreen : BaseScreen() {
             }
         }
 
-        observe(viewModel.changeChildScreen) { screenName ->
+        observe(viewModel.updateScreen) { screenName ->
             if (view == null || isAdded.not()) return@observe
             when (screenName) {
                 ChooseTicketFragment::class.java.simpleName -> {
-                    replaceChildFragment(R.id.register_fragment_container, ChooseTicketFragment(), addToBackStack = true)
+                    replaceChildFragment(R.id.register_fragment_container, ChooseTicketFragment(), addToBackStack = true, clearChildFragment = true)
                 }
                 FillOutUserInfoFragment::class.java.simpleName -> {
-                    replaceChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment())
+                    addChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment())
+                }
+                RegisterConfirmationFragment::class.java.simpleName -> {
+                    addChildFragment(R.id.register_fragment_container, RegisterConfirmationFragment())
                 }
             }
         }
     }
 
-    override fun errorHandler(statusCode: Int, message: String) {
-        super.errorHandler(statusCode, message)
+    fun onClickBackPressed() {
+        when (childFragmentCount() > 1) {
+            true -> popChildFragment()
+            false -> popFragment()
+        }
+    }
+
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        super.errorHandler(statusCode, message, tag)
         progress_bar?.gone()
     }
 
     override fun onDestroy() {
         removeObservers(viewModel.eventDetail)
-        removeObservers(viewModel.changeChildScreen)
+        removeObservers(viewModel.updateScreen)
         super.onDestroy()
     }
 }

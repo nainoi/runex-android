@@ -13,6 +13,7 @@ import com.think.runex.common.removeObservers
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
+import com.think.runex.config.KEY_CODE
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_my_events.*
 
@@ -79,15 +80,23 @@ class MyEventsScreen : BaseScreen() {
             refresh_layout?.isRefreshing = false
             adapter.submitList(eventList?.toMutableList())
         }
+
+        observe(getMainViewModel().refreshScreen) {
+            if (view == null || isAdded.not()) return@observe
+            //Initial get all event list
+            refresh_layout?.isRefreshing = true
+            viewModel.getEventList()
+        }
     }
 
-    override fun errorHandler(statusCode: Int, message: String) {
-        super.errorHandler(statusCode, message)
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        super.errorHandler(statusCode, message, tag)
         refresh_layout?.isRefreshing = false
     }
 
     override fun onDestroy() {
         removeObservers(viewModel.eventList)
+        removeObservers(getMainViewModel().refreshScreen)
         super.onDestroy()
     }
 }

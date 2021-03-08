@@ -1,6 +1,7 @@
 package com.think.runex.feature.event.detail
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -53,6 +54,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         setupComponents()
         subscribeUi()
 
+        showLoading()
         viewModel.getEventDetail(arguments?.getString(KEY_CODE) ?: "")
     }
 
@@ -89,6 +91,12 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
             if (view == null || isAdded.not()) return@observe
             hideLoading()
             updateEventDetails(eventDetail)
+        }
+
+        observe(getMainViewModel().refreshScreen) {
+            if (view == null || isAdded.not()) return@observe
+            showLoading()
+            viewModel.getEventDetail(arguments?.getString(KEY_CODE) ?: "")
         }
     }
 
@@ -148,8 +156,8 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         }
     }
 
-    override fun errorHandler(statusCode: Int, message: String) {
-        super.errorHandler(statusCode, message)
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        super.errorHandler(statusCode, message, tag)
         hideLoading()
     }
 
@@ -167,6 +175,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
     override fun onDestroy() {
         removeObservers(viewModel.eventDetail)
+        removeObservers(getMainViewModel().refreshScreen)
         super.onDestroy()
     }
 }

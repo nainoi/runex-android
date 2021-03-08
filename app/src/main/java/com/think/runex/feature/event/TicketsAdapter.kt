@@ -8,6 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.common.getString
+import com.think.runex.common.requireContext
 import com.think.runex.feature.event.data.Ticket
 import kotlinx.android.synthetic.main.list_item_ticket_type.view.*
 
@@ -50,7 +51,7 @@ class TicketsAdapter(private val isClickable: Boolean = false) : ListAdapter<Tic
 
         fun bind(data: Ticket?, onItemClick: ((ticket: Ticket) -> Unit)? = null) {
             itemView.title_label?.text = data?.getTitle(getString(R.string.km)) ?: ""
-            itemView.price_label?.text = data?.getPrice() ?: ""
+            itemView.price_label?.text = data?.getPrice(requireContext()) ?: ""
 
             when (isClickable) {
                 true -> {

@@ -263,8 +263,8 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
             return field
         }
 
-    override fun errorHandler(statusCode: Int, message: String) {
-        super.errorHandler(statusCode, message)
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        super.errorHandler(statusCode, message, tag)
     }
 
     override fun onDestroyView() {

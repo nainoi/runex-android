@@ -83,8 +83,8 @@ class AllEventsScreen : BaseScreen() {
         }
     }
 
-    override fun errorHandler(statusCode: Int, message: String) {
-        super.errorHandler(statusCode, message)
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        super.errorHandler(statusCode, message, tag)
         refresh_layout?.isRefreshing = false
     }
 

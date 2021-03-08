@@ -20,8 +20,9 @@ import com.think.runex.feature.workout.record.WorkoutScreen
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.feature.auth.data.TokenManager
-import com.think.runex.feature.MainScreen
+import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.OnBoardingScreen
+import com.think.runex.feature.event.register.RegisterEventScreen
 import com.think.runex.util.launch
 import kotlinx.coroutines.delay
 
@@ -99,6 +100,10 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         Logger.warning(simpleName(), "onBackPressed")
+        if (getTopFragment() is RegisterEventScreen) {
+            (getTopFragment() as RegisterEventScreen).onClickBackPressed()
+            return
+        }
         super.onBackPressed()
     }
 

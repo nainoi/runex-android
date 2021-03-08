@@ -3,10 +3,14 @@ package com.think.runex.common
 import android.app.Activity
 import android.util.Log
 import android.widget.ImageView
+import androidx.annotation.Dimension
 import androidx.annotation.DrawableRes
 import com.bumptech.glide.Glide
 import com.bumptech.glide.load.DecodeFormat
+import com.bumptech.glide.load.resource.bitmap.CenterCrop
+import com.bumptech.glide.load.resource.bitmap.RoundedCorners
 import com.bumptech.glide.request.RequestOptions
+import com.jozzee.android.core.resource.getDimension
 import com.think.runex.R
 
 fun ImageView.loadImage(source: Any?,
@@ -58,12 +62,23 @@ fun ImageView.loadImage(source: Any?,
 }
 
 fun ImageView.loadEventsImage(url: String?,
-                              @DrawableRes defaultImage: Int? = null) {
+                              @DrawableRes defaultImage: Int? = null,
+                              @Dimension cornersRadian: Int = 0) {
 
     if (context == null) return
     if (url.isNullOrBlank()) {
         if (defaultImage != null) {
-            this.setImageResource(defaultImage)
+            when (cornersRadian == 0) {
+                true -> this.setImageResource(defaultImage)
+                false -> post {
+                    Glide.with(this)
+                            .load(defaultImage)
+                            .transform(CenterCrop(), RoundedCorners(cornersRadian))
+                            .override(width, height)
+                            .into(this)
+                            .clearOnDetach()
+                }
+            }
         }
         return
     }
@@ -72,7 +87,13 @@ fun ImageView.loadEventsImage(url: String?,
                 .load(url)
                 .format(DecodeFormat.PREFER_ARGB_8888)
                 .override(width, height)
-                .centerCrop()
+                .apply {
+                    when (cornersRadian > 0) {
+                        true -> transform(CenterCrop(), RoundedCorners(cornersRadian))
+                        false -> centerCrop()
+                    }
+                }
+                //.centerCrop()
                 //.diskCacheStrategy(DiskCacheStrategy.NONE)
                 .into(this)
                 .clearOnDetach()

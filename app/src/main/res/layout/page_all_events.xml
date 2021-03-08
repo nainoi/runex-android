@@ -24,8 +24,8 @@
 
     </FrameLayout>
 
-    <include
-        layout="@layout/list_item_event_divider_java"
+    <View
+        android:background="@color/line"
         android:layout_width="match_parent"
         android:layout_height="1dp"
         android:layout_below="@+id/header_frame" />

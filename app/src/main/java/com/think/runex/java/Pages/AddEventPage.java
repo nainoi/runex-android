@@ -104,14 +104,17 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         return v;
     }
 
-    /** Main variables */
-    private File getImageFile(){
+    /**
+     * Main variables
+     */
+    private File getImageFile() {
         // prepare usage variables
-        final String destinationPath = activity.getExternalCacheDir() +"/"+ System.currentTimeMillis() +".jpg";
+        final String destinationPath = activity.getExternalCacheDir() + "/" + System.currentTimeMillis() + ".jpg";
 
         // save file from bitmap
         return DeviceUtils.instance(activity).saveFileFromBitmap(mBitmap, destinationPath);
     }
+
     // view matching
     private void viewMatching(View v) {
         refreshLayout = v.findViewById(R.id.refresh_layout);
@@ -195,9 +198,9 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
 
         // update props
         recordDate = "" + year + "-" + to2Digits((month + 1)) + "-" + to2Digits(dayOfMonth) + "T"
-                + to2Digits(calendar.get(Calendar.HOUR_OF_DAY) + 7) +":"
-                + to2Digits(calendar.get(Calendar.MINUTE)) +":"
-                + to2Digits(calendar.get(Calendar.SECOND)) +"Z";
+                + to2Digits(calendar.get(Calendar.HOUR_OF_DAY) + 7) + ":"
+                + to2Digits(calendar.get(Calendar.MINUTE)) + ":"
+                + to2Digits(calendar.get(Calendar.SECOND)) + "Z";
 
         // view binding
         btnDate.setText(toDisplayDate(recordDate, DISPLAY_DATE_FORMAT));
@@ -207,7 +210,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         if (isDataValid()) {
 
             // prevent from back pressed
-            activity.preventFromBackPressed( true );
+            activity.preventFromBackPressed(true);
 
             // update flag
             ON_SUBMITTING = true;
@@ -287,7 +290,7 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         super.onActivityResult(requestCode, resultCode, data);
 
         // prepare usage variables
-        final String mtn = ct +"onActivityResult-> ";
+        final String mtn = ct + "onActivityResult-> ";
 
         if (resultCode == Activity.RESULT_OK) {
             if (requestCode == RC_GALLERY_INTENT && data != null && data.getData() != null) {
@@ -296,8 +299,8 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                 try {
                     // prepare usage variables
                     final String path = new UriUtils().getRealPath(activity, activityImageUri);
-                    final File imageFile = new File( path );
-                    final Bitmap bitmap = BitmapFactory.decodeFile( imageFile.getPath() );
+                    final File imageFile = new File(path);
+                    final Bitmap bitmap = BitmapFactory.decodeFile(imageFile.getPath());
                     final ExifInterface ei = new ExifInterface(imageFile.getPath());
                     final int orientation = ei.getAttributeInt(ExifInterface.TAG_ORIENTATION,
                             ExifInterface.ORIENTATION_UNDEFINED);
@@ -326,10 +329,10 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
                     mBitmap = rotatedBitmap;
 
                     // view binding
-                    activityImage.setImageBitmap( mBitmap );
+                    activityImage.setImageBitmap(mBitmap);
 
-                } catch ( Exception e ){
-                    L.e(mtn +"Err: "+ e.getMessage());
+                } catch (Exception e) {
+                    L.e(mtn + "Err: " + e.getMessage());
                 }
 
             }
@@ -432,11 +435,13 @@ public class AddEventPage extends xFragment implements View.OnClickListener, Dat
         }
         String distance = (edtDistance.getText() != null) ? edtDistance.getText().toString() : "";
         if (distance.length() == 0) {
-            Toast.makeText(activity, R.string.distance_required, Toast.LENGTH_SHORT).show();
+            String distanceText = getString(R.string.distances);
+            Toast.makeText(activity, getString(R.string.input_required, distanceText), Toast.LENGTH_SHORT).show();
             return false;
         }
         if (recordDate == null || recordDate.length() == 0) {
-            Toast.makeText(activity, R.string.date_required, Toast.LENGTH_SHORT).show();
+
+            Toast.makeText(activity, getString(R.string.input_required, "Date"), Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

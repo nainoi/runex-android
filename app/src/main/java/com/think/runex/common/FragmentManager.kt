@@ -1,5 +1,6 @@
 package com.think.runex.common
 
+import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.lifecycle.ViewModel
@@ -21,4 +22,16 @@ inline fun <reified T : Fragment> FragmentActivity.findFragment(): T? {
     return supportFragmentManager.fragments.find { it::class.java.simpleName == T::class.java.simpleName }.let {
         if (it != null) it as T else null
     }
+}
+
+fun FragmentActivity.getTopFragment(@IdRes fragmentHostId: Int): Fragment? {
+    return supportFragmentManager.findFragmentById(fragmentHostId)
+}
+
+fun Fragment.getTopFragment(@IdRes fragmentHostId: Int): Fragment? {
+    return requireActivity().getTopFragment(fragmentHostId)
+}
+
+fun Fragment.getTopChildFragment(@IdRes fragmentHostId: Int): Fragment? {
+    return childFragmentManager.findFragmentById(fragmentHostId)
 }

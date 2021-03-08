@@ -4,6 +4,7 @@
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">ที่อยู่</string>
+    <string name="amount">จำนวน</string>
 
     <string name="activity">กิจกรรม</string>
     <string name="activity_record">บันทึกกิจกรรม</string>
@@ -22,6 +23,7 @@
     <!-- B -->
     <string name="back">ย้อนกลับ</string>
     <string name="birth_date">วันเกิด</string>
+    <string name="blood_type">กรุ๊ปเลือด</string>
 
     <!-- c -->
     <string name="camera">กล้อง</string>
@@ -44,9 +46,7 @@
     <string name="default_">ค่าเริ่มต้น</string>
     <string name="distances">ระยะทาง</string>
     <string name="distances_kg">ระยะทาง(km)</string>
-    <string name="distance_required">กรุณาระบุระยะทาง</string>
     <string name="delete_image">ลบรูปภาพ</string>
-    <string name="date_required">กรุณาเลือกวันที่</string>
     <string name="duration">ระยะเวลา</string>
     <string name="district">อำเภอ</string>
 
@@ -123,7 +123,6 @@
 
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
-    <string name="password_required">กรุณาระบุรหัสผ่าน</string>
     <string name="pause_recording">พักจับเวลา</string>
     <string name="profile">ข้อมูลส่วนตัว</string>
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
@@ -133,6 +132,7 @@
     <string name="pace">ก้าว</string>
     <string name="phone">เบอร์โทรศัพท์</string>
     <string name="province">จังหวัด</string>
+    <string name="price">ราคา</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>
@@ -141,6 +141,7 @@
     <string name="register_date">รับสมัคร</string>
     <string name="register_event">ลงสมัครวิ่ง</string>
     <string name="register_event_success">ลงสมัครวิ่งสำเร็จ</string>
+    <string name="register_confirmation">ยืนยันการสมัคร</string>
     <string name="resume_recording">จับเวลาต่อ</string>
     <string name="running_date">วันที่วิ่ง</string>
 
@@ -164,6 +165,7 @@
     <!-- T -->
     <string name="time">เวลา</string>
     <string name="total_distances">ระยะสะสม</string>
+    <string name="thai_bath">THB</string>
 
     <!-- U -->
     <string name="username">ชื่อผู้ใช้</string>
@@ -187,6 +189,9 @@
     <string name="zip_code">รหัสไปรษณีย์</string>
 
     <string name="u250">·</string>
+
+    <!-- Input required -->
+    <string name="input_required">กรุณาระบุ%1$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
     <string name="hello_blank_fragment">Hello blank fragment</string>

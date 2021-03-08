@@ -1,8 +1,11 @@
 package com.think.runex.feature.event.data
 
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.think.runex.R
+import com.think.runex.common.numberDisplayFormat
 import com.think.runex.feature.product.Product
 
 data class Ticket(
@@ -90,8 +93,8 @@ data class Ticket(
     }
 
     @JvmName("getPriceDisplay")
-    fun getPrice(): String {
-        return "$price THB"
+    fun getPrice(context: Context): String {
+        return "${price?.numberDisplayFormat() ?: ""} ${context.getString(R.string.thai_bath)}"
     }
 }
 

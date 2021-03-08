@@ -6,6 +6,7 @@ import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.R
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.datasource.api.ApiConfig
 
 data class EventRegistered(
         @SerializedName("body") var body: String? = "",
@@ -42,5 +43,13 @@ data class EventRegistered(
         val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
                 ?: ""
         return "${context.getString(R.string.register_date)} $startEventDate - $endEventDate"
+    }
+
+    @JvmName("getCoverImageJava")
+    fun getCoverImage(): String {
+        return when (coverImage?.startsWith("http", false) == true) {
+            true -> coverImage ?: ""
+            false -> ("${ApiConfig.BASE_URL}${coverImage ?: ""}")
+        }
     }
 }

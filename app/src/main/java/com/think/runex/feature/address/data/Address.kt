@@ -1,4 +1,4 @@
-package com.think.runex.feature.address
+package com.think.runex.feature.address.data
 
 import com.google.gson.annotations.SerializedName
 

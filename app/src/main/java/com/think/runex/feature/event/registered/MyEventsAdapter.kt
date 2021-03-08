@@ -47,7 +47,7 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
 
         fun bind(data: EventRegistered?, onItemClick: ((position: Int, event: EventRegistered) -> Unit)? = null) {
 
-            itemView.event_image?.loadEventsImage(data?.coverImage)
+            itemView.event_image?.loadEventsImage(data?.getCoverImage())
             itemView.event_name_label?.text = data?.name ?: ""
             when (data?.isActive) {
                 true -> {
