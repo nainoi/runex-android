@@ -8,12 +8,15 @@ import com.think.runex.feature.address.AddressApi
 import com.think.runex.feature.address.AddressRepository
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
+import com.think.runex.feature.payment.PaymentApi
+import com.think.runex.feature.payment.PaymentRepository
 
 class RegisterEventViewModelFactory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
     @Suppress("UNCHECKED_CAST")
     override fun <T : ViewModel> create(modelClass: Class<T>): T {
+        val service = ApiService()
         return RegisterEventViewModel(
-                AddressRepository(ApiService().provideService(context, AddressApi::class.java)),
-                EventRepository(ApiService().provideService(context, EventApi::class.java))) as T
+                EventRepository(service.provideService(context, EventApi::class.java)),
+                AddressRepository(service.provideService(context, AddressApi::class.java))) as T
     }
 }

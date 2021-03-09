@@ -1,5 +1,7 @@
 package com.think.runex.feature.event.data
 
+import android.os.Parcel
+import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
@@ -40,11 +42,105 @@ data class EventDetail(
         @SerializedName("registerStartDate") var registerStartDate: String? = "",
         @SerializedName("registerStartDateText") var registerStartDateDisplay: String? = "",
         @SerializedName("schedules") var schedules: List<Schedule>? = null,
-        @SerializedName("tickets") var tickets:List<Ticket>? = null,
+        @SerializedName("tickets") var tickets: List<Ticket>? = null,
         @SerializedName("shirts") var shirts: List<Shirt>? = null,
         @SerializedName("title") var title: String? = "",
-        @SerializedName("userId") var ownerId: String? = "") {
+        @SerializedName("userId") var ownerId: String? = "") : Parcelable {
 
+    companion object CREATOR : Parcelable.Creator<EventDetail> {
+        override fun createFromParcel(parcel: Parcel): EventDetail {
+            return EventDetail(parcel)
+        }
+
+        override fun newArray(size: Int): Array<EventDetail?> {
+            return arrayOfNulls(size)
+        }
+    }
+
+    constructor(parcel: Parcel) : this(
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readValue(Int::class.java.classLoader) as? Int,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.createTypedArrayList(Prize),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.readString(),
+            parcel.createTypedArrayList(Schedule),
+            parcel.createTypedArrayList(Ticket),
+            parcel.createTypedArrayList(Shirt),
+            parcel.readString(),
+            parcel.readString())
+
+    override fun writeToParcel(parcel: Parcel, flags: Int) {
+        parcel.writeString(agreement)
+        parcel.writeString(category)
+        parcel.writeString(code)
+        parcel.writeString(contact)
+        parcel.writeString(contactFacebook)
+        parcel.writeString(contactLine)
+        parcel.writeString(content)
+        parcel.writeString(coverImage)
+        parcel.writeString(coverThumbnail)
+        parcel.writeString(eventDateDisplay)
+        parcel.writeString(eventEndDate)
+        parcel.writeString(eventEndDateDisplay)
+        parcel.writeString(eventStartDate)
+        parcel.writeString(eventStartDateDisplay)
+        parcel.writeValue(id)
+        parcel.writeValue(isFreeEvent)
+        parcel.writeValue(isRunexOnly)
+        parcel.writeValue(isSendShirtByPost)
+        parcel.writeString(organizer)
+        parcel.writeString(photoBib)
+        parcel.writeString(photoBibThumbnail)
+        parcel.writeString(photoCert)
+        parcel.writeString(photoCertThumbnail)
+        parcel.writeString(photoMedal)
+        parcel.writeString(photoMedalThumbnail)
+        parcel.writeString(photoShirt)
+        parcel.writeString(photoShirtThumbnail)
+        parcel.writeString(place)
+        parcel.writeTypedList(prizes)
+        parcel.writeString(registerEndDate)
+        parcel.writeString(registerEndDateDisplay)
+        parcel.writeString(registerStartDate)
+        parcel.writeString(registerStartDateDisplay)
+        parcel.writeTypedList(schedules)
+        parcel.writeTypedList(tickets)
+        parcel.writeTypedList(shirts)
+        parcel.writeString(title)
+        parcel.writeString(ownerId)
+    }
+
+    override fun describeContents(): Int {
+        return 0
+    }
 
     @JvmName("getCoverImageJava")
     fun getCoverImage(): String {

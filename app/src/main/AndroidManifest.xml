@@ -72,22 +72,6 @@
                     android:scheme="runex" />
             </intent-filter>
         </activity>
-        <activity
-            android:name=".java.Activities.BridgeFile"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:launchMode="singleTop"
-            android:screenOrientation="portrait" />
-        <activity
-            android:name=".java.Activities.LoginActivity"
-            android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
-            android:label="@string/app_name"
-            android:screenOrientation="portrait"
-            android:theme="@style/Theme.Runex.LoginActivity" />
-
-        <activity
-            android:name=".java.Pages.WorkoutDetailPage"
-            android:screenOrientation="portrait" />
 
         <activity
             android:name="com.facebook.FacebookActivity"
@@ -115,12 +99,6 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
-
-        <service
-            android:name=".java.Services.BackgroundService"
-            android:foregroundServiceType="location"
-            android:icon="@mipmap/ic_logo_runex"
-            android:label="BackgroundService" />
 
         <service
             android:name=".feature.workout.WorkoutService"

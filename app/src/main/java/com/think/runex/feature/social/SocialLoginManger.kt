@@ -18,7 +18,6 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.think.runex.java.Constants.Constants
 import java.lang.Exception
 
 class SocialLoginManger {
@@ -46,7 +45,7 @@ class SocialLoginManger {
             val accessToken = AccessToken.getCurrentAccessToken()
             if (accessToken != null && accessToken.isExpired.not()) {
                 Logger.debug(simpleName(), "Login with Facebook as Token: ${accessToken.token}")
-                Logger.info(Constants.TAG.VAL, "Login with Facebook as Token: ${accessToken.token}")
+                Logger.info(simpleName(), "Login with Facebook as Token: ${accessToken.token}")
                 onFacebookLoginResult(accessToken)
             }
         }
@@ -73,7 +72,7 @@ class SocialLoginManger {
         // prepare usage variables
         val mtn: String = "loginWithFacebook() ";
 
-        Logger.info(Constants.TAG.VAL, mtn +"loginWithFacebook");
+        Logger.info(simpleName(), mtn +"loginWithFacebook");
         LoginManager.getInstance().logIn(fragment, permissions)
     }
 
@@ -165,7 +164,7 @@ class SocialLoginManger {
         } catch (e: Exception) {
             // The ApiException status code indicates the detailed failure reason.
             // Please refer to the GoogleSignInStatusCodes class reference for more information.
-            Logger.error(Constants.TAG.VAL, mtn +"Login with Google Error: " + e.message)
+            Logger.error(simpleName(), mtn +"Login with Google Error: " + e.message)
 
             e.printStackTrace()
             loginListener?.onLoginWithSocialError(e)
@@ -189,7 +188,7 @@ class SocialLoginManger {
     fun handleLogInResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // prepare usage variables
         val mtn: String = ct +"handleLoginResult() "
-        Logger.error(Constants.TAG.VAL, mtn +"handleLogInResult")
+        Logger.error(simpleName(), mtn +"handleLogInResult")
 
         when (requestCode) {
             CallbackManagerImpl.RequestCodeOffset.Login.toRequestCode() -> {

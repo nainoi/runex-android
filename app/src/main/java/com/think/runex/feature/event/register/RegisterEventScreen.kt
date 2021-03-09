@@ -10,9 +10,6 @@ import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
 import com.think.runex.config.KEY_CODE
-import com.think.runex.feature.event.register.fragment.ChooseTicketFragment
-import com.think.runex.feature.event.register.fragment.FillOutUserInfoFragment
-import com.think.runex.feature.event.register.fragment.RegisterConfirmationFragment
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.util.NightMode
@@ -81,8 +78,8 @@ class RegisterEventScreen : BaseScreen() {
                 FillOutUserInfoFragment::class.java.simpleName -> {
                     addChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment())
                 }
-                RegisterConfirmationFragment::class.java.simpleName -> {
-                    addChildFragment(R.id.register_fragment_container, RegisterConfirmationFragment())
+                ConfirmRegistrationFragment::class.java.simpleName -> {
+                    addChildFragment(R.id.register_fragment_container, ConfirmRegistrationFragment())
                 }
             }
         }

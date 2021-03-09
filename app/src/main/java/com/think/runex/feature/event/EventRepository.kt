@@ -6,6 +6,7 @@ import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.data.EventItem
 import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.event.data.EventRegisteredData
 
 class EventRepository(private val api: EventApi) : RemoteDataSource() {
 

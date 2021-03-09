@@ -5,7 +5,6 @@ import androidx.annotation.NonNull
 import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.think.runex.BuildConfig
 import com.think.runex.feature.auth.RefreshTokenInterceptor
-import com.think.runex.java.App.App
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit

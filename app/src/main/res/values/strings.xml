@@ -133,6 +133,7 @@
     <string name="phone">Phone</string>
     <string name="province">Province</string>
     <string name="price">Price</string>
+    <string name="payment">Payment</string>
 
     <!-- R -->
     <string name="record">Record</string>

@@ -4,15 +4,14 @@ import androidx.lifecycle.MutableLiveData
 import com.think.runex.datasource.BaseViewModel
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.event.data.EventRegisteredData
 import com.think.runex.util.launchIoThread
 
 class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() {
 
     //val pageSize: Int = 20
 
-    val eventList: MutableLiveData<List<EventRegistered>> by lazy {
-        MutableLiveData<List<EventRegistered>>()
-    }
+    val myEvents: MutableLiveData<List<EventRegistered>> by lazy { MutableLiveData<List<EventRegistered>>() }
 
     var isLoading: Boolean = false
         private set
@@ -27,6 +26,6 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
             onHandleError(result.statusCode, result.message)
         }
         isLoading = false
-        eventList.postValue(result.data)
+        myEvents.postValue(result.data)
     }
 }

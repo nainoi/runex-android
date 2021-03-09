@@ -1,6 +1,7 @@
 package com.think.runex.feature.event.registered
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -68,13 +69,13 @@ class MyEventsScreen : BaseScreen() {
             viewModel.getEventList()
         }
 
-        adapter.setOnItemClick { _, event ->
+        adapter.setOnItemClickListener { position, event ->
 
         }
 
         viewModel.setOnHandleError(::errorHandler)
 
-        observe(viewModel.eventList) { eventList ->
+        observe(viewModel.myEvents) { eventList ->
             if (view == null || isAdded.not()) return@observe
 
             refresh_layout?.isRefreshing = false
@@ -95,7 +96,7 @@ class MyEventsScreen : BaseScreen() {
     }
 
     override fun onDestroy() {
-        removeObservers(viewModel.eventList)
+        removeObservers(viewModel.myEvents)
         removeObservers(getMainViewModel().refreshScreen)
         super.onDestroy()
     }

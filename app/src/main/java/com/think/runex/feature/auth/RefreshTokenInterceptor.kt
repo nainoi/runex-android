@@ -6,9 +6,9 @@ import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.jozzee.android.core.text.isJsonFormat
 import com.think.runex.common.toJson
+import com.think.runex.config.AUTHORIZATION
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.request.RefreshTokenBody
-import com.think.runex.java.Constants.Globals
 import com.think.runex.util.AppPreference
 import com.think.runex.config.KEY_ACCESS_TOKEN
 import com.think.runex.config.KEY_DATA
@@ -65,8 +65,8 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
 
                                     //re new request
                                     response = chain.proceed(request.newBuilder()
-                                            .removeHeader(Globals.HEADER_AUTHORIZATION)
-                                            .addHeader(Globals.HEADER_AUTHORIZATION, TokenManager.accessToken)
+                                            .removeHeader(AUTHORIZATION)
+                                            .addHeader(AUTHORIZATION, TokenManager.accessToken)
                                             .build())
 
                                 }

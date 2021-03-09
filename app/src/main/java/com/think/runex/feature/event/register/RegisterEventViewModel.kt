@@ -6,6 +6,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.text.toDoubleOrZero
+import com.jozzee.android.core.text.toFloatOrZero
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.feature.address.AddressRepository
 import com.think.runex.feature.address.data.AddressAutoFill
@@ -15,22 +16,18 @@ import com.think.runex.feature.event.data.EventCategory
 import com.think.runex.feature.event.data.Shirt
 import com.think.runex.feature.event.data.Ticket
 import com.think.runex.feature.event.data.request.EventRegistrationBody
-import com.think.runex.feature.event.data.request.TicketEventRegistrationBody
-import com.think.runex.feature.event.data.request.UserEventRegistrationBody
+import com.think.runex.feature.event.data.request.TicketOptionEventRegistrationBody
+import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
 import com.think.runex.feature.event.detail.EventDetailsViewModel
-import com.think.runex.feature.event.register.fragment.ChooseTicketFragment
-import com.think.runex.feature.event.register.fragment.FillOutUserInfoFragment
-import com.think.runex.feature.event.register.fragment.RegisterConfirmationFragment
-import com.think.runex.feature.payment.PaymentType
+import com.think.runex.feature.payment.PaymentRepository
 import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RegisterEventViewModel(private val addressRepo: AddressRepository,
-                             eventRepo: EventRepository) : EventDetailsViewModel(eventRepo) {
+class RegisterEventViewModel(eventRepo: EventRepository,
+                             private val addressRepo: AddressRepository) : EventDetailsViewModel(eventRepo) {
 
     private var subDistricts: List<SubDistrict>? = null
 
@@ -40,7 +37,10 @@ class RegisterEventViewModel(private val addressRepo: AddressRepository,
 
     val addressAutoFill: MutableLiveData<AddressAutoFill> by lazy { MutableLiveData() }
 
-    var ticketData: TicketEventRegistrationBody = TicketEventRegistrationBody()
+    var currentNo: Int = 1
+        private set
+
+    var ticketOptions: ArrayList<TicketOptionEventRegistrationBody> = ArrayList()
         private set
 
     var subDistrict: SubDistrict? = null
@@ -51,19 +51,35 @@ class RegisterEventViewModel(private val addressRepo: AddressRepository,
         updateScreen.postValue(ChooseTicketFragment::class.java.simpleName)
     }
 
+     fun getCurrentTicketOption(): TicketOptionEventRegistrationBody? {
+        if (ticketOptions.isEmpty()) {
+            ticketOptions.add(TicketOptionEventRegistrationBody())
+        }
+        if (currentNo <= ticketOptions.size) {
+            return ticketOptions[currentNo - 1]
+        }
+        return null
+    }
+
     fun onSelectTicket(ticket: Ticket) {
-        ticketData.ticket = ticket
-        ticketData.totalPrice = ticket.price?.toDoubleOrZero() ?: 0.0
-        updateScreen.postValue(FillOutUserInfoFragment::class.java.simpleName)
+        getCurrentTicketOption()?.apply {
+            this.ticket = ticket
+            this.totalPrice = ticket.price?.toDoubleOrZero() ?: 0.0
+            updateScreen.postValue(FillOutUserInfoFragment::class.java.simpleName)
+        }
     }
 
     fun onSelectShirt(shirt: Shirt) {
-        ticketData.shirt = shirt
+        getCurrentTicketOption()?.apply {
+            this.shirt = shirt
+        }
     }
 
-    fun setUserData(userData: UserEventRegistrationBody) {
-        ticketData.userData = userData
-        updateScreen.postValue(RegisterConfirmationFragment::class.java.simpleName)
+    fun setUserData(userOption: UserOptionEventRegistrationBody) {
+        getCurrentTicketOption()?.apply {
+            this.userOption = userOption
+            updateScreen.postValue(ConfirmRegistrationFragment::class.java.simpleName)
+        }
     }
 
 
@@ -167,16 +183,18 @@ class RegisterEventViewModel(private val addressRepo: AddressRepository,
 
     suspend fun registerEvent(): Boolean = withContext(IO) {
 
-        ticketData.receiptType = when (eventDetail.value?.category) {
-            EventCategory.VIRTUAL_RUN -> "myself"
-            else -> ""
+        ticketOptions.forEach { ticketOption ->
+            ticketOption.receiptType = when (eventDetail.value?.category) {
+                EventCategory.VIRTUAL_RUN -> "myself"
+                else -> ""
+            }
         }
 
         val registerBody = EventRegistrationBody().apply {
-            event = eventDetail.value
-            totalPrice = ticketData.totalPrice
-            registerDate = System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT)
-            ticketOptions = listOf(ticketData)
+            this.event = eventDetail.value
+            this.totalPrice = this@RegisterEventViewModel.ticketOptions.sumByDouble { it.totalPrice }
+            this.registerDate = System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT)
+            this.ticketOptions = this@RegisterEventViewModel.ticketOptions
         }
         val body = JsonObject().apply {
             addProperty("event_id", eventDetail.value?.id ?: 0)

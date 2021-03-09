@@ -1,5 +1,6 @@
 package com.think.runex.feature.event.registered
 
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -10,15 +11,19 @@ import com.think.runex.R
 import com.think.runex.common.getDrawable
 import com.think.runex.common.getString
 import com.think.runex.common.loadEventsImage
+import com.think.runex.common.requireContext
 import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.event.data.EventRegisteredData
+import com.think.runex.feature.payment.PaymentStatus
 import kotlinx.android.synthetic.main.list_item_my_event.view.*
 
-class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(EventsListDiffCallback()) {
+class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(EventRegisteredDiffCallback()) {
 
-    private var onItemClick: ((position: Int, event: EventRegistered) -> Unit)? = null
+    var onItemClickListener: ((position: Int, event: EventRegistered) -> Unit)? = null
 
-    fun setOnItemClick(block: (position: Int, event: EventRegistered) -> Unit) {
-        onItemClick = block
+    @JvmName("setOnItemClickListenerJava")
+    fun setOnItemClickListener(onItemClick: (position: Int, event: EventRegistered) -> Unit) {
+        onItemClickListener = onItemClick
     }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
@@ -26,12 +31,12 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClick)
+        holder.bind(getItem(position), onItemClickListener)
     }
 
-    class EventsListDiffCallback : DiffUtil.ItemCallback<EventRegistered>() {
+    class EventRegisteredDiffCallback : DiffUtil.ItemCallback<EventRegistered>() {
         override fun areItemsTheSame(oldItem: EventRegistered, newItem: EventRegistered): Boolean {
-            return oldItem.id == newItem.id
+            return oldItem.eventCode == newItem.eventCode
         }
 
         override fun areContentsTheSame(oldItem: EventRegistered, newItem: EventRegistered): Boolean {
@@ -46,20 +51,18 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
         }
 
         fun bind(data: EventRegistered?, onItemClick: ((position: Int, event: EventRegistered) -> Unit)? = null) {
+            Log.e("Jozzee","Event Code: ${data?.eventCode}")
+            val eventDetail = data?.getEventDetail()
+            itemView.event_image?.loadEventsImage(eventDetail?.getCoverImage())
+            itemView.event_name_label?.text = eventDetail?.title ?: ""
 
-            itemView.event_image?.loadEventsImage(data?.getCoverImage())
-            itemView.event_name_label?.text = data?.name ?: ""
-            when (data?.isActive) {
-                true -> {
-                    itemView.event_status_icon?.background = getDrawable(R.drawable.shape_circle_accent)
-                    itemView.event_status_label?.text = getString(R.string.active)
-                }
-                false -> {
-                    itemView.event_status_icon?.background = getDrawable(R.drawable.shape_circle_disable)
-                    itemView.event_status_label?.text = getString(R.string.passed)
-                }
+            val paymentStatus = data?.getPaymentStatus() ?: ""
+            itemView.event_status_icon?.background = PaymentStatus.getPaymentStatusBackground(requireContext(), paymentStatus)
+            itemView.event_status_label?.text = PaymentStatus.getPaymentStatusText(requireContext(), paymentStatus)
+
+            itemView.list_item_event_registration?.setOnClickListener {
+                data?.also { onItemClick?.invoke(adapterPosition, it) }
             }
-
         }
     }
 }

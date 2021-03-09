@@ -4,11 +4,8 @@ import com.google.gson.JsonObject
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
-import com.think.runex.feature.event.data.IsRegisteredEvent
 import com.think.runex.config.AUTHORIZATION
-import com.think.runex.feature.event.data.EventDetail
-import com.think.runex.feature.event.data.EventItem
-import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.event.data.*
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 

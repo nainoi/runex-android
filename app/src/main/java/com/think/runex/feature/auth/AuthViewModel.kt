@@ -8,9 +8,6 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody
-import com.think.runex.feature.user.data.UserInfo
-import com.think.runex.java.App.App
-import com.think.runex.java.App.AppEntity
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -75,7 +72,6 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.statusCode, loginResult.message)
         }
-        setUserForJavaCode(context, userResult.data)
 
         return@withContext loginResult.isSuccessful()
     }
@@ -96,12 +92,5 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     private fun updateAccessToken(accessToken: AccessToken) {
         TokenManager.updateToken(accessToken)
         repo.setLocalAccessToken(accessToken)
-    }
-
-    private fun setUserForJavaCode(context: Context, userInfo: UserInfo?) {
-        //Set access token
-        val appEntity: AppEntity = App.instance(context).appEntity
-        appEntity.setUser(userInfo)
-        App.instance(context).save(appEntity)
     }
 }

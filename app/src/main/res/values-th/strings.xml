@@ -133,6 +133,7 @@
     <string name="phone">เบอร์โทรศัพท์</string>
     <string name="province">จังหวัด</string>
     <string name="price">ราคา</string>
+    <string name="payment">ชำระเงิน</string>
 
     <!-- R -->
     <string name="record">บันทึก</string>
