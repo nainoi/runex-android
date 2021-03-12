@@ -2,9 +2,12 @@ package com.think.runex.util
 
 import android.content.Context
 import android.content.SharedPreferences
+import android.security.keystore.KeyGenParameterSpec
+import android.security.keystore.KeyProperties
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
+import com.think.runex.config.APP_NAME
 import com.think.runex.config.KEY_FIREBASE_TOKEN
 import com.think.runex.config.PREFERENCES_NAME
 
@@ -21,10 +24,25 @@ object AppPreference {
     }
 
     fun createPreference(context: Context): SharedPreferences {
-        val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
-                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+
+        //TODO("Old")
+//        val masterKey = MasterKey.Builder(context, MasterKey.DEFAULT_MASTER_KEY_ALIAS)
+//                .setKeyScheme(MasterKey.KeyScheme.AES256_GCM)
+//                .build()
+//        return EncryptedSharedPreferences.create(context, PREFERENCES_NAME, masterKey,
+//                EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
+//                EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
+
+        val keyGenParameterSpec = KeyGenParameterSpec.Builder(PREFERENCES_NAME, KeyProperties.PURPOSE_ENCRYPT or KeyProperties.PURPOSE_DECRYPT).setBlockModes(KeyProperties.BLOCK_MODE_GCM)
+                .setEncryptionPaddings(KeyProperties.ENCRYPTION_PADDING_NONE)
+                .setKeySize(256)
                 .build()
-        return EncryptedSharedPreferences.create(context, PREFERENCES_NAME, masterKey,
+
+        val masterKeyAlias = MasterKey.Builder(context, PREFERENCES_NAME)
+                .setKeyGenParameterSpec(keyGenParameterSpec)
+                .build()
+
+        return EncryptedSharedPreferences.create(context, APP_NAME, masterKeyAlias,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
     }

@@ -3,7 +3,7 @@ package com.think.runex.config
 /**
  * Shared preferences name
  */
-const val PREFERENCES_NAME = "app_preference"
+const val PREFERENCES_NAME = "runex_preference"
 
 /**
  * Global Variable

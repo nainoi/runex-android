@@ -73,6 +73,7 @@ fun ImageView.loadEventsImage(url: String?,
                 false -> post {
                     Glide.with(this)
                             .load(defaultImage)
+                            .format(DecodeFormat.PREFER_ARGB_8888)
                             .transform(CenterCrop(), RoundedCorners(cornersRadian))
                             .override(width, height)
                             .into(this)
