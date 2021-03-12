@@ -12,6 +12,8 @@ import java.util.*
 
 data class UserInfo(
         @SerializedName("email") var email: String? = null,
+        @SerializedName("provider") var provider:String? = null,
+        @SerializedName("provider_id") var providerId:String? = null,
         @SerializedName("fullname") var fullName: String? = null,
         @SerializedName("firstname") var firstName: String? = null,
         @SerializedName("firstname_th") var firstNameTh: String? = null,
@@ -33,7 +35,6 @@ data class UserInfo(
         @SerializedName("citycen_id") var citizenId: String? = null,
         @SerializedName("blood_type") var bloodType: String? = null,
         @SerializedName("pf") var pf: String? = null,
-        //TODO("Wait a api")
         @SerializedName("events") var events: List<EventItem>? = null,
         @SerializedName("strava_id") var stravaId: String? = null,
         @SerializedName("strava_avatar") var stravaAvatar: String? = null,
@@ -42,6 +43,8 @@ data class UserInfo(
 
     constructor(userInfo: UserInfo?) : this(
             userInfo?.email,
+            userInfo?.provider,
+            userInfo?.providerId,
             userInfo?.fullName,
             userInfo?.firstName,
             userInfo?.firstNameTh,

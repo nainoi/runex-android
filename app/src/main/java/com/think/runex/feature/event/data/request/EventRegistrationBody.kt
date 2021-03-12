@@ -2,7 +2,7 @@ package com.think.runex.feature.event.data.request
 
 import com.google.gson.annotations.SerializedName
 import com.think.runex.feature.event.data.EventDetail
-import com.think.runex.feature.payment.PaymentStatus
+import com.think.runex.feature.payment.data.PaymentStatus
 
 data class EventRegistrationBody(
         @SerializedName("event") var event: EventDetail? = null,

@@ -3,6 +3,7 @@ package com.think.runex.feature.event.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
+import com.think.runex.feature.payment.data.PaymentStatus
 
 data class EventRegistered(
         @SerializedName("owner_id") var ownerId: String? = null,
@@ -54,6 +55,13 @@ data class EventRegistered(
             return eventRegisteredList?.get(0)?.status
         }
         return null
+    }
+
+    fun isPaid(): Boolean {
+        if (eventRegisteredList?.isNotEmpty() == true) {
+            return eventRegisteredList?.get(0)?.status == PaymentStatus.SUCCESS
+        }
+        return false
     }
 }
 

@@ -1,4 +1,4 @@
-package com.think.runex.feature.payment
+package com.think.runex.feature.payment.data
 
 object PaymentType {
     const val TRANSFER = "PAYMENT_TRANSFER"

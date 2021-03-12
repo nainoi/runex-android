@@ -150,6 +150,7 @@
     <string name="select_image">เลือกรูปภาพ</string>
     <string name="select_ticket_type">เลือกประเภทการวิ่ง</string>
     <string name="select_shirt_size">เลือกขนาดเสื้อ</string>
+    <string name="select_payment_method">เลือกวิธีชำระเงิน</string>
     <string name="setting">ตั้งค่า</string>
     <string name="start_recording">จับเวลา</string>
     <string name="stop_recording">จบการจับเวลา</string>

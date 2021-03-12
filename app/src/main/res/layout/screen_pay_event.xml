@@ -1,0 +1,134 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/background"
+    tools:context=".feature.payment.PayEventScreen">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/background"
+        android:paddingTop="@dimen/space_24dp"
+        app:elevation="0dp">
+
+        <include layout="@layout/toolbar" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <TextView
+        android:id="@+id/amount_placeholder"
+        style="@style/Text.Body.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar"
+        android:layout_alignBaseline="@+id/amount_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:maxLines="1"
+        android:text="@string/amount" />
+
+    <TextView
+        android:id="@+id/amount_label"
+        style="@style/Text.HeadLine.Accent.Bold"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar"
+        android:layout_alignParentEnd="true"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginTop="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_toEndOf="@+id/amount_placeholder"
+        android:gravity="end|center_vertical"
+        android:maxLines="1"
+        tools:text="1,000 THB" />
+
+    <TextView
+        android:id="@+id/detail_button"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/amount_label"
+        android:layout_alignEnd="@+id/amount_label"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:layout_marginEnd="0dp"
+        android:background="@drawable/bg_btn_text"
+        android:clickable="true"
+        android:enabled="false"
+        android:focusable="true"
+        android:paddingStart="@dimen/space_16dp"
+        android:paddingTop="@dimen/space_8dp"
+        android:paddingEnd="@dimen/space_16dp"
+        android:paddingBottom="@dimen/space_8dp"
+        android:text="@string/detail"
+        android:textColor="@drawable/selector_text_color_btn_text"
+        android:textSize="@dimen/text_size_body_heading" />
+
+    <View
+        android:id="@+id/underline_amount"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_below="@+id/detail_button"
+        android:layout_margin="@dimen/space_16dp"
+        android:background="@color/line" />
+
+    <TextView
+        android:id="@+id/event_name_label"
+        style="@style/Text.HeadLine.Primary.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/underline_amount"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        tools:text="Event Name" />
+
+    <TextView
+        android:id="@+id/order_id_label"
+        style="@style/Text.BodyHeading.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/event_name_label"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        tools:text="Order Id" />
+
+    <View
+        android:id="@+id/underline_order_id"
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/space_1dp"
+        android:layout_below="@+id/order_id_label"
+        android:layout_margin="@dimen/space_16dp"
+        android:background="@color/line" />
+
+    <TextView
+        android:id="@+id/select_payment_method_label"
+        style="@style/Text.Body.Primary"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/underline_order_id"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:text="@string/select_payment_method" />
+
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/select_payment_method_label">
+
+        <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/payment_method_list"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:overScrollMode="never" />
+
+        <ProgressBar
+            android:id="@+id/progress_bar"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:visibility="gone" />
+    </FrameLayout>
+
+</RelativeLayout>

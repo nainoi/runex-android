@@ -1,0 +1,39 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/list_item_payment_method"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="@drawable/shape_rectangle_border_corner_radius_4dp"
+    android:clickable="true"
+    android:focusable="true"
+    android:foreground="?selectableItemBackground"
+    android:padding="@dimen/space_16dp">
+
+    <androidx.appcompat.widget.AppCompatImageView
+        android:id="@+id/payment_method_icon"
+        android:layout_width="@dimen/icon_size_system"
+        android:layout_height="@dimen/icon_size_system"
+        tools:srcCompat="@drawable/ic_credit_card" />
+
+    <TextView
+        android:id="@+id/payment_method_label"
+        style="@style/Text.BodyHeading.Primary.Bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginStart="@dimen/space_16dp"
+        android:layout_marginEnd="@dimen/space_16dp"
+        android:layout_toEndOf="@+id/payment_method_icon"
+        android:maxLines="1"
+        tools:text="Credit Card/ Debit Card" />
+
+    <TextView
+        android:id="@+id/payment_method_charge_label"
+        style="@style/Text.Body.Primary"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/payment_method_label"
+        android:layout_marginTop="@dimen/space_8dp"
+        tools:text="+39.00 THB" />
+
+</RelativeLayout>

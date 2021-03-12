@@ -7,22 +7,22 @@ import androidx.recyclerview.widget.RecyclerView
 
 class MarginItemDecoration() : RecyclerView.ItemDecoration() {
 
-    constructor(@Dimension marginBetweenItems: Int,
-                @Dimension marginLeftOrTop: Int = 0,
-                @Dimension marginRightOrBottom: Int = 0,
-                @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL) : this() {
-
-        this.marginBetweenItems = marginBetweenItems
-        this.marginLeftOrTop = marginLeftOrTop
-        this.marginRightOrBottom = marginRightOrBottom
-        this.orientation = orientation
-    }
-
     constructor(@Dimension margin: Int,
                 @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL) : this() {
         this.marginBetweenItems = margin
         this.marginLeftOrTop = margin
         this.marginRightOrBottom = margin
+        this.orientation = orientation
+    }
+
+    constructor(@Dimension marginBetweenItems: Int,
+                @Dimension marginLeftOrTop: Int,
+                @Dimension marginRightOrBottom: Int,
+                @RecyclerView.Orientation orientation: Int = RecyclerView.VERTICAL) : this() {
+
+        this.marginBetweenItems = marginBetweenItems
+        this.marginLeftOrTop = marginLeftOrTop
+        this.marginRightOrBottom = marginRightOrBottom
         this.orientation = orientation
     }
 

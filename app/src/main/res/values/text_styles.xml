@@ -236,13 +236,17 @@
         <item name="android:textColor">?textColorPrimary</item>
     </style>
 
+    <style name="Text.HeadLine.Primary.Bold" parent="Text.HeadLine.Primary">
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
     <style name="Text.HeadLine.Primary.center" parent="Text.HeadLine.Primary">
         <item name="android:gravity">center</item>
     </style>
 
     <style name="Text.HeadLine.Secondary" parent="Text.HeadLine">
         <item name="android:textColor">?textColorSecondary</item>
-<!--        <item name="android:textColor">@color/textColorSecondary</item>-->
     </style>
 
     <style name="Text.HeadLine.Hint" parent="Text.HeadLine">
@@ -251,6 +255,14 @@
 
     <style name="Text.HeadLine.White" parent="Text.HeadLine">
         <item name="android:textColor">@color/textColorWhite</item>
+    </style>
+
+    <style name="Text.HeadLine.Accent" parent="Text.HeadLine">
+        <item name="android:textColor">?textColorAccent</item>
+    </style>
+
+    <style name="Text.HeadLine.Accent.Bold" parent="Text.HeadLine.Accent">
+        <item name="android:textStyle">bold</item>
     </style>
 
     <!-- TextView -->

@@ -8,8 +8,8 @@
                     <corners android:radius="@dimen/space_24dp" />
                 </shape>
             </item>
-            <item android:drawable="@drawable/shape_rectangle_primary_rounded_24dp" />
+            <item android:drawable="@drawable/shape_rectangle_primary_corner_radius_24dp" />
         </ripple>
     </item>
-    <item android:drawable="@drawable/shape_rectangle_disable_rounded_24dp" android:state_enabled="false" />
+    <item android:drawable="@drawable/shape_rectangle_disable_corner_radius_24dp" android:state_enabled="false" />
 </selector>

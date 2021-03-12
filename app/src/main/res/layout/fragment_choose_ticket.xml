@@ -20,5 +20,5 @@
         android:layout_below="@+id/title_label"
         android:layout_marginStart="@dimen/space_16dp"
         android:layout_marginEnd="@dimen/space_16dp"
-        android:background="@drawable/shape_rectangle_border_rounded_4dp" />
+        android:background="@drawable/shape_rectangle_border_corner_radius_4dp" />
 </RelativeLayout>
