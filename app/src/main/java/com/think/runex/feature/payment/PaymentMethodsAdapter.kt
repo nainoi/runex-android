@@ -6,6 +6,7 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.jozzee.android.core.view.showToast
 import com.think.runex.R
 import com.think.runex.common.requireContext
 import com.think.runex.feature.payment.data.PaymentMethod
@@ -51,10 +52,13 @@ class PaymentMethodsAdapter(var amount: Double) : ListAdapter<PaymentMethod, Pay
 
             itemView.payment_method_icon?.setImageDrawable(data?.getPaymentMethodIcon(requireContext()))
             itemView.payment_method_label?.text = data?.name ?: ""
-            itemView.payment_method_charge_label?.text = data?.getChargeAmountDisplay(amount)
+            itemView.payment_method_charge_label?.text = data?.getChargeAmountDisplay(requireContext(), amount)
 
             itemView.list_item_payment_method?.setOnClickListener {
-                data?.also { onItemClick?.invoke(it) }
+                when (data != null && data.isActive == true) {
+                    true -> onItemClick?.invoke(data)
+                    false -> requireContext().showToast(R.string.service_unavailable)
+                }
             }
         }
 

@@ -74,7 +74,7 @@ class MyEventsScreen : BaseScreen() {
         adapter.setOnItemClickListener { event ->
             when (event.isPaid()) {
                 true -> addFragment(DashBoardScreen())
-                false -> addFragment(PayEventScreen())
+                false -> addFragment(PayEventScreen.newInstance(event.getEventName(), event.getOrderId(), event.getTotalPrice()))
             }
         }
 

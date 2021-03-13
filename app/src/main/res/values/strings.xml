@@ -121,6 +121,7 @@
     <string name="or">Or</string>
     <string name="other">Other</string>
     <string name="open">Open</string>
+    <string name="order_no">Order No</string>
 
     <!-- P -->
     <string name="password">Password</string>
@@ -164,6 +165,7 @@
     <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
     <string name="sub_district">District</string>
     <string name="shirt_size">shirt size</string>
+    <string name="service_unavailable">The service is unavailable for now.</string>
 
     <!-- T -->
     <string name="time">Time</string>

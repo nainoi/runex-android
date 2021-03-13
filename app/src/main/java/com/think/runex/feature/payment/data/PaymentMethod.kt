@@ -26,8 +26,8 @@ data class PaymentMethod(
         return (amount * (chargePercent ?: 0.0)) / 100.0
     }
 
-    fun getChargeAmountDisplay(amount: Double): String {
-        return "+${getChargeAmount(amount).displayFormat(awaysShowDecimal = true)}"
+    fun getChargeAmountDisplay(context: Context, amount: Double): String {
+        return "+${getChargeAmount(amount).displayFormat(awaysShowDecimal = true)} ${context.getString(R.string.thai_bath)}"
     }
 
 }

@@ -80,6 +80,9 @@
 
     <color name="iconColorAccent">@color/colorAccent</color>
 
+    <color name="iconColorWhite">@android:color/white</color>
+    <color name="iconColorBlack">@android:color/black</color>
+
     <!-- Payment status colors -->
     <color name="paymentStatusWaitingForApprove">#F7B500</color>
     <color name="paymentStatusWaiting">#494E52</color>

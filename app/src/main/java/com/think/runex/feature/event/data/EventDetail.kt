@@ -4,6 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.jozzee.android.core.datetime.toTimeMillis
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiConfig
 
@@ -157,5 +158,12 @@ data class EventDetail(
         val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
                 ?: ""
         return "$startEventDate - $endEventDate"
+    }
+
+    fun isActive(): Boolean {
+        val now = System.currentTimeMillis()
+        val start = eventStartDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT) ?: 0
+        val end = eventEndDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT) ?: 0
+        return now in start..end
     }
 }

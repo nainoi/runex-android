@@ -18,8 +18,8 @@ data class EventRegisteredData(
         @SerializedName("event_code") var eventCode: String? = null,
         @SerializedName("status") var status: String? = null,
         @SerializedName("payment_type") var paymentType: String? = null,
-        @SerializedName("total_price") var totalPrice: Float? = 0f,
-        @SerializedName("discount_price") var discountPrice: Float? = 0f,
+        @SerializedName("total_price") var totalPrice: Double? = 0.0,
+        @SerializedName("discount_price") var discountPrice: Double? = 0.0,
         @SerializedName("promo_code") var promoCode: String? = null,
         @SerializedName("order_id") var orderId: String? = null,
         @SerializedName("reg_date") var registerDate: String? = null,
@@ -48,8 +48,8 @@ data class EventRegisteredData(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readValue(Float::class.java.classLoader) as? Float,
-            parcel.readValue(Float::class.java.classLoader) as? Float,
+            parcel.readValue(Float::class.java.classLoader) as? Double,
+            parcel.readValue(Float::class.java.classLoader) as? Double,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -100,5 +100,12 @@ data class EventRegisteredData(
             true -> event?.coverImage ?: ""
             false -> ("${ApiConfig.BASE_URL}${event?.coverImage ?: ""}")
         }
+    }
+
+    fun getTotalPrice(): Double {
+        if ((totalPrice ?: 0.0) > (discountPrice ?: 0.0)) {
+            return (totalPrice ?: 0.0) - (discountPrice ?: 0.0)
+        }
+        return 0.0
     }
 }

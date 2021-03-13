@@ -1,5 +1,6 @@
 package com.think.runex.feature.event.detail
 
+import android.graphics.PorterDuff
 import android.os.Bundle
 import android.util.Log
 import android.view.LayoutInflater
@@ -24,6 +25,7 @@ import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_event_details.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.delay
 
 class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
 
@@ -108,15 +110,10 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         event_detail_label?.text = eventDetail?.content ?: ""
         adapter.submitList(eventDetail?.tickets?.toMutableList())
 
-        //Set register button if event not free
-        if (eventDetail?.isFreeEvent == true) {
-            register_button?.isEnabled = true
-        }
+        //Set register button
         launch {
             val isRegistered = viewModel.isRegisteredEvent(arguments?.getString(KEY_CODE) ?: "")
-            if (isRegistered) {
-                register_button?.isEnabled = false
-            }
+            setEnableRegisterButton(eventDetail?.isActive() == true && isRegistered.not())
         }
     }
 
@@ -172,6 +169,17 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         register_button?.visible()
         progress_bar?.gone()
     }
+
+    private fun setEnableRegisterButton(isEnabled: Boolean) {
+        register_button?.isEnabled = isEnabled
+        register_label?.isEnabled = isEnabled
+        running_icon?.setImageDrawable(getDrawable(R.mipmap.ic_running)?.let {
+            it.setColorFilter(getColor(if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable))
+            it
+        })
+        register_button?.visible()
+    }
+
 
     override fun onDestroy() {
         removeObservers(viewModel.eventDetail)

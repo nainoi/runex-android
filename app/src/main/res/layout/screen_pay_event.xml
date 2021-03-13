@@ -19,19 +19,19 @@
     </com.google.android.material.appbar.AppBarLayout>
 
     <TextView
-        android:id="@+id/amount_placeholder"
+        android:id="@+id/price_placeholder"
         style="@style/Text.Body.Primary"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_below="@+id/top_bar"
-        android:layout_alignBaseline="@+id/amount_label"
+        android:layout_alignBaseline="@+id/price_label"
         android:layout_marginStart="@dimen/space_16dp"
         android:layout_marginTop="@dimen/space_16dp"
         android:maxLines="1"
         android:text="@string/amount" />
 
     <TextView
-        android:id="@+id/amount_label"
+        android:id="@+id/price_label"
         style="@style/Text.HeadLine.Accent.Bold"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
@@ -40,7 +40,7 @@
         android:layout_marginStart="@dimen/space_16dp"
         android:layout_marginTop="@dimen/space_16dp"
         android:layout_marginEnd="@dimen/space_16dp"
-        android:layout_toEndOf="@+id/amount_placeholder"
+        android:layout_toEndOf="@+id/price_placeholder"
         android:gravity="end|center_vertical"
         android:maxLines="1"
         tools:text="1,000 THB" />
@@ -49,8 +49,8 @@
         android:id="@+id/detail_button"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/amount_label"
-        android:layout_alignEnd="@+id/amount_label"
+        android:layout_below="@+id/price_label"
+        android:layout_alignEnd="@+id/price_label"
         android:layout_marginTop="@dimen/space_8dp"
         android:layout_marginEnd="0dp"
         android:background="@drawable/bg_btn_text"

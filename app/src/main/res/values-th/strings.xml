@@ -120,6 +120,7 @@
     <string name="or">หรือ</string>
     <string name="other">อื่นๆ</string>
     <string name="open">เปิด</string>
+    <string name="order_no">หมายเลขคำสั่งซื้อ</string>
 
     <!-- P -->
     <string name="password">รหัสผ่าน</string>
@@ -163,6 +164,7 @@
     <string name="storage_permission_denied">ไม่สามารถเข้าถึงพื้นที่เก็บข้อมูลของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="sub_district">ตำบล</string>
     <string name="shirt_size">ขนาดเสื้อ</string>
+    <string name="service_unavailable">ไม่สามารถใช้บริการได้ในขณะนี้</string>
 
     <!-- T -->
     <string name="time">เวลา</string>

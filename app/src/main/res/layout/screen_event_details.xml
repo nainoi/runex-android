@@ -83,7 +83,7 @@
                 android:layout_marginTop="@dimen/space_24dp"
                 android:layout_marginEnd="@dimen/space_16dp"
                 android:layout_marginBottom="@dimen/space_24dp"
-                android:background="@drawable/shape_rectangle_border_corner_radius_4dp"/>
+                android:background="@drawable/shape_rectangle_border_corner_radius_4dp" />
 
             <TextView
                 android:id="@+id/event_detail_label"
@@ -106,7 +106,9 @@
         android:background="@drawable/bg_btn_primary"
         android:clickable="true"
         android:focusable="true"
-        android:minHeight="@dimen/space_48dp">
+        android:minHeight="@dimen/space_48dp"
+        android:visibility="invisible"
+        tools:visibility="visible">
 
         <RelativeLayout
             android:layout_width="wrap_content"
@@ -120,15 +122,17 @@
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/space_8dp"
                 app:srcCompat="@mipmap/ic_running"
-                app:tint="@android:color/white" />
+                app:tint="@color/iconColorWhite" />
 
             <TextView
+                android:id="@+id/register_label"
                 style="@style/Text.BodyHeading.White.Bold"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_centerVertical="true"
                 android:layout_toEndOf="@+id/running_icon"
-                android:text="@string/register_event" />
+                android:text="@string/register_event"
+                android:textColor="@drawable/selector_text_color_btn_primary" />
 
         </RelativeLayout>
     </FrameLayout>

@@ -11,10 +11,14 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
+import com.think.runex.common.displayFormat
 import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
 import com.think.runex.component.recyclerview.MarginItemDecoration
+import com.think.runex.config.KEY_EVENT
+import com.think.runex.config.KEY_ID
+import com.think.runex.config.KEY_PRICE
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_pay_event.*
@@ -24,7 +28,12 @@ class PayEventScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance() = PayEventScreen().apply {
+        fun newInstance(eventName: String, orderId: String, price: Double) = PayEventScreen().apply {
+            arguments = Bundle().apply {
+                putString(KEY_EVENT, eventName)
+                putString(KEY_ID, orderId)
+                putDouble(KEY_PRICE, price)
+            }
         }
     }
 
@@ -35,6 +44,9 @@ class PayEventScreen : BaseScreen() {
         super.onCreate(savedInstanceState)
 
         viewModel = getViewModel(PaymentViewModelFactory(requireContext()))
+        viewModel.updateOrderDetails(arguments?.getString(KEY_EVENT) ?: "",
+                arguments?.getString(KEY_ID) ?: "",
+                arguments?.getDouble(KEY_PRICE) ?: 0.0)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -53,8 +65,13 @@ class PayEventScreen : BaseScreen() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar, R.string.payment, R.drawable.ic_navigation_back)
 
+        //Set price and order details
+        price_label?.text = ("${viewModel.price.displayFormat()} ${getString(R.string.thai_bath)}")
+        event_name_label?.text = viewModel.eventName
+        order_id_label?.text = ("${getString(R.string.order_no)}: ${viewModel.orderId}")
+
         //Set update recycler view
-        adapter = PaymentMethodsAdapter(790.0)
+        adapter = PaymentMethodsAdapter(viewModel.price)
         payment_method_list?.addItemDecoration(MarginItemDecoration(getDimension(R.dimen.space_16dp)))
         payment_method_list?.layoutManager = LinearLayoutManager(requireContext())
         payment_method_list?.adapter = adapter
