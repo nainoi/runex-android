@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Base application theme. -->
+    <style name="Theme.Runex" parent="Theme.MaterialComponents.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/backgroundPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/backgroundPrimaryDark</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Color Attributes -->
+        <item name="colorBackgroundPrimary">@color/backgroundPrimaryDark</item>
+        <item name="colorBackgroundSecondary">@color/backgroundSecondary</item>
+        <item name="colorBackgroundThirdly">@color/backgroundThirdly</item>
+
+        <item name="colorDisable">@color/disable</item>
+        <item name="colorDisableSecondary">@color/disableSecondary</item>
+        <item name="colorLine">@color/line</item>
+        <item name="colorBorder">@color/border</item>
+
+        <item name="textColorPrimary">@color/textColorPrimary</item>
+        <item name="textColorSecondary">@color/textColorSecondary</item>
+        <item name="textColorThirdly">@color/textColorThirdly</item>
+        <item name="textColorHint">@color/textColorHint</item>
+        <item name="textColorError">@color/textColorError</item>
+        <item name="textColorAccent">@color/textColorAccent</item>
+
+        <item name="iconColorPrimary">@color/iconColorPrimary</item>
+        <item name="iconColorSecondary">@color/iconColorSecondary</item>
+        <item name="iconColorDisable">@color/iconColorDisable</item>
+        <item name="iconColorAccent">@color/iconColorAccent</item>
+    </style>
+
+    <style name="Theme.Runex.TransparentStatus" parent="Theme.Runex">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">false</item>
+    </style>
+</resources>

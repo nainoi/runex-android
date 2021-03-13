@@ -22,8 +22,8 @@ import com.facebook.share.Sharer
 import com.facebook.share.model.SharePhoto
 import com.facebook.share.model.SharePhotoContent
 import com.facebook.share.widget.ShareDialog
-import com.google.android.libraries.maps.GoogleMap
-import com.google.android.libraries.maps.SupportMapFragment
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
 import com.google.android.material.snackbar.Snackbar
 import com.jozzee.android.core.permission.shouldShowPermissionRationale

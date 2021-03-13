@@ -6,22 +6,15 @@
     <string name="address">Address</string>
     <string name="amount">Amount</string>
 
-    <string name="add_distance">Add</string>
     <string name="add_image">Add image</string>
-    <string name="add_activity_success">Add activity success</string>
-    <string name="activity">Activity</string>
-    <string name="activity_record">Activity record</string>
-    <string name="activity_record_empty">Activity record is empty</string>
     <string name="all_event">All Events</string>
     <string name="all_events_to_submit">All events to submit</string>
-    <string name="active">Active</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
     <string name="application_service_and_devices">Application Service and Devices</string>
     <string name="about_us">About us</string>
     <string name="action">Action</string>
 
     <!-- B -->
-    <string name="back">Back</string>
     <string name="birth_date">Birth date</string>
     <string name="blood_type">Blood type</string>
 
@@ -29,25 +22,21 @@
     <string name="camera">Camera</string>
     <string name="camera_permission_denied">Unable to access your camera due to being denied.</string>
     <string name="cancel">Cancel</string>
-    <string name="close">Close</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_register">Confirm register</string>
     <string name="confirm_submit_result">Confirm to submit</string>
     <string name="confirm_to_ending_run">You confirm to ending run?</string>
     <string name="confirm_to_logout">You confirm to logout?</string>
     <string name="connection_timed_out">Connection timed out</string>
-    <string name="calories">Calories</string>
     <string name="calories_kcal">Calories(kcal)</string>
     <string name="contract">Contract</string>
 
 
     <!-- D -->
     <string name="detail">Detail</string>
-    <string name="delete">Delete</string>
     <string name="default_">Default</string>
     <string name="distances">Distances</string>
     <string name="distances_kg">Distances(km)</string>
-    <string name="delete_image">Delete image</string>
     <string name="duration">Duration</string>
     <string name="district">Amphoe</string>
 
@@ -56,16 +45,12 @@
     <string name="edit_info">Edit info</string>
     <string name="email">Email</string>
     <string name="events">Events</string>
-    <string name="event_date">Event Date</string>
     <string name="event_detail">Event Detail</string>
     <string name="error">Error</string>
 
     <!-- F -->
     <string name="facebook">Facebook</string>
     <string name="female">Female</string>
-    <string name="finish_recording">Finish recording</string>
-    <string name="forgot_password">Forgot password</string>
-    <string name="free">Free</string>
     <string name="failed">Failed</string>
     <string name="fill_out_user_info">Fill out user info</string>
     <string name="fill_out_address">Fill out address</string>
@@ -87,68 +72,50 @@
     <string name="km">km</string>
 
     <!-- L -->
-    <string name="latest">Latest</string>
     <string name="last_name">Last name</string>
-    <string name="login">Login</string>
-    <string name="login_info_email_message">Login with Email</string>
-    <string name="login_with_facebook">Login with Facebook</string>
-    <string name="login_with_google">Login with Google</string>
-    <string name="login_with_email">Email Login</string>
     <string name="logout">Logout</string>
     <string name="location_permission_denied">Unable to access your current location due to being denied.</string>
 
 
     <!-- M -->
     <string name="male">Male</string>
-    <string name="menu">Menu</string>
     <string name="my_events">My Events</string>
-    <string name="my_events_list">My event list</string>
 
     <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->
     <string name="minutes_per_kilometer_placeholder">Pace(min/km)</string>
 
     <!-- N -->
     <string name="name">Name</string>
-    <string name="notification_display_info">Run %s %s %s %s km</string>
     <string name="no_internet_connection">No Internet Connection</string>
-    <string name="note">Note</string>
     <string name="number_of_time">Time</string>
     <string name="number_of_times">Times</string>
     <string name="no_shirts_to_choose">No shirts to choose</string>
 
     <!-- O -->
     <string name="ok">OK</string>
-    <string name="or">Or</string>
     <string name="other">Other</string>
     <string name="open">Open</string>
     <string name="order_no">Order No</string>
 
     <!-- P -->
-    <string name="password">Password</string>
     <string name="pause_recording">Pause</string>
     <string name="profile">Profile</string>
     <string name="please_specify_your_ebib">Please enter your EBIB</string>
-    <string name="please_select_your_gender">Please select your gender</string>
     <string name="please_login">Please Login</string>
-    <string name="passed">Passed</string>
-    <string name="pace">Pace</string>
     <string name="phone">Phone</string>
     <string name="province">Province</string>
     <string name="price">Price</string>
     <string name="payment">Payment</string>
 
     <!-- R -->
-    <string name="record">Record</string>
-    <string name="recording">Recording</string>
     <string name="register">Register</string>
     <string name="register_date">Register date</string>
     <string name="register_event">Register event</string>
     <string name="register_event_success">Register event success</string>
     <string name="register_confirmation">Register confirmation</string>
-    <string name="resume_recording">Resume</string>>
-    <string name="running_date">Running date</string>
+    <string name="resume_recording">Resume</string><![CDATA[>
 
-    <!-- S -->
+    ]]><!-- S -->
     <string name="select_image">Select image</string>
     <string name="select_ticket_type">Select ticket</string>
     <string name="select_shirt_size">Select shirt size</string>
@@ -156,7 +123,6 @@
     <string name="setting">Setting</string>
     <string name="start_recording">Start</string>
     <string name="stop_recording">Stop</string>
-    <string name="stop_and_submit_running_result">Stop and Submit</string>
     <string name="submit_result">Submit result</string>
     <string name="summary">Summary</string>
     <string name="success">Success</string>
@@ -168,7 +134,6 @@
     <string name="service_unavailable">The service is unavailable for now.</string>
 
     <!-- T -->
-    <string name="time">Time</string>
     <string name="total_distances">Total Distances</string>
     <string name="thai_bath">THB</string>
 
@@ -185,14 +150,11 @@
     <string name="waiting_for_approve">Waiting for approve</string>
     <string name="waiting_for_payment">Waiting for payment</string>
     <string name="workout">Workout</string>
-    <string name="weight">Weight</string>
 
     <!-- Y -->
 
     <!-- Z -->
     <string name="zip_code">Zip code</string>
-
-    <string name="u250">·</string>
 
     <!-- Hint -->
     <string name="hint_time" translatable="false">00:00:00</string>
@@ -204,5 +166,4 @@
     <string name="input_required">%1$s is required</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

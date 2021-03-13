@@ -23,6 +23,7 @@ import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.register.RegisterEventScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
+import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_event_details.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.delay
@@ -170,14 +171,14 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         progress_bar?.gone()
     }
 
-    private fun setEnableRegisterButton(isEnabled: Boolean) {
+    private fun setEnableRegisterButton(isEnabled: Boolean) = runOnUiThread {
         register_button?.isEnabled = isEnabled
         register_label?.isEnabled = isEnabled
         running_icon?.setImageDrawable(getDrawable(R.mipmap.ic_running)?.let {
             it.setColorFilter(getColor(if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable))
             it
         })
-        register_button?.visible()
+        register_button.setBackgroundResource(R.drawable.bg_btn_primary)
     }
 
 

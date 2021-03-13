@@ -16,9 +16,13 @@ data class PaymentMethod(
         @SerializedName("icon") var icon: String? = null) {
 
 
-    fun getPaymentMethodIcon(context: Context): Drawable? = when (icon) {
-        "credit_card" -> ContextCompat.getDrawable(context, R.drawable.ic_credit_card)
-        "qr_code" -> ContextCompat.getDrawable(context, R.drawable.ic_qr_code)
+    fun getPaymentMethodIcon(context: Context): Drawable? = when {
+        name?.contains("Credit", true) == true -> {
+            ContextCompat.getDrawable(context, R.drawable.ic_credit_card)
+        }
+        name?.contains("QR", true) == true -> {
+            ContextCompat.getDrawable(context, R.drawable.ic_qr_code)
+        }
         else -> null
     }
 

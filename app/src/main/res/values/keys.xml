@@ -6,11 +6,10 @@
     <string name="fb_login_protocol_scheme" translatable="false">fb657116381441095</string>
 
     <!-- Server Id -->
-    <string name="server_client_id" translatable="false">335446438728-8ehteldjh41edikrid088mpobnl8h6a7.apps.googleusercontent.com</string>
 
     <!-- Service -->
     <string name="workout_service_name" translatable="false">Workout</string>
 
     <!-- Omise -->
-    <string name="omise_public_key" translatable="false">pkey_test_5i6ivm4cotoab601bfr</string>
+    <string name="omise_key" translatable="false">pkey_test_5i6ivm4cotoab601bfr</string>
 </resources>

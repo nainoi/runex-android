@@ -1,24 +1,25 @@
 package com.think.runex.feature.payment
 
 import android.os.Bundle
+import android.util.Log
 import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
+import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.common.displayFormat
-import com.think.runex.common.getViewModel
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.setupToolbar
+import com.think.runex.common.*
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.config.KEY_EVENT
 import com.think.runex.config.KEY_ID
 import com.think.runex.config.KEY_PRICE
+import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_pay_event.*
@@ -37,11 +38,17 @@ class PayEventScreen : BaseScreen() {
         }
     }
 
+    private var creditCardLauncher: ActivityResultLauncher<String>? = null
+
     private lateinit var viewModel: PaymentViewModel
     private lateinit var adapter: PaymentMethodsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        creditCardLauncher = registerForActivityResult(CreditCardActivityContract()) { token ->
+            Logger.info("Jozzee", "Oemise Token: ${token.toJson()}")
+            // process your token here
+        }
 
         viewModel = getViewModel(PaymentViewModelFactory(requireContext()))
         viewModel.updateOrderDetails(arguments?.getString(KEY_EVENT) ?: "",
@@ -80,7 +87,11 @@ class PayEventScreen : BaseScreen() {
     private fun subscribeUi() {
 
         adapter.setOnItemClickListener { paymentMethod ->
-
+            when {
+                paymentMethod.name?.contains("Credit", true) == true -> {
+                    creditCardLauncher?.launch(getString(R.string.omise_key))
+                }
+            }
         }
 
         viewModel.setOnHandleError(::errorHandler)
@@ -90,7 +101,7 @@ class PayEventScreen : BaseScreen() {
         progress_bar?.visible()
         payment_method_list?.gone()
 
-        adapter.submitList(viewModel.getPaymentMethods().toMutableList())
+        adapter.submitList(viewModel.getPaymentMethods()?.toMutableList())
 
         progress_bar?.gone()
         payment_method_list?.visible()

@@ -71,7 +71,7 @@ fun Context.showAlertDialog(
      * Set alert dialog with custom layout
      */
     val view = LayoutInflater.from(this).inflate(R.layout.dialog_default, null, false)
-    MaterialAlertDialogBuilder(this, R.style.AppAlertDialog).apply {
+    MaterialAlertDialogBuilder(this, R.style.Theme_Runex_AlertDialog).apply {
         setCancelable(cancelable)
         setView(view)
     }.create().apply {

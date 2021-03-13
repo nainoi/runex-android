@@ -1,7 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
     <item name="match_parent" type="dimen">-1</item>
-    <item name="wrap_content" type="dimen">-2</item>
 
     <!-- Default Font Style -->
     <dimen name="text_size_caption">12sp</dimen>        <!-- (Caption) -->
@@ -13,44 +12,23 @@
 
     <!-- Default Space Dimension -->
     <dimen name="space_1dp">1dp</dimen>
-    <dimen name="space_2dp">2dp</dimen>
     <dimen name="space_4dp">4dp</dimen>
     <dimen name="space_8dp">8dp</dimen>
     <dimen name="space_12dp">12dp</dimen>
     <dimen name="space_16dp">16dp</dimen>
-    <dimen name="space_20dp">20dp</dimen>
     <dimen name="space_24dp">24dp</dimen>
-    <dimen name="space_28dp">28dp</dimen>
     <dimen name="space_32dp">32dp</dimen>
-    <dimen name="space_36dp">36dp</dimen>
     <dimen name="space_40dp">40dp</dimen>
     <dimen name="space_44dp">44dp</dimen>
     <dimen name="space_48dp">48dp</dimen>
-    <dimen name="space_52dp">52dp</dimen>
     <dimen name="space_56dp">56dp</dimen>
-    <dimen name="space_60dp">60dp</dimen>
-    <dimen name="space_64dp">64dp</dimen>
-    <dimen name="space_68dp">68dp</dimen>
     <dimen name="space_72dp">72dp</dimen>
-    <dimen name="space_76dp">76dp</dimen>
-    <dimen name="space_80dp">80dp</dimen>
-    <dimen name="space_84dp">84dp</dimen>
-    <dimen name="space_88dp">88dp</dimen>
-    <dimen name="space_92dp">92dp</dimen>
     <dimen name="space_96dp">96dp</dimen>
-    <dimen name="space_100dp">100dp</dimen>
-    <dimen name="space_112dp">112dp</dimen>
-    <dimen name="space_128dp">128dp</dimen>
 
     <!-- Default Icons -->
-    <dimen name="icon_size_small">16dp</dimen>
-    <dimen name="icon_size_product">48dp</dimen>
     <dimen name="icon_size_system">24dp</dimen>
     <dimen name="icon_size_system_dense">20dp</dimen>
-    <dimen name="icon_size_menu">32dp</dimen>
     <dimen name="icon_size_in_action_bar">40dp</dimen>
-
-    <dimen name="padding_icon_in_action_bar">4dp</dimen>
 
     <!-- Default Images -->
     <dimen name="image_profile_size">84dp</dimen>
@@ -78,36 +56,10 @@
 
     <!-- Start Old -->
     <!-- Text paragraph -->
-    <dimen name="textVerticalPaddingNoRelate">28dp</dimen>
-    <dimen name="textRecordTime">48dp</dimen>
-    <dimen name="textParagraphH1">36dp</dimen>
-    <dimen name="textParagraphH2">28dp</dimen>
-    <dimen name="textParagraphH3">22dp</dimen>
-    <dimen name="textContent">18dp</dimen>
-    <dimen name="textSmall">14dp</dimen>
-    <dimen name="textSmallInput">12dp</dimen>
-    <dimen name="textButton">22dp</dimen>
     <!-- Buttons -->
-    <dimen name="verticalPaddingNoRelate">24dp</dimen>
-    <dimen name="horizontalPaddingNoRelate">32dp</dimen>
-    <dimen name="buttonVerticalPaddingNoRelate">32dp</dimen>
-    <dimen name="buttonVerticalPadding">8dp</dimen>
-    <dimen name="textVerticalPadding">12dp</dimen>
-    <dimen name="textHorizontalPadding">12dp</dimen>
-    <dimen name="buttonHorizontalPadding">38dp</dimen>
-    <dimen name="login_button_height">48dp</dimen>
     <!--  Login  -->
-    <dimen name="login_title_size">20dp</dimen>
-    <dimen name="login_social_button_description_size">14dp</dimen>
     <!--  Socials button  -->
-    <dimen name="social_button_space_vertical">16dp</dimen>
     <!-- Event -->
-    <dimen name="event_image_width">172dp</dimen>
-    <dimen name="event_image_height">128dp</dimen>
     <!-- Add Distance -->
-    <dimen name="add_distance_imv_width">@dimen/match_parent</dimen>
-    <dimen name="add_distance_imv_height">200dp</dimen>
-    <dimen name="add_distance_margin_start_and_end">32dp</dimen>
-    <dimen name="add_distance_margin_top">16dp</dimen>
     <!-- End Old -->
 </resources>

@@ -5,9 +5,9 @@
     <color name="colorAccent">#F7B600</color>
 
     <!-- Background colors -->
-    <color name="background">@color/backgroundOnDark</color>
-    <color name="backgroundSecondary">@color/backgroundSecondaryOnDark</color>
-    <color name="backgroundThirdly">@color/backgroundThirdlyOnDark</color>
+    <color name="backgroundPrimary">@color/backgroundPrimaryDark</color>
+    <color name="backgroundSecondary">@color/backgroundSecondaryDark</color>
+    <color name="backgroundThirdly">@color/backgroundThirdlyDark</color>
     <color name="backgroundWorkoutScreen">@color/backgroundThirdly</color>
 
     <color name="disable">@color/disableOnDark</color>
@@ -27,7 +27,6 @@
     <!-- Icon colors -->
     <color name="iconColorPrimary">@color/iconColorPrimaryOnDark</color>
     <color name="iconColorSecondary">@color/iconColorSecondaryOnDark</color>
-    <color name="iconColorThirdly">@color/iconColorThirdlyOnDark</color>
     <color name="iconColorDisable">@color/iconColorDisableOnDark</color>
 
     <!-- Others -->

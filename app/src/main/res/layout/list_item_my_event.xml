@@ -4,7 +4,7 @@
     android:id="@+id/list_item_event_registration"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:background="@color/background"
+    android:background="@color/backgroundPrimary"
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground">

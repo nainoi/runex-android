@@ -51,7 +51,14 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
     suspend fun updateUserInfo(userInfo: UserInfo): Boolean = withContext(IO) {
         val result = repo.updateUserInfo(userInfo)
         when (result.isSuccessful()) {
-            true -> this@UserViewModel.userInfo.postValue(result.data)
+            true -> {
+                val totalDistanceResult = repo.getTotalDistances()
+                if (totalDistanceResult.isSuccessful()) {
+                    result.data?.totalDistance = totalDistanceResult.data?.totalDistance
+                            ?: result.data?.totalDistance
+                }
+                this@UserViewModel.userInfo.postValue(result.data)
+            }
             false -> onHandleError(result.statusCode, result.message)
         }
         return@withContext result.isSuccessful()
@@ -78,6 +85,12 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
             onHandleError(userInfoUpdateResult.statusCode, userInfoUpdateResult.message)
             return@withContext false
         }
+
+        val totalDistanceResult = repo.getTotalDistances()
+        if (totalDistanceResult.isSuccessful()) {
+            userInfoUpdateResult.data?.totalDistance = totalDistanceResult.data?.totalDistance ?: userInfo.value?.totalDistance
+        }
+
         userInfo.postValue(userInfoUpdateResult.data)
         return@withContext userInfoUpdateResult.isSuccessful()
     }

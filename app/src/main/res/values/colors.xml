@@ -5,18 +5,18 @@
     <color name="colorAccent">#F7B600</color>
 
     <!-- Background colors -->
-    <color name="background">@color/backgroundOnLight</color>
-    <color name="backgroundOnLight">#FFFFFF</color>
-    <color name="backgroundOnDark">#1C1E21</color>
-    <color name="backgroundWorkoutScreen">@color/background</color>
+    <color name="backgroundPrimary">@color/backgroundPrimaryLight</color>
+    <color name="backgroundPrimaryLight">#FFFFFF</color>
+    <color name="backgroundPrimaryDark">#1C1E21</color>
+    <color name="backgroundWorkoutScreen">@color/backgroundPrimary</color>
 
-    <color name="backgroundSecondary">@color/backgroundSecondaryOnLight</color>
-    <color name="backgroundSecondaryOnLight">#F5F7F9</color>
-    <color name="backgroundSecondaryOnDark">#26282D</color>
+    <color name="backgroundSecondary">@color/backgroundSecondaryLight</color>
+    <color name="backgroundSecondaryLight">#F5F7F9</color>
+    <color name="backgroundSecondaryDark">#26282D</color>
 
-    <color name="backgroundThirdly">@color/backgroundThirdlyOnLight</color>
-    <color name="backgroundThirdlyOnLight">#EDF1F5</color>
-    <color name="backgroundThirdlyOnDark">#313338</color>
+    <color name="backgroundThirdly">@color/backgroundThirdlyLight</color>
+    <color name="backgroundThirdlyLight">#EDF1F5</color>
+    <color name="backgroundThirdlyDark">#313338</color>
 
     <color name="disable">@color/disableOnLight</color>
     <color name="disableOnLight">#9A9A9A</color>
@@ -55,7 +55,6 @@
     <color name="textColorHintOnDark">#797979</color>
 
     <color name="textColorWhite">#FFFFFF</color>
-    <color name="textColorBlack">#000000</color>
     <color name="textColorAccent">@color/colorAccent</color>
     <color name="textColorError">@color/error</color>
 
@@ -70,10 +69,6 @@
     <color name="iconColorSecondaryOnLight">#C4CDD5</color>
     <color name="iconColorSecondaryOnDark">#EEEEEE</color>
 
-    <color name="iconColorThirdly">@color/iconColorThirdlyOnLight</color>
-    <color name="iconColorThirdlyOnLight">#666666</color>
-    <color name="iconColorThirdlyOnDark">#C4C4C4</color>
-
     <color name="iconColorDisable">@color/iconColorDisableOnLight</color>
     <color name="iconColorDisableOnLight">#4DA8B6C8</color>
     <color name="iconColorDisableOnDark">#797979</color>
@@ -81,7 +76,6 @@
     <color name="iconColorAccent">@color/colorAccent</color>
 
     <color name="iconColorWhite">@android:color/white</color>
-    <color name="iconColorBlack">@android:color/black</color>
 
     <!-- Payment status colors -->
     <color name="paymentStatusWaitingForApprove">#F7B500</color>

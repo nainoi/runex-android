@@ -3,7 +3,7 @@ package com.think.runex.feature.workout.data
 import android.location.Location
 import android.os.Parcel
 import android.os.Parcelable
-import com.google.android.libraries.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLng
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT

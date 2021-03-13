@@ -11,8 +11,8 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.localbroadcastmanager.content.LocalBroadcastManager
-import com.google.android.libraries.maps.GoogleMap
-import com.google.android.libraries.maps.SupportMapFragment
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
 import com.jozzee.android.core.permission.shouldShowPermissionRationale
 import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDimension

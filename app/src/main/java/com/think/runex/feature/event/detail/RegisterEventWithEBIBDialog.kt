@@ -20,7 +20,7 @@ class RegisterEventWithEBIBDialog : BaseDialog() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setStyle(STYLE_NORMAL, R.style.AppAlertDialog)
+        setStyle(STYLE_NORMAL, R.style.Theme_Runex_AlertDialog)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -31,7 +31,7 @@ class RegisterEventWithEBIBDialog : BaseDialog() {
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
         rootView = LayoutInflater.from(context).inflate(R.layout.dialog_register_event_with_ebib_dialog, null)
-        return MaterialAlertDialogBuilder(requireContext(), R.style.AppAlertDialog).apply {
+        return MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Runex_AlertDialog).apply {
             setView(rootView)
             setupComponents()
         }.create().also {

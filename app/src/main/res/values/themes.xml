@@ -1,0 +1,129 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources xmlns:tools="http://schemas.android.com/tools">
+
+    <!-- Base application theme. -->
+    <style name="Theme.Runex" parent="Theme.MaterialComponents.DayNight.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <!-- Set windowBackground to dark color for dark mode default.-->
+        <!-- <item name="android:windowBackground">@color/backgroundDark</item> -->
+        <item name="android:windowBackground">@color/backgroundPrimary</item>
+
+        <!-- Color Attributes -->
+        <item name="colorBackgroundPrimary">@color/backgroundPrimary</item>
+        <item name="colorBackgroundSecondary">@color/backgroundSecondary</item>
+        <item name="colorBackgroundThirdly">@color/backgroundThirdly</item>
+
+        <item name="colorDisable">@color/disable</item>
+        <item name="colorDisableSecondary">@color/disableSecondary</item>
+        <item name="colorLine">@color/line</item>
+        <item name="colorBorder">@color/border</item>
+
+        <item name="textColorPrimary">@color/textColorPrimary</item>
+        <item name="textColorSecondary">@color/textColorSecondary</item>
+        <item name="textColorThirdly">@color/textColorThirdly</item>
+        <item name="textColorHint">@color/textColorHint</item>
+        <item name="textColorError">@color/textColorError</item>
+        <item name="textColorAccent">@color/textColorAccent</item>
+
+        <item name="iconColorPrimary">@color/iconColorPrimary</item>
+        <item name="iconColorSecondary">@color/iconColorSecondary</item>
+        <item name="iconColorDisable">@color/iconColorDisable</item>
+        <item name="iconColorAccent">@color/iconColorAccent</item>
+    </style>
+
+    <style name="Theme.Runex.Light" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowLightStatusBar">true</item>
+        <item name="android:windowBackground">@color/backgroundPrimaryLight</item>
+
+        <!-- Color Attributes -->
+        <item name="colorBackgroundPrimary">@color/backgroundPrimaryLight</item>
+        <item name="colorBackgroundSecondary">@color/backgroundSecondaryLight</item>
+        <item name="colorBackgroundThirdly">@color/backgroundThirdlyLight</item>
+
+        <item name="colorDisable">@color/disableOnLight</item>
+        <item name="colorDisableSecondary">@color/disableSecondaryOnLight</item>
+        <item name="colorLine">@color/lineOnLight</item>
+        <item name="colorBorder">@color/borderOnLight</item>
+
+        <item name="textColorPrimary">@color/textColorPrimaryOnLight</item>
+        <item name="textColorSecondary">@color/textColorSecondaryOnLight</item>
+        <item name="textColorThirdly">@color/textColorThirdlyOnLight</item>
+        <item name="textColorHint">@color/textColorHintOnLight</item>
+        <item name="textColorError">@color/textColorError</item>
+        <item name="textColorAccent">@color/textColorAccent</item>
+
+        <item name="iconColorPrimary">@color/iconColorPrimaryOnLight</item>
+        <item name="iconColorSecondary">@color/iconColorSecondaryOnLight</item>
+        <item name="iconColorDisable">@color/iconColorDisableOnLight</item>
+        <item name="iconColorAccent">@color/iconColorAccent</item>
+
+    </style>
+
+    <style name="Theme.Runex.TransparentStatus" parent="Theme.Runex">
+        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Runex.LoginActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@color/backgroundPrimaryLight</item>
+        <item name="android:windowLightStatusBar">true</item>
+    </style>
+
+    <style name="Theme.Runex.CreditCardActivity" parent="OmiseTheme">
+        <item name="android:windowTranslucentStatus">false</item>
+        <item name="android:statusBarColor">@color/backgroundPrimaryLight</item>
+        <item name="android:windowLightStatusBar">true</item>
+
+        <item name="colorAccent">@color/colorAccent</item>
+    </style>
+
+
+    <!-- Dialog -->
+    <style name="Theme.Runex.AlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">
+        <item name="materialAlertDialogTitleTextStyle">@style/Theme.Runex.AlertDialog.TitleTextStyle</item>
+        <item name="materialAlertDialogBodyTextStyle">@style/Theme.Runex.AlertDialog.BodyTextStyle</item>
+        <item name="buttonBarPositiveButtonStyle">@style/Theme.Runex.AlertDialog.PositiveButtonStyle</item>
+        <item name="buttonBarNegativeButtonStyle">@style/Theme.Runex.AlertDialog.NegativeButtonStyle</item>
+        <item name="android:background">?colorBackgroundPrimary</item>
+        <item name="android:dialogCornerRadius" tools:targetApi="p">@dimen/space_12dp</item>
+    </style>
+
+    <style name="Theme.Runex.AlertDialog.TitleTextStyle" parent="MaterialAlertDialog.MaterialComponents.Title.Text">
+        <item name="android:textSize">@dimen/text_size_sub_title</item>
+        <item name="android:textColor">?textColorPrimary</item>
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.Runex.AlertDialog.BodyTextStyle">
+        <item name="android:textSize">@dimen/text_size_body_heading</item>
+        <item name="android:textColor">?textColorSecondary</item>
+    </style>
+
+    <style name="Theme.Runex.AlertDialog.PositiveButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <item name="android:textColor">?textColorPrimary</item>
+        <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+    <style name="Theme.Runex.AlertDialog.NegativeButtonStyle" parent="Widget.MaterialComponents.Button.TextButton.Dialog">
+        <item name="android:textAllCaps">false</item>
+        <item name="android:textColor">?textColorHint</item>
+        <item name="android:textSize">@dimen/text_size_body</item>
+        <!--<item name="android:fontFamily">@font/sukhumvit_set_semi_bold</item>-->
+        <item name="android:textStyle">bold</item>
+    </style>
+
+
+    <!-- Theme.MaterialComponents.Light.Dialog-->
+</resources>

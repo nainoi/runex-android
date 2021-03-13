@@ -4,14 +4,14 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/background"
+    android:background="@color/backgroundPrimary"
     tools:context=".feature.payment.PayEventScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:background="@color/background"
+        android:background="@color/backgroundPrimary"
         android:paddingTop="@dimen/space_24dp"
         app:elevation="0dp">
 

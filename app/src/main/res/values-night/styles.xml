@@ -1,36 +1,8 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
 
-    <!-- Base application theme. -->
-    <style name="Theme.Runex" parent="AppTheme">
-        <item name="colorPrimary">@color/colorPrimary</item>
-        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
-        <item name="colorAccent">@color/colorAccent</item>
-        <item name="android:windowBackground">@color/background</item>
-        <item name="android:navigationBarColor">@color/background</item>
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <style name="Theme.Runex.TransparentStatus" parent="Theme.Runex">
-        <item name="android:windowDrawsSystemBarBackgrounds">true</item>
-        <item name="android:statusBarColor">@android:color/transparent</item>
-        <item name="android:windowLightStatusBar">false</item>
-    </style>
-
-    <!-- Icon -->
+    <!-- Base Icon -->
     <style name="Icon">
-        <!-- Noting for now -->
-    </style>
-
-    <style name="Icon.Primary" parent="Icon">
-        <!-- Noting for now -->
-    </style>
-
-    <style name="Icon.Secondary" parent="Icon">
-        <!-- Noting for now -->
-    </style>
-
-    <style name="Icon.Disable" parent="Icon">
         <!-- Noting for now -->
     </style>
 

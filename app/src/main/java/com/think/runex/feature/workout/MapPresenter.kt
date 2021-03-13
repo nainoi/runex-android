@@ -5,13 +5,13 @@ import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.annotation.ColorInt
 import androidx.annotation.Dimension
-import com.google.android.libraries.maps.CameraUpdateFactory
-import com.google.android.libraries.maps.GoogleMap
-import com.google.android.libraries.maps.SupportMapFragment
-import com.google.android.libraries.maps.model.LatLng
-import com.google.android.libraries.maps.model.LatLngBounds
-import com.google.android.libraries.maps.model.Polyline
-import com.google.android.libraries.maps.model.PolylineOptions
+import com.google.android.gms.maps.CameraUpdateFactory
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
+import com.google.android.gms.maps.model.LatLng
+import com.google.android.gms.maps.model.LatLngBounds
+import com.google.android.gms.maps.model.Polyline
+import com.google.android.gms.maps.model.PolylineOptions
 import com.think.runex.config.GOOGLE_MAP_DEFAULT_ZOOM
 import com.think.runex.feature.workout.data.WorkingOutLocation
 import com.think.runex.util.launchMainThread
@@ -90,9 +90,10 @@ class MapPresenter(private var googleMap: GoogleMap?,
             }
         }.build()
 
-        googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 65))
+        //googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 65))
+        googleMap?.animateCamera(CameraUpdateFactory.newLatLngBounds(bounds, 100), 500, null)
         launchMainThread {
-            delay(900)
+            delay(1000)
             val zoom = (googleMap?.cameraPosition?.zoom ?: GOOGLE_MAP_DEFAULT_ZOOM) - 0.5f
             googleMap?.animateCamera(CameraUpdateFactory.newLatLngZoom(bounds.center, zoom))
         }

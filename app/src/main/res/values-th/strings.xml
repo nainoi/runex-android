@@ -6,22 +6,15 @@
     <string name="address">ที่อยู่</string>
     <string name="amount">จำนวน</string>
 
-    <string name="activity">กิจกรรม</string>
-    <string name="activity_record">บันทึกกิจกรรม</string>
-    <string name="activity_record_empty">คุณยังไม่มีบันทึกกิจกรรม</string>
-    <string name="add_distance">เพิ่มระยะวิ่ง</string>
     <string name="add_image">เพิ่มรูปภาพ</string>
-    <string name="add_activity_success">เพิ่มกิจกรรมสำเร็จ</string>
     <string name="all_event">งานวิ่งทั้งหมด</string>
     <string name="all_events_to_submit">รายการวิ่งทั้งหมดที่จะส่งระยะ</string>
-    <string name="active">เปิดใช้งาน</string>
     <string name="allow_permission_in_setting">หากต้องการใช้ฟีเจอร์นี้ คุณต้องให้การอนุญาตในการตั้งค่า</string>
     <string name="application_service_and_devices">แอปพลิเคชัน บริการ และแอุปกรณ์</string>
     <string name="about_us">เกี่ยวกับเรา</string>
     <string name="action">Action</string>
 
     <!-- B -->
-    <string name="back">ย้อนกลับ</string>
     <string name="birth_date">วันเกิด</string>
     <string name="blood_type">กรุ๊ปเลือด</string>
 
@@ -29,24 +22,20 @@
     <string name="camera">กล้อง</string>
     <string name="camera_permission_denied">ไม่สามารถเข้าถึงกล้องถ่ายรูปของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="cancel">ยกเลิก</string>
-    <string name="close">ปิด</string>
     <string name="confirm">ยืนยัน</string>
     <string name="confirm_register">ยืนยันการสมัคร</string>
     <string name="confirm_submit_result">ยืนยันการส่งผล</string>
     <string name="confirm_to_ending_run">คุณยืนยันที่จะสิ้นสุดการวิ่ง?</string>
     <string name="confirm_to_logout">คุณยืนยันที่จะออกจากระบบ?</string>
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
-    <string name="calories">แคลอรี่</string>
     <string name="calories_kcal">แคลอรี่(cal)</string>
     <string name="contract">ติดต่อ</string>
 
     <!-- D -->
     <string name="detail">รายละเอียด</string>
-    <string name="delete">ลบ</string>
     <string name="default_">ค่าเริ่มต้น</string>
     <string name="distances">ระยะทาง</string>
     <string name="distances_kg">ระยะทาง(km)</string>
-    <string name="delete_image">ลบรูปภาพ</string>
     <string name="duration">ระยะเวลา</string>
     <string name="district">อำเภอ</string>
 
@@ -55,16 +44,12 @@
     <string name="edit_info">แก้ไขข้อมูล</string>
     <string name="email">อีเมล</string>
     <string name="events">อีเว้นท์</string>
-    <string name="event_date">วันที่จัดงาน</string>
     <string name="event_detail">รายละเอียด</string>
     <string name="error">ผิดพลาด</string>
 
     <!-- F -->
     <string name="facebook">Facebook</string>
     <string name="female">หญิง</string>
-    <string name="finish_recording">จบการจับเวลา</string>
-    <string name="forgot_password">ลืมรหัสผ่าน</string>
-    <string name="free">ฟรี</string>
     <string name="failed">ล้มเหลว</string>
     <string name="fill_out_user_info">กรอกข้อมูลส่วนตัว</string>
     <string name="fill_out_address">กรอกที่อยู่</string>
@@ -86,66 +71,48 @@
     <string name="km">km</string>
 
     <!-- L -->
-    <string name="latest">ล่าสุด</string>
     <string name="last_name">นามสกุล</string>
-    <string name="login">เข้าสู่ระบบ</string>
-    <string name="login_info_email_message">ลงชื่อเข้าใช้งานด้วยอีเมล</string>
-    <string name="login_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
-    <string name="login_with_google">เข้าสู่ระบบด้วย Google</string>
-    <string name="login_with_email">ลงชื่อใช้งานด้วยอีเมล</string>
     <string name="logout">ออกจากระบบ</string>
     <string name="location_permission_denied">ไม่สามารถเข้าถึงตำแหน่งปัจจุบันของคุณได้เนื่องจากถูกปฏิเสธ</string>
 
 
     <!-- M -->
     <string name="male">ชาย</string>
-    <string name="menu">เมนู</string>
     <string name="my_events">อีเว้นท์ของฉัน</string>
-    <string name="my_events_list">รายการวิ่งของฉัน</string>
 
     <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->
     <string name="minutes_per_kilometer_placeholder">Pace(min/km)</string>
 
     <!-- N -->
     <string name="name">ชื่อ</string>
-    <string name="notification_display_info">วิ่ง %s %s %s %s km</string>
     <string name="no_internet_connection">ไม่มีการเชื่อมต่ออินเทอร์เน็ต</string>
-    <string name="note">จดบันทึก</string>
     <string name="number_of_time">ครั้ง</string>
     <string name="number_of_times">ครั้ง</string>
     <string name="no_shirts_to_choose">ไม่มีเสื้อให้เลือก</string>
 
     <!-- O -->
     <string name="ok">ตกลง</string>
-    <string name="or">หรือ</string>
     <string name="other">อื่นๆ</string>
     <string name="open">เปิด</string>
     <string name="order_no">หมายเลขคำสั่งซื้อ</string>
 
     <!-- P -->
-    <string name="password">รหัสผ่าน</string>
     <string name="pause_recording">พักจับเวลา</string>
     <string name="profile">ข้อมูลส่วนตัว</string>
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
-    <string name="please_select_your_gender">กรุณาเลือกเพศของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
-    <string name="passed">ผ่านมาแล้ว</string>
-    <string name="pace">ก้าว</string>
     <string name="phone">เบอร์โทรศัพท์</string>
     <string name="province">จังหวัด</string>
     <string name="price">ราคา</string>
     <string name="payment">ชำระเงิน</string>
 
     <!-- R -->
-    <string name="record">บันทึก</string>
-    <string name="recording">กำลังบันทึก</string>
     <string name="register">สมัครสมาชิก</string>
     <string name="register_date">รับสมัคร</string>
     <string name="register_event">ลงสมัครวิ่ง</string>
     <string name="register_event_success">ลงสมัครวิ่งสำเร็จ</string>
     <string name="register_confirmation">ยืนยันการสมัคร</string>
     <string name="resume_recording">จับเวลาต่อ</string>
-    <string name="running_date">วันที่วิ่ง</string>
 
     <!-- S -->
     <string name="select_image">เลือกรูปภาพ</string>
@@ -155,7 +122,6 @@
     <string name="setting">ตั้งค่า</string>
     <string name="start_recording">จับเวลา</string>
     <string name="stop_recording">จบการจับเวลา</string>
-    <string name="stop_and_submit_running_result">หยุด และ ส่งผล</string>
     <string name="submit_result">ส่งผล</string>
     <string name="summary">สรุปผล</string>
     <string name="success">สำเร็จ</string>
@@ -167,7 +133,6 @@
     <string name="service_unavailable">ไม่สามารถใช้บริการได้ในขณะนี้</string>
 
     <!-- T -->
-    <string name="time">เวลา</string>
     <string name="total_distances">ระยะสะสม</string>
     <string name="thai_bath">THB</string>
 
@@ -185,18 +150,14 @@
     <string name="waiting_for_approve">รอการตรวจสอบ</string>
     <string name="waiting_for_payment">รอชำระเงิน</string>
     <string name="workout">ออกกำลังกาย</string>
-    <string name="weight">น้ำหนัก</string>
 
     <!-- Y -->
 
     <!-- Z -->
     <string name="zip_code">รหัสไปรษณีย์</string>
 
-    <string name="u250">·</string>
-
     <!-- Input required -->
     <string name="input_required">กรุณาระบุ%1$s</string>
 
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 </resources>

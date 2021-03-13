@@ -2,8 +2,8 @@ package com.think.runex.feature.workout.summary
 
 import android.os.Bundle
 import android.view.*
-import com.google.android.libraries.maps.GoogleMap
-import com.google.android.libraries.maps.SupportMapFragment
+import com.google.android.gms.maps.GoogleMap
+import com.google.android.gms.maps.SupportMapFragment
 import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.util.Logger
