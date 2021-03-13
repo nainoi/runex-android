@@ -9,8 +9,6 @@ const val PREFERENCES_NAME = "runex_preference"
  * Global Variable
  */
 const val ANDROID = "Android"
-const val APP_SCHEME = "runex"
-const val APP_NAME = "Runex"
 const val AUTHORIZATION = "Authorization"
 
 const val GOOGLE_MAP_DEFAULT_ZOOM = 16f

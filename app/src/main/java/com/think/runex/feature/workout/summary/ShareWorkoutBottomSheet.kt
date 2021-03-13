@@ -35,10 +35,9 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.showDialog
 import com.jozzee.android.core.view.showToast
 import com.jozzee.android.core.view.visible
+import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.common.*
-import com.think.runex.config.APP_NAME
-import com.think.runex.config.APP_SCHEME
 import com.think.runex.config.KEY_DATA
 import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.base.PermissionsLauncherBottomSheet
@@ -253,7 +252,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
     private fun saveWorkoutImageToStorage(saveToCacheDirectory: Boolean = false): Uri? {
 
         val bitmap = map_layout?.drawToBitmap()
-        val fileName = "${APP_SCHEME}_${workoutInfo?.getWorkoutDateTimeForImageName()}.jpg"
+        val fileName = "${BuildConfig.APP_SCHEME}_${workoutInfo?.getWorkoutDateTimeForImageName()}.jpg"
         //var out: OutputStream? = null
         var uri: Uri? = null
 
@@ -268,7 +267,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
             val value = ContentValues().apply {
                 put(MediaStore.Images.ImageColumns.DISPLAY_NAME, fileName)
                 put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/jpg")
-                put(MediaStore.Images.ImageColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/$APP_NAME")
+                put(MediaStore.Images.ImageColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/${BuildConfig.APP_NAME}")
                 put(MediaStore.Images.Media.IS_PENDING, true)
                 //RELATIVE_PATH and IS_PENDING are introduced in API 29.
             }
@@ -284,7 +283,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
 
         } else {
             //getExternalStorageDirectory is deprecated in API 29
-            val outputFile = File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)}/$APP_NAME").let { directory ->
+            val outputFile = File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)}/${BuildConfig.APP_NAME}").let { directory ->
                 if (directory.exists().not()) {
                     directory.mkdirs()
                 }

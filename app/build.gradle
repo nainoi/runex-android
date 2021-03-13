@@ -18,6 +18,9 @@ android {
         versionName "1.1.1"
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         vectorDrawables.useSupportLibrary true
+
+        buildConfigField "String", "APP_SCHEME", '"runex"'
+        buildConfigField "String", "APP_NAME", '"Runex"'
     }
 
     signingConfigs {

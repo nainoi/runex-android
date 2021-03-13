@@ -9,6 +9,7 @@ import android.webkit.*
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
+import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.common.fadeIn
 import com.think.runex.common.getViewModel
@@ -16,7 +17,6 @@ import com.think.runex.common.setStatusBarColor
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.base.BaseScreen
-import com.think.runex.config.APP_SCHEME
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.main.MainScreen
@@ -64,7 +64,7 @@ class LoginScreen : BaseScreen() {
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
                 request?.url?.also { uri ->
-                    if (uri.scheme == APP_SCHEME) {
+                    if (uri.scheme == BuildConfig.APP_SCHEME) {
                         val parameters = request.url?.getQueryParameters("code")
                         if (parameters?.isNotEmpty() == true) {
                             performLogin(parameters[0])

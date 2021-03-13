@@ -48,3 +48,10 @@
 
 # Google Maps 3.1.0 Beta
 -keep,allowoptimization class com.google.android.libraries.maps.** { *; }
+
+#Omise
+-dontwarn okio.**
+-dontwarn com.google.common.**
+-dontwarn org.joda.time.**
+-dontwarn javax.annotation.**
+-dontwarn com.squareup.**

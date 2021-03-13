@@ -4,14 +4,12 @@ import android.content.Context
 import android.net.Uri
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
-import androidx.core.content.FileProvider
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.think.runex.BuildConfig
 import com.think.runex.common.clearTempDirectory
 import com.think.runex.common.getTempDirectory
 import com.think.runex.common.getUriProvider
-import com.think.runex.config.APP_SCHEME
 import java.io.File
 import java.util.concurrent.TimeUnit
 
@@ -70,7 +68,7 @@ class TakePictureHelper() {
     }
 
     private fun createTempUri(context: Context): Uri {
-        val fireName = "${APP_SCHEME}_${TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())}"
+        val fireName = "${BuildConfig.APP_SCHEME}_${TimeUnit.MILLISECONDS.toSeconds(System.currentTimeMillis())}"
         val tempFile = File.createTempFile(fireName, ".jpg", context.getTempDirectory("images"))
         return tempFile.getUriProvider(context)
     }

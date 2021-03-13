@@ -7,8 +7,7 @@ import android.security.keystore.KeyProperties
 import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
-import com.think.runex.config.APP_NAME
-import com.think.runex.config.KEY_FIREBASE_TOKEN
+import com.think.runex.BuildConfig
 import com.think.runex.config.PREFERENCES_NAME
 
 object AppPreference {
@@ -42,7 +41,7 @@ object AppPreference {
                 .setKeyGenParameterSpec(keyGenParameterSpec)
                 .build()
 
-        return EncryptedSharedPreferences.create(context, APP_NAME, masterKeyAlias,
+        return EncryptedSharedPreferences.create(context, BuildConfig.APP_SCHEME, masterKeyAlias,
                 EncryptedSharedPreferences.PrefKeyEncryptionScheme.AES256_SIV,
                 EncryptedSharedPreferences.PrefValueEncryptionScheme.AES256_GCM)
     }

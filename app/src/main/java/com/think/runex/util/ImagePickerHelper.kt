@@ -5,13 +5,10 @@ import android.content.Intent
 import android.content.pm.PackageManager
 import android.content.pm.ResolveInfo
 import android.provider.MediaStore
-import android.util.Log
 import androidx.core.content.FileProvider
-import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.BuildConfig
-import com.think.runex.config.APP_SCHEME
 import java.io.File
 
 class ImagePickerHelper {
@@ -29,7 +26,7 @@ class ImagePickerHelper {
             }
             directory
         }
-        val fireName = "${APP_SCHEME}_${System.currentTimeMillis()}"
+        val fireName = "${BuildConfig.APP_SCHEME}_${System.currentTimeMillis()}"
         val tempFile = File.createTempFile(fireName, ".jpg", directory)
 
         val uri = FileProvider.getUriForFile(context, "${BuildConfig.APPLICATION_ID}.provider", tempFile)
