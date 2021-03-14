@@ -81,8 +81,7 @@ open class BaseScreen : Fragment() {
             progressDialog.setProgressColor(progressColor)
             progressDialog.setMessage(message)
         } else {
-            progressDialog = ProgressDialog
-                    .newInstance("$message${if (showDot) "..." else ""}", progressColor)
+            progressDialog = ProgressDialog.newInstance("$message${if (showDot) "..." else ""}", progressColor)
             childFragmentManager.commit(allowStateLoss = true) {
                 add(progressDialog, progressDialog::class.java.simpleName)
             }

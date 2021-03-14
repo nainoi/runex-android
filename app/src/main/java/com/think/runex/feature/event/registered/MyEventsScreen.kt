@@ -1,7 +1,6 @@
 package com.think.runex.feature.event.registered
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,9 +13,8 @@ import com.think.runex.common.removeObservers
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
-import com.think.runex.config.KEY_CODE
 import com.think.runex.feature.event.dashboard.DashBoardScreen
-import com.think.runex.feature.payment.PayEventScreen
+import com.think.runex.feature.event.pay.PayEventScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_my_events.*
 
@@ -74,7 +72,11 @@ class MyEventsScreen : BaseScreen() {
         adapter.setOnItemClickListener { event ->
             when (event.isPaid()) {
                 true -> addFragment(DashBoardScreen())
-                false -> addFragment(PayEventScreen.newInstance(event.getEventName(), event.getOrderId(), event.getTotalPrice()))
+                false -> addFragment(PayEventScreen.newInstance(eventName = event.getEventName(),
+                        eventCode = event.getEventCode() ,
+                        registerId = event.getRegisterId(),
+                        orderId = event.getOrderId(),
+                        price = event.getTotalPrice()))
             }
         }
 

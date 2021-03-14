@@ -395,7 +395,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         gender = currentGender ?: ""
         bloodType = blood_type_input?.content() ?: ""
         address = getFullAddress()
-        subDistrict = viewModel.subDistrict
+        subDistrict = viewModel.getCurrentSubDistrict()
     }
 
     private fun getFullAddress(): String {

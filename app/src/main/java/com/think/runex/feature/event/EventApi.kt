@@ -32,7 +32,7 @@ interface EventApi {
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventRegistered>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventWithKaoAsync(

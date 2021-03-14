@@ -43,8 +43,9 @@ class ApiService {
                         addInterceptor(HttpLoggingInterceptor().apply {
                             level = httpLoggingLevel
                         })
-                        addInterceptor(RefreshTokenInterceptor(context))
                     }
+                    //addInterceptor(HeaderInterceptor())
+                    addInterceptor(RefreshTokenInterceptor(context))
                 }
     }
 }

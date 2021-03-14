@@ -12,9 +12,7 @@ import com.think.runex.feature.address.AddressRepository
 import com.think.runex.feature.address.data.AddressAutoFill
 import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.EventRepository
-import com.think.runex.feature.event.data.EventCategory
-import com.think.runex.feature.event.data.Shirt
-import com.think.runex.feature.event.data.Ticket
+import com.think.runex.feature.event.data.*
 import com.think.runex.feature.event.data.request.EventRegistrationBody
 import com.think.runex.feature.event.data.request.TicketOptionEventRegistrationBody
 import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
@@ -22,6 +20,7 @@ import com.think.runex.feature.event.detail.EventDetailsViewModel
 import com.think.runex.feature.payment.PaymentRepository
 import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
@@ -29,8 +28,7 @@ import kotlin.collections.ArrayList
 class RegisterEventViewModel(eventRepo: EventRepository,
                              private val addressRepo: AddressRepository) : EventDetailsViewModel(eventRepo) {
 
-    private var subDistricts: List<SubDistrict>? = null
-
+    private var allSubDistrictList: List<SubDistrict>? = null
     private var firstThreeLettersQuery: String = ""
 
     val updateScreen: MutableLiveData<String> by lazy { MutableLiveData() }
@@ -43,7 +41,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
     var ticketOptions: ArrayList<TicketOptionEventRegistrationBody> = ArrayList()
         private set
 
-    var subDistrict: SubDistrict? = null
+    var subDistricts: ArrayList<SubDistrict> = ArrayList()
         private set
 
 
@@ -51,12 +49,19 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         updateScreen.postValue(ChooseTicketFragment::class.java.simpleName)
     }
 
-     fun getCurrentTicketOption(): TicketOptionEventRegistrationBody? {
+    fun getCurrentTicketOption(): TicketOptionEventRegistrationBody? {
         if (ticketOptions.isEmpty()) {
             ticketOptions.add(TicketOptionEventRegistrationBody())
         }
         if (currentNo <= ticketOptions.size) {
             return ticketOptions[currentNo - 1]
+        }
+        return null
+    }
+
+    fun getCurrentSubDistrict(): SubDistrict? {
+        if (currentNo <= subDistricts.size) {
+            return subDistricts[currentNo - 1]
         }
         return null
     }
@@ -89,9 +94,9 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         when (result.isSuccessful()) {
             true -> {
                 firstThreeLettersQuery = ""
-                subDistricts = result.data
+                allSubDistrictList = result.data
 
-                val autoFillList = subDistricts?.map { it.getFullAddress() } ?: emptyList()
+                val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
             false -> onHandleError(result.statusCode, result.message, "Address")
@@ -102,7 +107,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         Log.v("Jozzee", "searchAddressBySubDistricts: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
-            subDistricts?.forEach { address ->
+            allSubDistrictList?.forEach { address ->
                 if (address.subDistrict?.toLowerCase(Locale.getDefault())?.contains(query.toLowerCase(Locale.getDefault())) == true) {
                     autoFillList.add(address.getFullAddress())
                 }
@@ -115,9 +120,9 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         when (result.isSuccessful()) {
             true -> {
                 firstThreeLettersQuery = query
-                subDistricts = result.data
+                allSubDistrictList = result.data
 
-                val autoFillList = subDistricts?.map { it.getFullAddress() } ?: emptyList()
+                val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
             false -> onHandleError(result.statusCode, result.message, "Address")
@@ -128,7 +133,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         Log.v("Jozzee", "searchAddressByDistricts: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
-            subDistricts?.forEach { address ->
+            allSubDistrictList?.forEach { address ->
                 if (address.district?.toLowerCase(Locale.getDefault())?.contains(query.toLowerCase(Locale.getDefault())) == true) {
                     autoFillList.add(address.getFullAddress())
                 }
@@ -141,9 +146,9 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         when (result.isSuccessful()) {
             true -> {
                 firstThreeLettersQuery = query
-                subDistricts = result.data
+                allSubDistrictList = result.data
 
-                val autoFillList = subDistricts?.map { it.getFullAddress() } ?: emptyList()
+                val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
             false -> onHandleError(result.statusCode, result.message, "Address")
@@ -154,7 +159,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         Log.v("Jozzee", "searchAddressByProvince: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
-            subDistricts?.forEach { address ->
+            allSubDistrictList?.forEach { address ->
                 if (address.province?.toLowerCase(Locale.getDefault())?.contains(query.toLowerCase(Locale.getDefault())) == true) {
                     autoFillList.add(address.getFullAddress())
                 }
@@ -167,9 +172,9 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         when (result.isSuccessful()) {
             true -> {
                 firstThreeLettersQuery = query
-                subDistricts = result.data
+                allSubDistrictList = result.data
 
-                val autoFillList = subDistricts?.map { it.getFullAddress() } ?: emptyList()
+                val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
             false -> onHandleError(result.statusCode, result.message, "Address")
@@ -177,11 +182,16 @@ class RegisterEventViewModel(eventRepo: EventRepository,
     }
 
     fun getSubDistrictFromFullAddress(fullAddress: String): SubDistrict? {
-        subDistrict = subDistricts?.firstOrNull { it.getFullAddress() == fullAddress }
-        return subDistrict
+        allSubDistrictList?.firstOrNull { it.getFullAddress() == fullAddress }?.also { subDistrict ->
+            when (currentNo > subDistricts.size) {
+                true -> subDistricts.add(subDistrict)
+                false -> subDistricts[(currentNo - 1)] = subDistrict
+            }
+        }
+        return getCurrentSubDistrict()
     }
 
-    suspend fun registerEvent(): Boolean = withContext(IO) {
+    suspend fun registerEvent(): EventRegistered? = withContext(IO) {
 
         ticketOptions.forEach { ticketOption ->
             ticketOption.receiptType = when (eventDetail.value?.category) {
@@ -203,15 +213,16 @@ class RegisterEventViewModel(eventRepo: EventRepository,
             add("regs", Gson().toJsonTree(registerBody))
         }
 
-        val result = repo.registerEven(body)
+        val result = repo.registerEvent(body)
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }
-        return@withContext result.isSuccessful()
+        return@withContext result.data
     }
 
     override fun onCleared() {
         //allSubDistrict = null
+        updateScreen.postValue(null)
         addressAutoFill.postValue(null)
         super.onCleared()
     }

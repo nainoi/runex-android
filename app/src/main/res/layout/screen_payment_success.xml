@@ -1,0 +1,78 @@
+<?xml version="1.0" encoding="utf-8"?>
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="?colorBackgroundPrimary"
+    android:theme="@style/Theme.Runex.Light"
+    tools:context=".feature.event.pay.PayEventSuccessScreen">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center"
+        android:padding="@dimen/space_24dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/success_icon"
+            android:layout_width="@dimen/space_84dp"
+            android:layout_height="@dimen/space_84dp"
+            android:layout_centerHorizontal="true"
+            android:adjustViewBounds="true"
+            app:srcCompat="@mipmap/ic_payment_success" />
+
+        <TextView
+            android:id="@+id/thank_you_for_payment_label"
+            style="@style/Text.HeadLine.Primary.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/success_icon"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/space_24dp"
+            android:text="@string/thank_you_for_payment" />
+
+        <TextView
+            android:id="@+id/payment_successfully_label"
+            style="@style/Text.SubTitle.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/thank_you_for_payment_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:text="@string/payment_successfully" />
+
+        <TextView
+            android:id="@+id/event_name_label"
+            style="@style/Text.BodyHeading.Primary.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/payment_successfully_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/space_16dp"
+            tools:text="Event Name" />
+
+        <TextView
+            android:id="@+id/order_id_label"
+            style="@style/Text.SubTitle.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/event_name_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/space_16dp"
+            tools:text="Order Id" />
+
+        <androidx.appcompat.widget.AppCompatButton
+            android:id="@+id/ok_button"
+            style="@style/Button.Primary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/order_id_label"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="@dimen/space_48dp"
+            android:paddingStart="@dimen/space_48dp"
+            android:paddingEnd="@dimen/space_48dp"
+            android:text="@string/ok" />
+
+    </RelativeLayout>
+</FrameLayout>

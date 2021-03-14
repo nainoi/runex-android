@@ -32,6 +32,7 @@
     <string name="contract">ติดต่อ</string>
 
     <!-- D -->
+    <string name="dashBoard">แดชบอร์ด</string>
     <string name="detail">รายละเอียด</string>
     <string name="default_">ค่าเริ่มต้น</string>
     <string name="distances">ระยะทาง</string>
@@ -105,6 +106,9 @@
     <string name="province">จังหวัด</string>
     <string name="price">ราคา</string>
     <string name="payment">ชำระเงิน</string>
+    <string name="payment_successfully">ชำระเงินเรียบร้อยแล้ว</string>
+    <string name="pay_event_in_progress">กำลังทำรายการ…\nโปรดอย่าออกจากหน้านี้จนกว่าการทำรายการจะเสร็จสมบูรณ์</string>
+
 
     <!-- R -->
     <string name="register">สมัครสมาชิก</string>
@@ -135,6 +139,7 @@
     <!-- T -->
     <string name="total_distances">ระยะสะสม</string>
     <string name="thai_bath">THB</string>
+    <string name="thank_you_for_payment">ขอบคุณสำหรับการชำระเงิน</string>
 
     <!-- U -->
     <string name="username">ชื่อผู้ใช้</string>
@@ -159,5 +164,4 @@
     <!-- Input required -->
     <string name="input_required">กรุณาระบุ%1$s</string>
 
-    <!-- TODO: Remove or change this placeholder text -->
 </resources>

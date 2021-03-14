@@ -3,7 +3,7 @@ package com.think.runex.feature.user
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO

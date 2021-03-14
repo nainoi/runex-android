@@ -2,7 +2,7 @@ package com.think.runex.feature.event.detail
 
 import androidx.lifecycle.MutableLiveData
 import com.google.gson.*
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.data.EventItem

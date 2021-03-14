@@ -50,6 +50,15 @@ data class EventRegistered(
         return ""
     }
 
+
+    @JvmName("getEventCodeJava")
+    fun getEventCode(): String {
+        if (eventRegisteredList?.isNotEmpty() == true) {
+            return eventRegisteredList?.get(0)?.event?.code ?: ""
+        }
+        return ""
+    }
+
     fun getEventDetail(): EventDetail? {
         if (eventRegisteredList?.isNotEmpty() == true) {
             return eventRegisteredList?.get(0)?.event
@@ -81,6 +90,13 @@ data class EventRegistered(
     fun getOrderId(): String {
         if (eventRegisteredList?.isNotEmpty() == true) {
             return eventRegisteredList?.get(0)?.orderId ?: ""
+        }
+        return ""
+    }
+
+    fun getRegisterId(): String {
+        if (eventRegisteredList?.isNotEmpty() == true) {
+            return eventRegisteredList?.get(0)?.id ?: ""
         }
         return ""
     }

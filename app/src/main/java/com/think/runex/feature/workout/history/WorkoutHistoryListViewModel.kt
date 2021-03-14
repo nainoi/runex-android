@@ -1,7 +1,7 @@
 package com.think.runex.feature.workout.history
 
 import androidx.lifecycle.MutableLiveData
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.workout.WorkoutRepository
 import com.think.runex.feature.workout.data.WorkoutHistoryMonth
 import com.think.runex.util.launchIoThread

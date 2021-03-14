@@ -1,8 +1,7 @@
 package com.think.runex.feature.main
 
-import androidx.lifecycle.LiveData
 import androidx.lifecycle.MutableLiveData
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
 

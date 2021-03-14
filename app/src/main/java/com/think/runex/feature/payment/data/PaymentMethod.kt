@@ -10,7 +10,7 @@ import com.think.runex.common.displayFormat
 data class PaymentMethod(
         @SerializedName("id") var id: String? = null,
         @SerializedName("name") var name: String? = null,
-        @SerializedName("charge") var charge: Float? = 0f,
+        @SerializedName("charge") var charge: Double? = 0.0,
         @SerializedName("charge_percent") var chargePercent: Double? = 0.0,
         @SerializedName("is_active") var isActive: Boolean? = false,
         @SerializedName("icon") var icon: String? = null) {
@@ -26,12 +26,12 @@ data class PaymentMethod(
         else -> null
     }
 
-    fun getChargeAmount(amount: Double): Double {
-        return (amount * (chargePercent ?: 0.0)) / 100.0
+    fun getChargeAmount(price: Double): Double {
+        return (price * (chargePercent ?: 0.0)) / 100.0
     }
 
-    fun getChargeAmountDisplay(context: Context, amount: Double): String {
-        return "+${getChargeAmount(amount).displayFormat(awaysShowDecimal = true)} ${context.getString(R.string.thai_bath)}"
+    fun getChargeAmountDisplay(context: Context, price: Double): String {
+        return "+${getChargeAmount(price).displayFormat(awaysShowDecimal = true)} ${context.getString(R.string.thai_bath)}"
     }
 
 }

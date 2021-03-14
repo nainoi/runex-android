@@ -81,10 +81,6 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         }
 
         register_button?.setOnClickListener {
-            //Register with KAO
-            //if (viewModel.eventDetail?.partner?.partnerName == "KAO") {
-            //     showDialog(RegisterEventWithEBIBDialog())
-            //}
             addFragment(RegisterEventScreen.newInstance(arguments?.getString(KEY_CODE) ?: ""))
         }
 

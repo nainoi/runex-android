@@ -57,9 +57,9 @@ open class WorkoutService : Service() {
      */
     private val locationCallback: LocationCallback by lazy {
         object : LocationCallback() {
-            override fun onLocationResult(result: LocationResult?) {
+            override fun onLocationResult(result: LocationResult) {
                 super.onLocationResult(result)
-                result?.lastLocation?.let { location ->
+                result.lastLocation.let { location ->
                     Logger.info("WorkoutService", "Location update : latitude: ${location.latitude}, longitude: ${location.longitude}, accuracy: ${location.accuracy} at time: ${location.time}")
                     newLocation = location
                     if (status == WorkoutStatus.UNKNOWN) {

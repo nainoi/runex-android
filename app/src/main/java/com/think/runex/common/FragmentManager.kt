@@ -1,11 +1,14 @@
 package com.think.runex.common
 
+import android.util.Log
 import androidx.annotation.IdRes
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import androidx.fragment.app.commit
 import androidx.lifecycle.ViewModel
+import com.bumptech.glide.manager.SupportRequestManagerFragment
 import com.jozzee.android.core.util.simpleName
+import java.lang.Exception
 
 /**
  * Find Fragment
@@ -54,8 +57,30 @@ fun Fragment.getTopChildFragment(@IdRes fragmentHostId: Int): Fragment? {
  */
 fun FragmentActivity.removeFragment(fragment: Fragment?) {
     if (fragment == null) return
-    supportFragmentManager.commit(allowStateLoss = true) {
-        remove(fragment)
+    try {
+        supportFragmentManager.commit(allowStateLoss = true) {
+            remove(fragment)
+        }
+        supportFragmentManager.executePendingTransactions()
+
+        val fragmentCount = supportFragmentManager.fragments.size - 1
+        if (fragmentCount >= 0) {
+            for (i in fragmentCount downTo 0) {
+                supportFragmentManager.fragments[i].also {
+                    if ((it is SupportRequestManagerFragment).not()) {
+                        if (it.isHidden) {
+                            supportFragmentManager.commit(allowStateLoss = true) { show(it) }
+                        }
+                        return
+                    }
+                }
+            }
+        }
+    } catch (e: Exception) {
+        e.printStackTrace()
     }
-    supportFragmentManager.executePendingTransactions()
+}
+
+fun Fragment.removeFragment(fragment: Fragment?) {
+    activity?.removeFragment(fragment)
 }

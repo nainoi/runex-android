@@ -3,7 +3,7 @@ package com.think.runex.feature.auth
 import android.content.Context
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.feature.auth.data.TokenManager

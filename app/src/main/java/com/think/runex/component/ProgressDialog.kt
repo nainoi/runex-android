@@ -31,7 +31,6 @@ class ProgressDialog : DialogFragment() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        retainInstance = false
         isCancelable = false
         activity?.setScreenTouchable(false)
     }

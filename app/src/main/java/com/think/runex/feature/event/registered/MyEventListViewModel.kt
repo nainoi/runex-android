@@ -1,10 +1,9 @@
 package com.think.runex.feature.event.registered
 
 import androidx.lifecycle.MutableLiveData
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventRegistered
-import com.think.runex.feature.event.data.EventRegisteredData
 import com.think.runex.util.launchIoThread
 
 class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() {

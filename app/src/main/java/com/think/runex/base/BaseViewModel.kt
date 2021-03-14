@@ -1,4 +1,4 @@
-package com.think.runex.datasource
+package com.think.runex.base
 
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope

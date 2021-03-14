@@ -1,7 +1,7 @@
 package com.think.runex.feature.event.all
 
 import androidx.lifecycle.MutableLiveData
-import com.think.runex.datasource.BaseViewModel
+import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventItem
 import com.think.runex.util.launchIoThread

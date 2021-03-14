@@ -6,6 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.jozzee.android.core.fragment.*
 import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
@@ -47,6 +48,7 @@ class RegisterEventScreen : BaseScreen() {
         setupComponents()
         subscribeUi()
 
+        progress_bar?.visible()
         viewModel.getEventDetail(arguments?.getString(KEY_CODE) ?: "")
     }
 
@@ -70,7 +72,7 @@ class RegisterEventScreen : BaseScreen() {
         }
 
         observe(viewModel.updateScreen) { screenName ->
-            if (view == null || isAdded.not()) return@observe
+            if (view == null || isAdded.not() && screenName?.isNotBlank() == true) return@observe
             when (screenName) {
                 ChooseTicketFragment::class.java.simpleName -> {
                     replaceChildFragment(R.id.register_fragment_container, ChooseTicketFragment(), addToBackStack = true, clearChildFragment = true)

@@ -1,37 +1,42 @@
-package com.think.runex.feature.payment
+package com.think.runex.feature.event.pay
 
 import android.os.Bundle
-import android.util.Log
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
-import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
 import com.think.runex.component.recyclerview.MarginItemDecoration
+import com.think.runex.config.KEY_CODE
 import com.think.runex.config.KEY_EVENT
 import com.think.runex.config.KEY_ID
 import com.think.runex.config.KEY_PRICE
+import com.think.runex.feature.payment.PaymentMethodsAdapter
+import com.think.runex.feature.payment.PaymentViewModel
+import com.think.runex.feature.payment.PaymentViewModelFactory
 import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_pay_event.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.delay
 
 class PayEventScreen : BaseScreen() {
 
     companion object {
+
         @JvmStatic
-        fun newInstance(eventName: String, orderId: String, price: Double) = PayEventScreen().apply {
+        fun newInstance(eventName: String, eventCode: String, registerId: String, orderId: String, price: Double) = PayEventScreen().apply {
             arguments = Bundle().apply {
                 putString(KEY_EVENT, eventName)
+                putString(KEY_CODE, eventCode)
+                putString("register_id", registerId)
                 putString(KEY_ID, orderId)
                 putDouble(KEY_PRICE, price)
             }
@@ -45,13 +50,15 @@ class PayEventScreen : BaseScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
         creditCardLauncher = registerForActivityResult(CreditCardActivityContract()) { token ->
-            Logger.info("Jozzee", "Oemise Token: ${token.toJson()}")
-            // process your token here
+            token?.id?.also { performPayEvent(it) }
         }
 
         viewModel = getViewModel(PaymentViewModelFactory(requireContext()))
         viewModel.updateOrderDetails(arguments?.getString(KEY_EVENT) ?: "",
+                arguments?.getString(KEY_CODE) ?: "",
+                arguments?.getString("register_id") ?: "",
                 arguments?.getString(KEY_ID) ?: "",
                 arguments?.getDouble(KEY_PRICE) ?: 0.0)
     }
@@ -89,6 +96,7 @@ class PayEventScreen : BaseScreen() {
         adapter.setOnItemClickListener { paymentMethod ->
             when {
                 paymentMethod.name?.contains("Credit", true) == true -> {
+                    viewModel.paymentMethod = paymentMethod
                     creditCardLauncher?.launch(getString(R.string.omise_key))
                 }
             }
@@ -105,6 +113,27 @@ class PayEventScreen : BaseScreen() {
 
         progress_bar?.gone()
         payment_method_list?.visible()
+    }
+
+    private fun performPayEvent(omiseTokenId: String) = launch {
+
+        showProgressDialog(R.string.pay_event_in_progress, showDot = false)
+
+        val isSuccess = viewModel.payEvent(omiseTokenId)
+
+        hideProgressDialog()
+
+        if (isSuccess) {
+            //Update live data to refresh screen.
+            getMainViewModel().refreshScreen()
+
+            //Show payment success screen
+            addFragment(PayEventSuccessScreen.newInstance(viewModel.eventName, viewModel.orderId))
+
+            //Remove self from fragment back stack
+            delay(100)
+            removeFragment(this@PayEventScreen)
+        }
     }
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
