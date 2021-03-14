@@ -30,7 +30,7 @@
                 android:layout_gravity="center|start"
                 android:layout_marginStart="@dimen/space_12dp"
                 android:background="@android:color/transparent"
-                android:foreground="@drawable/bg_ripple_circle_on_light_background"
+                android:foreground="@drawable/bg_ripple_circle"
                 android:padding="8dp"
                 android:scaleType="fitCenter"
                 android:src="@mipmap/ic_close"

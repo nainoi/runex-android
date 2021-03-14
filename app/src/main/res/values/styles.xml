@@ -14,6 +14,10 @@
         <item name="android:textColor">?textColorHint</item>
     </style>
 
+    <style name="Text.Caption.Error" parent="Text.Caption">
+        <item name="android:textColor">?textColorError</item>
+    </style>
+
     <style name="Text.Body">
         <item name="android:textSize">@dimen/text_size_body</item>
     </style>

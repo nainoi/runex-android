@@ -28,6 +28,7 @@
 
     <color name="grey">#9A9A9A</color>
     <color name="error">#CC2E2E</color>
+    <color name="success">#5EB503</color>
 
     <color name="line">@color/lineOnLight</color>
     <color name="lineOnLight">#DDDDDD</color>
@@ -78,9 +79,9 @@
     <color name="iconColorWhite">@android:color/white</color>
 
     <!-- Payment status colors -->
-    <color name="paymentStatusWaitingForApprove">#F7B500</color>
+    <color name="paymentStatusWaitingForApprove">@color/colorAccent</color>
     <color name="paymentStatusWaiting">#494E52</color>
-    <color name="paymentStatusSuccess">#5EB503</color>
+    <color name="paymentStatusSuccess">@color/success</color>
 
     <!-- Others -->
     <color name="facebookColor">#3C67B8</color>

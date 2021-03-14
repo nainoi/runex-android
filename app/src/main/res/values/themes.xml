@@ -66,6 +66,38 @@
 
     </style>
 
+    <style name="Theme.Runex.Dark" parent="Theme.MaterialComponents.NoActionBar">
+
+        <item name="colorPrimary">@color/colorPrimary</item>
+        <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
+        <item name="colorAccent">@color/colorAccent</item>
+        <item name="android:windowBackground">@color/backgroundPrimaryDark</item>
+        <item name="android:navigationBarColor">@color/backgroundPrimaryDark</item>
+        <item name="android:windowLightStatusBar">false</item>
+
+        <!-- Color Attributes -->
+        <item name="colorBackgroundPrimary">@color/backgroundPrimaryDark</item>
+        <item name="colorBackgroundSecondary">@color/backgroundSecondaryDark</item>
+        <item name="colorBackgroundThirdly">@color/backgroundThirdlyDark</item>
+
+        <item name="colorDisable">@color/disableOnDark</item>
+        <item name="colorDisableSecondary">@color/disableSecondaryOnDark</item>
+        <item name="colorLine">@color/lineOnDark</item>
+        <item name="colorBorder">@color/borderOnDark</item>
+
+        <item name="textColorPrimary">@color/textColorPrimaryOnDark</item>
+        <item name="textColorSecondary">@color/textColorSecondaryOnDark</item>
+        <item name="textColorThirdly">@color/textColorThirdlyOnDark</item>
+        <item name="textColorHint">@color/textColorHintOnDark</item>
+        <item name="textColorError">@color/textColorError</item>
+        <item name="textColorAccent">@color/textColorAccent</item>
+
+        <item name="iconColorPrimary">@color/iconColorPrimaryOnDark</item>
+        <item name="iconColorSecondary">@color/iconColorSecondaryOnDark</item>
+        <item name="iconColorDisable">@color/iconColorDisableOnDark</item>
+        <item name="iconColorAccent">@color/iconColorAccent</item>
+    </style>
+
     <style name="Theme.Runex.TransparentStatus" parent="Theme.Runex">
         <item name="android:windowDrawsSystemBarBackgrounds">true</item>
         <item name="android:statusBarColor">@android:color/transparent</item>
@@ -79,13 +111,10 @@
     </style>
 
     <style name="Theme.Runex.CreditCardActivity" parent="OmiseTheme">
-        <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@color/backgroundPrimaryLight</item>
+        <item name="android:windowTranslucentStatus">false</item>
         <item name="android:windowLightStatusBar">true</item>
-
-        <item name="colorAccent">@color/colorAccent</item>
     </style>
-
 
     <!-- Dialog -->
     <style name="Theme.Runex.AlertDialog" parent="@style/ThemeOverlay.MaterialComponents.MaterialAlertDialog">

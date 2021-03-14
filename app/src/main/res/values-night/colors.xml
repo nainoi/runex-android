@@ -30,5 +30,5 @@
     <color name="iconColorDisable">@color/iconColorDisableOnDark</color>
 
     <!-- Others -->
-    <color name="bottom_bar_center_menu">#474D51</color>
+    <color name="bottom_bar_center_menu">@color/disableSecondaryOnDark</color>
 </resources>

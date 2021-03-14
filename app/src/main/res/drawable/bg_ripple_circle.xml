@@ -3,7 +3,7 @@
     android:color="?android:attr/colorControlHighlight">
     <item android:id="@android:id/mask">
         <shape android:shape="oval">
-            <solid android:color="@color/backgroundPrimary" />
+            <solid android:color="?colorBackgroundPrimary" />
         </shape>
     </item>
     <item android:drawable="@android:color/transparent" />
