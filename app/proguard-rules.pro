@@ -46,8 +46,9 @@
   @com.google.gson.annotations.SerializedName <fields>;
 }
 
-# Google Maps 3.1.0 Beta
-#-keep,allowoptimization class com.google.android.libraries.maps.** { *; }
+# Glide
+-keep public class * extends com.bumptech.glide.module.AppGlideModule
+-keep class com.bumptech.glide.GeneratedAppGlideModuleImpl
 
 ## Omise
 -dontwarn okio.**
@@ -55,3 +56,6 @@
 -dontwarn org.joda.time.**
 -dontwarn javax.annotation.**
 -dontwarn com.squareup.**
+
+# Google Maps 3.1.0 Beta
+#-keep,allowoptimization class com.google.android.libraries.maps.** { *; }
