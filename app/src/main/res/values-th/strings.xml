@@ -30,6 +30,7 @@
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
     <string name="calories_kcal">แคลอรี่(cal)</string>
     <string name="contract">ติดต่อ</string>
+    <string name="connect_application">เชื่อมต่อแอปพลิเคชั่น</string>
 
     <!-- D -->
     <string name="dashBoard">แดชบอร์ด</string>
@@ -39,6 +40,7 @@
     <string name="distances_kg">ระยะทาง(km)</string>
     <string name="duration">ระยะเวลา</string>
     <string name="district">อำเภอ</string>
+    <string name="data_not_found">ไม่พบข้อมูล</string>
 
     <!-- E -->
     <string name="edit">แก้ไข</string>

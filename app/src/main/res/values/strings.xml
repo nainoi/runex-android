@@ -30,6 +30,7 @@
     <string name="connection_timed_out">Connection timed out</string>
     <string name="calories_kcal">Calories(kcal)</string>
     <string name="contract">Contract</string>
+    <string name="connect_application">Connect Applications</string>
 
 
     <!-- D -->
@@ -40,6 +41,7 @@
     <string name="distances_kg">Distances(km)</string>
     <string name="duration">Duration</string>
     <string name="district">Amphoe</string>
+    <string name="data_not_found">Data not found.</string>
 
     <!-- E -->
     <string name="edit">Edit</string>
@@ -168,5 +170,7 @@
 
     <!-- Input required -->
     <string name="input_required">%1$s is required</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
+import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
@@ -47,10 +48,10 @@ class LoginScreen : BaseScreen() {
 
     @SuppressLint("SetJavaScriptEnabled")
     private fun setupComponents() {
-        setStatusBarColor(isLightStatusBar = true)
+        setStatusBarColor(getColor(R.color.backgroundPrimaryLight), isLightStatusBar = true)
 
         web_view?.settings?.apply {
-            setAppCacheEnabled(false)
+            //setAppCacheEnabled(false)
             cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
             //Set face user agent for google sign in.

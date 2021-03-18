@@ -47,8 +47,8 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = requireActivity().getViewModel(UserViewModelFactory(requireContext()))
 
+        viewModel = getUserViewModel()
         takePictureHelper = TakePictureHelper(this)
         getContentHelper = GetContentHelper(this)
     }

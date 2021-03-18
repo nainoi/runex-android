@@ -19,6 +19,8 @@ import com.think.runex.common.showAlertDialog
 import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.component.ProgressDialog
 import com.think.runex.feature.main.MainViewModel
+import com.think.runex.feature.user.UserViewModel
+import com.think.runex.feature.user.UserViewModelFactory
 
 open class BaseScreen : Fragment() {
 
@@ -153,6 +155,8 @@ open class BaseScreen : Fragment() {
     }
 
     fun getMainViewModel(): MainViewModel = requireActivity().getViewModel()
+
+    fun getUserViewModel(): UserViewModel = requireActivity().getViewModel(UserViewModelFactory(requireContext()))
 
     /**
      * Hid keyboard before destroy view.

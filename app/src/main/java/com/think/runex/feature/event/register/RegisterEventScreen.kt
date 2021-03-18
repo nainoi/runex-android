@@ -36,7 +36,7 @@ class RegisterEventScreen : BaseScreen() {
         viewModel = getViewModel(RegisterEventViewModelFactory(requireContext()))
 
         //Get user info for fill out
-        requireActivity().getViewModel<UserViewModel>(UserViewModelFactory(requireContext())).getUserInfoIfNotHave()
+        getUserViewModel().getUserInfoIfNotHave()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

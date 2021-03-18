@@ -22,7 +22,7 @@ class ProfileScreen : BaseScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = requireActivity().getViewModel(UserViewModelFactory(requireContext()))
+        viewModel = getUserViewModel()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -27,6 +27,9 @@ class ApiConfig {
 
         var PREVIEW_EVENT_URL = "runex.co/m/preview"
 
+        var KONEX_URL = "https://konex.thinkdev.app/settings"
+            private set
+
 
         fun updateAppConfig(config: AppConfig?) {
             if (config == null) return

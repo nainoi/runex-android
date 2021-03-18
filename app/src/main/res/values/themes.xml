@@ -104,7 +104,7 @@
         <item name="android:windowLightStatusBar">true</item>
     </style>
 
-    <style name="Theme.Runex.LoginActivity" parent="Theme.MaterialComponents.Light.NoActionBar">
+    <style name="Theme.Runex.LoginActivity" parent="Theme.Runex.Light">
         <item name="android:windowTranslucentStatus">false</item>
         <item name="android:statusBarColor">@color/backgroundPrimaryLight</item>
         <item name="android:windowLightStatusBar">true</item>
