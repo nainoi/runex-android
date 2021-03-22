@@ -10,19 +10,17 @@ import com.think.runex.common.displayFormat
 data class PaymentMethod(
         @SerializedName("id") var id: String? = null,
         @SerializedName("name") var name: String? = null,
+        @SerializedName("type") var type: String? = null,
         @SerializedName("charge") var charge: Double? = 0.0,
         @SerializedName("charge_percent") var chargePercent: Double? = 0.0,
         @SerializedName("is_active") var isActive: Boolean? = false,
         @SerializedName("icon") var icon: String? = null) {
 
 
-    fun getPaymentMethodIcon(context: Context): Drawable? = when {
-        name?.contains("Credit", true) == true -> {
-            ContextCompat.getDrawable(context, R.drawable.ic_credit_card)
-        }
-        name?.contains("QR", true) == true -> {
-            ContextCompat.getDrawable(context, R.drawable.ic_qr_code)
-        }
+    fun getPaymentMethodIcon(context: Context): Drawable? = when (type) {
+        PaymentType.CREDIT_CARD -> ContextCompat.getDrawable(context, R.drawable.ic_credit_card)
+        PaymentType.QR_CODE -> ContextCompat.getDrawable(context, R.drawable.ic_qr_code)
+        PaymentType.QR -> ContextCompat.getDrawable(context, R.drawable.ic_qr_code)
         else -> null
     }
 

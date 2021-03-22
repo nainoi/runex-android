@@ -21,6 +21,7 @@ import com.think.runex.feature.payment.PaymentMethodsAdapter
 import com.think.runex.feature.payment.PaymentViewModel
 import com.think.runex.feature.payment.PaymentViewModelFactory
 import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
+import com.think.runex.feature.payment.data.PaymentType
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_pay_event.*
@@ -94,10 +95,16 @@ class PayEventScreen : BaseScreen() {
     private fun subscribeUi() {
 
         adapter.setOnItemClickListener { paymentMethod ->
-            when {
-                paymentMethod.name?.contains("Credit", true) == true -> {
+            when (paymentMethod.type) {
+                PaymentType.CREDIT_CARD -> {
                     viewModel.paymentMethod = paymentMethod
                     creditCardLauncher?.launch(getString(R.string.omise_key))
+                }
+                PaymentType.QR_CODE -> {
+
+                }
+                PaymentType.QR -> {
+
                 }
             }
         }

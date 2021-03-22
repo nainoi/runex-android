@@ -150,6 +150,9 @@ dependencies {
     //Omise
     implementation 'co.omise:omise-android:4.0.0-alpha01'
 
+    //Zxing
+    implementation 'com.google.zxing:core:3.4.1'
+
     //Testing
     testImplementation 'junit:junit:4.13.2'
     androidTestImplementation 'androidx.test.ext:junit:1.1.2'
