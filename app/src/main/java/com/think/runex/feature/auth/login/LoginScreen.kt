@@ -87,7 +87,7 @@ class LoginScreen : BaseScreen() {
     private fun performLogin(code: String) = launch {
         progress_bar?.visible()
         web_view?.inVisible()
-        val isSuccess = viewModel.loginWithCode(requireContext(), code)
+        val isSuccess = viewModel.loginWithCode(code)
         progress_bar?.gone()
         if (isSuccess) {
             replaceFragment(MainScreen.newInstance(), fadeIn(), addToBackStack = false, clearFragment = false)

@@ -110,7 +110,8 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         //Set register button
         launch {
             val isRegistered = viewModel.isRegisteredEvent(arguments?.getString(KEY_CODE) ?: "")
-            setEnableRegisterButton(eventDetail?.isActive() == true && isRegistered.not())
+            //setEnableRegisterButton(eventDetail?.isActive() == true && isRegistered.not())
+            setEnableRegisterButton(true)
         }
     }
 

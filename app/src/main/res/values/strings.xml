@@ -1,4 +1,7 @@
 <resources>
+
+    <string name="think_company_name" translatable="false">บริษัท ธิงค เทคโนโลยี จำกัด</string>
+
     <!-- A -->
     <string name="app_name">RUNEX</string>
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
@@ -62,6 +65,7 @@
     <string name="get_started">Get started</string>
     <string name="gender">Gender</string>
     <string name="gallery_permission_denied">Unable to access your gallery due to being denied.</string>
+    <string name="generate_qr_code">generate QR Code</string>
 
     <!-- H -->
     <string name="history">History</string>
@@ -133,6 +137,7 @@
     <string name="success">Success</string>
     <string name="share">Share</string>
     <string name="save_to_device">Save to device</string>
+    <string name="save_qr">Save QR</string>
     <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
     <string name="sub_district">District</string>
     <string name="shirt_size">shirt size</string>
@@ -140,6 +145,7 @@
 
     <!-- T -->
     <string name="total_distances">Total Distances</string>
+    <string name="total_price">Total price</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">Thank you for payment.</string>
 
@@ -170,7 +176,5 @@
 
     <!-- Input required -->
     <string name="input_required">%1$s is required</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

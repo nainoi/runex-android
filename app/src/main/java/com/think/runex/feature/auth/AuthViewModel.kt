@@ -45,7 +45,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         }
     }
 
-    suspend fun loginWithCode(context: Context, code: String): Boolean = withContext(IO) {
+    suspend fun loginWithCode(code: String): Boolean = withContext(IO) {
         val loginResult = repo.loginWithCode(AuthWithCodeBody(code))
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.statusCode, loginResult.message)

@@ -61,6 +61,7 @@
     <string name="get_started">เริ่มใช้งาน</string>
     <string name="gender">เพศ</string>
     <string name="gallery_permission_denied">ไม่สามารถเข้าถึงคลังรูปของคุณได้เนื่องจากถูกปฏิเสธ</string>
+    <string name="generate_qr_code">สร้าง QR Code</string>
 
     <!-- H -->
     <string name="history">ประวัติ</string>
@@ -133,6 +134,7 @@
     <string name="success">สำเร็จ</string>
     <string name="share">แชร์</string>
     <string name="save_to_device">บันทึกภาพลงอุปกรณ์</string>
+    <string name="save_qr">บันทึก QR</string>
     <string name="storage_permission_denied">ไม่สามารถเข้าถึงพื้นที่เก็บข้อมูลของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="sub_district">ตำบล</string>
     <string name="shirt_size">ขนาดเสื้อ</string>
@@ -140,6 +142,7 @@
 
     <!-- T -->
     <string name="total_distances">ระยะสะสม</string>
+    <string name="total_price">ราคารวม</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">ขอบคุณสำหรับการชำระเงิน</string>
 

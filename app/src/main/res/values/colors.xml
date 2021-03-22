@@ -86,4 +86,6 @@
     <!-- Others -->
     <color name="facebookColor">#3C67B8</color>
     <color name="bottom_bar_center_menu">@color/backgroundThirdly</color>
+    <color name="thaiQRPaymentColor">#113566</color>
+
 </resources>

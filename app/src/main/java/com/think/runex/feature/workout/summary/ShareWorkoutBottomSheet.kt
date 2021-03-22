@@ -260,7 +260,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
 
             val tempFile = File.createTempFile(fileName, ".jpg", requireContext().getTempDirectory("images"))
             uri = tempFile.getUriProvider(requireContext())
-            writeBitmapToOutputStream(bitmap, FileOutputStream(tempFile))
+            bitmap?.writeToOutputStream(FileOutputStream(tempFile))
 
         } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
 
@@ -275,7 +275,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
             uri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value)
             if (uri != null) {
                 requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    writeBitmapToOutputStream(bitmap, outputStream)
+                    bitmap?.writeToOutputStream(outputStream)
                 }
                 value.put(MediaStore.Images.Media.IS_PENDING, false)
                 requireContext().contentResolver.update(uri, value, null, null)
@@ -290,7 +290,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
                 File("$directory/$fileName")
             }
             uri = outputFile.getUriProvider(requireContext())
-            writeBitmapToOutputStream(bitmap, FileOutputStream(outputFile))
+            bitmap?.writeToOutputStream(FileOutputStream(outputFile))
         }
 
         //Clear bitmap
@@ -301,13 +301,6 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
         }
 
         return uri
-    }
-
-    private fun writeBitmapToOutputStream(bitmap: Bitmap?, outputStream: OutputStream) {
-        val bos = ByteArrayOutputStream()
-        bitmap?.compress(Bitmap.CompressFormat.JPEG, 100, bos)
-        outputStream.write(bos.toByteArray())
-        outputStream.close()
     }
 
     private fun showSaveWorkoutImageCompleteSnackBar(uri: Uri?) {

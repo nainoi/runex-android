@@ -73,9 +73,10 @@ class MyEventsScreen : BaseScreen() {
             when (event.isPaid()) {
                 true -> addFragment(DashBoardScreen())
                 false -> addFragment(PayEventScreen.newInstance(eventName = event.getEventName(),
-                        eventCode = event.getEventCode() ,
+                        eventCode = event.getEventCode(),
                         registerId = event.getRegisterId(),
                         orderId = event.getOrderId(),
+                        ref2 = event.ref2 ?: "",
                         price = event.getTotalPrice()))
             }
         }

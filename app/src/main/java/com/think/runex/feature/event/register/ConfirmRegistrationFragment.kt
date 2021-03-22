@@ -104,6 +104,7 @@ class ConfirmRegistrationFragment : BaseScreen() {
                             eventCode = event.getEventCode(),
                             registerId = event.getRegisterId(),
                             orderId = event.getOrderId(),
+                            ref2 = event.ref2 ?: "",
                             price = event.getTotalPrice()))
 
                     //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack

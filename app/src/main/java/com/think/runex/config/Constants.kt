@@ -14,6 +14,8 @@ const val AUTHORIZATION = "Authorization"
 const val GOOGLE_MAP_DEFAULT_ZOOM = 16f
 const val GOOGLE_MAP_WORKING_OUT_ZOOM = 17f
 
+const val DEFAULT_QR_CODE_SIZE = 720
+
 /**
  * Update last user-agent from https://www.whatismybrowser.com/guides/the-latest-user-agent/chrome
  */
@@ -43,6 +45,7 @@ const val KEY_STATUS_CODE = "code"
 const val KEY_TITLE = "title"
 const val KEY_TYPE = "type"
 const val KEY_VERSION = "version"
+const val KEY_URL = "url"
 
 
 /**

@@ -12,7 +12,7 @@ data class Result<T>(
         @SerializedName(KEY_DATA) var data: T? = null) {
 
     companion object {
-        fun <T> success(data: T?, message: String?): Result<T> = Result(HttpURLConnection.HTTP_OK, null, data)
+        fun <T> success(data: T?, message: String? = null): Result<T> = Result(HttpURLConnection.HTTP_OK, message, data)
         fun <T> error(statusCode: Int, message: String?): Result<T> = Result(statusCode, message)
     }
 

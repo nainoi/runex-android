@@ -9,11 +9,13 @@ data class EventRegistered(
         @SerializedName("owner_id") var ownerId: String? = null,
         @SerializedName("user_code") var userCode: String? = null,
         @SerializedName("event_code") var eventCode: String? = null,
+        @SerializedName("ref2") var ref2: String? = null,
         @SerializedName("regs") var eventRegisteredList: List<EventRegisteredData>? = null) : Parcelable {
 
     var isChecked: Boolean = false
 
     constructor(parcel: Parcel) : this(
+            parcel.readString(),
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -25,6 +27,7 @@ data class EventRegistered(
         parcel.writeString(ownerId)
         parcel.writeString(userCode)
         parcel.writeString(eventCode)
+        parcel.writeString(ref2)
         parcel.writeTypedList(eventRegisteredList)
         parcel.writeByte(if (isChecked) 1 else 0)
     }

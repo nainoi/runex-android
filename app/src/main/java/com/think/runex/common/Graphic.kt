@@ -7,6 +7,7 @@ import android.net.Uri
 import android.os.Build
 import androidx.annotation.ColorInt
 import java.io.ByteArrayOutputStream
+import java.io.OutputStream
 
 fun Drawable.setColorFilter(@ColorInt color: Int) {
     if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
@@ -31,3 +32,10 @@ fun Bitmap.toByteArray(): ByteArray = try {
 //        ImageDecoder.createSource(context.contentResolver, this)
 //    }
 //}
+
+fun Bitmap.writeToOutputStream(outputStream: OutputStream) {
+    val bos = ByteArrayOutputStream()
+    this.compress(Bitmap.CompressFormat.JPEG, 100, bos)
+    outputStream.write(bos.toByteArray())
+    outputStream.close()
+}

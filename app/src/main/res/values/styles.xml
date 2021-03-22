@@ -200,6 +200,11 @@
         <item name="android:textColor">@color/textColorWhite</item>
     </style>
 
+    <style name="Button.ThaiQRPayment" parent="Button">
+        <item name="android:background">@drawable/bg_btn_thai_qr_payment</item>
+        <item name="android:textColor">@color/textColorWhite</item>
+    </style>
+
     <!-- Base Icons -->
     <style name="Icon">
         <!-- Noting for now -->

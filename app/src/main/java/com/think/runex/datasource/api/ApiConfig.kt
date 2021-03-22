@@ -25,7 +25,14 @@ class ApiConfig {
         var LEADER_BOARD_URL = "https://leaderboard.runex.co"
             private set
 
-        var PREVIEW_EVENT_URL = "runex.co/m/preview"
+        var PREVIEW_EVENT_URL = "https://runex.thinkdev.app/m/preview"
+            private set
+
+        var QR_URL = "https://payment.runex.co/PromptPay/Think"
+            private set
+
+        var QR_CODE_URL = "https://runex-payments.thinkdev.app/scb/v1/create-qrcode"
+            private set
 
         var KONEX_URL = "https://konex.thinkdev.app/settings"
             private set
@@ -37,6 +44,8 @@ class ApiConfig {
             LOGIN_URL = config.loginUrl ?: LOGIN_URL
             LEADER_BOARD_URL = config.leaderBoardUrl ?: LEADER_BOARD_URL
             PREVIEW_EVENT_URL = config.previewEventUrl ?: PREVIEW_EVENT_URL
+            QR_URL = config.qrUrl ?: QR_URL
+            QR_CODE_URL = config.qrCodeUrl ?: QR_CODE_URL
         }
     }
 }

@@ -17,6 +17,7 @@ import com.think.runex.config.KEY_CODE
 import com.think.runex.config.KEY_EVENT
 import com.think.runex.config.KEY_ID
 import com.think.runex.config.KEY_PRICE
+import com.think.runex.feature.event.SelectEventsBottomSheet
 import com.think.runex.feature.payment.PaymentMethodsAdapter
 import com.think.runex.feature.payment.PaymentViewModel
 import com.think.runex.feature.payment.PaymentViewModelFactory
@@ -33,12 +34,19 @@ class PayEventScreen : BaseScreen() {
     companion object {
 
         @JvmStatic
-        fun newInstance(eventName: String, eventCode: String, registerId: String, orderId: String, price: Double) = PayEventScreen().apply {
+        fun newInstance(eventName: String,
+                        eventCode: String,
+                        registerId: String,
+                        orderId: String,
+                        ref2: String,
+                        price: Double) = PayEventScreen().apply {
+
             arguments = Bundle().apply {
                 putString(KEY_EVENT, eventName)
                 putString(KEY_CODE, eventCode)
                 putString("register_id", registerId)
                 putString(KEY_ID, orderId)
+                putString("ref2", ref2)
                 putDouble(KEY_PRICE, price)
             }
         }
@@ -53,7 +61,7 @@ class PayEventScreen : BaseScreen() {
         super.onCreate(savedInstanceState)
 
         creditCardLauncher = registerForActivityResult(CreditCardActivityContract()) { token ->
-            token?.id?.also { performPayEvent(it) }
+            token?.id?.also { performPayEventByCreditOrDebitCard(it) }
         }
 
         viewModel = getViewModel(PaymentViewModelFactory(requireContext()))
@@ -61,6 +69,7 @@ class PayEventScreen : BaseScreen() {
                 arguments?.getString(KEY_CODE) ?: "",
                 arguments?.getString("register_id") ?: "",
                 arguments?.getString(KEY_ID) ?: "",
+                arguments?.getString("ref2") ?: "",
                 arguments?.getDouble(KEY_PRICE) ?: 0.0)
     }
 
@@ -101,10 +110,12 @@ class PayEventScreen : BaseScreen() {
                     creditCardLauncher?.launch(getString(R.string.omise_key))
                 }
                 PaymentType.QR_CODE -> {
-
+                    viewModel.paymentMethod = paymentMethod
+                    showBottomSheet(QRToPayBottomSheet())
                 }
                 PaymentType.QR -> {
-
+                    viewModel.paymentMethod = paymentMethod
+                    showBottomSheet(QRToPayBottomSheet())
                 }
             }
         }
@@ -122,11 +133,11 @@ class PayEventScreen : BaseScreen() {
         payment_method_list?.visible()
     }
 
-    private fun performPayEvent(omiseTokenId: String) = launch {
+    private fun performPayEventByCreditOrDebitCard(omiseTokenId: String) = launch {
 
         showProgressDialog(R.string.pay_event_in_progress, showDot = false)
 
-        val isSuccess = viewModel.payEvent(omiseTokenId)
+        val isSuccess = viewModel.payEventByCreditOrDebitCard(omiseTokenId)
 
         hideProgressDialog()
 
@@ -142,6 +153,7 @@ class PayEventScreen : BaseScreen() {
             removeFragment(this@PayEventScreen)
         }
     }
+
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
         super.errorHandler(statusCode, message, tag)
