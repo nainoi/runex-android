@@ -5,6 +5,7 @@ import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.payment.data.PaymentMethod
+import com.think.runex.feature.payment.data.QRCodeImage
 import com.think.runex.feature.payment.data.request.PayEventBody
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
@@ -20,7 +21,6 @@ interface PaymentApi {
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
     @GET
-    fun generateQRDataAsync(@Url url: String): Deferred<String>
-
-    fun generateQRCodeDataAsync(@Url url: String): Deferred<String>
+    fun getQRCodeImageAsync(@Url url: String,
+                            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<QRCodeImage>>
 }

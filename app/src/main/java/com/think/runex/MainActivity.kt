@@ -19,6 +19,7 @@ import com.think.runex.base.BaseActivity
 import com.think.runex.feature.workout.record.WorkoutScreen
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
+import com.think.runex.datasource.api.ClientApis
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.OnBoardingScreen
@@ -46,6 +47,8 @@ class MainActivity : BaseActivity() {
         //Setup main fragment container and screen
         setContentView(R.layout.activity_main)
         mainFragmentContainerId = R.id.main_fragment_container
+
+        //ClientApis.initial(this)
 
         if (savedInstanceState == null) {
             launch {

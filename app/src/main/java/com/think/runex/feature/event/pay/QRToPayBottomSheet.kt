@@ -64,7 +64,7 @@ class QRToPayBottomSheet : PermissionsLauncherBottomSheet() {
 
     private fun subscribeUi() {
         close_button?.setOnClickListener {
-            getBottomSheetBehavior()?.state = BottomSheetBehavior.STATE_HIDDEN
+            closeBottomSheet()
         }
 
         save_button?.setOnClickListener {
@@ -76,10 +76,10 @@ class QRToPayBottomSheet : PermissionsLauncherBottomSheet() {
         progress_layout?.visible()
 
         when (viewModel.paymentMethod?.type) {
-            PaymentType.QR -> viewModel.generateQRData(requireContext())?.also {
+            PaymentType.QR -> viewModel.generateQRImage(requireContext())?.also {
                 qr_code_image?.setImageBitmap(it)
             }
-            PaymentType.QR_CODE -> viewModel.generateQRCodeData(requireContext()).also {
+            PaymentType.QR_CODE -> viewModel.generateQRCodeImage().also {
                 qr_code_image?.setImageBitmap(it)
             }
         }
@@ -165,4 +165,5 @@ class QRToPayBottomSheet : PermissionsLauncherBottomSheet() {
                 }
                 .show()
     }
+
 }

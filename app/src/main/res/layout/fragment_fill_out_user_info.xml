@@ -9,7 +9,8 @@
     <androidx.core.widget.NestedScrollView
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/confirm_button">
+        android:layout_above="@+id/confirm_button"
+        android:overScrollMode="never">
 
         <RelativeLayout
             android:layout_width="match_parent"
@@ -264,7 +265,6 @@
                 android:layout_below="@+id/underline_address"
                 android:layout_marginStart="@dimen/space_16dp"
                 android:layout_marginEnd="@dimen/space_16dp"
-                android:layout_marginBottom="@dimen/space_16dp"
                 android:text="@string/select_shirt_size" />
 
             <com.google.android.material.textfield.TextInputEditText
@@ -274,9 +274,8 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/select_shirt_size_label"
                 android:layout_marginStart="@dimen/space_16dp"
-                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginTop="@dimen/space_16dp"
                 android:layout_marginEnd="@dimen/space_16dp"
-                android:layout_marginBottom="@dimen/space_16dp"
                 android:cursorVisible="false"
                 android:focusable="false"
                 android:hint="@string/shirt_size"
@@ -296,6 +295,70 @@
                 android:scaleType="fitCenter"
                 app:srcCompat="@drawable/ic_control_next"
                 app:tint="@color/iconColorDisable" />
+
+            <View
+                android:id="@+id/underline_shirt_size"
+                android:layout_width="match_parent"
+                android:layout_height="@dimen/space_1dp"
+                android:layout_below="@+id/shirt_size_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_24dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_24dp"
+                android:background="@color/colorAccent" />
+
+            <TextView
+                android:id="@+id/other_label"
+                style="@style/Text.SubTitle.Primary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/underline_shirt_size"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:text="@string/other" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/optional_team_name_input"
+                style="@style/TextInput.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/other_label"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_16dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:hint="@string/team_name_optional"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/optional_color_input"
+                style="@style/TextInput.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/optional_team_name_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:hint="@string/color_optional"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/optional_zone_input"
+                style="@style/TextInput.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/optional_color_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_16dp"
+                android:hint="@string/zone_optional"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="1" />
 
         </RelativeLayout>
     </androidx.core.widget.NestedScrollView>

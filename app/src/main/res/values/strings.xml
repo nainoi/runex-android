@@ -4,6 +4,7 @@
 
     <!-- A -->
     <string name="app_name">RUNEX</string>
+    <string name="app_version">App version</string>
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">Address</string>
@@ -34,10 +35,11 @@
     <string name="calories_kcal">Calories(kcal)</string>
     <string name="contract">Contract</string>
     <string name="connect_application">Connect Applications</string>
+    <string name="color_optional">Color (Optional)</string>
 
 
     <!-- D -->
-    <string name="dashBoard">DashBoard</string>
+    <string name="dashboard">Dashboard</string>
     <string name="detail">Detail</string>
     <string name="default_">Default</string>
     <string name="distances">Distances</string>
@@ -82,6 +84,7 @@
     <string name="last_name">Last name</string>
     <string name="logout">Logout</string>
     <string name="location_permission_denied">Unable to access your current location due to being denied.</string>
+    <string name="leader_board">Leader board</string>
 
 
     <!-- M -->
@@ -103,6 +106,7 @@
     <string name="other">Other</string>
     <string name="open">Open</string>
     <string name="order_no">Order No</string>
+    <string name="optional">Optional</string>
 
     <!-- P -->
     <string name="pause_recording">Pause</string>
@@ -148,6 +152,7 @@
     <string name="total_price">Total price</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">Thank you for payment.</string>
+    <string name="team_name_optional">Team name (Optional)</string>
 
     <!-- U -->
     <string name="username">Username</string>
@@ -155,7 +160,7 @@
     <string name="update_profile_image">Update Profile Image…</string>
 
     <!-- V -->
-    <string name="app_version">App version</string>
+    <string name="view_leader_board">View Leader board</string>
 
     <!-- W -->
     <string name="warning">Warning</string>
@@ -167,6 +172,7 @@
 
     <!-- Z -->
     <string name="zip_code">Zip code</string>
+    <string name="zone_optional">Zone (Optional)</string>
 
     <!-- Hint -->
     <string name="hint_time" translatable="false">00:00:00</string>
@@ -176,5 +182,7 @@
 
     <!-- Input required -->
     <string name="input_required">%1$s is required</string>
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 </resources>

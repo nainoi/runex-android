@@ -13,11 +13,7 @@ import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
 import com.think.runex.component.recyclerview.MarginItemDecoration
-import com.think.runex.config.KEY_CODE
-import com.think.runex.config.KEY_EVENT
-import com.think.runex.config.KEY_ID
-import com.think.runex.config.KEY_PRICE
-import com.think.runex.feature.event.SelectEventsBottomSheet
+import com.think.runex.config.*
 import com.think.runex.feature.payment.PaymentMethodsAdapter
 import com.think.runex.feature.payment.PaymentViewModel
 import com.think.runex.feature.payment.PaymentViewModelFactory
@@ -156,8 +152,12 @@ class PayEventScreen : BaseScreen() {
 
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
-        super.errorHandler(statusCode, message, tag)
         progress_bar?.gone()
+        when (tag) {
+            KEY_QR -> showAlertDialog(getString(R.string.error), message, isCancelEnable = false) {
+                findChildFragment<QRToPayBottomSheet>()?.closeBottomSheet()
+            }
+            else -> super.errorHandler(statusCode, message, tag)
+        }
     }
-
 }

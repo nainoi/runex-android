@@ -13,7 +13,7 @@ import com.think.runex.common.removeObservers
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
-import com.think.runex.feature.event.dashboard.DashBoardScreen
+import com.think.runex.feature.event.dashboard.DashboardScreen
 import com.think.runex.feature.event.pay.PayEventScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_my_events.*
@@ -55,7 +55,7 @@ class MyEventsScreen : BaseScreen() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         refresh_layout?.setColorSchemeResources(R.color.colorPrimary)
 
-        //Set update recycler view
+        //Setup recycler view
         adapter = MyEventsAdapter()
         layoutManager = LinearLayoutManager(requireContext())
         event_list?.addItemDecoration(MarginItemDecoration(getDimension(R.dimen.space_16dp)))
@@ -71,7 +71,7 @@ class MyEventsScreen : BaseScreen() {
 
         adapter.setOnItemClickListener { event ->
             when (event.isPaid()) {
-                true -> addFragment(DashBoardScreen())
+                true -> addFragment(DashboardScreen.newInstance(event.getEventCode(), event.getEventName()))
                 false -> addFragment(PayEventScreen.newInstance(eventName = event.getEventName(),
                         eventCode = event.getEventCode(),
                         registerId = event.getRegisterId(),

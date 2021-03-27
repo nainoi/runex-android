@@ -1,0 +1,118 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@color/backgroundPrimary"
+    tools:context=".feature.event.dashboard.DashboardScreen">
+
+    <com.google.android.material.appbar.AppBarLayout
+        android:id="@+id/top_bar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:background="@color/backgroundPrimary"
+        android:paddingTop="@dimen/space_24dp"
+        app:elevation="0dp">
+
+        <include layout="@layout/toolbar" />
+    </com.google.android.material.appbar.AppBarLayout>
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="@dimen/edit_text_height"
+        android:layout_alignStart="@+id/dashboard_layout"
+        android:layout_alignTop="@+id/dashboard_layout"
+        android:layout_alignEnd="@+id/dashboard_layout"
+        android:layout_alignBottom="@+id/dashboard_layout"
+        android:background="@mipmap/bg_profile_card" />
+
+    <RelativeLayout
+        android:id="@+id/dashboard_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar"
+        android:layout_margin="@dimen/space_16dp">
+
+        <TextView
+            android:id="@+id/event_name_label"
+            style="@style/Text.SubTitle.Primary.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_margin="@dimen/space_16dp"
+            tools:text="Event Name" />
+
+        <TextView
+            android:id="@+id/total_distances_placeholder"
+            style="@style/Text.Body.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/event_name_label"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:text="@string/total_distances" />
+
+        <androidx.appcompat.widget.AppCompatTextView
+            android:id="@+id/total_distances_label"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_below="@+id/total_distances_placeholder"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_16dp"
+            android:gravity="center"
+            android:maxLines="1"
+            android:text="0 km"
+            android:textColor="@color/textColorAccent"
+            android:textSize="36sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/view_leader_board_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/dashboard_layout"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:minHeight="@dimen/space_48dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/trophy_icon"
+            android:layout_width="@dimen/icon_size_in_action_bar"
+            android:layout_height="@dimen/icon_size_in_action_bar"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            app:srcCompat="@drawable/ic_trophy" />
+
+        <TextView
+            style="@style/Text.Body.Primary"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_toStartOf="@+id/next_icon_1"
+            android:layout_toEndOf="@+id/trophy_icon"
+            android:text="@string/view_leader_board" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/next_icon_1"
+            android:layout_width="@dimen/icon_size_system"
+            android:layout_height="@dimen/icon_size_system"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_16dp"
+            app:srcCompat="@drawable/ic_control_next"
+            app:tint="@color/iconColorDisable" />
+    </RelativeLayout>
+
+    <com.think.runex.component.ProgressLayout
+        android:id="@+id/progress_layout"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_bar"
+        android:background="@color/backgroundPrimary"
+        android:visibility="gone" />
+
+</RelativeLayout>

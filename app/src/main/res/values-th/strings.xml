@@ -1,6 +1,7 @@
 <resources>
     <!-- A -->
     <string name="app_name">RUNEX</string>
+    <string name="app_version">เวอร์ชัน</string>
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">ที่อยู่</string>
@@ -31,9 +32,10 @@
     <string name="calories_kcal">แคลอรี่(cal)</string>
     <string name="contract">ติดต่อ</string>
     <string name="connect_application">เชื่อมต่อแอปพลิเคชั่น</string>
+    <string name="color_optional">สี (ไม่จำเป็น)</string>
 
     <!-- D -->
-    <string name="dashBoard">แดชบอร์ด</string>
+    <string name="dashboard">แดชบอร์ด</string>
     <string name="detail">รายละเอียด</string>
     <string name="default_">ค่าเริ่มต้น</string>
     <string name="distances">ระยะทาง</string>
@@ -78,6 +80,7 @@
     <string name="last_name">นามสกุล</string>
     <string name="logout">ออกจากระบบ</string>
     <string name="location_permission_denied">ไม่สามารถเข้าถึงตำแหน่งปัจจุบันของคุณได้เนื่องจากถูกปฏิเสธ</string>
+    <string name="leader_board">Leader board</string>
 
 
     <!-- M -->
@@ -99,6 +102,7 @@
     <string name="other">อื่นๆ</string>
     <string name="open">เปิด</string>
     <string name="order_no">หมายเลขคำสั่งซื้อ</string>
+    <string name="optional">ไม่จำเป็น</string>
 
     <!-- P -->
     <string name="pause_recording">พักจับเวลา</string>
@@ -145,6 +149,7 @@
     <string name="total_price">ราคารวม</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">ขอบคุณสำหรับการชำระเงิน</string>
+    <string name="team_name_optional">ชื่อทีม (ไม่จำเป็น)</string>
 
     <!-- U -->
     <string name="username">ชื่อผู้ใช้</string>
@@ -152,8 +157,7 @@
     <string name="update_profile_image">อัปเดตรูปโปรไฟล์…</string>
 
     <!-- V -->
-    <string name="app_version">เวอร์ชัน</string>
-
+    <string name="view_leader_board">View Leaderboard</string>
 
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>
@@ -165,6 +169,7 @@
 
     <!-- Z -->
     <string name="zip_code">รหัสไปรษณีย์</string>
+    <string name="zone_optional">โซน (ไม่จำเป็น)</string>
 
     <!-- Input required -->
     <string name="input_required">กรุณาระบุ%1$s</string>

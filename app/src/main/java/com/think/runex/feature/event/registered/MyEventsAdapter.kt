@@ -10,6 +10,7 @@ import com.think.runex.R
 import com.think.runex.common.loadEventsImage
 import com.think.runex.common.requireContext
 import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.event.data.EventRegisteredDiffCallback
 import com.think.runex.feature.payment.data.PaymentStatus
 import kotlinx.android.synthetic.main.list_item_my_event.view.*
 
@@ -28,16 +29,6 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
         holder.bind(getItem(position), onItemClickListener)
-    }
-
-    class EventRegisteredDiffCallback : DiffUtil.ItemCallback<EventRegistered>() {
-        override fun areItemsTheSame(oldItem: EventRegistered, newItem: EventRegistered): Boolean {
-            return oldItem.eventCode == newItem.eventCode
-        }
-
-        override fun areContentsTheSame(oldItem: EventRegistered, newItem: EventRegistered): Boolean {
-            return oldItem == newItem
-        }
     }
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {

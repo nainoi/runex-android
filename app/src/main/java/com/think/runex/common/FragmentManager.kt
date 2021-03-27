@@ -37,6 +37,12 @@ inline fun <reified T : Fragment> Fragment.findFragment(): T? {
     }
 }
 
+inline fun <reified T : Fragment> Fragment.findChildFragment(): T? {
+    return childFragmentManager.fragments.find { it::class.java.simpleName == T::class.java.simpleName }.let {
+        if (it != null) it as T else null
+    }
+}
+
 /**
  * Get fragment
  */

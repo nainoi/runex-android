@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:theme="@style/Theme.Runex.Light"
-    tools:context=".feature.event.SelectEventsBottomSheet">
+    tools:context=".feature.event.registered.SelectEventsBottomSheet">
 
     <RelativeLayout
         android:id="@+id/content_layout"
@@ -49,10 +49,25 @@
         </FrameLayout>
 
         <androidx.recyclerview.widget.RecyclerView
+            android:id="@+id/event_list"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_above="@+id/line_above_submit_button"
             android:layout_below="@+id/top_bar" />
+
+        <FrameLayout
+            android:id="@+id/progress_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_alignTop="@+id/event_list"
+            android:layout_alignBottom="@+id/event_list"
+            android:visibility="gone">
+
+            <ProgressBar
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center" />
+        </FrameLayout>
 
         <View
             android:id="@+id/line_above_submit_button"

@@ -1,4 +1,4 @@
-package com.think.runex.feature.setting
+package com.think.runex.feature.event.dashboard
 
 import android.annotation.SuppressLint
 import android.os.Bundle
@@ -9,53 +9,58 @@ import android.view.ViewGroup
 import android.webkit.WebSettings
 import android.webkit.WebView
 import android.webkit.WebViewClient
-import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.showAlertDialog
+import com.think.runex.common.setupToolbar
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
+import com.think.runex.config.KEY_CODE
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
-import kotlinx.android.synthetic.main.screen_connect_applications.*
-import kotlinx.android.synthetic.main.screen_connect_applications.progress_bar
-import kotlinx.android.synthetic.main.screen_connect_applications.web_view
-import kotlinx.android.synthetic.main.screen_login.*
+import kotlinx.android.synthetic.main.screen_leader_board.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class ConnectApplicationsScreen : BaseScreen() {
+class LeaderBoardScreen : BaseScreen() {
+
+    companion object {
+        @JvmStatic
+        fun newInstance(eventCode: String) = LeaderBoardScreen().apply {
+            arguments = Bundle().apply {
+                putString(KEY_CODE, eventCode)
+            }
+        }
+    }
+
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+    }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_connect_applications, container, false)
+        return inflater.inflate(R.layout.screen_leader_board, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
-        performLoadApplicationsToConnect()
+        subscribeUi()
+        performLoadLeaderBoard()
     }
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
+        setupToolbar(toolbar, R.string.leader_board, R.drawable.ic_navigation_back)
     }
 
-    /**
-     * Get user info and generate konex url to connect application
-     */
+    private fun subscribeUi() {
+
+    }
+
     @SuppressLint("SetJavaScriptEnabled")
-    private fun performLoadApplicationsToConnect() = launch {
+    private fun performLoadLeaderBoard() = launch {
         progress_bar?.visible()
-        val userInfo = getUserViewModel().getUSerInfoInstance()
-        if (userInfo == null) {
-            progress_bar?.gone()
-            showAlertDialog(getString(R.string.error), getString(R.string.data_not_found), isCancelEnable = false) {
-                onBackPressed()
-            }
-            return@launch
-        }
 
         //web_view?.requestFocus(View.FOCUS_DOWN)
         web_view?.settings?.apply {
@@ -73,12 +78,7 @@ class ConnectApplicationsScreen : BaseScreen() {
             }
         }
 
-        val url = "${ApiConfig.KONEX_URL}/${userInfo.providerId ?: ""}/${userInfo.provider ?: ""}"
-        web_view?.loadUrl(url)
-    }
-
-    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
-        super.errorHandler(statusCode, message, tag)
-        progress_bar?.gone()
+        //val url = "${ApiConfig.LEADER_BOARD_URL}/${userInfo.providerId ?: ""}/${userInfo.provider ?: ""}"
+        web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL)
     }
 }

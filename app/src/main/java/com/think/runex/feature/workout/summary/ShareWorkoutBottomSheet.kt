@@ -129,13 +129,13 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
         }
 
         share_to_facebook_button?.setOnClickListener {
-            prepareMapLayout {
+            prepareMapLayoutForSaveImage {
                 shareToFacebook()
             }
         }
 
         share_to_other_button?.setOnClickListener {
-            prepareMapLayout {
+            prepareMapLayoutForSaveImage {
                 val uri = saveWorkoutImageToStorage(true)
                 clearMapSnapshotImage()
                 //Stat share to other
@@ -209,7 +209,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
         requestPermissions(permissions) { results ->
             when {
                 //User allow all permissions read and write storage
-                allPermissionsGranted(results) -> prepareMapLayout {
+                allPermissionsGranted(results) -> prepareMapLayoutForSaveImage {
                     saveWorkoutImageToStorage()
                     clearMapSnapshotImage()
                 }
@@ -239,7 +239,7 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
      *  will be snapshot map to bitmap and set to custom image before
      *  draw map layout to bitmap.
      */
-    private fun prepareMapLayout(callbacks: () -> Unit) {
+    private fun prepareMapLayoutForSaveImage(callbacks: () -> Unit) {
         when (remove_image_button?.isVisible == false) {
             true -> mapPresenter?.snapshot { screedShot ->
                 screedShot?.also { workout_image?.setImageBitmap(it) }

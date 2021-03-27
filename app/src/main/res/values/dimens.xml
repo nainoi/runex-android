@@ -29,6 +29,7 @@
     <!-- Default Icons -->
     <dimen name="icon_size_system">24dp</dimen>
     <dimen name="icon_size_system_dense">20dp</dimen>
+    <dimen name="icon_size_system_plus">28dp</dimen>
     <dimen name="icon_size_in_action_bar">40dp</dimen>
 
     <!-- Default Images -->

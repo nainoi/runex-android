@@ -8,12 +8,15 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.think.runex.base.BaseViewModel
 import com.think.runex.config.DEFAULT_QR_CODE_SIZE
+import com.think.runex.config.ERR_NO_STATUS_CODE
+import com.think.runex.config.KEY_QR
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.payment.data.PaymentMethod
 import com.think.runex.feature.payment.data.request.PayEventBody
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
+import java.net.HttpURLConnection
 
 class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
 
@@ -36,6 +39,8 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
         private set
 
     var paymentMethod: PaymentMethod? = null
+
+    private var qrCodeImage: Bitmap? = null
 
     suspend fun getPaymentMethods(): List<PaymentMethod>? = withContext(IO) {
         val result = repo.getPaymentMethods()
@@ -71,28 +76,30 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
         return@withContext result.isSuccessful()
     }
 
-    suspend fun generateQRData(context: Context): Bitmap? = withContext(IO) {
+    suspend fun generateQRImage(context: Context): Bitmap? = withContext(IO) {
         val totalPrice = price + (paymentMethod?.getChargeAmount(price) ?: 0.0)
         val url = "${ApiConfig.QR_URL}/$orderId/$ref2/$totalPrice"
 
-        val result = repo.generateQRCodeData(url)
+        val result = repo.getQRData(url)
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
             return@withContext null
         }
-        return@withContext convertStringToQrCode(context, result.data ?: "")
+        qrCodeImage = convertStringToQrCode(context, result.data ?: "")
+        return@withContext qrCodeImage
     }
 
-    suspend fun generateQRCodeData(context: Context) = withContext(IO) {
+    suspend fun generateQRCodeImage(): Bitmap? = withContext(IO) {
         val totalPrice = price + (paymentMethod?.getChargeAmount(price) ?: 0.0)
         val url = "${ApiConfig.QR_CODE_URL}/$orderId/$ref2/$totalPrice"
 
-        val result = repo.generateQRCodeData(url)
-        if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+        val result = repo.getQRCodeImage(url)
+        if (result.data == null) {
+            onHandleError(HttpURLConnection.HTTP_BAD_REQUEST, "The service is unavailable for now.", KEY_QR)
             return@withContext null
         }
-        return@withContext convertStringToQrCode(context, result.data ?: "")
+        qrCodeImage = result.data?.getQRCodeImage()
+        return@withContext qrCodeImage
     }
 
     private fun convertStringToQrCode(context: Context, data: String): Bitmap? {
@@ -121,5 +128,10 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
 
     fun getTotalPrice(): Double {
         return price + (paymentMethod?.getChargeAmount(price) ?: 0.0)
+    }
+
+    override fun onCleared() {
+        qrCodeImage?.recycle()
+        super.onCleared()
     }
 }

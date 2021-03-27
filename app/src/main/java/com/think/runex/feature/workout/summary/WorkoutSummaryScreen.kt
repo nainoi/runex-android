@@ -1,5 +1,7 @@
 package com.think.runex.feature.workout.summary
 
+import android.graphics.Bitmap
+import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import com.google.android.gms.maps.GoogleMap
@@ -9,6 +11,7 @@ import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.showToast
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.common.*
@@ -20,7 +23,8 @@ import com.think.runex.feature.workout.WorkoutViewModelFactory
 import com.think.runex.feature.workout.data.WorkingOutLocation
 import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.base.BaseScreen
-import com.think.runex.feature.event.SelectEventsBottomSheet
+import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.registered.SelectEventsBottomSheet
 import com.think.runex.feature.workout.MapPresenter
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
@@ -29,7 +33,7 @@ import kotlinx.android.synthetic.main.layout_workout_summary_on_map.*
 import kotlinx.android.synthetic.main.screen_workout_summary.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class WorkoutSummaryScreen : BaseScreen() {
+class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSelectEventToSubmitListener {
 
     companion object {
         @JvmStatic
@@ -87,10 +91,13 @@ class WorkoutSummaryScreen : BaseScreen() {
         submit_button?.setOnClickListener {
             showBottomSheet(SelectEventsBottomSheet())
         }
+
+        viewModel.setOnHandleError(::errorHandler)
     }
 
     private fun performAddWorkout() = launch {
         progress_layout?.visible()
+
         val locations = Realm.getDefaultInstance().run {
             copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync()) ?: emptyList()
         }
@@ -106,16 +113,39 @@ class WorkoutSummaryScreen : BaseScreen() {
                 commitTransaction()
             }
         }
+
         progress_layout?.gone()
+
         updateUi()
     }
 
     private fun performGetWorkoutInfo() = launch {
         progress_layout?.visible()
+
         workoutInfo = viewModel.getWorkoutInfo(workoutId ?: "")
         //workoutId = workoutInfo?.id
+
         progress_layout?.gone()
+
         updateUi()
+    }
+
+    private fun performSubmitWorkoutToEvents(events: List<EventRegisteredForSubmitResult>) = launch {
+
+        showProgressDialog(R.string.submit_result)
+
+        val isSuccess = viewModel.submitWorkoutToEvents(events, workoutInfo)
+
+        hideProgressDialog()
+
+        if (isSuccess) {
+
+            showAlertDialog(R.string.success)
+
+            //Update workout info
+            workoutInfo = viewModel.getWorkoutInfo(workoutId ?: "")
+            updateUi()
+        }
     }
 
     private fun updateUi() {
@@ -129,6 +159,8 @@ class WorkoutSummaryScreen : BaseScreen() {
             duration_per_kilometer_placeholder?.text = displayDate.durationPerKilometerUnit
             calorie_label?.text = displayDate.calories
         }
+        submit_button?.isEnabled = workoutInfo?.isSync != true
+
         initMaps {
             workoutInfo?.locations?.also {
                 mapPresenter?.drawPolyline(it)
@@ -156,6 +188,10 @@ class WorkoutSummaryScreen : BaseScreen() {
         }
     }
 
+    override fun onConfirmSelectEventToSubmit(events: List<EventRegisteredForSubmitResult>) {
+        performSubmitWorkoutToEvents(events)
+    }
+
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_workout_summary, menu)
     }
@@ -166,6 +202,15 @@ class WorkoutSummaryScreen : BaseScreen() {
             true
         }
         else -> super.onOptionsItemSelected(item)
+    }
+
+    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+        when (tag) {
+            "submit_workout" -> {
+                showToast(message)
+            }
+            else -> super.errorHandler(statusCode, message, tag)
+        }
     }
 
     override fun onDestroy() {
