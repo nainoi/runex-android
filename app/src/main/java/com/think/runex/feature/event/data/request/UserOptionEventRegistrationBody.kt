@@ -19,7 +19,10 @@ data class UserOptionEventRegistrationBody(
         @SerializedName("emergency_contact") var emergencyContact: String = "",
         @SerializedName("emergency_phone") var emergencyPhone: String = "",
         @SerializedName("address") var address: String = "",
-        @SerializedName("tambon") var subDistrict: SubDistrict? = null) : Parcelable {
+        @SerializedName("tambon") var subDistrict: SubDistrict? = null,
+        @SerializedName("team") var team: String = "",
+        @SerializedName("color") var color: String = "",
+        @SerializedName("zone") var zone: String = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<UserOptionEventRegistrationBody> {
         override fun createFromParcel(parcel: Parcel): UserOptionEventRegistrationBody {
@@ -43,7 +46,10 @@ data class UserOptionEventRegistrationBody(
             parcel.readString() ?: "",
             parcel.readString() ?: "",
             parcel.readString() ?: "",
-            parcel.readParcelable(SubDistrict::class.java.classLoader))
+            parcel.readParcelable(SubDistrict::class.java.classLoader),
+            parcel.readString() ?: "",
+            parcel.readString() ?: "",
+            parcel.readString() ?: "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(firstName)
@@ -58,6 +64,9 @@ data class UserOptionEventRegistrationBody(
         parcel.writeString(emergencyPhone)
         parcel.writeString(address)
         parcel.writeParcelable(subDistrict, flags)
+        parcel.writeString(team)
+        parcel.writeString(color)
+        parcel.writeString(zone)
     }
 
     override fun describeContents(): Int {

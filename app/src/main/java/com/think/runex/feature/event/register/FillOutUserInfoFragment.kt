@@ -232,7 +232,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("Jozzee", "ZipCode: onTextChanged: ${s.toString()}")
+                Logger.debug("Jozzee", "ZipCode: onTextChanged: ${s.toString()}")
                 when (s?.length == 5) {
                     true -> viewModel.searchAddressByZipCode(s.toString(), zip_code_input?.id ?: -1)
                     false -> zip_code_input?.setAdapter(null)
@@ -247,7 +247,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("Jozzee", "Sub District: onTextChanged: ${s.toString()}")
+                Logger.debug("Jozzee", "Sub District: onTextChanged: ${s.toString()}")
                 when (s?.length ?: 0 >= 3) {
                     true -> viewModel.searchAddressBySubDistricts(s.toString(), sub_district_input?.id
                             ?: -1)
@@ -263,7 +263,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("Jozzee", "District: onTextChanged: ${s.toString()}")
+                Logger.debug("Jozzee", "District: onTextChanged: ${s.toString()}")
                 when (s?.length ?: 0 >= 3) {
                     true -> viewModel.searchAddressByDistricts(s.toString(), sub_district_input?.id
                             ?: -1)
@@ -280,7 +280,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun beforeTextChanged(s: CharSequence?, start: Int, count: Int, after: Int) {}
 
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
-                Log.d("Jozzee", "Province: onTextChanged: ${s.toString()}")
+                Logger.debug("Jozzee", "Province: onTextChanged: ${s.toString()}")
                 when (s?.length ?: 0 >= 3) {
                     true -> viewModel.searchAddressByProvince(s.toString(), sub_district_input?.id
                             ?: -1)
@@ -294,7 +294,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun removeTextChangedAddressAutoFill() {
-        Log.i("Jozzee", "removeTextChangedAddressAutoFill")
+        Logger.info("Jozzee", "removeTextChangedAddressAutoFill")
         zip_code_input?.removeTextChangedListener(zipCodeTextWatcher)
         sub_district_input?.removeTextChangedListener(subDistrictTextWatcher)
         district_input?.removeTextChangedListener(districtTextWatcher)
@@ -302,7 +302,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun addTextChangedAddressAutoFill() {
-        Log.i("Jozzee", "addTextChangedAddressAutoFill")
+        Logger.info("Jozzee", "addTextChangedAddressAutoFill")
         zip_code_input?.addTextChangedListener(zipCodeTextWatcher)
         sub_district_input?.addTextChangedListener(subDistrictTextWatcher)
         district_input?.addTextChangedListener(districtTextWatcher)
@@ -396,6 +396,9 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         bloodType = blood_type_input?.content() ?: ""
         address = getFullAddress()
         subDistrict = viewModel.getCurrentSubDistrict()
+        team = optional_team_name_input?.content() ?: ""
+        color = optional_color_input?.content() ?: ""
+        zone = optional_zone_input?.content() ?: ""
     }
 
     private fun getFullAddress(): String {
