@@ -51,7 +51,7 @@ class TicketsAdapter(private val isClickable: Boolean = false) : ListAdapter<Tic
 
         fun bind(data: Ticket?, onItemClick: ((ticket: Ticket) -> Unit)? = null) {
             itemView.title_label?.text = data?.getTitle(getString(R.string.km)) ?: ""
-            itemView.price_label?.text = data?.getPrice(requireContext()) ?: ""
+            itemView.price_label?.text = data?.getPriceDisplay(requireContext()) ?: ""
 
             when (isClickable) {
                 true -> {

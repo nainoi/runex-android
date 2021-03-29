@@ -72,7 +72,7 @@ class ConfirmRegistrationFragment : BaseScreen() {
         phone_label?.text = ("${getString(R.string.phone)}: ${user?.phone ?: ""}")
         event_name_label_confirm_register?.text = event?.title ?: ""
         distance_label?.text = ("${getString(R.string.distances)}: ${ticket?.distance ?: ""} ${getString(R.string.km)}")
-        price_label?.text = ("${getString(R.string.price)}: ${ticket?.getPrice(requireContext())} ")
+        price_label?.text = ("${getString(R.string.price)}: ${ticket?.getPriceDisplay(requireContext())} ")
     }
 
     private fun subscribeUi() {

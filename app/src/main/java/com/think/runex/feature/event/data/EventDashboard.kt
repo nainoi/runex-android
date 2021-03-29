@@ -4,18 +4,19 @@ import com.google.gson.annotations.SerializedName
 import com.think.runex.common.displayFormat
 
 data class EventDashboard(
-        @SerializedName("id") var id: String? = null,
-        @SerializedName("event_id") var eventId: String? = null,
-        @SerializedName("event_code") var eventCode: String? = null,
-        @SerializedName("activities") var activity: Activity? = null) {
+        @SerializedName("event") var event: EventDetail? = null,
+        @SerializedName("ranks") var ranks: List<Rank>? = null,
+        @SerializedName("myrank") var myRank: List<Rank>? = null,
+        @SerializedName("total_activity") var totalActivity: Int? = null) {
 
+    fun getEventName() = event?.title ?: ""
 
     fun getTotalDistance(): Double {
-        return activity?.totalDistance ?: 0.0
+        return myRank?.get(0)?.totalDistance ?: 0.0
     }
 
     fun getTotalDistance(unit: String): String {
-        return ("${(activity?.totalDistance ?: 0.0).displayFormat(awaysShowDecimal = true)} $unit")
+        return ("${getTotalDistance().displayFormat(awaysShowDecimal = true)} $unit")
     }
 
     data class Activity(

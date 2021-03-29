@@ -2,7 +2,6 @@ package com.think.runex.feature.event.dashboard
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,10 +17,12 @@ import com.think.runex.common.setupToolbar
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.config.KEY_CODE
 import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_leader_board.*
 import kotlinx.android.synthetic.main.toolbar.*
+import java.util.*
 
 class LeaderBoardScreen : BaseScreen() {
 
@@ -78,7 +79,10 @@ class LeaderBoardScreen : BaseScreen() {
             }
         }
 
+        val extraHeaders = HashMap<String, String>()
+        extraHeaders["token"] = TokenManager.accessToken
+        extraHeaders["id"] = "7Zy0R"
         //val url = "${ApiConfig.LEADER_BOARD_URL}/${userInfo.providerId ?: ""}/${userInfo.provider ?: ""}"
-        web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL)
+        web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL, extraHeaders) //https://leaderboard.runex.co"
     }
 }

@@ -24,9 +24,15 @@ data class EventDetail(
         @SerializedName("eventStartDate") var eventStartDate: String? = "",
         @SerializedName("eventStartDateText") var eventStartDateDisplay: String? = "",
         @SerializedName("id") var id: Int? = 0,
+        @SerializedName("isClosed") var isClosed: Boolean? = null,
         @SerializedName("isFreeEvent") var isFreeEvent: Boolean? = false,
         @SerializedName("isRunexOnly") var isRunexOnly: Boolean? = false,
         @SerializedName("isSendShirtByPost") var isSendShirtByPost: Boolean? = false,
+        @SerializedName("isOpenPayment") var isOpenPayment: Boolean? = false,
+        @SerializedName("isOpenRegister") var isOpenRegister: Boolean? = false,
+        @SerializedName("isOpenSendActivity") var isOpenSendActivity: Boolean? = false,
+        @SerializedName("isPublish") var isPublish: Boolean? = false,
+        @SerializedName("isTransactionFixedRate") val isTransactionFixedRate: Boolean? = false,
         @SerializedName("organizer") var organizer: String? = "",
         @SerializedName("photoBib") var photoBib: String? = null,
         @SerializedName("photoBibThumbnail") var photoBibThumbnail: String? = null,
@@ -43,10 +49,12 @@ data class EventDetail(
         @SerializedName("registerStartDate") var registerStartDate: String? = "",
         @SerializedName("registerStartDateText") var registerStartDateDisplay: String? = "",
         @SerializedName("schedules") var schedules: List<Schedule>? = null,
+        @SerializedName("slug") var slug: String? = null,
         @SerializedName("tickets") var tickets: List<Ticket>? = null,
         @SerializedName("shirts") var shirts: List<Shirt>? = null,
         @SerializedName("title") var title: String? = "",
-        @SerializedName("userId") var ownerId: String? = "") : Parcelable {
+        @SerializedName("userId") var ownerId: String? = "",
+        @SerializedName("pictures") var pictures: List<Picture>? = null) : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<EventDetail> {
         override fun createFromParcel(parcel: Parcel): EventDetail {
@@ -77,6 +85,12 @@ data class EventDetail(
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -93,10 +107,12 @@ data class EventDetail(
             parcel.readString(),
             parcel.readString(),
             parcel.createTypedArrayList(Schedule),
+            parcel.readString(),
             parcel.createTypedArrayList(Ticket),
             parcel.createTypedArrayList(Shirt),
             parcel.readString(),
-            parcel.readString())
+            parcel.readString(),
+            parcel.createTypedArrayList(Picture))
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
         parcel.writeString(agreement)
@@ -114,9 +130,15 @@ data class EventDetail(
         parcel.writeString(eventStartDate)
         parcel.writeString(eventStartDateDisplay)
         parcel.writeValue(id)
+        parcel.writeValue(isClosed)
         parcel.writeValue(isFreeEvent)
         parcel.writeValue(isRunexOnly)
         parcel.writeValue(isSendShirtByPost)
+        parcel.writeValue(isOpenPayment)
+        parcel.writeValue(isOpenRegister)
+        parcel.writeValue(isOpenSendActivity)
+        parcel.writeValue(isPublish)
+        parcel.writeValue(isTransactionFixedRate)
         parcel.writeString(organizer)
         parcel.writeString(photoBib)
         parcel.writeString(photoBibThumbnail)
@@ -133,10 +155,12 @@ data class EventDetail(
         parcel.writeString(registerStartDate)
         parcel.writeString(registerStartDateDisplay)
         parcel.writeTypedList(schedules)
+        parcel.writeString(slug)
         parcel.writeTypedList(tickets)
         parcel.writeTypedList(shirts)
         parcel.writeString(title)
         parcel.writeString(ownerId)
+        parcel.writeTypedList(pictures)
     }
 
     override fun describeContents(): Int {

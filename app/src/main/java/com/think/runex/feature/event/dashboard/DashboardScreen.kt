@@ -69,7 +69,7 @@ class DashboardScreen : BaseScreen() {
     }
 
     private fun updateUi(dashboard: EventDashboard) {
-
+        event_name_label?.text = dashboard.getEventName()
         total_distances_label?.text = dashboard.getTotalDistance(getString(R.string.km))
     }
 
