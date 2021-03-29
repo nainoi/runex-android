@@ -107,6 +107,13 @@
             app:tint="@color/iconColorDisable" />
     </RelativeLayout>
 
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/activity_info_list"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view_leader_board_button"
+        android:layout_marginTop="@dimen/space_16dp" />
+
     <com.think.runex.component.ProgressLayout
         android:id="@+id/progress_layout"
         android:layout_width="match_parent"

@@ -3,7 +3,7 @@ package com.think.runex.feature.event.data
 import com.google.gson.annotations.SerializedName
 import com.think.runex.common.displayFormat
 
-data class EventDashboard(
+data class DashboardInfo(
         @SerializedName("id") var id: String? = null,
         @SerializedName("event_code") var eventCode: String? = null,
         @SerializedName("ticket") var ticket: Ticket? = null,
