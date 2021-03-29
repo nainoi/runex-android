@@ -22,12 +22,13 @@ data class EventRegisteredData(
         @SerializedName("discount_price") var discountPrice: Double? = 0.0,
         @SerializedName("promo_code") var promoCode: String? = null,
         @SerializedName("order_id") var orderId: String? = null,
+        @SerializedName("is_team_lead") var isTeamLead: Boolean? = false,
         @SerializedName("reg_date") var registerDate: String? = null,
         @SerializedName("payment_date") var paymentPate: String? = null,
         @SerializedName("coupon") var coupon: Coupon? = null,
         @SerializedName("ticket_options") var ticketOptions: List<TicketOptionEventRegistrationBody>? = null,
         @SerializedName("partner") var partner: Partner? = null,
-        @SerializedName("event") var event: EventDetail? = null,
+        @SerializedName("parent_reg_id") var parentRegId: String? = null,
         @SerializedName("created_at") var createdAt: String? = null,
         @SerializedName("updated_at") var updatedAt: String? = null) : Parcelable {
 
@@ -48,16 +49,17 @@ data class EventRegisteredData(
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
-            parcel.readValue(Float::class.java.classLoader) as? Double,
-            parcel.readValue(Float::class.java.classLoader) as? Double,
+            parcel.readValue(Double::class.java.classLoader) as? Double,
+            parcel.readValue(Double::class.java.classLoader) as? Double,
             parcel.readString(),
             parcel.readString(),
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readString(),
             parcel.readString(),
             parcel.readParcelable(Coupon::class.java.classLoader),
             parcel.createTypedArrayList(TicketOptionEventRegistrationBody),
             parcel.readParcelable(Partner::class.java.classLoader),
-            parcel.readParcelable(EventDetail::class.java.classLoader),
+            parcel.readString(),
             parcel.readString(),
             parcel.readString())
 
@@ -72,34 +74,15 @@ data class EventRegisteredData(
         parcel.writeValue(discountPrice)
         parcel.writeString(promoCode)
         parcel.writeString(orderId)
+        parcel.writeValue(isTeamLead)
         parcel.writeString(registerDate)
         parcel.writeString(paymentPate)
         parcel.writeParcelable(coupon, flags)
         parcel.writeTypedList(ticketOptions)
         parcel.writeParcelable(partner, flags)
-        parcel.writeParcelable(event, flags)
+        parcel.writeString(parentRegId)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
-    }
-
-    override fun describeContents(): Int {
-        return 0
-    }
-
-    fun registerEventPeriod(context: Context): String {
-        val startEventDate = event?.eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
-                ?: ""
-        val endEventDate = event?.eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
-                ?: ""
-        return "${context.getString(R.string.register_date)} $startEventDate - $endEventDate"
-    }
-
-    @JvmName("getCoverImageJava")
-    fun getCoverImage(): String {
-        return when (event?.coverImage?.startsWith("http", false) == true) {
-            true -> event?.coverImage ?: ""
-            false -> ("${ApiConfig.BASE_URL}${event?.coverImage ?: ""}")
-        }
     }
 
     fun getTotalPrice(): Double {
@@ -107,5 +90,9 @@ data class EventRegisteredData(
             return (totalPrice ?: 0.0) - (discountPrice ?: 0.0)
         }
         return 0.0
+    }
+
+    override fun describeContents(): Int {
+        return 0
     }
 }

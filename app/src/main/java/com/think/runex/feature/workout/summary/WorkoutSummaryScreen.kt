@@ -130,13 +130,14 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
         updateUi()
     }
 
-    private fun performSubmitWorkoutToEvents(events: List<EventRegisteredForSubmitResult>) = launch {
+    private fun performSubmitWorkoutToEvents(events: List<EventRegisteredForSubmitResult>, workoutImage: Bitmap?) = launch {
 
         showProgressDialog(R.string.submit_result)
 
-        val isSuccess = viewModel.submitWorkoutToEvents(events, workoutInfo)
+        val isSuccess = viewModel.submitWorkoutToEvents(events, workoutInfo, workoutImage)
 
         hideProgressDialog()
+        workoutImage?.recycle()
 
         if (isSuccess) {
 
@@ -189,7 +190,9 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
     }
 
     override fun onConfirmSelectEventToSubmit(events: List<EventRegisteredForSubmitResult>) {
-        performSubmitWorkoutToEvents(events)
+        mapPresenter?.snapshot {
+            performSubmitWorkoutToEvents(events, it)
+        }
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {

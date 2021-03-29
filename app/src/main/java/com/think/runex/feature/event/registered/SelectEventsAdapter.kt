@@ -10,6 +10,7 @@ import com.think.runex.R
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.event.data.EventRegisteredDiffCallback
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.data.Ticket
 import kotlinx.android.synthetic.main.list_item_event_selection.view.*
 
 class SelectEventsAdapter : ListAdapter<EventRegistered, SelectEventsAdapter.ViewHolder>(EventRegisteredDiffCallback()) {
@@ -51,7 +52,12 @@ class SelectEventsAdapter : ListAdapter<EventRegistered, SelectEventsAdapter.Vie
         val list = ArrayList<EventRegisteredForSubmitResult>()
         selectedList?.forEach { position ->
             getItem(position).also { event ->
-                list.add(EventRegisteredForSubmitResult(event.getEventCode(), event.getEventId(), event.getEventName(), event.getPartner()))
+                list.add(EventRegisteredForSubmitResult(
+                        eventCode = event.getEventCode(),
+                        ticket = event.getTicketAtRegister() ?: Ticket(),
+                        orderId = event.getOrderId(),
+                        regId = event.getRegisterId(),
+                        parentRegId = event.getParentRegisterId()))
             }
         }
         return list

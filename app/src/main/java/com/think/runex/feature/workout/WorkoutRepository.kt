@@ -24,23 +24,6 @@ class WorkoutRepository(private val api: WorkoutApi) : RemoteDataSource() {
 
     suspend fun getWorkoutInfo(workoutId: String) = call(api.getWorkoutInfoAsync(workoutId))
 
-//    suspend fun submitWorkoutToEvents(workoutInfo: WorkoutInfo?,
-//                                      eventsToSubmit: List<EventRegisteredForSubmitResult>?): Result<Any> {
-//
-//        val jsonObject = JsonObject().apply {
-//            add("event_activity", Gson().toJsonTree(eventsToSubmit))
-//            add("workout_info", Gson().toJsonTree(workoutInfo))
-//        }
-//        val multipartBody = MultipartBody.Builder()
-//                .setType(MultipartBody.FORM)
-//                //.addFormDataPart("event_activity", eventsToSubmit?.toJson() ?: "")
-//                //.addFormDataPart("workout_info", workoutInfo?.toJson() ?: "")
-//                .addFormDataPart("data", jsonObject.toJson())
-//                .build()
-//
-//        return call(api.submitWorkoutToEventsAsync(multipartBody))
-//    }
-
     suspend fun submitWorkoutToEvent(eventCode: String, workoutInfo: WorkoutInfo?): Result<Any> {
 
         val jsonObject = JsonObject().apply {
@@ -51,5 +34,23 @@ class WorkoutRepository(private val api: WorkoutApi) : RemoteDataSource() {
         val body = jsonObject.toJson().toRequestBody("application/json; charset=utf-8".toMediaType())
 
         return call(api.submitWorkoutToEventAsync(body))
+    }
+
+    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
+                                      workoutInfo: WorkoutInfo?,
+                                      workoutImage: ByteArray?): Result<Any> {
+
+        val multipartBody = MultipartBody.Builder()
+                .setType(MultipartBody.FORM)
+                .addFormDataPart("event_activity", eventsToSubmit?.toJson() ?: "")
+                .addFormDataPart("workout_info", workoutInfo?.toJson() ?: "")
+                .addFormDataPart(
+                        name = "image",
+                        filename = "workout-image",
+                        body = (workoutImage ?: byteArrayOf()).toRequestBody())
+                .build()
+
+
+        return call(api.submitWorkoutToEventsAsync(multipartBody))
     }
 }

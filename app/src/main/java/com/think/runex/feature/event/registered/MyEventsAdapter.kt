@@ -39,9 +39,9 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
 
         fun bind(data: EventRegistered?, onItemClick: ((event: EventRegistered) -> Unit)? = null) {
 
-            val eventDetail = data?.getEventDetail()
-            itemView.event_image?.loadEventsImage(eventDetail?.getCoverImage())
-            itemView.event_name_label?.text = eventDetail?.title ?: ""
+
+            itemView.event_image?.loadEventsImage(data?.eventDetail?.getCoverImage())
+            itemView.event_name_label?.text = data?.eventDetail?.title ?: ""
 
             val paymentStatus = data?.getPaymentStatus() ?: ""
             itemView.event_status_icon?.background = PaymentStatus.getPaymentStatusBackground(requireContext(), paymentStatus)

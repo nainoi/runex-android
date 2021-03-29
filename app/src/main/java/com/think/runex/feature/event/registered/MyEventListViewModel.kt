@@ -7,6 +7,8 @@ import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.payment.data.PaymentStatus
 import com.think.runex.util.launchIoThread
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.withContext
 
 class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() {
 
@@ -73,7 +75,17 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         isLoading = false
     }
 
-    private fun postMyEvents(data: ArrayList<EventRegistered>) {
+    suspend fun getMyEventsForSubmitWorkout(): List<EventRegistered>? = withContext(IO) {
+        val result = repo.getMyEventsAtActive()
+        if (result.isSuccessful().not()) {
+            onHandleError(result.statusCode, result.message)
+        }
 
+        //TODO("TODO Filter payment status success only for now")
+        result.data = result.data?.filter {
+            it.isPaymentSuccess() && it.eventDetail?.isOpenSendActivity == true
+        }
+
+        return@withContext result.data
     }
 }

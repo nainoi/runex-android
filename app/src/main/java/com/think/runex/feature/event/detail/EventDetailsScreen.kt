@@ -102,7 +102,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     private fun updateEventDetails(eventDetail: EventDetail?) {
         //Set event details to views
         event_image?.loadEventsImage(eventDetail?.getCoverImage())
-        event_period_label?.text = eventDetail?.eventPeriodWithTime() ?: ""
+        event_period_label?.text = eventDetail?.getEventPeriodWithTime() ?: ""
         event_title_label?.text = eventDetail?.title ?: ""
         event_detail_label?.text = eventDetail?.content ?: ""
         adapter.submitList(eventDetail?.tickets?.toMutableList())

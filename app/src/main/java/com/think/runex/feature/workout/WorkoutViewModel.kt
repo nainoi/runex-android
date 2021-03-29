@@ -27,16 +27,28 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         return@withContext result.data
     }
 
-    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
-                                      workoutInfo: WorkoutInfo?): Boolean = withContext(IO) {
+    suspend fun submitWorkoutToEventsManual(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
+                                            workoutInfo: WorkoutInfo?): Boolean = withContext(IO) {
         var isSuccessAll = true
         eventsToSubmit?.forEach { event ->
             val result = repo.submitWorkoutToEvent(event.eventCode, workoutInfo)
             if (result.isSuccessful().not()) {
-                onHandleError(result.statusCode, "Cannot submit workout to event ${event.eventName}", "submit_workout")
+                onHandleError(result.statusCode, "Cannot submit workout to event", "submit_workout")
                 isSuccessAll = false
             }
         }
         return@withContext isSuccessAll
+    }
+
+    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
+                                      workoutInfo: WorkoutInfo?,
+                                      workoutImage: Bitmap?): Boolean = withContext(IO) {
+
+        val result = repo.submitWorkoutToEvents(eventsToSubmit, workoutInfo, workoutImage?.toByteArray())
+        if (result.isSuccessful().not()) {
+            onHandleError(result.statusCode, result.message, "submit_workout")
+        }
+
+        return@withContext result.isSuccessful()
     }
 }

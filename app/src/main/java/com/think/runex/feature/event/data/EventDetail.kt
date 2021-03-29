@@ -1,10 +1,13 @@
 package com.think.runex.feature.event.data
 
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toTimeMillis
+import com.think.runex.R
+import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiConfig
 
@@ -175,12 +178,16 @@ data class EventDetail(
         }
     }
 
-    fun eventPeriodWithTime(): String {
+    fun getEventPeriod(context: Context): String {
+        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH) ?: ""
+        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH) ?: ""
+        return "${context.getString(R.string.register_date)} $startEventDate - $endEventDate"
+    }
+
+    fun getEventPeriodWithTime(): String {
         val dateTimeFormat = "dd MMM yyyy(HH:mm)"
-        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
-                ?: ""
-        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
-                ?: ""
+        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat) ?: ""
+        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat) ?: ""
         return "$startEventDate - $endEventDate"
     }
 

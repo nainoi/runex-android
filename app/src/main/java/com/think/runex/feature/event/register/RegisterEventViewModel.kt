@@ -204,6 +204,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
             this.event = eventDetail.value
             this.totalPrice = this@RegisterEventViewModel.ticketOptions.sumByDouble { it.totalPrice }
             this.registerDate = System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT)
+            this.ticketId = getCurrentTicketOption()?.ticket?.id ?: ""
             this.ticketOptions = this@RegisterEventViewModel.ticketOptions
         }
         val body = JsonObject().apply {

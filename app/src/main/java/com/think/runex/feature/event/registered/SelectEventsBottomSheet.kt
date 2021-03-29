@@ -16,6 +16,7 @@ import com.think.runex.common.observe
 import com.think.runex.common.removeObservers
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.bottom_sheet_select_events.*
 
 class SelectEventsBottomSheet : BaseBottomSheet() {
@@ -50,9 +51,7 @@ class SelectEventsBottomSheet : BaseBottomSheet() {
         setupComponents()
         subscribeUi()
 
-        //Initial get all event list
-        progress_layout?.visible()
-        viewModel.getEventList()
+        performGetMyEventsForSubmitWorkout()
     }
 
     private fun setupComponents() {
@@ -84,14 +83,13 @@ class SelectEventsBottomSheet : BaseBottomSheet() {
         }
 
         viewModel.setOnHandleError(::errorHandler)
+    }
 
-        observe(viewModel.myEvents) { eventList ->
-            if (view == null || isAdded.not()) return@observe
-
-            progress_layout?.gone()
-            adapter.submitList(eventList?.toMutableList())
-        }
-
+    private fun performGetMyEventsForSubmitWorkout() = launch {
+        progress_layout?.visible()
+        val myEvents = viewModel.getMyEventsForSubmitWorkout()
+        progress_layout?.gone()
+        adapter.submitList(myEvents?.toMutableList())
     }
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {

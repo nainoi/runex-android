@@ -10,7 +10,8 @@ data class EventRegistered(
         @SerializedName("user_code") var userCode: String? = null,
         @SerializedName("event_code") var eventCode: String? = null,
         @SerializedName("ref2") var ref2: String? = null,
-        @SerializedName("regs") var eventRegisteredList: List<EventRegisteredData>? = null) : Parcelable {
+        @SerializedName("regs") var eventRegisteredList: List<EventRegisteredData>? = null,
+        @SerializedName("event") var eventDetail: EventDetail? = null) : Parcelable {
 
     var isChecked: Boolean = false
 
@@ -46,35 +47,14 @@ data class EventRegistered(
         }
     }
 
-    fun getEventName(): String {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.event?.title ?: ""
-        }
-        return ""
-    }
-
+    fun getEventName(): String = eventDetail?.title ?: ""
 
     @JvmName("getEventCodeJava")
-    fun getEventCode(): String {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.eventCode ?: ""
-        }
-        return ""
-    }
+    fun getEventCode(): String = eventCode ?: eventDetail?.code ?: ""
 
-    fun getEventId(): String {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return (eventRegisteredList?.get(0)?.event?.id ?: 0).toString()
-        }
-        return ""
-    }
 
-    fun getEventDetail(): EventDetail? {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.event
-        }
-        return null
-    }
+    //fun getEventId(): Int = eventDetail?.id ?: 0
+
 
     fun getPaymentStatus(): String? {
         if (eventRegisteredList?.isNotEmpty() == true) {
@@ -83,7 +63,7 @@ data class EventRegistered(
         return null
     }
 
-    fun isPaid(): Boolean {
+    fun isPaymentSuccess(): Boolean {
         if (eventRegisteredList?.isNotEmpty() == true) {
             return eventRegisteredList?.get(0)?.status == PaymentStatus.SUCCESS
         }
@@ -111,6 +91,23 @@ data class EventRegistered(
         return ""
     }
 
+    fun getParentRegisterId(): String {
+        var id = ""
+        if (eventRegisteredList?.isNotEmpty() == true) {
+            id = eventRegisteredList?.get(0)?.id ?: ""
+        }
+        if (id.contains("0000000000000")) {
+            id = ""
+        }
+        return id
+    }
+
+    fun getTicketAtRegister(): Ticket? {
+        if (eventRegisteredList?.isNotEmpty() == true) {
+            return eventRegisteredList?.get(0)?.ticketOptions?.get(0)?.ticket
+        }
+        return null
+    }
 
     fun getPartner(): Partner? {
         if (eventRegisteredList?.isNotEmpty() == true) {

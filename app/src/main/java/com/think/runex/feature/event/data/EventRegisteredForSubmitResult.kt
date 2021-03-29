@@ -4,6 +4,7 @@ import com.google.gson.annotations.SerializedName
 
 data class EventRegisteredForSubmitResult(
         @SerializedName("event_code") var eventCode: String = "",
-        @SerializedName("event_id") var eventId: String = "",
-        @SerializedName("title") var eventName: String = "",
-        @SerializedName("partner") var partner: Partner? = null)
+        @SerializedName("ticket") var ticket: Ticket = Ticket(),
+        @SerializedName("order_id") var orderId: String = "",
+        @SerializedName("reg_id") var regId: String = "",
+        @SerializedName("parent_reg_id") var parentRegId: String = "")
