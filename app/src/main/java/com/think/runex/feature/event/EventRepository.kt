@@ -4,6 +4,7 @@ import com.google.gson.JsonObject
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.event.data.*
+import com.think.runex.feature.event.data.request.EventDashboardBody
 
 class EventRepository(private val api: EventApi) : RemoteDataSource() {
 
@@ -21,6 +22,6 @@ class EventRepository(private val api: EventApi) : RemoteDataSource() {
 
     suspend fun registerEventWithKao(body: JsonObject) = call(api.registerEventWithKaoAsync(body))
 
-    suspend fun getEventDashboard(eventCode: String) = call(api.getEventDashboardAsync(eventCode))
+    suspend fun getEventDashboard(body: EventDashboardBody) = call(api.getEventDashboardAsync(body))
 
 }

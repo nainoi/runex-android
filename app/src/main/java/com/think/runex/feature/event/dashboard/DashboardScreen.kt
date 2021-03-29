@@ -11,9 +11,11 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
+import com.think.runex.config.KEY_BODY
 import com.think.runex.config.KEY_CODE
 import com.think.runex.config.KEY_EVENT
 import com.think.runex.feature.event.data.EventDashboard
+import com.think.runex.feature.event.data.request.EventDashboardBody
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_dashboard.*
@@ -23,22 +25,20 @@ class DashboardScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(eventCode: String, eventName: String) = DashboardScreen().apply {
+        fun newInstance(dashboardBody: EventDashboardBody, eventName: String) = DashboardScreen().apply {
             arguments = Bundle().apply {
-                putString(KEY_CODE, eventCode)
+                putParcelable(KEY_BODY, dashboardBody)
                 putString(KEY_EVENT, eventName)
             }
         }
     }
 
     lateinit var viewModel: DashboardViewModel
-    private var eventCode: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = getViewModel(DashboardViewModelFactory(requireContext()))
-        eventCode = arguments?.getString(KEY_CODE) ?: ""
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -62,20 +62,20 @@ class DashboardScreen : BaseScreen() {
     private fun subscribeUi() {
 
         view_leader_board_button?.setOnClickListener {
-            addFragment(LeaderBoardScreen.newInstance(eventCode))
+            //addFragment(LeaderBoardScreen.newInstance(eventCode))
         }
 
         viewModel.setOnHandleError(::errorHandler)
     }
 
     private fun updateUi(dashboard: EventDashboard) {
-        event_name_label?.text = dashboard.getEventName()
-        total_distances_label?.text = dashboard.getTotalDistance(getString(R.string.km))
+        total_distances_label?.text = dashboard.getTotalDistanceDisplay(getString(R.string.km))
     }
 
     private fun performGetEventDashBoard() = launch {
         progress_layout?.visible()
-        val dashboard = viewModel.getEventDashboard(eventCode)
+        val body = arguments?.getParcelable(KEY_BODY) ?: EventDashboardBody()
+        val dashboard = viewModel.getEventDashboard(body)
         progress_layout?.gone()
 
         if (dashboard != null) {

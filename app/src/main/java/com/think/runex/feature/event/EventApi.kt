@@ -6,6 +6,7 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.feature.event.data.*
+import com.think.runex.feature.event.data.request.EventDashboardBody
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 
@@ -43,8 +44,8 @@ interface EventApi {
             @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
-    @GET("/api/v1/board/ranking/{eventCode}")
+    @POST("/api/${ApiConfig.API_VERSION}/activity/dashboard")
     fun getEventDashboardAsync(
-            @Path("eventCode") eventCode: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventDashboard>>
+            @Body body: EventDashboardBody,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventDashboard>>>
 }
