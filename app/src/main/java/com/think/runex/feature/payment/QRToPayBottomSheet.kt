@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.pay
+package com.think.runex.feature.payment
 
 import android.Manifest
 import android.content.ContentValues
@@ -22,8 +22,6 @@ import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.base.PermissionsLauncherBottomSheet
 import com.think.runex.common.*
-import com.think.runex.feature.payment.PaymentViewModel
-import com.think.runex.feature.payment.PaymentViewModelFactory
 import com.think.runex.feature.payment.data.PaymentType
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.bottom_sheet_qr_to_pay.*
@@ -38,7 +36,7 @@ class QRToPayBottomSheet : PermissionsLauncherBottomSheet() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetStyle)
 
-        viewModel = requireParentFragment().getViewModel(PaymentViewModelFactory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(PaymentViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

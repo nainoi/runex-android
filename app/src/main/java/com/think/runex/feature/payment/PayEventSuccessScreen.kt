@@ -1,7 +1,6 @@
-package com.think.runex.feature.event.pay
+package com.think.runex.feature.payment
 
 import android.os.Bundle
-import androidx.fragment.app.Fragment
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -11,7 +10,6 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.config.KEY_EVENT
 import com.think.runex.config.KEY_ID
-import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_payment_success.*
 
 

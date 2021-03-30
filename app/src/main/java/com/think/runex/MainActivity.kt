@@ -42,7 +42,7 @@ class MainActivity : BaseActivity() {
         NetworkMonitor(this).observe(this, Observer(::onNetworkChanged))
 
         //Create view model
-        authViewModel = getViewModel(AuthViewModelFactory(this))
+        authViewModel = getViewModel(AuthViewModel.Factory(this))
 
         //Setup main fragment container and screen
         setContentView(R.layout.activity_main)

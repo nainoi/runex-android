@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.pay
+package com.think.runex.feature.payment
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -14,9 +14,6 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.config.*
-import com.think.runex.feature.payment.PaymentMethodsAdapter
-import com.think.runex.feature.payment.PaymentViewModel
-import com.think.runex.feature.payment.PaymentViewModelFactory
 import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
 import com.think.runex.feature.payment.data.PaymentType
 import com.think.runex.util.NightMode
@@ -60,7 +57,7 @@ class PayEventScreen : BaseScreen() {
             token?.id?.also { performPayEventByCreditOrDebitCard(it) }
         }
 
-        viewModel = getViewModel(PaymentViewModelFactory(requireContext()))
+        viewModel = getViewModel(PaymentViewModel.Factory(requireContext()))
         viewModel.updateOrderDetails(arguments?.getString(KEY_EVENT) ?: "",
                 arguments?.getString(KEY_CODE) ?: "",
                 arguments?.getString("register_id") ?: "",

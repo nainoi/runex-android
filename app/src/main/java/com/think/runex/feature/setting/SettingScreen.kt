@@ -8,11 +8,9 @@ import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.common.*
 import com.think.runex.feature.auth.AuthViewModel
-import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
-import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.base.BaseScreen
 import com.think.runex.feature.user.profile.ProfileEditorScreen
 import com.think.runex.util.NightMode
@@ -93,7 +91,7 @@ class SettingScreen : BaseScreen() {
 
     private fun performLogout() = launch {
         showProgressDialog(R.string.logout)
-        val authViewModel = getViewModel<AuthViewModel>(AuthViewModelFactory(requireContext()))
+        val authViewModel = getViewModel<AuthViewModel>(AuthViewModel.Factory(requireContext()))
         val isSuccess = authViewModel.logout()
         if (isSuccess) {
             //Remove and clear user info live data before replace login screen

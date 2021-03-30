@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.data
+package com.think.runex.feature.dashboard.data
 
 import com.google.gson.annotations.SerializedName
 

@@ -1,7 +1,9 @@
-package com.think.runex.feature.event.data
+package com.think.runex.feature.dashboard.data
 
 import com.google.gson.annotations.SerializedName
 import com.think.runex.common.displayFormat
+import com.think.runex.feature.dashboard.data.DashboardActivityInfo
+import com.think.runex.feature.event.data.Ticket
 
 data class DashboardInfo(
         @SerializedName("id") var id: String? = null,

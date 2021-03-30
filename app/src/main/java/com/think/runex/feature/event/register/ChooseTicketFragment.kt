@@ -22,7 +22,7 @@ class ChooseTicketFragment : BaseScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = requireParentFragment().getViewModel(RegisterEventViewModelFactory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(RegisterEventViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

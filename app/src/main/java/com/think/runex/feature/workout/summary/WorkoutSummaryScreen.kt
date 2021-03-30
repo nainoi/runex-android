@@ -1,7 +1,6 @@
 package com.think.runex.feature.workout.summary
 
 import android.graphics.Bitmap
-import android.net.Uri
 import android.os.Bundle
 import android.view.*
 import com.google.android.gms.maps.GoogleMap
@@ -19,7 +18,6 @@ import com.think.runex.config.KEY_DATA
 import com.think.runex.config.KEY_ID
 import com.think.runex.feature.workout.data.WorkingOutRecord
 import com.think.runex.feature.workout.WorkoutViewModel
-import com.think.runex.feature.workout.WorkoutViewModelFactory
 import com.think.runex.feature.workout.data.WorkingOutLocation
 import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.base.BaseScreen
@@ -61,7 +59,7 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setHasOptionsMenu(true)
-        viewModel = getViewModel(WorkoutViewModelFactory(requireContext()))
+        viewModel = getViewModel(WorkoutViewModel.Factory(requireContext()))
 
         record = arguments?.getParcelable(KEY_DATA)
         workoutId = arguments?.getString(KEY_ID)

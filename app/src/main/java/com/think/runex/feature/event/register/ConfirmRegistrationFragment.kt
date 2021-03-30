@@ -4,13 +4,12 @@ import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import com.jozzee.android.core.fragment.popFragment
 import com.jozzee.android.core.resource.getDimension
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.common.*
 import com.think.runex.feature.event.detail.EventDetailsScreen
-import com.think.runex.feature.event.pay.PayEventScreen
+import com.think.runex.feature.payment.PayEventScreen
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.fragment_confirm_registration.*
 import kotlinx.android.synthetic.main.fragment_confirm_registration.event_name_label
@@ -30,7 +29,7 @@ class ConfirmRegistrationFragment : BaseScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = requireParentFragment().getViewModel(RegisterEventViewModelFactory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(RegisterEventViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

@@ -1,16 +1,22 @@
 package com.think.runex.feature.event.register
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.text.toDoubleOrZero
 import com.jozzee.android.core.text.toFloatOrZero
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.datasource.api.ApiService
+import com.think.runex.feature.address.AddressApi
 import com.think.runex.feature.address.AddressRepository
 import com.think.runex.feature.address.data.AddressAutoFill
 import com.think.runex.feature.address.data.SubDistrict
+import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.event.data.request.EventRegistrationBody
@@ -226,6 +232,16 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         updateScreen.postValue(null)
         addressAutoFill.postValue(null)
         super.onCleared()
+    }
+
+    class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            val service = ApiService()
+            return RegisterEventViewModel(
+                    EventRepository(service.provideService(context, EventApi::class.java)),
+                    AddressRepository(service.provideService(context, AddressApi::class.java))) as T
+        }
     }
 }
 

@@ -4,7 +4,6 @@ import android.app.DatePickerDialog
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -30,7 +29,6 @@ import com.think.runex.feature.event.data.Shirt
 import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.UserViewModel
-import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.feature.user.data.Gender
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.fragment_fill_out_user_info.*
@@ -53,7 +51,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = requireParentFragment().getViewModel(RegisterEventViewModelFactory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(RegisterEventViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -407,7 +405,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun setUserDataFromUserInfo() = launch {
-        requireActivity().getViewModel<UserViewModel>(UserViewModelFactory(requireContext())).getUSerInfoInstance()?.also { userInfo ->
+        requireActivity().getViewModel<UserViewModel>(UserViewModel.Factory(requireContext())).getUSerInfoInstance()?.also { userInfo ->
             //Set user info form view model
             first_name_input?.setText(userInfo.firstName ?: "")
             last_name_input?.setText(userInfo.lastName ?: "")

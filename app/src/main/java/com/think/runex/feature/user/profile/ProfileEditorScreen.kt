@@ -22,7 +22,6 @@ import com.think.runex.config.*
 import com.think.runex.feature.user.data.Gender
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
-import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.component.ImageSourcesDialog

@@ -4,6 +4,8 @@ import android.content.Context
 import android.graphics.Bitmap
 import android.util.Log
 import androidx.core.content.ContextCompat
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.think.runex.base.BaseViewModel
@@ -11,6 +13,7 @@ import com.think.runex.config.DEFAULT_QR_CODE_SIZE
 import com.think.runex.config.ERR_NO_STATUS_CODE
 import com.think.runex.config.KEY_QR
 import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.payment.data.PaymentMethod
 import com.think.runex.feature.payment.data.request.PayEventBody
 import kotlinx.coroutines.Dispatchers.IO
@@ -133,5 +136,12 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
     override fun onCleared() {
         qrCodeImage?.recycle()
         super.onCleared()
+    }
+
+    class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return PaymentViewModel(PaymentRepository(ApiService().provideService(context, PaymentApi::class.java))) as T
+        }
     }
 }

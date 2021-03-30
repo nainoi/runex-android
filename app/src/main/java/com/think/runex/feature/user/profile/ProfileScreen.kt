@@ -10,7 +10,6 @@ import com.think.runex.R
 import com.think.runex.common.*
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
-import com.think.runex.feature.user.UserViewModelFactory
 import com.think.runex.base.BaseScreen
 import com.think.runex.feature.setting.SettingScreen
 import com.think.runex.util.NightMode

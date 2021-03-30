@@ -28,7 +28,7 @@ class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBS
     }
 
     private fun initialValue() {
-        viewModel = getViewModel(EventDetailsViewModelFactory(this))
+        viewModel = getViewModel(EventDetailsViewModel.Factory(this))
 
         //Get event id from intent
         event = intent?.getParcelableExtra(KEY_EVENT)

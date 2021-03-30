@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.dashboard
+package com.think.runex.feature.dashboard
 
 import android.view.LayoutInflater
 import android.view.View
@@ -7,7 +7,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
-import com.think.runex.feature.event.data.DashboardInfo
+import com.think.runex.feature.dashboard.data.DashboardInfo
 
 class DashboardAdapter(private val recyclerView: RecyclerView) : ListAdapter<DashboardInfo, DashboardAdapter.ViewHolder>(DashboardInfoDiffCallback()) {
 

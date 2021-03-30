@@ -16,7 +16,6 @@ import com.think.runex.common.fadeIn
 import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.feature.auth.AuthViewModel
-import com.think.runex.feature.auth.AuthViewModelFactory
 import com.think.runex.base.BaseScreen
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.datasource.api.ApiConfig
@@ -32,7 +31,7 @@ class LoginScreen : BaseScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = getViewModel(AuthViewModelFactory(requireContext()))
+        viewModel = getViewModel(AuthViewModel.Factory(requireContext()))
 
     }
 

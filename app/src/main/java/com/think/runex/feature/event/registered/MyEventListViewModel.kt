@@ -1,8 +1,13 @@
 package com.think.runex.feature.event.registered
 
+import android.content.Context
 import android.util.Log
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
+import com.think.runex.datasource.api.ApiService
+import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.payment.data.PaymentStatus
@@ -87,5 +92,12 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         }
 
         return@withContext result.data
+    }
+
+    class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return MyEventListViewModel(EventRepository(ApiService().provideService(context, EventApi::class.java))) as T
+        }
     }
 }

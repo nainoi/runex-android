@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.dashboard
+package com.think.runex.feature.dashboard
 
 import android.os.Bundle
 import android.view.LayoutInflater
@@ -41,7 +41,7 @@ class DashboardScreen : BaseScreen() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = getViewModel(DashboardViewModelFactory(requireContext()))
+        viewModel = getViewModel(DashboardViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

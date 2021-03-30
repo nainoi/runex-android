@@ -1,13 +1,17 @@
 package com.think.runex.feature.auth
 
 import android.content.Context
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody
+import com.think.runex.util.AppPreference
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -92,5 +96,14 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     private fun updateAccessToken(accessToken: AccessToken) {
         TokenManager.updateToken(accessToken)
         repo.setLocalAccessToken(accessToken)
+    }
+
+    class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return AuthViewModel(AuthRepository(
+                    ApiService().provideService(context, AuthApi::class.java),
+                    AppPreference.createPreference(context))) as T
+        }
     }
 }

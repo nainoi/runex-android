@@ -38,7 +38,7 @@ class SelectEventsBottomSheet : BaseBottomSheet() {
         super.onCreate(savedInstanceState)
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetStyle)
 
-        viewModel = getViewModel(MyEventListViewModelFactory(requireContext()))
+        viewModel = getViewModel(MyEventListViewModel.Factory(requireContext()))
         viewModel.filterByPaymentSuccess = true
     }
 

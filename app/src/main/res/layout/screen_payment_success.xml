@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="?colorBackgroundPrimary"
     android:theme="@style/Theme.Runex.Light"
-    tools:context=".feature.event.pay.PayEventSuccessScreen">
+    tools:context=".feature.payment.PayEventSuccessScreen">
 
     <RelativeLayout
         android:layout_width="match_parent"

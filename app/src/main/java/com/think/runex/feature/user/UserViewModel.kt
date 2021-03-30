@@ -3,7 +3,10 @@ package com.think.runex.feature.user
 import android.content.Context
 import android.net.Uri
 import androidx.lifecycle.MutableLiveData
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
+import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
@@ -88,11 +91,20 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
 
         val totalDistanceResult = repo.getTotalDistances()
         if (totalDistanceResult.isSuccessful()) {
-            userInfoUpdateResult.data?.totalDistance = totalDistanceResult.data?.totalDistance ?: userInfo.value?.totalDistance
+            userInfoUpdateResult.data?.totalDistance = totalDistanceResult.data?.totalDistance
+                    ?: userInfo.value?.totalDistance
         }
 
         userInfo.postValue(userInfoUpdateResult.data)
         return@withContext userInfoUpdateResult.isSuccessful()
+    }
+
+
+    class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return UserViewModel(UserRepository(ApiService().provideService(context, UserApi::class.java))) as T
+        }
     }
 
 }

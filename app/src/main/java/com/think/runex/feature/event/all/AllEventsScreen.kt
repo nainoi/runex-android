@@ -26,7 +26,7 @@ class AllEventsScreen : BaseScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel(AllEventListViewModelFactory(requireContext()))
+        viewModel = getViewModel(AllEventListViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

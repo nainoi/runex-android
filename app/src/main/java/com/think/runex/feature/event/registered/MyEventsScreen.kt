@@ -13,8 +13,8 @@ import com.think.runex.common.removeObservers
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
-import com.think.runex.feature.event.dashboard.DashboardScreen
-import com.think.runex.feature.event.pay.PayEventScreen
+import com.think.runex.feature.dashboard.DashboardScreen
+import com.think.runex.feature.payment.PayEventScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_my_events.*
 
@@ -27,7 +27,7 @@ class MyEventsScreen : BaseScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel(MyEventListViewModelFactory(requireContext()))
+        viewModel = getViewModel(MyEventListViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

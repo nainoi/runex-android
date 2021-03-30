@@ -1,4 +1,4 @@
-package com.think.runex.feature.event.dashboard
+package com.think.runex.feature.dashboard
 
 import android.annotation.SuppressLint
 import android.os.Bundle

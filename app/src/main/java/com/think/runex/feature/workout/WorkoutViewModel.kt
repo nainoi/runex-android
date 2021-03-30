@@ -1,9 +1,13 @@
 package com.think.runex.feature.workout
 
 
+import android.content.Context
 import android.graphics.Bitmap
+import androidx.lifecycle.ViewModel
+import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
 import com.think.runex.common.toByteArray
+import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
 import com.think.runex.feature.workout.data.WorkoutInfo
 import kotlinx.coroutines.Dispatchers.IO
@@ -50,5 +54,12 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         }
 
         return@withContext result.isSuccessful()
+    }
+
+    class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
+        @Suppress("UNCHECKED_CAST")
+        override fun <T : ViewModel> create(modelClass: Class<T>): T {
+            return WorkoutViewModel(WorkoutRepository(ApiService().provideService(context, WorkoutApi::class.java))) as T
+        }
     }
 }
