@@ -53,7 +53,7 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
         return@withContext result.data
     }
 
-    fun updateOrderDetails(eventName: String, eventCode: String, registerId: String, orderId: String, ref2: String, price: Double) {
+    fun updateOrderDetails(eventCode: String, eventName: String, orderId: String, registerId: String, ref2: String, price: Double) {
         this.eventName = eventName
         this.eventCode = eventCode
         this.registerId = registerId

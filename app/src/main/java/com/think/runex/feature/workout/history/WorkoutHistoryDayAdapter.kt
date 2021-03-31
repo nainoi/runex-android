@@ -49,8 +49,4 @@ class WorkoutHistoryDayAdapter(private var onItemClickListener: ((WorkoutHistory
             }
         }
     }
-
-    interface OnItemClickListener {
-        fun onItemClick(workoutHistoryDay: WorkoutHistoryDay)
-    }
 }

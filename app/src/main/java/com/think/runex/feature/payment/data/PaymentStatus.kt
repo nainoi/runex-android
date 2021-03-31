@@ -10,14 +10,14 @@ object PaymentStatus {
     const val WAITING_APPROVE = "PAYMENT_WAITING_APPROVE"
     const val WAITING = "PAYMENT_WAITING"
     const val SUCCESS = "PAYMENT_SUCCESS"
-    const val FAIL = "PAYMENT_FAIL"
+    const val FAILED = "PAYMENT_FAIL"
 
     @ColorRes
     fun getPaymentStatusColor(paymentState: String?) = when (paymentState) {
-        WAITING_APPROVE -> R.color.paymentStatusWaitingForApprove
-        WAITING -> R.color.paymentStatusWaiting
-        SUCCESS -> R.color.paymentStatusSuccess
-        FAIL -> R.color.error
+        WAITING_APPROVE -> R.color.statusWaitingForApprove
+        WAITING -> R.color.statusWaiting
+        SUCCESS -> R.color.statusSuccess
+        FAILED -> R.color.error
         else -> R.color.textColorHint
     }
 
@@ -32,7 +32,7 @@ object PaymentStatus {
         WAITING_APPROVE -> context.getString(R.string.waiting_for_approve)
         WAITING -> context.getString(R.string.waiting_for_payment)
         SUCCESS -> context.getString(R.string.success)
-        FAIL -> context.getString(R.string.failed)
+        FAILED -> context.getString(R.string.failed)
         else -> ""
     }
 }

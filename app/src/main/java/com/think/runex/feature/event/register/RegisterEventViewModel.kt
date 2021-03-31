@@ -9,7 +9,6 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.text.toDoubleOrZero
-import com.jozzee.android.core.text.toFloatOrZero
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.address.AddressApi
@@ -23,10 +22,8 @@ import com.think.runex.feature.event.data.request.EventRegistrationBody
 import com.think.runex.feature.event.data.request.TicketOptionEventRegistrationBody
 import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
 import com.think.runex.feature.event.detail.EventDetailsViewModel
-import com.think.runex.feature.payment.PaymentRepository
 import com.think.runex.util.launchIoThread
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList

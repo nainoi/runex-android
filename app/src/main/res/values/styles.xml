@@ -26,6 +26,10 @@
         <item name="android:textColor">?textColorPrimary</item>
     </style>
 
+    <style name="Text.Body.Primary.Bold" parent="Text.Body.Primary">
+        <item name="android:textStyle">bold</item>
+    </style>
+
     <style name="Text.Body.Secondary" parent="Text.Body">
         <item name="android:textColor">?textColorSecondary</item>
     </style>
@@ -62,12 +66,16 @@
         <item name="android:textColor">?textColorSecondary</item>
     </style>
 
-    <style name="TextBodyHeading.Secondary.Bold" parent="Text.BodyHeading.Secondary">
+    <style name="Text.BodyHeading.Secondary.Bold" parent="Text.BodyHeading.Secondary">
         <item name="android:textStyle">bold</item>
     </style>
 
     <style name="Text.BodyHeading.Thirdly" parent="Text.BodyHeading">
         <item name="android:textColor">?textColorThirdly</item>
+    </style>
+
+    <style name="Text.BodyHeading.Hint" parent="Text.BodyHeading">
+        <item name="android:textColor">?textColorHint</item>
     </style>
 
     <style name="Text.BodyHeading.White" parent="Text.BodyHeading">
@@ -214,16 +222,6 @@
         <item name="tint">?iconColorSecondary</item>
     </style>
 
-    <!-- Images -->
-    <style name="Image">
-        <!-- Noting for now -->
-    </style>
-
-    <style name="Image.Profile">
-        <item name="srcCompat">@mipmap/ic_profile</item>
-        <item name="android:adjustViewBounds">true</item>
-    </style>
-
     <!-- Bottom Sheet -->
     <style name="AppBottomSheetStyle" parent="Theme.Design.BottomSheetDialog">
         <item name="bottomSheetStyle">@style/BottomSheetBackground</item>
@@ -231,5 +229,15 @@
 
     <style name="BottomSheetBackground" parent="Widget.Design.BottomSheet.Modal">
         <item name="android:background">@android:color/transparent</item>
+    </style>
+
+    <!-- Profile -->
+    <style name="Profile">
+        <!-- Noting for now -->
+    </style>
+
+    <style name="Profile.Image">
+        <item name="srcCompat">@mipmap/ic_profile</item>
+        <item name="android:adjustViewBounds">true</item>
     </style>
 </resources>

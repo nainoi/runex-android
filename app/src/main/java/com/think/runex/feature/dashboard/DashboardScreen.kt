@@ -9,12 +9,9 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.common.displayFormat
 import com.think.runex.common.getViewModel
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.common.setupToolbar
-import com.think.runex.config.KEY_BODY
-import com.think.runex.config.KEY_EVENT
 import com.think.runex.feature.event.data.request.EventDashboardBody
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
@@ -25,21 +22,43 @@ class DashboardScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(dashboardBody: EventDashboardBody, eventName: String) = DashboardScreen().apply {
+        fun newInstance(eventCode: String,
+                        eventName: String,
+                        orderId: String,
+                        parentRegisterId: String,
+                        registerId: String) = DashboardScreen().apply {
+
             arguments = Bundle().apply {
-                putParcelable(KEY_BODY, dashboardBody)
-                putString(KEY_EVENT, eventName)
+                putString("eventCode", eventCode)
+                putString("eventName", eventName)
+                putString("orderId", orderId)
+                putString("parentRegisterId", parentRegisterId)
+                putString("registerId", registerId)
             }
         }
     }
 
     lateinit var viewModel: DashboardViewModel
 
-    private lateinit var adapter: DashboardAdapter
+    private lateinit var adapter: UserDashboardAdapter
     private lateinit var layoutManager: LinearLayoutManager//For load more in the feature!
+
+    private var eventCode: String = ""
+    private var eventName: String = ""
+    private var orderId: String = ""
+    private var parentRegisterId: String = ""
+    private var registerId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+
+        arguments?.run {
+            eventCode = getString("eventCode") ?: ""
+            eventName = getString("eventName") ?: ""
+            orderId = getString("orderId") ?: ""
+            parentRegisterId = getString("parentRegisterId") ?: ""
+            registerId = getString("registerId") ?: ""
+        }
 
         viewModel = getViewModel(DashboardViewModel.Factory(requireContext()))
     }
@@ -52,6 +71,7 @@ class DashboardScreen : BaseScreen() {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
+
         performGetEventDashBoard()
     }
 
@@ -59,16 +79,20 @@ class DashboardScreen : BaseScreen() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar, R.string.dashboard, R.drawable.ic_navigation_back)
 
-        event_name_label?.text = arguments?.getString(KEY_EVENT) ?: ""
+        event_name_label?.text = eventName
 
         //Set up recycler view
-        adapter = DashboardAdapter(activity_info_list)
+        adapter = UserDashboardAdapter(users_dashboard_list, this)
         layoutManager = LinearLayoutManager(requireContext())
-        activity_info_list?.layoutManager = layoutManager
-        activity_info_list?.adapter = adapter
+        users_dashboard_list?.layoutManager = layoutManager
+        users_dashboard_list?.adapter = adapter
     }
 
     private fun subscribeUi() {
+
+        add_activity_button?.setOnClickListener {
+            addFragment(AddActivityScreen())
+        }
 
         view_leader_board_button?.setOnClickListener {
             //addFragment(LeaderBoardScreen.newInstance(eventCode))
@@ -81,16 +105,13 @@ class DashboardScreen : BaseScreen() {
     private fun performGetEventDashBoard() = launch {
         progress_layout?.visible()
 
-        val body = arguments?.getParcelable(KEY_BODY) ?: EventDashboardBody()
-        val dashboards = viewModel.getEventDashboard(body)
+        val dashboards = viewModel.getEventDashboard(EventDashboardBody(eventCode, orderId, parentRegisterId, registerId))
 
         progress_layout?.gone()
 
         //Update Ui
-        val totalDistances: Double = dashboards?.sumByDouble { it.totalDistance ?: 0.0 } ?: 0.0
-        total_distances_label?.text = ("${totalDistances.displayFormat()} ${getString(R.string.km)}")
-
-        adapter.submitList(dashboards?.toMutableList())
+        total_distances_label?.text = dashboards?.getTotalDistanceDisplay(getString(R.string.km))
+        adapter.submitList(dashboards?.userActivityList?.toMutableList())
     }
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {

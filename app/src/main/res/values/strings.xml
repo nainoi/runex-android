@@ -8,15 +8,18 @@
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">Address</string>
+    <string name="add_activity">Add Activity</string>
+    <string name="add_team_member">Add Team Member</string>
     <string name="amount">Amount</string>
-
-    <string name="add_image">Add image</string>
+    <string name="activity_list">Activity List</string>
+    <string name="add_image">Add Image</string>
     <string name="all_event">All Events</string>
     <string name="all_events_to_submit">All events to submit</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
     <string name="application_service_and_devices">Application Service and Devices</string>
     <string name="about_us">About us</string>
     <string name="action">Action</string>
+    <string name="approve">Approve</string>
 
     <!-- B -->
     <string name="birth_date">Birth date</string>
@@ -73,7 +76,7 @@
     <string name="history">History</string>
 
     <!-- I -->
-    <string name="identification_number">Identification number</string>
+    <string name="identification_number">Identification Number</string>
 
     <!-- J -->
 
@@ -84,7 +87,7 @@
     <string name="last_name">Last name</string>
     <string name="logout">Logout</string>
     <string name="location_permission_denied">Unable to access your current location due to being denied.</string>
-    <string name="leader_board">Leader board</string>
+    <string name="leader_board">Leader Board</string>
 
 
     <!-- M -->
@@ -112,7 +115,7 @@
     <string name="pause_recording">Pause</string>
     <string name="profile">Profile</string>
     <string name="please_specify_your_ebib">Please enter your EBIB</string>
-    <string name="please_login">Please Login</string>
+    <string name="please_login">Please login</string>
     <string name="phone">Phone</string>
     <string name="province">Province</string>
     <string name="price">Price</string>
@@ -136,7 +139,7 @@
     <string name="setting">Setting</string>
     <string name="start_recording">Start</string>
     <string name="stop_recording">Stop</string>
-    <string name="submit_result">Submit result</string>
+    <string name="submit_result">Submit Result</string>
     <string name="summary">Summary</string>
     <string name="success">Success</string>
     <string name="share">Share</string>
@@ -144,23 +147,23 @@
     <string name="save_qr">Save QR</string>
     <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
     <string name="sub_district">District</string>
-    <string name="shirt_size">shirt size</string>
+    <string name="shirt_size">Shirt Size</string>
     <string name="service_unavailable">The service is unavailable for now.</string>
 
     <!-- T -->
     <string name="total_distances">Total Distances</string>
-    <string name="total_price">Total price</string>
+    <string name="total_price">Total Price</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">Thank you for payment.</string>
     <string name="team_name_optional">Team name (Optional)</string>
 
     <!-- U -->
     <string name="username">Username</string>
-    <string name="update_info">Update info</string>
+    <string name="update_info">Update Info</string>
     <string name="update_profile_image">Update Profile Image…</string>
 
     <!-- V -->
-    <string name="view_leader_board">View Leader board</string>
+    <string name="view_leader_board">View Leader Board</string>
 
     <!-- W -->
     <string name="warning">Warning</string>

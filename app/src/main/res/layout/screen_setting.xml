@@ -27,7 +27,7 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profile_image"
-            style="@style/Image.Profile"
+            style="@style/Profile.Image"
             android:layout_width="@dimen/image_profile_size"
             android:layout_height="@dimen/image_profile_size" />
 
@@ -90,7 +90,7 @@
         android:minHeight="@dimen/space_48dp">
 
         <TextView
-            style="@style/TextBodyHeading.Secondary.Bold"
+            style="@style/Text.BodyHeading.Secondary.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -121,7 +121,7 @@
         android:minHeight="@dimen/space_48dp">
 
         <TextView
-            style="@style/TextBodyHeading.Secondary.Bold"
+            style="@style/Text.BodyHeading.Secondary.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -152,7 +152,7 @@
         android:minHeight="@dimen/space_48dp">
 
         <TextView
-            style="@style/TextBodyHeading.Secondary.Bold"
+            style="@style/Text.BodyHeading.Secondary.Bold"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
@@ -195,7 +195,7 @@
 
     <TextView
         android:id="@+id/logout_button"
-        style="@style/TextBodyHeading.Secondary.Bold"
+        style="@style/Text.BodyHeading.Secondary.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/underline_action_placeholder"

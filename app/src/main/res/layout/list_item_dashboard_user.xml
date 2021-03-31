@@ -1,0 +1,108 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/list_item_dashboard_user"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <RelativeLayout
+        android:id="@+id/user_dashboard_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:minHeight="@dimen/space_72dp">
+
+        <RelativeLayout
+            android:id="@+id/activity_times_layout"
+            android:layout_width="@dimen/space_56dp"
+            android:layout_height="@dimen/space_56dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:background="@drawable/shape_circle_thirdly">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/activity_times_label"
+                style="@style/Text.Title.Secondary"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:gravity="center"
+                android:includeFontPadding="false"
+                android:maxLines="1"
+                android:text="0"
+                app:autoSizeMaxTextSize="@dimen/text_size_title"
+                app:autoSizeMinTextSize="@dimen/text_size_body"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/activity_times_label_placeholder"
+                style="@style/Text.Caption.Thirdly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/activity_times_label"
+                android:layout_centerHorizontal="true"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_8dp"
+                android:gravity="center"
+                android:text="@string/number_of_time"
+                app:autoSizeMaxTextSize="@dimen/text_size_caption"
+                app:autoSizeMinTextSize="10sp"
+                app:autoSizeTextType="uniform" />
+        </RelativeLayout>
+
+        <RelativeLayout
+            android:id="@+id/username_layout"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_toEndOf="@+id/activity_times_layout">
+
+            <androidx.appcompat.widget.AppCompatTextView
+                android:id="@+id/full_name_label"
+                style="@style/Text.SubTitle.Primary"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ellipsize="end"
+                android:maxLines="1"
+                app:autoSizeMaxTextSize="@dimen/text_size_sub_title"
+                app:autoSizeMinTextSize="@dimen/text_size_body_heading"
+                app:autoSizeTextType="uniform" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:id="@+id/running_icon"
+                android:layout_width="@dimen/space_16dp"
+                android:layout_height="wrap_content"
+                android:layout_alignTop="@+id/total_distance_label"
+                android:layout_alignBottom="@+id/total_distance_label"
+                android:adjustViewBounds="true"
+                app:srcCompat="@mipmap/ic_history_run" />
+
+            <TextView
+                android:id="@+id/total_distance_label"
+                style="@style/Text.Body.Thirdly"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/full_name_label"
+                android:layout_marginStart="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_4dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_toEndOf="@+id/running_icon"
+                android:text="0.00" />
+        </RelativeLayout>
+    </RelativeLayout>
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/user_activity_list"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/user_dashboard_layout"
+        android:visibility="gone" />
+
+</RelativeLayout>

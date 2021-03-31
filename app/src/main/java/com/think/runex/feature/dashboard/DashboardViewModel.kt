@@ -13,7 +13,7 @@ import kotlinx.coroutines.withContext
 
 class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel() {
 
-    suspend fun getEventDashboard(body: EventDashboardBody): List<DashboardInfo>? = withContext(IO) {
+    suspend fun getEventDashboard(body: EventDashboardBody): DashboardInfo? = withContext(IO) {
         val result = repo.getEventDashboard(body)
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)

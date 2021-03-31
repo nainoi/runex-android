@@ -1,7 +1,6 @@
 package com.think.runex.feature.event.registered
 
 import android.content.Context
-import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
@@ -58,7 +57,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         if (realStartPosition == null) {
             //Load single
             isAllLoaded = true
-            _myEvents = ArrayList(result.data)
+            _myEvents = ArrayList(result.data ?: emptyList())
         } else {
             //Load more from position
             if (_myEvents == null) {

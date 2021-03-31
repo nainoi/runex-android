@@ -99,12 +99,12 @@ class ConfirmRegistrationFragment : BaseScreen() {
 
                     //Add Payment screen
                     addFragment(PayEventScreen.newInstance(
-                            eventName = event.getEventName(),
                             eventCode = event.getEventCode(),
-                            registerId = event.getRegisterId(),
+                            eventName = event.getEventName(),
                             orderId = event.getOrderId(),
+                            registerId = event.getRegisterId(),
                             ref2 = event.ref2 ?: "",
-                            price = event.getTotalPrice()))
+                            totalPrice = event.getTotalPrice()))
 
                     //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack
                     delay(100)

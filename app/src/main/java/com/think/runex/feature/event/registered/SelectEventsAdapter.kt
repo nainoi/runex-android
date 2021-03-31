@@ -5,7 +5,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
-import com.google.gson.JsonArray
 import com.think.runex.R
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.event.data.EventRegisteredDiffCallback

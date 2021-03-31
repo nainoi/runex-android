@@ -6,6 +6,11 @@
         <!-- Noting for now -->
     </style>
 
+    <style name="Icon.Primary">
+        <item name="tint">?iconColorPrimary</item>
+        <item name="android:tint">?iconColorPrimary</item>
+    </style>
+
     <style name="Icon.BottomBar" parent="Icon">
         <!-- Noting for now -->
     </style>

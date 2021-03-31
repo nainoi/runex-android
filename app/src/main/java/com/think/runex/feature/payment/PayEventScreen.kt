@@ -27,20 +27,20 @@ class PayEventScreen : BaseScreen() {
     companion object {
 
         @JvmStatic
-        fun newInstance(eventName: String,
-                        eventCode: String,
-                        registerId: String,
+        fun newInstance(eventCode: String,
+                        eventName: String,
                         orderId: String,
+                        registerId: String,
                         ref2: String,
-                        price: Double) = PayEventScreen().apply {
+                        totalPrice: Double) = PayEventScreen().apply {
 
             arguments = Bundle().apply {
-                putString(KEY_EVENT, eventName)
                 putString(KEY_CODE, eventCode)
-                putString("register_id", registerId)
+                putString(KEY_EVENT, eventName)
                 putString(KEY_ID, orderId)
+                putString("register_id", registerId)
                 putString("ref2", ref2)
-                putDouble(KEY_PRICE, price)
+                putDouble(KEY_PRICE, totalPrice)
             }
         }
     }
@@ -58,10 +58,10 @@ class PayEventScreen : BaseScreen() {
         }
 
         viewModel = getViewModel(PaymentViewModel.Factory(requireContext()))
-        viewModel.updateOrderDetails(arguments?.getString(KEY_EVENT) ?: "",
-                arguments?.getString(KEY_CODE) ?: "",
-                arguments?.getString("register_id") ?: "",
+        viewModel.updateOrderDetails(arguments?.getString(KEY_CODE) ?: "",
+                arguments?.getString(KEY_EVENT) ?: "",
                 arguments?.getString(KEY_ID) ?: "",
+                arguments?.getString("register_id") ?: "",
                 arguments?.getString("ref2") ?: "",
                 arguments?.getDouble(KEY_PRICE) ?: 0.0)
     }

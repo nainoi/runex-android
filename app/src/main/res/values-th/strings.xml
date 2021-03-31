@@ -5,8 +5,10 @@
     <string name="app_description">บันทึกและส่งระยะวิ่ง\nด้วยแอปฯ RUNEX</string>
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">ที่อยู่</string>
+    <string name="add_activity">ส่งผลวิ่ง</string>
+    <string name="add_team_member">เพิ่มสมาชิกในทีม</string>
     <string name="amount">จำนวน</string>
-
+    <string name="activity_list">รายการกิจกรรม</string>
     <string name="add_image">เพิ่มรูปภาพ</string>
     <string name="all_event">งานวิ่งทั้งหมด</string>
     <string name="all_events_to_submit">รายการวิ่งทั้งหมดที่จะส่งระยะ</string>
@@ -14,7 +16,7 @@
     <string name="application_service_and_devices">แอปพลิเคชัน บริการ และแอุปกรณ์</string>
     <string name="about_us">เกี่ยวกับเรา</string>
     <string name="action">Action</string>
-
+    <string name="approve">อนุมัติ</string>
     <!-- B -->
     <string name="birth_date">วันเกิด</string>
     <string name="blood_type">กรุ๊ปเลือด</string>
