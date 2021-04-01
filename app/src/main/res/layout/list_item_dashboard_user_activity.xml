@@ -20,7 +20,7 @@
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:srcCompat="@mipmap/ic_running" />
+        app:srcCompat="@drawable/ic_running" />
 
     <RelativeLayout
         android:id="@+id/activity_info_layout"

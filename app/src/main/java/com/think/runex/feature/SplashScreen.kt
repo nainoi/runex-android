@@ -7,9 +7,7 @@ import android.view.ViewGroup
 import com.think.runex.R
 import com.think.runex.common.setStatusBarColor
 import com.think.runex.base.BaseScreen
-import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.util.NightMode
-import kotlinx.android.synthetic.main.screen_splash.*
 
 class SplashScreen : BaseScreen() {
 

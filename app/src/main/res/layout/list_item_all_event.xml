@@ -39,7 +39,7 @@
                 android:layout_width="@dimen/icon_size_system_dense"
                 android:layout_height="@dimen/icon_size_system_dense"
                 android:layout_margin="@dimen/space_8dp"
-                app:srcCompat="@mipmap/ic_running"
+                app:srcCompat="@drawable/ic_running"
                 app:tint="?iconColorDisable" />
 
             <androidx.appcompat.widget.AppCompatTextView

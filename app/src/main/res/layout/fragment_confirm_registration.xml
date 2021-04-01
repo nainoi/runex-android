@@ -96,7 +96,7 @@
                 android:layout_height="@dimen/icon_size_system"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/space_8dp"
-                app:srcCompat="@mipmap/ic_running"
+                app:srcCompat="@drawable/ic_running"
                 app:tint="@android:color/white" />
 
             <TextView

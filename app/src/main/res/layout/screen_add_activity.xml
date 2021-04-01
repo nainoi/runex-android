@@ -19,4 +19,15 @@
     </com.google.android.material.appbar.AppBarLayout>
 
 
+    <com.think.runex.component.AspectRatioImageView
+        android:id="@+id/activity_image"
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/top_bar"
+        android:adjustViewBounds="true"
+        android:scaleType="centerCrop"
+        app:ratioHeight="3"
+        app:ratioWidth="4" />
+
+
 </RelativeLayout>

@@ -38,7 +38,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/shape_circle_thirdly"
             android:scaleType="center"
-            app:srcCompat="@mipmap/ic_running"
+            app:srcCompat="@drawable/ic_running"
             app:tint="@color/iconColorAccent" />
     </FrameLayout>
 

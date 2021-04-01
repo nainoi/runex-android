@@ -170,7 +170,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     private fun setEnableRegisterButton(isEnabled: Boolean) = runOnUiThread {
         register_button?.isEnabled = isEnabled
         register_label?.isEnabled = isEnabled
-        running_icon?.setImageDrawable(getDrawable(R.mipmap.ic_running)?.let {
+        running_icon?.setImageDrawable(getDrawable(R.drawable.ic_running)?.let {
             it.setColorFilter(getColor(if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable))
             it
         })

@@ -76,7 +76,7 @@
                     android:layout_width="@dimen/icon_size_system"
                     android:layout_height="@dimen/icon_size_system"
                     android:layout_centerHorizontal="true"
-                    app:srcCompat="@mipmap/ic_running" />
+                    app:srcCompat="@mipmap/ic_running_bottom_bar" />
 
                 <androidx.appcompat.widget.AppCompatTextView
                     android:id="@+id/bottom_bar_menu_my_event_label"
