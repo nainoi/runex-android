@@ -191,6 +191,6 @@
             android:background="@drawable/bg_bottom_bar_center_menu_icon"
             android:padding="@dimen/space_12dp"
             android:scaleType="fitCenter"
-            android:src="@mipmap/im_record" />
+            android:src="@mipmap/ic_record" />
     </FrameLayout>
 </RelativeLayout>

@@ -9,22 +9,17 @@ import com.think.runex.common.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.util.NightMode
-import kotlinx.android.synthetic.main.screen_on_boarding.*
+import kotlinx.android.synthetic.main.screen_splash.*
 
-class OnBoardingScreen : BaseScreen() {
+class SplashScreen : BaseScreen() {
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_on_boarding, container, false)
+        return inflater.inflate(R.layout.screen_splash, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
 
         //Setup components
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-
-        //Subscribe Ui
-        get_started_button.setOnClickListener {
-            replaceFragment(LoginScreen(), addToBackStack = false, clearFragment = false)
-        }
     }
 }

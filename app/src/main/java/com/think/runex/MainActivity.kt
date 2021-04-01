@@ -19,10 +19,10 @@ import com.think.runex.base.BaseActivity
 import com.think.runex.feature.workout.record.WorkoutScreen
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
-import com.think.runex.datasource.api.ClientApis
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.main.MainScreen
-import com.think.runex.feature.OnBoardingScreen
+import com.think.runex.feature.SplashScreen
+import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.event.register.RegisterEventScreen
 import com.think.runex.util.launch
 import kotlinx.coroutines.delay
@@ -52,9 +52,10 @@ class MainActivity : BaseActivity() {
 
         if (savedInstanceState == null) {
             launch {
-                delay(100)
+                gotoSplashScreen()
                 authViewModel.updateAppConfig()
                 authViewModel.initialToken()
+                delay(800)
                 setupScreen()
             }
         }
@@ -75,8 +76,16 @@ class MainActivity : BaseActivity() {
     private fun setupScreen() {
         when (TokenManager.isAlive()) {
             true -> gotoMainScreen(intent?.getStringExtra(KEY_SCREEN))
-            false -> replaceFragment(OnBoardingScreen(), fadeIn(), addToBackStack = false, clearFragment = true)
+            false -> gotoLoginScreen()
         }
+    }
+
+    private fun gotoLoginScreen() {
+        replaceFragment(LoginScreen(), addToBackStack = false, clearFragment = false)
+    }
+
+    private fun gotoSplashScreen() {
+        replaceFragment(SplashScreen(), fadeIn(), addToBackStack = false, clearFragment = true)
     }
 
     private fun gotoMainScreen(initialScreen: String? = null) {
