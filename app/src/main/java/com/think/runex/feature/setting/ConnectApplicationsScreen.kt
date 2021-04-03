@@ -2,7 +2,6 @@ package com.think.runex.feature.setting
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,8 +13,8 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.showAlertDialog
+import com.think.runex.util.extension.setStatusBarColor
+import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.util.NightMode

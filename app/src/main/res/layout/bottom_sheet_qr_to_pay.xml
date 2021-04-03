@@ -138,8 +138,7 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/qr_code_layout"
             android:layout_centerHorizontal="true"
-            android:paddingStart="@dimen/space_48dp"
-            android:paddingEnd="@dimen/space_48dp"
+            android:minWidth="144dp"
             android:text="@string/save_qr" />
 
     </RelativeLayout>

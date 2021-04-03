@@ -7,8 +7,8 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
-import com.think.runex.common.getString
-import com.think.runex.common.requireContext
+import com.think.runex.util.extension.getString
+import com.think.runex.util.extension.requireContext
 import com.think.runex.feature.event.data.Ticket
 import kotlinx.android.synthetic.main.list_item_ticket_type.view.*
 

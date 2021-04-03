@@ -11,7 +11,7 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.config.*
 import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
@@ -35,11 +35,11 @@ class PayEventScreen : BaseScreen() {
                         totalPrice: Double) = PayEventScreen().apply {
 
             arguments = Bundle().apply {
-                putString(KEY_CODE, eventCode)
-                putString(KEY_EVENT, eventName)
-                putString(KEY_ID, orderId)
-                putString("register_id", registerId)
-                putString("ref2", ref2)
+                putString(KEY_EVENT_CODE, eventCode)
+                putString(KEY_EVENT_NAME, eventName)
+                putString(KEY_ORDER_ID, orderId)
+                putString(KEY_REGISTER_ID, registerId)
+                putString(KEY_REF, ref2)
                 putDouble(KEY_PRICE, totalPrice)
             }
         }
@@ -58,11 +58,11 @@ class PayEventScreen : BaseScreen() {
         }
 
         viewModel = getViewModel(PaymentViewModel.Factory(requireContext()))
-        viewModel.updateOrderDetails(arguments?.getString(KEY_CODE) ?: "",
-                arguments?.getString(KEY_EVENT) ?: "",
-                arguments?.getString(KEY_ID) ?: "",
-                arguments?.getString("register_id") ?: "",
-                arguments?.getString("ref2") ?: "",
+        viewModel.updateOrderDetails(arguments?.getString(KEY_EVENT_CODE) ?: "",
+                arguments?.getString(KEY_EVENT_NAME) ?: "",
+                arguments?.getString(KEY_ORDER_ID) ?: "",
+                arguments?.getString(KEY_REGISTER_ID) ?: "",
+                arguments?.getString(KEY_REF) ?: "",
                 arguments?.getDouble(KEY_PRICE) ?: 0.0)
     }
 

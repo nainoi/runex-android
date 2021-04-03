@@ -21,16 +21,16 @@ open class EventDetailsViewModel(val repo: EventRepository) : BaseViewModel() {
 
     private var isRegisteredEvent: Boolean? = null
 
-    fun getEventDetail(code: String) = launchIoThread {
+    fun getEventDetail(eventCode: String) = launchIoThread {
 
         //Get event details.
-        val result = repo.getEventDetails(code)
+        val result = repo.getEventDetails(eventCode)
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }
 
         //Check registered event
-        val isRegisteredResult = repo.isRegisteredEvent(code)
+        val isRegisteredResult = repo.isRegisteredEvent(eventCode)
         isRegisteredEvent = isRegisteredResult.data?.isRegistered
 
         if (result.isSuccessful()) {
@@ -38,9 +38,9 @@ open class EventDetailsViewModel(val repo: EventRepository) : BaseViewModel() {
         }
     }
 
-    suspend fun isRegisteredEvent(code: String): Boolean = withContext(IO) {
+    suspend fun isRegisteredEvent(eventCode: String): Boolean = withContext(IO) {
         if (isRegisteredEvent == null) {
-            val result = repo.isRegisteredEvent(code)
+            val result = repo.isRegisteredEvent(eventCode)
             if (result.isSuccessful().not()) {
                 onHandleError(result.statusCode, result.message)
             }

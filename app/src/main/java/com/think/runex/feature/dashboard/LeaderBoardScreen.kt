@@ -12,10 +12,10 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.setupToolbar
+import com.think.runex.util.extension.setStatusBarColor
+import com.think.runex.util.extension.setupToolbar
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
-import com.think.runex.config.KEY_CODE
+import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.util.NightMode
@@ -30,7 +30,7 @@ class LeaderBoardScreen : BaseScreen() {
         @JvmStatic
         fun newInstance(eventCode: String) = LeaderBoardScreen().apply {
             arguments = Bundle().apply {
-                putString(KEY_CODE, eventCode)
+                putString(KEY_EVENT_CODE, eventCode)
             }
         }
     }

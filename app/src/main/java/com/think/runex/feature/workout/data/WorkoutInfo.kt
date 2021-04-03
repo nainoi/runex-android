@@ -4,8 +4,8 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
-import com.think.runex.common.displayFormat
-import com.think.runex.common.timeDisplayFormat
+import com.think.runex.util.extension.displayFormat
+import com.think.runex.util.extension.timeDisplayFormat
 import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
@@ -139,6 +139,6 @@ data class WorkoutInfo(
     }
 
     fun getWorkoutDateTimeForImageName(): String {
-        return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, "yyyyMMddHHmm") ?: "workout"
+        return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, "yyyyMMddHHmm") ?: ""
     }
 }

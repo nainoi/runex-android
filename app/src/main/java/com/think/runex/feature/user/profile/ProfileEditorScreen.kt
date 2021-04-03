@@ -14,17 +14,18 @@ import com.jozzee.android.core.datetime.toCalendar
 import com.jozzee.android.core.datetime.year
 import com.jozzee.android.core.permission.shouldShowPermissionRationale
 import com.jozzee.android.core.view.content
+import com.jozzee.android.core.view.hideKeyboard
 import com.jozzee.android.core.view.showDialog
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.config.*
 import com.think.runex.feature.user.data.Gender
 import com.think.runex.feature.user.data.UserInfo
-import com.think.runex.feature.user.UserViewModel
 import com.think.runex.base.PermissionsLauncherScreen
-import com.think.runex.feature.user.GenderDialog
 import com.think.runex.component.ImageSourcesDialog
+import com.think.runex.feature.user.GenderDialog
+import com.think.runex.feature.user.UserViewModel
 import com.think.runex.util.*
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -79,6 +80,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         }
 
         birth_date_input?.setOnClickListener {
+            view?.hideKeyboard()
             showDatePicker()
         }
 

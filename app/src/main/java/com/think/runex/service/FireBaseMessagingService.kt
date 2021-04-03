@@ -12,7 +12,7 @@ import com.google.firebase.messaging.FirebaseMessagingService
 import com.google.firebase.messaging.RemoteMessage
 import com.jozzee.android.core.util.Logger
 import com.think.runex.R
-import com.think.runex.common.toJson
+import com.think.runex.util.extension.toJson
 import com.think.runex.config.*
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.auth.*

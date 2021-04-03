@@ -79,7 +79,6 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/running_icon"
-            style="@style/Icon.Primary"
             android:layout_width="@dimen/icon_size_in_action_bar"
             android:layout_height="@dimen/icon_size_in_action_bar"
             android:layout_marginStart="@dimen/space_16dp"
@@ -95,10 +94,8 @@
             style="@style/Text.Body.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginEnd="@dimen/space_16dp"
-            android:layout_toStartOf="@+id/add_activity_navigator_icon"
             android:maxLines="1"
             android:text="@string/add_activity"
             app:autoSizeMaxTextSize="@dimen/text_size_body_heading"
@@ -133,6 +130,7 @@
         android:id="@+id/view_leader_board_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_alignWithParentIfMissing="true"
         android:layout_below="@+id/add_activity_button"
         android:clickable="true"
         android:focusable="true"
@@ -159,10 +157,8 @@
             style="@style/Text.Body.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginEnd="@dimen/space_16dp"
-            android:layout_toStartOf="@+id/view_leader_board_navigator_icon"
             android:maxLines="1"
             android:text="@string/view_leader_board"
             app:autoSizeMaxTextSize="@dimen/text_size_body_heading"
@@ -194,7 +190,7 @@
     </androidx.constraintlayout.widget.ConstraintLayout>
 
     <androidx.constraintlayout.widget.ConstraintLayout
-        android:id="@+id/add_member_button"
+        android:id="@+id/team_management_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_below="@+id/view_leader_board_button"
@@ -205,7 +201,6 @@
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/add_member_icon"
-            style="@style/Icon.Primary"
             android:layout_width="@dimen/icon_size_in_action_bar"
             android:layout_height="@dimen/icon_size_in_action_bar"
             android:layout_marginStart="@dimen/space_16dp"
@@ -222,12 +217,10 @@
             style="@style/Text.Body.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
-            android:layout_centerVertical="true"
             android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginEnd="@dimen/space_16dp"
-            android:layout_toStartOf="@+id/add_member_navigator_icon"
             android:maxLines="1"
-            android:text="@string/add_team_member"
+            android:text="@string/team_management"
             app:autoSizeMaxTextSize="@dimen/text_size_body_heading"
             app:autoSizeMinTextSize="@dimen/text_size_caption"
             app:autoSizeTextType="uniform"
@@ -253,7 +246,7 @@
         style="@style/Text.BodyHeading.Hint"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/add_member_button"
+        android:layout_below="@+id/team_management_button"
         android:background="@color/backgroundSecondary"
         android:gravity="center_vertical"
         android:minHeight="@dimen/space_48dp"

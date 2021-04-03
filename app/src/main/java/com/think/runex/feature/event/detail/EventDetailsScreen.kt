@@ -1,8 +1,6 @@
 package com.think.runex.feature.event.detail
 
-import android.graphics.PorterDuff
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,38 +12,40 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.*
-import com.think.runex.config.KEY_CODE
+import com.think.runex.util.extension.*
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
+import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.feature.event.TicketsAdapter
 import com.think.runex.feature.event.data.EventDetail
-import com.think.runex.feature.event.register.RegisterEventScreen
+import com.think.runex.feature.event.registration.RegisterEventScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
 import com.think.runex.util.runOnUiThread
 import kotlinx.android.synthetic.main.screen_event_details.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.coroutines.delay
 
 class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
 
     companion object {
         @JvmStatic
-        fun newInstance(code: String?) = EventDetailsScreen().apply {
+        fun newInstance(eventCode: String?) = EventDetailsScreen().apply {
             arguments = Bundle().apply {
-                putString(KEY_CODE, code)
+                putString(KEY_EVENT_CODE, eventCode)
             }
         }
     }
 
     private lateinit var viewModel: EventDetailsViewModel
-
     private lateinit var adapter: TicketsAdapter
+
+    private var eventCode: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         viewModel = getViewModel(EventDetailsViewModel.Factory(requireContext()))
+
+        eventCode = arguments?.getString(KEY_EVENT_CODE) ?: ""
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -58,7 +58,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         subscribeUi()
 
         showLoading()
-        viewModel.getEventDetail(arguments?.getString(KEY_CODE) ?: "")
+        viewModel.getEventDetail(eventCode)
     }
 
     private fun setupComponents() {
@@ -81,7 +81,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         }
 
         register_button?.setOnClickListener {
-            addFragment(RegisterEventScreen.newInstance(arguments?.getString(KEY_CODE) ?: ""))
+            addFragment(RegisterEventScreen.newInstance(eventCode))
         }
 
         viewModel.setOnHandleError(::errorHandler)
@@ -95,11 +95,14 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         observe(getMainViewModel().refreshScreen) {
             if (view == null || isAdded.not()) return@observe
             showLoading()
-            viewModel.getEventDetail(arguments?.getString(KEY_CODE) ?: "")
+            viewModel.getEventDetail(eventCode)
         }
     }
 
     private fun updateEventDetails(eventDetail: EventDetail?) {
+
+        eventCode = eventDetail?.code ?: ""
+
         //Set event details to views
         event_image?.loadEventsImage(eventDetail?.getCoverImage())
         event_period_label?.text = eventDetail?.getEventPeriodWithTime() ?: ""
@@ -109,7 +112,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
         //Set register button
         launch {
-            val isRegistered = viewModel.isRegisteredEvent(arguments?.getString(KEY_CODE) ?: "")
+            val isRegistered = viewModel.isRegisteredEvent(eventCode)
             setEnableRegisterButton(eventDetail?.isOpenRegister == true && isRegistered.not())
         }
     }
@@ -168,12 +171,12 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     }
 
     private fun setEnableRegisterButton(isEnabled: Boolean) = runOnUiThread {
-        register_button?.isEnabled = isEnabled
+        val iconColor = getColor(if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable)
+        running_icon?.setImageDrawable(getDrawable(R.drawable.ic_running, iconColor))
+
         register_label?.isEnabled = isEnabled
-        running_icon?.setImageDrawable(getDrawable(R.drawable.ic_running)?.let {
-            it.setColorFilter(getColor(if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable))
-            it
-        })
+
+        register_button?.isEnabled = isEnabled
         register_button.setBackgroundResource(R.drawable.bg_btn_primary)
     }
 

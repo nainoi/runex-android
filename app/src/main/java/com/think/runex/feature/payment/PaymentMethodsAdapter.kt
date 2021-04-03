@@ -8,7 +8,7 @@ import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
-import com.think.runex.common.requireContext
+import com.think.runex.util.extension.requireContext
 import com.think.runex.feature.payment.data.PaymentMethod
 import kotlinx.android.synthetic.main.list_item_payment_method.view.*
 

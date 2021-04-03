@@ -1,19 +1,24 @@
 package com.think.runex.feature.dashboard
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
+import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.setVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
-import com.think.runex.common.getViewModel
-import com.think.runex.common.setStatusBarColor
-import com.think.runex.common.setupToolbar
+import com.think.runex.config.*
+import com.think.runex.feature.activity.AddActivityScreen
+import com.think.runex.feature.dashboard.data.DashboardInfo
 import com.think.runex.feature.event.data.request.EventDashboardBody
+import com.think.runex.feature.event.team.TeamManagementScreen
 import com.think.runex.util.NightMode
+import com.think.runex.util.extension.*
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.screen_dashboard.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -23,17 +28,15 @@ class DashboardScreen : BaseScreen() {
     companion object {
         @JvmStatic
         fun newInstance(eventCode: String,
-                        eventName: String,
                         orderId: String,
-                        parentRegisterId: String,
-                        registerId: String) = DashboardScreen().apply {
+                        registerId: String,
+                        parentRegisterId: String) = DashboardScreen().apply {
 
             arguments = Bundle().apply {
-                putString("eventCode", eventCode)
-                putString("eventName", eventName)
-                putString("orderId", orderId)
-                putString("parentRegisterId", parentRegisterId)
-                putString("registerId", registerId)
+                putString(KEY_EVENT_CODE, eventCode)
+                putString(KEY_ORDER_ID, orderId)
+                putString(KEY_REGISTER_ID, registerId)
+                putString(KEY_PARENT_REGISTER_ID, parentRegisterId)
             }
         }
     }
@@ -44,20 +47,21 @@ class DashboardScreen : BaseScreen() {
     private lateinit var layoutManager: LinearLayoutManager//For load more in the feature!
 
     private var eventCode: String = ""
-    private var eventName: String = ""
     private var orderId: String = ""
-    private var parentRegisterId: String = ""
     private var registerId: String = ""
+    private var parentRegisterId: String = ""
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
+        //Get user info for fill user id
+        getUserViewModel().getUserInfoIfNotHave()
+
         arguments?.run {
-            eventCode = getString("eventCode") ?: ""
-            eventName = getString("eventName") ?: ""
-            orderId = getString("orderId") ?: ""
-            parentRegisterId = getString("parentRegisterId") ?: ""
-            registerId = getString("registerId") ?: ""
+            eventCode = getString(KEY_EVENT_CODE) ?: ""
+            orderId = getString(KEY_ORDER_ID) ?: ""
+            registerId = getString(KEY_REGISTER_ID) ?: ""
+            parentRegisterId = getString(KEY_PARENT_REGISTER_ID) ?: ""
         }
 
         viewModel = getViewModel(DashboardViewModel.Factory(requireContext()))
@@ -79,8 +83,6 @@ class DashboardScreen : BaseScreen() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar, R.string.dashboard, R.drawable.ic_navigation_back)
 
-        event_name_label?.text = eventName
-
         //Set up recycler view
         adapter = UserDashboardAdapter(users_dashboard_list, this)
         layoutManager = LinearLayoutManager(requireContext())
@@ -91,31 +93,88 @@ class DashboardScreen : BaseScreen() {
     private fun subscribeUi() {
 
         add_activity_button?.setOnClickListener {
-            addFragment(AddActivityScreen())
+            getMyUserId { userId ->
+
+            }
         }
 
         view_leader_board_button?.setOnClickListener {
             //addFragment(LeaderBoardScreen.newInstance(eventCode))
         }
 
+        team_management_button?.setOnClickListener {
+            addFragment(TeamManagementScreen.newInstance(eventCode, registerId, parentRegisterId))
+        }
+
         viewModel.setOnHandleError(::errorHandler)
     }
-
 
     private fun performGetEventDashBoard() = launch {
         progress_layout?.visible()
 
-        val dashboards = viewModel.getEventDashboard(EventDashboardBody(eventCode, orderId, parentRegisterId, registerId))
+        val dashboards = viewModel.getEventDashboard(EventDashboardBody(eventCode, orderId, registerId, parentRegisterId))
 
         progress_layout?.gone()
 
-        //Update Ui
-        total_distances_label?.text = dashboards?.getTotalDistanceDisplay(getString(R.string.km))
-        adapter.submitList(dashboards?.userActivityList?.toMutableList())
+        if (dashboards != null) {
+            //Update Ui
+            updateUi(dashboards)
+        }
+    }
+
+    private fun updateUi(dashboards: DashboardInfo) {
+        event_name_label?.text = dashboards.eventRegistered?.eventDetail?.title ?: ""
+        total_distances_label?.text = dashboards.getTotalDistanceDisplay(getString(R.string.km))
+        team_management_button?.setVisible(dashboards.isEventCategoryTeam())
+
+        adapter.submitList(dashboards.userActivityList?.toMutableList())
+    }
+
+
+    private fun gotoAddActivityScreen(userId: String) {
+        addFragment(AddActivityScreen())
+    }
+
+    private fun getMyUserId(callback: (userId: String) -> Unit) {
+        launch {
+
+            //Get user info from live data.
+            val userId = getUserViewModel().userInfo.value?.id
+            if (userId?.isNotBlank() == true) {
+                callback.invoke(userId)
+                return@launch
+            }
+
+            //Get user info from api.
+            showProgressDialog("Get User Info")
+            val userInfo = getUserViewModel().getUSerInfoInstance()
+            hideProgressDialog()
+
+            if (userInfo != null && userInfo.id?.isNotBlank() == true) {
+                callback.invoke(userInfo.id ?: "")
+                return@launch
+            }
+
+            //Get user info failed!.
+            showAlertDialog(R.string.error, R.string.data_not_found, false) {
+                onBackPressed()
+            }
+        }
     }
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
-        super.errorHandler(statusCode, message, tag)
         progress_layout?.gone()
+        when (tag) {
+            "dashboard" -> showAlertDialog(getString(R.string.error), message, isCancelEnable = false) {
+                onBackPressed()
+            }
+            else -> super.errorHandler(statusCode, message, tag)
+        }
+    }
+
+    override fun onDestroyView() {
+        users_dashboard_list?.recycledViewPool?.clear()
+        adapter.clear()
+        super.onDestroyView()
     }
 }

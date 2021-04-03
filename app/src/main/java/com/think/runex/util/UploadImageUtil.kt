@@ -7,7 +7,7 @@ import android.graphics.Matrix
 import android.net.Uri
 import androidx.exifinterface.media.ExifInterface
 import com.jozzee.android.core.util.Logger
-import com.think.runex.common.toByteArray
+import com.think.runex.util.extension.toByteArray
 import java.io.IOException
 import java.io.InputStream
 

@@ -5,7 +5,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 import com.think.runex.R
-import com.think.runex.common.numberDisplayFormat
+import com.think.runex.util.extension.numberDisplayFormat
 
 data class Ticket(
         @SerializedName("category") var category: String? = null,

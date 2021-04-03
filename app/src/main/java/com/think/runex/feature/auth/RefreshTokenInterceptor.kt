@@ -5,7 +5,7 @@ import androidx.core.content.edit
 import com.google.gson.Gson
 import com.google.gson.JsonElement
 import com.jozzee.android.core.text.isJsonFormat
-import com.think.runex.common.toJson
+import com.think.runex.util.extension.toJson
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.request.RefreshTokenBody

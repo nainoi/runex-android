@@ -6,7 +6,7 @@ import android.graphics.Bitmap
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
-import com.think.runex.common.toByteArray
+import com.think.runex.util.extension.toByteArray
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
 import com.think.runex.feature.workout.data.WorkoutInfo

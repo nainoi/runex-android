@@ -13,7 +13,7 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.showToast
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.config.KEY_DATA
 import com.think.runex.config.KEY_ID
 import com.think.runex.feature.workout.data.WorkingOutRecord

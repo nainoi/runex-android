@@ -13,7 +13,7 @@ import androidx.recyclerview.widget.RecyclerView
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.feature.workout.data.WorkoutHistoryDay
 import com.think.runex.feature.workout.data.WorkoutHistoryMonth
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration

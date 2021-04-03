@@ -2,6 +2,7 @@ package com.think.runex.datasource.api
 
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import com.google.gson.JsonSyntaxException
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.text.isJsonFormat
 import com.think.runex.config.*
@@ -35,6 +36,9 @@ open class RemoteDataSource {
         } catch (e: SocketException) {
             e.printStackTrace()
             Result.error(ERR_SOCKET_EXCEPTION, e.message)
+        } catch (e: JsonSyntaxException) {
+            e.printStackTrace()
+            Result.error(ERROR_JSON_FORMAT, e.message)
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
             Result.error(ERR_NO_STATUS_CODE, throwable.message)

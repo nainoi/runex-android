@@ -5,7 +5,7 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.think.runex.R
-import com.think.runex.common.setStatusBarColor
+import com.think.runex.util.extension.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.util.NightMode
 

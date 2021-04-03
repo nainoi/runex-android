@@ -3,10 +3,9 @@ package com.think.runex.feature.event.detail
 import android.os.Bundle
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.getViewModel
+import com.think.runex.util.extension.getViewModel
 import com.think.runex.feature.event.data.EventItem
 import com.think.runex.base.BaseActivity
-import com.think.runex.config.KEY_EVENT
 import kotlinx.android.synthetic.main.activity_event_preview.*
 
 class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBSpecifiedListener {
@@ -31,7 +30,7 @@ class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBS
         viewModel = getViewModel(EventDetailsViewModel.Factory(this))
 
         //Get event id from intent
-        event = intent?.getParcelableExtra(KEY_EVENT)
+        //event = intent?.getParcelableExtra(KEY_EVENT)
     }
 
 //    @SuppressLint("SetJavaScriptEnabled")

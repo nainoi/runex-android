@@ -6,8 +6,8 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
-import com.think.runex.common.loadEventsImage
-import com.think.runex.common.requireContext
+import com.think.runex.util.extension.loadEventsImage
+import com.think.runex.util.extension.requireContext
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.event.data.EventRegisteredDiffCallback
 import com.think.runex.feature.payment.data.PaymentStatus

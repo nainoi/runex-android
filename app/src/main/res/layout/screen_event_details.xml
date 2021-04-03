@@ -119,8 +119,7 @@
                 android:layout_height="@dimen/icon_size_system"
                 android:layout_centerVertical="true"
                 android:layout_marginEnd="@dimen/space_8dp"
-                app:srcCompat="@drawable/ic_running"
-                app:tint="@color/iconColorDisable" />
+                app:srcCompat="@drawable/ic_running" />
 
             <TextView
                 android:id="@+id/register_label"

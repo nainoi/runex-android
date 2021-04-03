@@ -7,12 +7,13 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
-import com.think.runex.common.getString
-import com.think.runex.common.requireContext
-import com.think.runex.feature.dashboard.data.UserActivity
+import com.think.runex.util.extension.getString
+import com.think.runex.util.extension.requireContext
+import com.think.runex.feature.activity.ActivityStatus
+import com.think.runex.feature.activity.data.ActivityInfo
 import kotlinx.android.synthetic.main.list_item_dashboard_user_activity.view.*
 
-class UserActivityAdapter : ListAdapter<UserActivity, UserActivityAdapter.ViewHolder>(UserActivityDiffCallback()) {
+class UserActivityAdapter : ListAdapter<ActivityInfo, UserActivityAdapter.ViewHolder>(UserActivityDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.create(parent)
 
@@ -20,12 +21,12 @@ class UserActivityAdapter : ListAdapter<UserActivity, UserActivityAdapter.ViewHo
         holder.bind(getItem(position))
     }
 
-    class UserActivityDiffCallback : DiffUtil.ItemCallback<UserActivity>() {
-        override fun areItemsTheSame(oldItem: UserActivity, newItem: UserActivity): Boolean {
+    class UserActivityDiffCallback : DiffUtil.ItemCallback<ActivityInfo>() {
+        override fun areItemsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: UserActivity, newItem: UserActivity): Boolean {
+        override fun areContentsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
             return oldItem == newItem
         }
     }
@@ -37,14 +38,13 @@ class UserActivityAdapter : ListAdapter<UserActivity, UserActivityAdapter.ViewHo
                     .inflate(R.layout.list_item_dashboard_user_activity, parent, false))
         }
 
-        fun bind(data: UserActivity? /*onItemClickListener: ((userActivity: UserActivity) -> Unit)? = null*/) {
+        fun bind(data: ActivityInfo? /*onItemClickListener: ((userActivity: UserActivity) -> Unit)? = null*/) {
 
             itemView.distance_label?.text = data?.getDistanceDisplay(getString(R.string.km)) ?: ""
             itemView.date_time_label?.text = data?.getActivityDateDisplay() ?: ""
 
             itemView.status_icon?.background = ActivityStatus.getStatusBackground(requireContext(), data?.status)
-            itemView.status_label?.text = ActivityStatus.getStatusText(requireContext(), data?.status
-                    ?: "")
+            itemView.status_label?.text = ActivityStatus.getStatusText(requireContext(), data?.status ?: "")
         }
     }
 }

@@ -2,7 +2,6 @@ package com.think.runex.feature.payment
 
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.think.runex.BuildConfig
-import com.think.runex.common.toObject
 import com.think.runex.config.ERR_NO_INTERNET_CONNECTION
 import com.think.runex.config.ERR_NO_STATUS_CODE
 import com.think.runex.datasource.Result
@@ -10,14 +9,12 @@ import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.payment.data.PaymentMethod
 import com.think.runex.feature.payment.data.QRCodeImage
 import com.think.runex.feature.payment.data.request.PayEventBody
-import com.think.runex.feature.payment.data.response.QRCodeImageResult
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
 import okhttp3.Request
 import okhttp3.Response
 import okhttp3.logging.HttpLoggingInterceptor
-import retrofit2.HttpException
 import java.io.IOException
 import java.util.concurrent.TimeUnit
 

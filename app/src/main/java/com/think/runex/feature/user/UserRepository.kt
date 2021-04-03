@@ -2,7 +2,7 @@ package com.think.runex.feature.user
 
 import android.content.Context
 import android.net.Uri
-import com.think.runex.common.getDisplayName
+import com.think.runex.util.extension.getDisplayName
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.user.data.UpdateProfileImageResult

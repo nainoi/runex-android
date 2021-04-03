@@ -16,6 +16,7 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.payment.data.PaymentMethod
 import com.think.runex.feature.payment.data.request.PayEventBody
+import com.think.runex.util.extension.QRUtil
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
@@ -88,7 +89,7 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
             onHandleError(result.statusCode, result.message)
             return@withContext null
         }
-        qrCodeImage = convertStringToQrCode(context, result.data ?: "")
+        qrCodeImage = QRUtil().generateQR(context, result.data ?: "")
         return@withContext qrCodeImage
     }
 
@@ -105,29 +106,6 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
         return@withContext qrCodeImage
     }
 
-    private fun convertStringToQrCode(context: Context, data: String): Bitmap? {
-        val bitMatrix = MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE,
-                DEFAULT_QR_CODE_SIZE, DEFAULT_QR_CODE_SIZE, null)
-
-        val bitMatrixWidth = bitMatrix.width
-        val bitMatrixHeight = bitMatrix.height
-
-        val pixels = IntArray(bitMatrixWidth * bitMatrixHeight)
-        for (y in 0 until bitMatrixHeight) {
-            val offset = y * bitMatrixWidth
-            for (x in 0 until bitMatrixWidth) {
-                pixels[offset + x] = ContextCompat.getColor(context, when (bitMatrix.get(x, y)) {
-                    true -> android.R.color.black
-                    false -> android.R.color.white
-                })
-            }
-        }
-
-        val bitmap = Bitmap.createBitmap(bitMatrixWidth, bitMatrixHeight, Bitmap.Config.ARGB_8888)
-        bitmap.setPixels(pixels, 0, bitMatrixWidth, 0, 0, bitMatrixWidth, bitMatrixHeight)
-
-        return bitmap
-    }
 
     fun getTotalPrice(): Double {
         return price + (paymentMethod?.getChargeAmount(price) ?: 0.0)

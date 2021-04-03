@@ -6,7 +6,7 @@ import com.google.android.material.bottomsheet.BottomSheetDialogFragment
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
-import com.think.runex.common.showAlertDialog
+import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.datasource.api.ApiExceptionMessage
 
 open class BaseBottomSheet : BottomSheetDialogFragment() {

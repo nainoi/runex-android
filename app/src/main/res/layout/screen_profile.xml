@@ -45,15 +45,24 @@
         android:layout_margin="@dimen/space_16dp"
         android:background="@mipmap/bg_profile_card">
 
+        <androidx.appcompat.widget.AppCompatImageButton
+            android:id="@+id/my_qr_button"
+            android:layout_width="@dimen/icon_size_in_action_bar"
+            android:layout_height="@dimen/icon_size_in_action_bar"
+            android:layout_alignParentEnd="true"
+            android:layout_margin="@dimen/space_16dp"
+            android:background="@drawable/bg_ripple_circle"
+            android:src="@drawable/ic_qr_code" />
+
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/profile_image"
             style="@style/Profile.Image"
             android:layout_width="@dimen/image_profile_size"
             android:layout_height="@dimen/image_profile_size"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/space_24dp"
-            android:layout_marginTop="@dimen/space_24dp"
-            android:layout_marginEnd="@dimen/space_24dp" />
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginTop="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp" />
 
         <TextView
             android:id="@+id/username_label"
@@ -62,9 +71,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/profile_image"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/space_24dp"
+            android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginTop="@dimen/space_8dp"
-            android:layout_marginEnd="@dimen/space_24dp"
+            android:layout_marginEnd="@dimen/space_16dp"
             android:text="@string/username" />
 
         <TextView
@@ -74,8 +83,8 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/username_label"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/space_24dp"
-            android:layout_marginEnd="@dimen/space_24dp"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
             android:text="@string/email" />
 
         <TextView
@@ -85,9 +94,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/email_label"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/space_24dp"
+            android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginTop="@dimen/space_24dp"
-            android:layout_marginEnd="@dimen/space_24dp"
+            android:layout_marginEnd="@dimen/space_16dp"
             android:text="@string/total_distances" />
 
         <androidx.appcompat.widget.AppCompatTextView
@@ -96,9 +105,9 @@
             android:layout_height="wrap_content"
             android:layout_below="@+id/total_distances_placeholder"
             android:layout_centerHorizontal="true"
-            android:layout_marginStart="@dimen/space_24dp"
-            android:layout_marginEnd="@dimen/space_24dp"
-            android:layout_marginBottom="@dimen/space_24dp"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_marginBottom="@dimen/space_16dp"
             android:gravity="center"
             android:maxLines="1"
             android:text="0 km"

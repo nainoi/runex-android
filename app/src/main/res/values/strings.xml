@@ -9,10 +9,11 @@
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">Address</string>
     <string name="add_activity">Add Activity</string>
-    <string name="add_team_member">Add Team Member</string>
     <string name="amount">Amount</string>
     <string name="activity_list">Activity List</string>
+    <string name="activity_date">Activity Date</string>
     <string name="add_image">Add Image</string>
+    <string name="add_member">Add Member</string>
     <string name="all_event">All Events</string>
     <string name="all_events_to_submit">All events to submit</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
@@ -77,6 +78,7 @@
 
     <!-- I -->
     <string name="identification_number">Identification Number</string>
+    <string name="invalid_data_format">Invalid data format.</string>
 
     <!-- J -->
 
@@ -93,6 +95,8 @@
     <!-- M -->
     <string name="male">Male</string>
     <string name="my_events">My Events</string>
+    <string name="my_qr_code">My QR Code</string>
+    <string name="member_list">Member List</string>
 
     <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->
     <string name="minutes_per_kilometer_placeholder">Pace(min/km)</string>
@@ -140,6 +144,7 @@
     <string name="start_recording">Start</string>
     <string name="stop_recording">Stop</string>
     <string name="submit_result">Submit Result</string>
+    <string name="submit_result_running">Submit Result</string>
     <string name="summary">Summary</string>
     <string name="success">Success</string>
     <string name="share">Share</string>
@@ -156,6 +161,9 @@
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">Thank you for payment.</string>
     <string name="team_name_optional">Team name (Optional)</string>
+    <string name="team_management">Team Management</string>
+    <string name="team_leader">Team Leader</string>
+    <string name="take_note">Note</string>
 
     <!-- U -->
     <string name="username">Username</string>
@@ -180,12 +188,12 @@
     <!-- Hint -->
     <string name="hint_time" translatable="false">00:00:00</string>
     <string name="hint_time_minute" translatable="false">00:00</string>
-    <string name="hint_date" translatable="false">dd MMMM yyyy</string>
+    <string name="hint_date" translatable="false">dd MMM yyyy</string>
     <string name="hint_zero" translatable="false">0</string>
 
     <!-- Input required -->
     <string name="input_required">%1$s is required</string>
-    <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="activity_image_required">Please add activity image</string>
+
 
 </resources>

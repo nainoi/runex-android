@@ -4,9 +4,8 @@ import android.content.Context
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.R
-import com.think.runex.common.displayFormat
+import com.think.runex.util.extension.displayFormat
 import com.think.runex.config.DISPLAY_DATE_FORMAT
-import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 
 data class WorkoutHistoryDay(

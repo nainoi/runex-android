@@ -1,17 +1,12 @@
 package com.think.runex.feature.workout
 
-import android.content.Context
-import android.net.Uri
-import android.util.Log
 import com.google.gson.Gson
 import com.google.gson.JsonObject
-import com.think.runex.common.getDisplayName
-import com.think.runex.common.toJson
+import com.think.runex.util.extension.toJson
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
 import com.think.runex.feature.workout.data.WorkoutInfo
-import com.think.runex.util.UploadImageUtil
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
 import okhttp3.RequestBody.Companion.toRequestBody

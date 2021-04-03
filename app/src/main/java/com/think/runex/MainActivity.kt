@@ -11,9 +11,9 @@ import com.jozzee.android.core.fragment.fragmentBackStackCount
 import com.jozzee.android.core.fragment.fragmentCount
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.think.runex.common.fadeIn
-import com.think.runex.common.findFragment
-import com.think.runex.common.getViewModel
+import com.think.runex.util.extension.fadeIn
+import com.think.runex.util.extension.findFragment
+import com.think.runex.util.extension.getViewModel
 import com.think.runex.feature.auth.*
 import com.think.runex.base.BaseActivity
 import com.think.runex.feature.workout.record.WorkoutScreen
@@ -23,7 +23,7 @@ import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.SplashScreen
 import com.think.runex.feature.auth.login.LoginScreen
-import com.think.runex.feature.event.register.RegisterEventScreen
+import com.think.runex.feature.event.registration.RegisterEventScreen
 import com.think.runex.util.launch
 import kotlinx.coroutines.delay
 

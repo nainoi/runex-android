@@ -1,14 +1,10 @@
 package com.think.runex.feature.workout.summary
 
 import android.Manifest
-import android.content.ContentValues
 import android.content.Intent
 import android.graphics.Bitmap
 import android.net.Uri
-import android.os.Build
 import android.os.Bundle
-import android.os.Environment
-import android.provider.MediaStore
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -25,7 +21,6 @@ import com.facebook.share.widget.ShareDialog
 import com.google.android.gms.maps.GoogleMap
 import com.google.android.gms.maps.SupportMapFragment
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.google.android.material.snackbar.Snackbar
 import com.jozzee.android.core.permission.shouldShowPermissionRationale
 import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.resource.getDimension
@@ -37,7 +32,7 @@ import com.jozzee.android.core.view.showToast
 import com.jozzee.android.core.view.visible
 import com.think.runex.BuildConfig
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.config.KEY_DATA
 import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.base.PermissionsLauncherBottomSheet
@@ -47,10 +42,8 @@ import com.think.runex.util.GetContentHelper
 import com.think.runex.util.TakePictureHelper
 import kotlinx.android.synthetic.main.bottom_sheet_share_workout.*
 import kotlinx.android.synthetic.main.layout_workout_summary_on_map.*
-import java.io.ByteArrayOutputStream
 import java.io.File
 import java.io.FileOutputStream
-import java.io.OutputStream
 
 class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDialog.OnSelectImageSourceListener {
 
@@ -252,70 +245,26 @@ class ShareWorkoutBottomSheet : PermissionsLauncherBottomSheet(), ImageSourcesDi
     private fun saveWorkoutImageToStorage(saveToCacheDirectory: Boolean = false): Uri? {
 
         val bitmap = map_layout?.drawToBitmap()
-        val fileName = "${BuildConfig.APP_SCHEME}_${workoutInfo?.getWorkoutDateTimeForImageName()}.jpg"
-        //var out: OutputStream? = null
+        val fileName = "${BuildConfig.APP_SCHEME}_workout_${workoutInfo?.getWorkoutDateTimeForImageName()}.jpg"
         var uri: Uri? = null
 
-        if (saveToCacheDirectory) {
-
-            val tempFile = File.createTempFile(fileName, ".jpg", requireContext().getTempDirectory("images"))
-            uri = tempFile.getUriProvider(requireContext())
-            bitmap?.writeToOutputStream(FileOutputStream(tempFile))
-
-        } else if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.Q) {
-
-            val value = ContentValues().apply {
-                put(MediaStore.Images.ImageColumns.DISPLAY_NAME, fileName)
-                put(MediaStore.Images.ImageColumns.MIME_TYPE, "image/jpg")
-                put(MediaStore.Images.ImageColumns.RELATIVE_PATH, "${Environment.DIRECTORY_PICTURES}/${BuildConfig.APP_NAME}")
-                put(MediaStore.Images.Media.IS_PENDING, true)
-                //RELATIVE_PATH and IS_PENDING are introduced in API 29.
+        when (saveToCacheDirectory) {
+            true -> {
+                val tempFile = File.createTempFile(fileName, ".jpg", requireContext().getTempDirectory("images"))
+                uri = tempFile.getUriProvider(requireContext())
+                bitmap?.writeToOutputStream(FileOutputStream(tempFile), Bitmap.CompressFormat.JPEG)
             }
-
-            uri = requireContext().contentResolver.insert(MediaStore.Images.Media.EXTERNAL_CONTENT_URI, value)
-            if (uri != null) {
-                requireContext().contentResolver.openOutputStream(uri)?.use { outputStream ->
-                    bitmap?.writeToOutputStream(outputStream)
-                }
-                value.put(MediaStore.Images.Media.IS_PENDING, false)
-                requireContext().contentResolver.update(uri, value, null, null)
-            }
-
-        } else {
-            //getExternalStorageDirectory is deprecated in API 29
-            val outputFile = File("${Environment.getExternalStoragePublicDirectory(Environment.DIRECTORY_PICTURES)}/${BuildConfig.APP_NAME}").let { directory ->
-                if (directory.exists().not()) {
-                    directory.mkdirs()
-                }
-                File("$directory/$fileName")
-            }
-            uri = outputFile.getUriProvider(requireContext())
-            bitmap?.writeToOutputStream(FileOutputStream(outputFile))
+            false -> uri = bitmap?.saveToExternalStorage(requireContext(), fileName)
         }
 
         //Clear bitmap
         bitmap?.recycle()
 
         if (saveToCacheDirectory.not()) {
-            showSaveWorkoutImageCompleteSnackBar(uri)
+            showSaveFileCompleteSnackBar(uri)
         }
 
         return uri
-    }
-
-    private fun showSaveWorkoutImageCompleteSnackBar(uri: Uri?) {
-        if (uri == null) return
-        val filename = uri.getDisplayName(requireContext()) ?: "Save image success."
-        Snackbar.make(requireView(), filename, Snackbar.LENGTH_LONG)
-                .setAction(R.string.open) {
-                    startActivity(Intent(Intent.ACTION_VIEW).apply {
-                        flags = Intent.FLAG_ACTIVITY_CLEAR_TOP
-                        setDataAndType(uri, uri.getMimeType(requireContext()))
-                        addFlags(Intent.FLAG_GRANT_READ_URI_PERMISSION)
-                        addFlags(Intent.FLAG_ACTIVITY_NO_HISTORY)
-                    })
-                }
-                .show()
     }
 
     private fun shareToOther(uri: Uri) {

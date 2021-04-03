@@ -5,7 +5,7 @@ import android.graphics.drawable.Drawable
 import androidx.core.content.ContextCompat
 import com.google.gson.annotations.SerializedName
 import com.think.runex.R
-import com.think.runex.common.displayFormat
+import com.think.runex.util.extension.displayFormat
 
 data class PaymentMethod(
         @SerializedName("id") var id: String? = null,

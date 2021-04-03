@@ -2,8 +2,8 @@ package com.think.runex.feature.auth
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
-import com.think.runex.common.toJson
-import com.think.runex.common.toObject
+import com.think.runex.util.extension.toJson
+import com.think.runex.util.extension.toObject
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody

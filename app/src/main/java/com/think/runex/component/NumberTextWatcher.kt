@@ -4,7 +4,7 @@ import android.text.Editable
 import android.text.TextWatcher
 import android.widget.EditText
 import com.jozzee.android.core.text.toIntOrZero
-import com.think.runex.common.displayFormat
+import com.think.runex.util.extension.displayFormat
 
 class NumberTextWatcher(var maxNumberLength: Int,
                         var maxDecimalLength: Int,

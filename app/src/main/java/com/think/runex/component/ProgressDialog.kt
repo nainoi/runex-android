@@ -11,7 +11,7 @@ import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.touch.setScreenTouchable
 import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
-import com.think.runex.common.setColorFilter
+import com.think.runex.util.extension.setColorFilter
 import kotlinx.android.synthetic.main.dialog_progress.*
 
 class ProgressDialog : DialogFragment() {

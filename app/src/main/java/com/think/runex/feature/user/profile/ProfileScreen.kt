@@ -7,11 +7,12 @@ import android.view.ViewGroup
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.feature.user.data.UserInfo
-import com.think.runex.feature.user.UserViewModel
 import com.think.runex.base.BaseScreen
 import com.think.runex.feature.setting.SettingScreen
+import com.think.runex.feature.qr.MyQRScreen
+import com.think.runex.feature.user.UserViewModel
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_profile.*
 
@@ -37,6 +38,7 @@ class ProfileScreen : BaseScreen() {
         if (viewModel.userInfo.value == null) {
             progress_bar?.visible()
             profile_layout?.gone()
+            my_qr_button?.isClickable = false
             viewModel.getUSerInfo()
         }
     }
@@ -53,8 +55,13 @@ class ProfileScreen : BaseScreen() {
     }
 
     private fun subscribeUi() {
+
         setting_button?.setOnClickListener {
             addFragment(SettingScreen())
+        }
+
+        my_qr_button?.setOnClickListener {
+            addFragment(MyQRScreen())
         }
 
         viewModel.setOnHandleError(::errorHandler)
@@ -68,6 +75,8 @@ class ProfileScreen : BaseScreen() {
     private fun updateUserInfo(userInfo: UserInfo?) {
         progress_bar?.gone()
         profile_layout?.visible()
+        my_qr_button?.isClickable = userInfo?.id?.isNotBlank() == true
+
         profile_image?.loadProfileImage(userInfo?.avatar)
         username_label?.text = userInfo?.fullName ?: ""
         email_label?.text = userInfo?.email ?: ""

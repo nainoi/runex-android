@@ -12,9 +12,9 @@ import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.BuildConfig
 import com.think.runex.R
-import com.think.runex.common.fadeIn
-import com.think.runex.common.getViewModel
-import com.think.runex.common.setStatusBarColor
+import com.think.runex.util.extension.fadeIn
+import com.think.runex.util.extension.getViewModel
+import com.think.runex.util.extension.setStatusBarColor
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.base.BaseScreen
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW

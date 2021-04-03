@@ -3,7 +3,7 @@ package com.think.runex.feature.user.data
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toCalendar
-import com.think.runex.common.displayFormat
+import com.think.runex.util.extension.displayFormat
 import com.think.runex.feature.event.data.EventItem
 import com.think.runex.feature.address.data.Address
 import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
@@ -11,6 +11,7 @@ import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import java.util.*
 
 data class UserInfo(
+        @SerializedName("id") var id: String? = null,
         @SerializedName("email") var email: String? = null,
         @SerializedName("provider") var provider:String? = null,
         @SerializedName("provider_id") var providerId:String? = null,
@@ -42,6 +43,7 @@ data class UserInfo(
         @SerializedName("strava_latname") var stravaLatName: String? = null) {
 
     constructor(userInfo: UserInfo?) : this(
+            userInfo?.id,
             userInfo?.email,
             userInfo?.provider,
             userInfo?.providerId,

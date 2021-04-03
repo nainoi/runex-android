@@ -6,7 +6,7 @@ import android.view.View
 import android.view.ViewGroup
 import com.think.runex.BuildConfig
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.user.data.UserInfo

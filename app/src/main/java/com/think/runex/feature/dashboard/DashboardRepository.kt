@@ -1,12 +1,11 @@
 package com.think.runex.feature.dashboard
 
 import com.google.gson.JsonObject
-import com.think.runex.common.toJson
+import com.think.runex.util.extension.toJson
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.event.data.request.EventDashboardBody
 import com.think.runex.feature.user.data.UserInfo
-import kotlinx.coroutines.Deferred
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 

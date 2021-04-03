@@ -20,7 +20,7 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.showToast
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.config.*
 import com.think.runex.feature.location.LocationUtil
 import com.think.runex.feature.workout.*

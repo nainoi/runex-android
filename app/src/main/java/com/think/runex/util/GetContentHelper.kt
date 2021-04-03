@@ -10,16 +10,16 @@ import androidx.fragment.app.FragmentActivity
 class GetContentHelper() {
 
     constructor(fragment: Fragment, withMultipleContent: Boolean = false) : this() {
-        registerGetContentResult(fragment)
-        if (withMultipleContent) {
-            registerGetMultipleContentResult(fragment)
+        when (withMultipleContent) {
+            true -> registerGetMultipleContentResult(fragment)
+            false -> registerGetContentResult(fragment)
         }
     }
 
     constructor(activity: FragmentActivity, withMultipleContent: Boolean = false) : this() {
-        registerGetContentResult(activity)
-        if (withMultipleContent) {
-            registerGetMultipleContentResult(activity)
+        when (withMultipleContent) {
+            true -> registerGetMultipleContentResult(activity)
+            false -> registerGetContentResult(activity)
         }
     }
 
@@ -28,6 +28,7 @@ class GetContentHelper() {
 
     private var getMultipleContentLauncher: ActivityResultLauncher<String>? = null
     private var getMultipleContentCallback: ((contents: List<Uri>?) -> Unit)? = null
+
 
     fun registerGetContentResult(fragment: Fragment) {
         try {

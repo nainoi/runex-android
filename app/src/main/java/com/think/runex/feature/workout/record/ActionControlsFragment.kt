@@ -10,8 +10,8 @@ import com.jozzee.android.core.resource.getDrawable
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.setColorFilter
-import com.think.runex.common.showAlertDialog
+import com.think.runex.util.extension.setColorFilter
+import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.feature.workout.data.WorkoutStatus
 import kotlinx.android.synthetic.main.fragment_action_controls.*
 

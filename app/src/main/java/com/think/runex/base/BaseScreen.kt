@@ -13,8 +13,8 @@ import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.hideKeyboard
 import com.think.runex.R
-import com.think.runex.common.getViewModel
-import com.think.runex.common.showAlertDialog
+import com.think.runex.util.extension.getViewModel
+import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.component.ProgressDialog
 import com.think.runex.feature.main.MainViewModel

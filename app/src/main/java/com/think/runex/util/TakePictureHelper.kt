@@ -7,9 +7,9 @@ import androidx.activity.result.contract.ActivityResultContracts
 import androidx.fragment.app.Fragment
 import androidx.fragment.app.FragmentActivity
 import com.think.runex.BuildConfig
-import com.think.runex.common.clearTempDirectory
-import com.think.runex.common.getTempDirectory
-import com.think.runex.common.getUriProvider
+import com.think.runex.util.extension.clearTempDirectory
+import com.think.runex.util.extension.getTempDirectory
+import com.think.runex.util.extension.getUriProvider
 import java.io.File
 import java.util.concurrent.TimeUnit
 

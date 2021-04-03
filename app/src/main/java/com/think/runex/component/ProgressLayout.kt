@@ -9,7 +9,7 @@ import android.widget.ProgressBar
 import androidx.annotation.ColorInt
 import com.jozzee.android.core.view.warpContent
 import com.think.runex.R
-import com.think.runex.common.setColorFilter
+import com.think.runex.util.extension.setColorFilter
 
 class ProgressLayout @JvmOverloads constructor(
         context: Context,

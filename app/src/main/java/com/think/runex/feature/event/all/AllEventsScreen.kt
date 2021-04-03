@@ -7,10 +7,10 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
 import com.think.runex.R
-import com.think.runex.common.getViewModel
-import com.think.runex.common.observe
-import com.think.runex.common.removeObservers
-import com.think.runex.common.setStatusBarColor
+import com.think.runex.util.extension.getViewModel
+import com.think.runex.util.extension.observe
+import com.think.runex.util.extension.removeObservers
+import com.think.runex.util.extension.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.feature.event.detail.EventDetailsScreen

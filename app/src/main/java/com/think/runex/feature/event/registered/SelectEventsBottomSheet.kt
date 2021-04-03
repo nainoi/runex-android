@@ -6,15 +6,12 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.google.android.material.bottomsheet.BottomSheetBehavior
-import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseBottomSheet
-import com.think.runex.common.getViewModel
-import com.think.runex.common.observe
-import com.think.runex.common.removeObservers
-import com.think.runex.component.recyclerview.MarginItemDecoration
+import com.think.runex.util.extension.getViewModel
+import com.think.runex.util.extension.removeObservers
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
 import com.think.runex.util.launch
 import kotlinx.android.synthetic.main.bottom_sheet_select_events.*

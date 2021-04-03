@@ -17,7 +17,7 @@ import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.setVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
-import com.think.runex.common.*
+import com.think.runex.util.extension.*
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.dashboard.data.UserDashboard
@@ -36,7 +36,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder(parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), repository, owner)
+        holder.bind(getItem(position))
     }
 
     class UserActivityDiffCallback : DiffUtil.ItemCallback<UserDashboard>() {
@@ -50,6 +50,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
     }
 
     fun clear() {
+        submitList(null)
         repository = null
     }
 
@@ -63,7 +64,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
         constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_item_dashboard_user, parent, false))
 
-        fun bind(data: UserDashboard?, repo: DashboardRepository?, owner: LifecycleOwner) {
+        fun bind(data: UserDashboard?) {
 
             //Set views to skeleton on loading
             showSkeleton()
@@ -96,7 +97,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
             //Get user name from api
             owner.lifecycleScope.launch {
 
-                val result = repo?.getUserInfoById(data?.userId ?: "")
+                val result = repository?.getUserInfoById(data?.userId ?: "")
 
                 showContents()
 

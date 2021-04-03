@@ -3,8 +3,8 @@ package com.think.runex.feature.workout.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.jozzee.android.core.text.toDoubleOrZero
-import com.think.runex.common.displayFormat
-import com.think.runex.common.timeDisplayFormat
+import com.think.runex.util.extension.displayFormat
+import com.think.runex.util.extension.timeDisplayFormat
 import java.util.concurrent.TimeUnit
 
 data class WorkingOutRecord(
