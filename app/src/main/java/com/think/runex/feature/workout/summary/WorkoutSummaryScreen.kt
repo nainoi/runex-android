@@ -25,7 +25,7 @@ import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
 import com.think.runex.feature.event.registered.SelectEventsBottomSheet
 import com.think.runex.feature.workout.MapPresenter
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import io.realm.Realm
 import kotlinx.android.synthetic.main.layout_workout_summary_on_map.*
 import kotlinx.android.synthetic.main.screen_workout_summary.*

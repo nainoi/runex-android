@@ -4,7 +4,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.viewModelScope
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.think.runex.util.cancelJobs
+import com.think.runex.util.extension.cancelJobs
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 

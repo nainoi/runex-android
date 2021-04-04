@@ -23,9 +23,10 @@ import com.think.runex.feature.qr.QRCodeScannerActivity
 import com.think.runex.feature.qr.QRCodeScannerContract
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_team_management.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.Dispatchers.Main
 
 class TeamManagementScreen : BaseScreen() {
 
@@ -61,8 +62,10 @@ class TeamManagementScreen : BaseScreen() {
         viewModel = getViewModel(TeamViewModel.Factory(requireContext()))
 
         qrScannerLauncher = registerForActivityResult(QRCodeScannerContract()) { output ->
-            if (output?.data?.isNotBlank() == true) {
-                onScanQrCodeSuccess(output.data ?: "")
+            val data = output?.data ?: ""
+            if (data.isNotBlank()) {
+                val userId = data.substring(QRCodeScannerActivity.PREFIX_RUNEX.length, data.length)
+                performGetUserInfoById(userId)
             }
         }
     }
@@ -141,9 +144,20 @@ class TeamManagementScreen : BaseScreen() {
         adapter.submitList(registerData.eventRegisteredList?.toMutableList())
     }
 
-    private fun onScanQrCodeSuccess(data: String) {
-        val userId = data.substring(QRCodeScannerActivity.PREFIX_RUNEX.length, data.length)
-        Log.e("Jozzee", "User Id: $userId")
+    private fun performGetUserInfoById(userId: String) = launch(Main) {
+        showProgressDialog(R.string.check_information)
+
+        val userInfo = viewModel.getUserInfoById(userId)
+
+        hideLoading()
+
+        if (userInfo != null) {
+            
+        }
+    }
+
+    private fun performAddMemberToEvent(userId: String) = launch(Main) {
+
     }
 
     private fun showLoading() {

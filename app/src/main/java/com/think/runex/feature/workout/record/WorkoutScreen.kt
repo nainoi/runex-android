@@ -28,8 +28,7 @@ import com.think.runex.feature.workout.data.*
 import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.feature.workout.MapPresenter
 import com.think.runex.feature.workout.summary.WorkoutSummaryScreen
-import com.think.runex.util.launch
-import com.think.runex.util.runOnUiThread
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_workout.*
 import kotlinx.coroutines.delay
 import java.lang.Exception

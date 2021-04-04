@@ -10,7 +10,7 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.util.extension.*
 import com.think.runex.feature.event.detail.EventDetailsScreen
 import com.think.runex.feature.payment.PayEventScreen
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.fragment_confirm_registration.*
 import kotlinx.android.synthetic.main.fragment_confirm_registration.event_name_label
 import kotlinx.android.synthetic.main.list_item_event_registration.*

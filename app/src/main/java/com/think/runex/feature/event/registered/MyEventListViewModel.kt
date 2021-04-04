@@ -10,7 +10,7 @@ import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.payment.data.PaymentStatus
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -39,7 +39,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
 
     private var realStartPosition: Int? = null
 
-    fun getEventList(startPosition: Int? = null) = launchIoThread {
+    fun getEventList(startPosition: Int? = null) = launch(IO) {
 
         isLoading = true
 

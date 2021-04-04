@@ -9,7 +9,8 @@ import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventItem
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
+import kotlinx.coroutines.Dispatchers.IO
 
 class AllEventListViewModel(private val repo: EventRepository) : BaseViewModel() {
 
@@ -25,7 +26,7 @@ class AllEventListViewModel(private val repo: EventRepository) : BaseViewModel()
     //var isAllLoaded: Boolean = false
     //    private set
 
-    fun getEventList(/*lastPosition: Int = 0*/) = launchIoThread {
+    fun getEventList(/*lastPosition: Int = 0*/) = launch(IO) {
         isLoading = true
         val result = repo.getAllEvents()
         if (result.isSuccessful().not()) {

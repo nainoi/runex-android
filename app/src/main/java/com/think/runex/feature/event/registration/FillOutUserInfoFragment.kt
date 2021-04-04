@@ -30,7 +30,7 @@ import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBod
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.data.Gender
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.fragment_fill_out_user_info.*
 import java.util.*
 import kotlin.collections.ArrayList

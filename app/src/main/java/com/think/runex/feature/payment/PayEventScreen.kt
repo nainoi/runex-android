@@ -17,7 +17,7 @@ import com.think.runex.config.*
 import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
 import com.think.runex.feature.payment.data.PaymentType
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_pay_event.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.delay

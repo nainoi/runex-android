@@ -18,7 +18,7 @@ import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_connect_applications.*
 import kotlinx.android.synthetic.main.screen_connect_applications.progress_bar
 import kotlinx.android.synthetic.main.screen_connect_applications.web_view

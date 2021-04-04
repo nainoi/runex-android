@@ -40,6 +40,7 @@
     <string name="contract">Contract</string>
     <string name="connect_application">Connect Applications</string>
     <string name="color_optional">Color (Optional)</string>
+    <string name="check_information">Check information</string>
 
     <!-- D -->
     <string name="dashboard">Dashboard</string>

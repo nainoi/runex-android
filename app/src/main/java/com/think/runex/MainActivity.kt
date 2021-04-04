@@ -24,7 +24,7 @@ import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.SplashScreen
 import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.event.registration.RegisterEventScreen
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.coroutines.delay
 
 class MainActivity : BaseActivity() {

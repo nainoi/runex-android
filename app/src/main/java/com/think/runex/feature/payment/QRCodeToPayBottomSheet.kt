@@ -17,7 +17,7 @@ import com.think.runex.R
 import com.think.runex.base.PermissionsLauncherBottomSheet
 import com.think.runex.util.extension.*
 import com.think.runex.feature.payment.data.PaymentType
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.bottom_sheet_qr_code_to_pay.*
 
 class QRCodeToPayBottomSheet : PermissionsLauncherBottomSheet() {

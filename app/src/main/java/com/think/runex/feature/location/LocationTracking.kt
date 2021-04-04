@@ -4,14 +4,9 @@ import android.annotation.SuppressLint
 import android.content.Context
 import android.location.Location
 import android.os.Looper
-import android.util.Log
-import androidx.core.content.edit
 import com.google.android.gms.location.*
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
-import com.jozzee.android.core.view.showToast
-import com.think.runex.util.AppPreference
-import com.think.runex.util.launchMainThread
 
 class LocationTracking(private val context: Context,
                        locationCallback: LocationCallback? = null) {

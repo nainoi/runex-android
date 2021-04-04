@@ -19,7 +19,8 @@ import com.think.runex.feature.auth.*
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.MainActivity
 import com.think.runex.util.AppPreference
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
+import kotlinx.coroutines.Dispatchers.IO
 
 class FireBaseMessagingService : FirebaseMessagingService() {
 
@@ -79,7 +80,7 @@ class FireBaseMessagingService : FirebaseMessagingService() {
         Log.i("FireBasService", "New firebase token: $firebaseToken")
 
         //Send firebase token to server.
-        launchIoThread {
+        launch(IO) {
             val repository = AuthRepository(ApiService().provideService(this@FireBaseMessagingService, AuthApi::class.java),
                     AppPreference.createPreference(this@FireBaseMessagingService))
 

@@ -35,12 +35,10 @@ import com.think.runex.config.KEY_QR
 import com.think.runex.util.GetContentHelper
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.activity_qr_code_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.delay
-import java.io.File
-import java.util.concurrent.ExecutorService
 import java.util.concurrent.Executors
 
 class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.AnalysisListener {

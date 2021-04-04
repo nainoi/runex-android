@@ -13,7 +13,7 @@ import com.think.runex.base.BaseBottomSheet
 import com.think.runex.util.extension.getViewModel
 import com.think.runex.util.extension.removeObservers
 import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.bottom_sheet_select_events.*
 
 class SelectEventsBottomSheet : BaseBottomSheet() {

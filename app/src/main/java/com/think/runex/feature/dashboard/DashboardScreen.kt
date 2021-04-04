@@ -19,7 +19,7 @@ import com.think.runex.feature.event.data.request.EventDashboardBody
 import com.think.runex.feature.event.team.TeamManagementScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_dashboard.*
 import kotlinx.android.synthetic.main.toolbar.*
 

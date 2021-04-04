@@ -20,7 +20,7 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.main.MainScreen
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_login.*
 
 class LoginScreen : BaseScreen() {

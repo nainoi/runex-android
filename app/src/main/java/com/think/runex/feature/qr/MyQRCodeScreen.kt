@@ -16,7 +16,7 @@ import com.think.runex.R
 import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.util.extension.*
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_my_qr_code.*
 import kotlinx.android.synthetic.main.toolbar.*
 

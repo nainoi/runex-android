@@ -20,8 +20,7 @@ import com.think.runex.feature.event.TicketsAdapter
 import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.registration.RegisterEventScreen
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
-import com.think.runex.util.runOnUiThread
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_event_details.*
 import kotlinx.android.synthetic.main.toolbar.*
 

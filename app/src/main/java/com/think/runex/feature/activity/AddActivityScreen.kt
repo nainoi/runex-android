@@ -31,7 +31,7 @@ import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.feature.activity.data.AddActivityBody
 import com.think.runex.util.GetContentHelper
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_add_activity.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*

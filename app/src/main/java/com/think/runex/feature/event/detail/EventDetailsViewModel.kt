@@ -11,7 +11,7 @@ import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.EventDetail
 import com.think.runex.feature.event.data.EventItem
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -21,7 +21,7 @@ open class EventDetailsViewModel(val repo: EventRepository) : BaseViewModel() {
 
     private var isRegisteredEvent: Boolean? = null
 
-    fun getEventDetail(eventCode: String) = launchIoThread {
+    fun getEventDetail(eventCode: String) = launch(IO) {
 
         //Get event details.
         val result = repo.getEventDetails(eventCode)

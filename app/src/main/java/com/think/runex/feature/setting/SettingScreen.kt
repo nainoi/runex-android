@@ -14,7 +14,7 @@ import com.think.runex.feature.user.UserViewModel
 import com.think.runex.base.BaseScreen
 import com.think.runex.feature.user.profile.ProfileEditorScreen
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
 

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.user.data.UserInfo
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -18,7 +18,7 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
         MutableLiveData<UserInfo>()
     }
 
-    fun getUSerInfo() = launchIoThread {
+    fun getUSerInfo() = launch(IO) {
         val userInfoResult = repo.userInfo()
         if (userInfoResult.isSuccessful()) {
             val totalDistanceResult = repo.getTotalDistances()

@@ -4,7 +4,8 @@ import androidx.lifecycle.MutableLiveData
 import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.workout.WorkoutRepository
 import com.think.runex.feature.workout.data.WorkoutHistoryMonth
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
+import kotlinx.coroutines.Dispatchers.IO
 
 class WorkoutHistoryListViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
 
@@ -20,7 +21,7 @@ class WorkoutHistoryListViewModel(private val repo: WorkoutRepository) : BaseVie
     //var isAllLoaded: Boolean = false
     //    private set
 
-    fun getHistoryList(/*lastPosition: Int = 0*/) = launchIoThread {
+    fun getHistoryList(/*lastPosition: Int = 0*/) = launch(IO) {
         isLoading = true
         val result = repo.getWorkoutHistory()
         if (result.isSuccessful().not()) {

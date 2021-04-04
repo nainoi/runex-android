@@ -22,7 +22,7 @@ import com.think.runex.feature.event.data.request.EventRegistrationBody
 import com.think.runex.feature.event.data.request.TicketOptionEventRegistrationBody
 import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
 import com.think.runex.feature.event.detail.EventDetailsViewModel
-import com.think.runex.util.launchIoThread
+import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.util.*
@@ -91,7 +91,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
     }
 
 
-    fun searchAddressByZipCode(zipCode: String, viewRequestId: Int) = launchIoThread {
+    fun searchAddressByZipCode(zipCode: String, viewRequestId: Int) = launch(IO) {
         Log.v("Jozzee", "searchAddressByZipCode: $zipCode")
         val result = addressRepo.getSubDistrictByZipCode(zipCode)
         when (result.isSuccessful()) {
@@ -106,7 +106,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         }
     }
 
-    fun searchAddressBySubDistricts(query: String, viewRequestId: Int) = launchIoThread {
+    fun searchAddressBySubDistricts(query: String, viewRequestId: Int) = launch(IO) {
         Log.v("Jozzee", "searchAddressBySubDistricts: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
@@ -116,7 +116,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
                 }
             }
             addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
-            return@launchIoThread
+            return@launch
         }
 
         val result = addressRepo.getSubDistrictBySubDistrict(query)
@@ -132,7 +132,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         }
     }
 
-    fun searchAddressByDistricts(query: String, viewRequestId: Int) = launchIoThread {
+    fun searchAddressByDistricts(query: String, viewRequestId: Int) = launch(IO) {
         Log.v("Jozzee", "searchAddressByDistricts: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
@@ -142,7 +142,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
                 }
             }
             addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
-            return@launchIoThread
+            return@launch
         }
 
         val result = addressRepo.getSubDistrictByDistrict(query)
@@ -158,7 +158,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         }
     }
 
-    fun searchAddressByProvince(query: String, viewRequestId: Int) = launchIoThread {
+    fun searchAddressByProvince(query: String, viewRequestId: Int) = launch(IO) {
         Log.v("Jozzee", "searchAddressByProvince: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
@@ -168,7 +168,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
                 }
             }
             addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
-            return@launchIoThread
+            return@launch
         }
 
         val result = addressRepo.getSubDistrictByProvince(query)

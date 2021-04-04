@@ -19,7 +19,7 @@ import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.util.NightMode
-import com.think.runex.util.launch
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_leader_board.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
