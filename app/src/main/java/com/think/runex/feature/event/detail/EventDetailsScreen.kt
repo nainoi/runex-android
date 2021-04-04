@@ -18,7 +18,7 @@ import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.feature.event.TicketsAdapter
 import com.think.runex.feature.event.data.EventDetail
-import com.think.runex.feature.event.registration.RegisterEventScreen
+import com.think.runex.feature.event.registration.RegistrationScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_event_details.*
@@ -80,7 +80,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
         }
 
         register_button?.setOnClickListener {
-            addFragment(RegisterEventScreen.newInstance(eventCode))
+            addFragment(RegistrationScreen.newInstance(eventCode))
         }
 
         viewModel.setOnHandleError(::errorHandler)

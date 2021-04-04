@@ -36,7 +36,7 @@ interface EventApi {
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventRegistered>>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/info")
-    fun getEventRegisteredInfoAsync(
+    fun getRegisterDataAsync(
             @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventRegistered>>
 
@@ -51,7 +51,11 @@ interface EventApi {
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
     @POST("/api/${ApiConfig.API_VERSION}/user")
-    fun getUserInfoByIdAsync(@Body body: RequestBody,
+    fun getUserInfoByIdAsync(@Body body: JsonObject,
                              @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+
+    @POST("/api/${ApiConfig.API_VERSION}/register/team")
+    fun addMemberToTeamAsync(@Body body: JsonObject,
+                             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
 }

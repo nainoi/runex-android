@@ -5,10 +5,7 @@ import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiService
-import com.think.runex.feature.activity.data.AddActivityBody
 import com.think.runex.feature.dashboard.data.DashboardInfo
-import com.think.runex.feature.event.EventRepository
-import com.think.runex.feature.event.data.request.EventDashboardBody
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -16,13 +13,17 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
 
     private var dashboardInfo: DashboardInfo? = null
 
-    suspend fun getEventDashboard(body: EventDashboardBody): DashboardInfo? = withContext(IO) {
+    suspend fun getEventDashboard(eventCode: String,
+                                  orderId: String,
+                                  registerId: String,
+                                  parentRegisterId: String): DashboardInfo? = withContext(IO) {
 
         if (dashboardInfo != null) {
             return@withContext dashboardInfo
         }
 
-        val result = repo.getEventDashboard(body)
+        val result = repo.getEventDashboard(eventCode, orderId, registerId, parentRegisterId)
+
         when (result.isSuccessful()) {
             true -> dashboardInfo = result.data
             false -> onHandleError(result.statusCode, result.message, "dashboard")

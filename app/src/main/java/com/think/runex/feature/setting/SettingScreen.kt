@@ -84,7 +84,7 @@ class SettingScreen : BaseScreen() {
     }
 
     private fun showConfirmToLogoutDialog() {
-        showAlertDialog(R.string.confirm, R.string.confirm_to_logout, R.string.logout, R.string.cancel, onPositiveClick = {
+        showAlertDialog(R.string.logout, R.string.confirm_to_logout, R.string.logout, R.string.cancel, onPositiveClick = {
             performLogout()
         })
     }

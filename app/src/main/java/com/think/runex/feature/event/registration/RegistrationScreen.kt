@@ -12,33 +12,33 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.util.extension.*
 import com.think.runex.util.NightMode
-import kotlinx.android.synthetic.main.screen_register_event.*
+import kotlinx.android.synthetic.main.screen_event_registration.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class RegisterEventScreen : BaseScreen() {
+class RegistrationScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(eventCode: String?) = RegisterEventScreen().apply {
+        fun newInstance(eventCode: String?) = RegistrationScreen().apply {
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
             }
         }
     }
 
-    private lateinit var viewModel: RegisterEventViewModel
+    private lateinit var viewModel: RegistrationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = getViewModel(RegisterEventViewModel.Factory(requireContext()))
+        viewModel = getViewModel(RegistrationViewModel.Factory(requireContext()))
 
         //Get user info for fill out
         getUserViewModel().getUserInfoIfNotHave()
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_register_event, container, false)
+        return inflater.inflate(R.layout.screen_event_registration, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

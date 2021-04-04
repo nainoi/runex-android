@@ -26,7 +26,7 @@ import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.data.EventCategory
 import com.think.runex.feature.event.data.Shirt
-import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
+import com.think.runex.feature.event.data.UserOptionEventRegistration
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.data.Gender
@@ -38,7 +38,7 @@ import kotlin.collections.ArrayList
 class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener,
         GenderDialog.OnGenderSelectedListener, ShirtsDialog.OnShirtSelectedListener {
 
-    private lateinit var viewModel: RegisterEventViewModel
+    private lateinit var viewModel: RegistrationViewModel
 
     private var currentBirthDate: String? = null
     private var currentGender: String? = null
@@ -51,7 +51,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = requireParentFragment().getViewModel(RegisterEventViewModel.Factory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(RegistrationViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -354,6 +354,16 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
+        if (address_house_no_input?.content().isNullOrBlank()) {
+            showRequiredInputDialog(getString(R.string.house_no))
+            return false
+        }
+
+        if (address_village_no_input?.content().isNullOrBlank()) {
+            showRequiredInputDialog(getString(R.string.village_no))
+            return false
+        }
+
         if (zip_code_input?.content().isNullOrBlank()) {
             showRequiredInputDialog(getString(R.string.zip_code))
             return false
@@ -385,7 +395,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         showAlertDialog(getString(R.string.warning), getString(R.string.input_required, inputName))
     }
 
-    private fun createUserData() = UserOptionEventRegistrationBody().apply {
+    private fun createUserData() = UserOptionEventRegistration().apply {
         firstName = first_name_input?.content() ?: ""
         lastName = last_name_input?.content() ?: ""
         fullName = "$firstName $lastName"
@@ -395,6 +405,8 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         gender = currentGender ?: ""
         bloodType = blood_type_input?.content() ?: ""
         address = getFullAddress()
+        houseNo = address_house_no_input?.content() ?: ""
+        villageNo = address_village_no_input?.content() ?: ""
         subDistrict = viewModel.getCurrentSubDistrict()
         team = optional_team_name_input?.content() ?: ""
         color = optional_color_input?.content() ?: ""
@@ -402,7 +414,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun getFullAddress(): String {
-        return "${address_input?.content()}, ${sub_district_input?.content()}, " +
+        return "${address_input?.content()}, ${address_house_no_input?.content()}, ${address_village_no_input?.content()}, ${sub_district_input?.content()}, " +
                 "${district_input?.content()}, ${province_input?.content()}, ${zip_code_input?.content()}"
     }
 
@@ -417,7 +429,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             currentBirthDate = userInfo.birthDate
             userInfo.getBirthDateCalendar()?.also { calendar ->
                 when (calendar.year() > 1000) {
-                    true -> birth_date_input?.setText(userInfo.getBirthDate(DISPLAY_DATE_FORMAT_FULL_MONTH))
+                    true -> birth_date_input?.setText(userInfo.getBirthDateDisplay(DISPLAY_DATE_FORMAT_FULL_MONTH))
                     false -> birth_date_input?.setText("")
                 }
             }

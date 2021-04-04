@@ -106,7 +106,7 @@ class ActionControlsFragment : Fragment() {
     }
 
     private fun showConfirmToStopDialog() {
-        showAlertDialog(R.string.confirm, R.string.confirm_to_ending_run, R.string.confirm, R.string.cancel, onPositiveClick = {
+        showAlertDialog(R.string.end_of_run, R.string.confirm_to_ending_run, R.string.confirm, R.string.cancel, onPositiveClick = {
             getActionControlsListener()?.onActionStop()
         })
     }

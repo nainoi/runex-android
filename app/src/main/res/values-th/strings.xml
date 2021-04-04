@@ -6,11 +6,12 @@
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">ที่อยู่</string>
     <string name="add_activity">ส่งผลวิ่ง</string>
+    <string name="add_image">เพิ่มรูปภาพ</string>
+    <string name="add_member">เพิ่มสมาชิก</string>
+    <string name="add_member_success">เพิ่มสมาชิกสำเร็จ</string>
     <string name="amount">จำนวน</string>
     <string name="activity_list">รายการกิจกรรม</string>
     <string name="activity_date">วันที่วิ่ง</string>
-    <string name="add_image">เพิ่มรูปภาพ</string>
-    <string name="add_member">เพิ่มสมาชิก</string>
     <string name="all_event">งานวิ่งทั้งหมด</string>
     <string name="all_events_to_submit">รายการวิ่งทั้งหมดที่จะส่งระยะ</string>
     <string name="allow_permission_in_setting">หากต้องการใช้ฟีเจอร์นี้ คุณต้องให้การอนุญาตในการตั้งค่า</string>
@@ -32,6 +33,7 @@
     <string name="confirm_submit_result">ยืนยันการส่งผล</string>
     <string name="confirm_to_ending_run">คุณยืนยันที่จะสิ้นสุดการวิ่ง?</string>
     <string name="confirm_to_logout">คุณยืนยันที่จะออกจากระบบ?</string>
+    <string name="confirm_to_add_member">คุณยืนยันที่จะเพิ่ม %1$s เข้าสู่ทีมของคุณ?</string>
     <string name="connection_timed_out">หมดเวลาเชื่อมต่อ</string>
     <string name="calories_kcal">แคลอรี่(cal)</string>
     <string name="contract">ติดต่อ</string>
@@ -57,6 +59,7 @@
     <string name="events">อีเว้นท์</string>
     <string name="event_detail">รายละเอียด</string>
     <string name="error">ผิดพลาด</string>
+    <string name="end_of_run">สิ้นสุดการวิ่ง</string>
 
     <!-- F -->
     <string name="facebook">Facebook</string>
@@ -73,6 +76,7 @@
 
     <!-- H -->
     <string name="history">ประวัติ</string>
+    <string name="house_no">เลขที่</string>
 
     <!-- I -->
     <string name="identification_number">เลขบัตรประจำตัวประชาชน</string>
@@ -176,6 +180,7 @@
 
     <!-- V -->
     <string name="view_leader_board">View Leaderboard</string>
+    <string name="village_no">หมู่</string>
 
     <!-- W -->
     <string name="warning">แจ้งเตือน</string>

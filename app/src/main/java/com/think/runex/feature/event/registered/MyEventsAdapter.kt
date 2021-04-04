@@ -15,10 +15,10 @@ import kotlinx.android.synthetic.main.list_item_my_event.view.*
 
 class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(EventRegisteredDiffCallback()) {
 
-    var onItemClickListener: ((event: EventRegistered) -> Unit)? = null
+    var onItemClickListener: ((register: EventRegistered) -> Unit)? = null
 
     @JvmName("setOnItemClickListenerJava")
-    fun setOnItemClickListener(onItemClick: (event: EventRegistered) -> Unit) {
+    fun setOnItemClickListener(onItemClick: (register: EventRegistered) -> Unit) {
         onItemClickListener = onItemClick
     }
 
@@ -36,13 +36,13 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
                     .inflate(R.layout.list_item_my_event, parent, false))
         }
 
-        fun bind(data: EventRegistered?, onItemClick: ((event: EventRegistered) -> Unit)? = null) {
+        fun bind(data: EventRegistered?, onItemClick: ((register: EventRegistered) -> Unit)? = null) {
 
 
             itemView.event_image?.loadEventsImage(data?.eventDetail?.getCoverImage())
             itemView.event_name_label?.text = data?.eventDetail?.title ?: ""
 
-            val paymentStatus = data?.getPaymentStatus() ?: ""
+            val paymentStatus = data?.getPaymentStatus(0) ?: ""
             itemView.event_status_icon?.background = PaymentStatus.getPaymentStatusBackground(requireContext(), paymentStatus)
             itemView.event_status_label?.text = PaymentStatus.getPaymentStatusText(requireContext(), paymentStatus)
 

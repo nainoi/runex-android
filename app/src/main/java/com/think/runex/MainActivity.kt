@@ -23,7 +23,7 @@ import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.SplashScreen
 import com.think.runex.feature.auth.login.LoginScreen
-import com.think.runex.feature.event.registration.RegisterEventScreen
+import com.think.runex.feature.event.registration.RegistrationScreen
 import com.think.runex.util.extension.launch
 import kotlinx.coroutines.delay
 
@@ -112,8 +112,8 @@ class MainActivity : BaseActivity() {
 
     override fun onBackPressed() {
         Logger.warning(simpleName(), "onBackPressed")
-        if (getTopFragment() is RegisterEventScreen) {
-            (getTopFragment() as RegisterEventScreen).onClickBackPressed()
+        if (getTopFragment() is RegistrationScreen) {
+            (getTopFragment() as RegistrationScreen).onClickBackPressed()
             return
         }
         super.onBackPressed()

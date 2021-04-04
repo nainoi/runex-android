@@ -16,7 +16,7 @@ import com.think.runex.feature.event.data.EventRegisteredData
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.extension.getString
 import com.think.runex.util.extension.loadProfileImage
-import kotlinx.android.synthetic.main.list_item_team_member.view.*
+import kotlinx.android.synthetic.main.list_item_member_in_team.view.*
 import kotlinx.coroutines.launch
 
 class MembersAdapter(context: Context, private val owner: LifecycleOwner) : ListAdapter<EventRegisteredData, MembersAdapter.ViewHolder>(EventRegisteredDataDiffCallback()) {
@@ -62,7 +62,7 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
 //        }
 
         constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_team_member, parent, false))
+                .inflate(R.layout.list_item_member_in_team, parent, false))
 
         fun bind(data: EventRegisteredData?, onItemClick: ((registerData: EventRegisteredData) -> Unit)? = null) {
 
@@ -91,12 +91,7 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
 
             //Set up components
             itemView.profile_image?.loadProfileImage(userInfo.avatar)
-
-            val fullName = when (userInfo.firstName?.isNotBlank() == true && userInfo.lastName?.isNotBlank() == true) {
-                true -> ("${userInfo.firstName} ${userInfo.lastName}")
-                false -> userInfo.firstName ?: ""
-            }
-            itemView.full_name_label?.text = ("$fullName${if (isTeamLeader) " (${getString(R.string.team_leader)})" else ""}")
+            itemView.full_name_label?.text = ("${userInfo.getFullName()}${if (isTeamLeader) " (${getString(R.string.team_leader)})" else ""}")
 
         }
 

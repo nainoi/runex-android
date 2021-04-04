@@ -1,5 +1,6 @@
 package com.think.runex.feature.payment
 
+import com.google.gson.JsonObject
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.think.runex.BuildConfig
 import com.think.runex.config.ERR_NO_INTERNET_CONNECTION
@@ -8,7 +9,7 @@ import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.payment.data.PaymentMethod
 import com.think.runex.feature.payment.data.QRCodeImage
-import com.think.runex.feature.payment.data.request.PayEventBody
+import com.think.runex.util.extension.toRequestBody
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import okhttp3.OkHttpClient
@@ -22,8 +23,18 @@ class PaymentRepository(private val api: PaymentApi) : RemoteDataSource() {
 
     suspend fun getPaymentMethods(): Result<List<PaymentMethod>> = call(api.getPaymentMethodsAsync())
 
-    suspend fun payEvent(body: PayEventBody): Result<Any> = call(api.payEventAsync(body))
 
+    suspend fun payEvent(omiseTokenId: String, price: Double, eventCode: String, registerId: String, orderId: String): Result<Any> {
+
+        val jsonObject = JsonObject().apply {
+            addProperty("token", omiseTokenId)
+            addProperty("price", price)
+            addProperty("event_code", eventCode)
+            addProperty("reg_id", registerId)
+            addProperty("order_id", registerId)
+        }
+        return call(api.payEventAsync(jsonObject.toRequestBody()))
+    }
 
     suspend fun getQRData(url: String): Result<String> = withContext(IO) {
         if (NetworkMonitor.isConnected.not()) {

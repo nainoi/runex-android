@@ -1,36 +1,29 @@
 package com.think.runex.feature.event.data
 
-import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.jozzee.android.core.datetime.dateTimeFormat
-import com.think.runex.R
-import com.think.runex.config.DISPLAY_DATE_FORMAT_SHOT_MONTH
-import com.think.runex.config.SERVER_DATE_TIME_FORMAT
-import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.event.data.request.TicketOptionEventRegistrationBody
 
 data class EventRegisteredData(
-        @SerializedName("id") var id: String? = null,
-        @SerializedName("user_id") var userId: String? = null,
-        @SerializedName("event_id") var eventId: String? = null,
-        @SerializedName("event_code") var eventCode: String? = null,
-        @SerializedName("status") var status: String? = null,
-        @SerializedName("payment_type") var paymentType: String? = null,
+        @SerializedName("id") var id: String? = "",
+        @SerializedName("user_id") var userId: String? = "",
+        @SerializedName("event_id") var eventId: String? = "",
+        @SerializedName("event_code") var eventCode: String? = "",
+        @SerializedName("status") var status: String? = "",
+        @SerializedName("payment_type") var paymentType: String? = "",
         @SerializedName("total_price") var totalPrice: Double? = 0.0,
         @SerializedName("discount_price") var discountPrice: Double? = 0.0,
-        @SerializedName("promo_code") var promoCode: String? = null,
-        @SerializedName("order_id") var orderId: String? = null,
+        @SerializedName("promo_code") var promoCode: String? = "",
+        @SerializedName("order_id") var orderId: String? = "",
         @SerializedName("is_team_lead") var isTeamLead: Boolean? = false,
-        @SerializedName("reg_date") var registerDate: String? = null,
-        @SerializedName("payment_date") var paymentPate: String? = null,
-        @SerializedName("coupon") var coupon: Coupon? = null,
-        @SerializedName("ticket_options") var ticketOptions: List<TicketOptionEventRegistrationBody>? = null,
-        @SerializedName("partner") var partner: Partner? = null,
-        @SerializedName("parent_reg_id") var parentRegId: String? = null,
-        @SerializedName("created_at") var createdAt: String? = null,
-        @SerializedName("updated_at") var updatedAt: String? = null) : Parcelable {
+        @SerializedName("reg_date") var registerDate: String? = "",
+        @SerializedName("payment_date") var paymentDate: String? = "",
+        @SerializedName("coupon") var coupon: Coupon? = Coupon(),
+        @SerializedName("ticket_options") var ticketOptions: List<TicketOptionEventRegistration>? = null,
+        @SerializedName("partner") var partner: Partner? = Partner(),
+        @SerializedName("parent_reg_id") var parentRegisterId: String? = "",
+        @SerializedName("created_at") var createdAt: String? = "",
+        @SerializedName("updated_at") var updatedAt: String? = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<EventRegisteredData> {
         override fun createFromParcel(parcel: Parcel): EventRegisteredData {
@@ -57,7 +50,7 @@ data class EventRegisteredData(
             parcel.readString(),
             parcel.readString(),
             parcel.readParcelable(Coupon::class.java.classLoader),
-            parcel.createTypedArrayList(TicketOptionEventRegistrationBody),
+            parcel.createTypedArrayList(TicketOptionEventRegistration),
             parcel.readParcelable(Partner::class.java.classLoader),
             parcel.readString(),
             parcel.readString(),
@@ -76,11 +69,11 @@ data class EventRegisteredData(
         parcel.writeString(orderId)
         parcel.writeValue(isTeamLead)
         parcel.writeString(registerDate)
-        parcel.writeString(paymentPate)
+        parcel.writeString(paymentDate)
         parcel.writeParcelable(coupon, flags)
         parcel.writeTypedList(ticketOptions)
         parcel.writeParcelable(partner, flags)
-        parcel.writeString(parentRegId)
+        parcel.writeString(parentRegisterId)
         parcel.writeString(createdAt)
         parcel.writeString(updatedAt)
     }

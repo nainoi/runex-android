@@ -7,11 +7,11 @@ import com.google.gson.annotations.SerializedName
 data class Partner(
         @SerializedName("partner_id") var partnerId: String? = "",
         @SerializedName("partner_name") var partnerName: String? = "",
-        @SerializedName("ref_activity_key") var refActivityKey: String? = null,
-        @SerializedName("ref_activity_value") var refActivityValue: String? = null,
-        @SerializedName("ref_event_key") var refEventKey: String? = null,
-        @SerializedName("ref_event_value") var refEventValue: String? = null,
-        @SerializedName("ref_phone_value") var refPhoneValue: String? = null,
+        @SerializedName("ref_activity_key") var refActivityKey: String? = "",
+        @SerializedName("ref_activity_value") var refActivityValue: String? = "",
+        @SerializedName("ref_event_key") var refEventKey: String? = "",
+        @SerializedName("ref_event_value") var refEventValue: String? = "",
+        @SerializedName("ref_phone_value") var refPhoneValue: String? = "",
         @SerializedName("slug") var slug: String? = "") : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Partner> {

@@ -21,12 +21,14 @@ import com.think.runex.config.KEY_REGISTER_ID
 import com.think.runex.feature.event.data.EventRegistered
 import com.think.runex.feature.qr.QRCodeScannerActivity
 import com.think.runex.feature.qr.QRCodeScannerContract
+import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_team_management.*
 import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.delay
 
 class TeamManagementScreen : BaseScreen() {
 
@@ -79,7 +81,9 @@ class TeamManagementScreen : BaseScreen() {
         setupComponents()
         subscribeUi()
 
-        performGetRegisterData()
+        //Get register data initial.
+        showLoading()
+        viewModel.getRegisterData(eventCode, registerId, parentRegisterId)
     }
 
     private fun setupComponents() {
@@ -115,22 +119,21 @@ class TeamManagementScreen : BaseScreen() {
 
         }
 
+        observe(viewModel.registerData) { registerData ->
+
+            if (view == null || isAdded.not()) return@observe
+
+            hideLoading()
+
+            if (registerData != null) {
+                eventName = registerData.getEventName()
+                updateUi(registerData)
+            }
+        }
+
         viewModel.setOnHandleError(::errorHandler)
     }
 
-    private fun performGetRegisterData() = launch {
-
-        showLoading()
-
-        val registerData = viewModel.getEventRegisteredInfo(eventCode, registerId, parentRegisterId)
-
-        hideLoading()
-
-        if (registerData != null) {
-            eventName = registerData.getEventName()
-            updateUi(registerData)
-        }
-    }
 
     private fun updateUi(registerData: EventRegistered) {
 
@@ -144,20 +147,37 @@ class TeamManagementScreen : BaseScreen() {
         adapter.submitList(registerData.eventRegisteredList?.toMutableList())
     }
 
-    private fun performGetUserInfoById(userId: String) = launch(Main) {
+    private fun performGetUserInfoById(userId: String) = launch {
+
         showProgressDialog(R.string.check_information)
 
         val userInfo = viewModel.getUserInfoById(userId)
 
-        hideLoading()
+        hideProgressDialog()
 
         if (userInfo != null) {
-            
+            showAlertDialog(title = getString(R.string.add_member),
+                    message = getString(R.string.confirm_to_add_member, userInfo.getFullName()),
+                    positiveText = getString(R.string.confirm),
+                    negativeText = getString(R.string.cancel),
+                    cancelable = false,
+                    onPositiveClick = {
+                        performAddMemberToTeam(userInfo)
+                    })
         }
     }
 
-    private fun performAddMemberToEvent(userId: String) = launch(Main) {
+    private fun performAddMemberToTeam(userInfo: UserInfo) = launch {
 
+        showProgressDialog(R.string.add_member)
+
+        val isSuccess = viewModel.addMemberToTeam(userInfo)
+
+        hideProgressDialog()
+
+        if (isSuccess) {
+            showAlertDialog(R.string.success, R.string.add_member_success)
+        }
     }
 
     private fun showLoading() {
@@ -177,6 +197,11 @@ class TeamManagementScreen : BaseScreen() {
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
         super.errorHandler(statusCode, message, tag)
         hideLoading()
+    }
+
+    override fun onDestroyView() {
+        removeObservers(viewModel.registerData)
+        super.onDestroyView()
     }
 
     override fun onDestroy() {

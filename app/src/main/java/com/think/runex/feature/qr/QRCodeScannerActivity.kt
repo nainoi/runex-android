@@ -38,6 +38,7 @@ import com.think.runex.util.extension.*
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.activity_qr_code_scanner.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 import java.util.concurrent.Executors
 
@@ -131,10 +132,17 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
 
     }
 
-    override fun onStart() {
-        super.onStart()
+
+    override fun onResume() {
+        super.onResume()
         checkPermissionsAndStartCameraPreview()
     }
+
+    override fun onPause() {
+        super.onPause()
+        stopCameraPreview()
+    }
+
 
     @SuppressLint("RestrictedApi")
     private fun startCameraPreview() {
@@ -217,18 +225,25 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
     }
 
     override fun onQRCodeDetected(barcode: Barcode) {
-        freezeCameraPreview()
-        when (prefixFormat.isNullOrBlank()) {
-            true -> sendResult(barcode.rawValue ?: "")
-            false -> when (barcode.rawValue?.startsWith(prefixFormat ?: "") == true) {
+        launch {
+            freezeCameraPreview()
+            delay(500)
+            when (prefixFormat.isNullOrBlank()) {
                 true -> sendResult(barcode.rawValue ?: "")
-                false -> launch {
-                    showToast(R.string.qr_code_invalid)
-                    delay(3000)
-                    startCameraPreview()
+                false -> when (barcode.rawValue?.startsWith(prefixFormat ?: "") == true) {
+                    true -> sendResult(barcode.rawValue ?: "")
+                    false -> launch {
+                        showToast(R.string.qr_code_invalid)
+                        delay(3000)
+                        startCameraPreview()
+                    }
                 }
             }
         }
+    }
+
+    override fun onQRCodeInvalid() {
+        showToast(R.string.qr_code_invalid)
     }
 
     private fun sendResult(data: String) {
@@ -287,7 +302,7 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
             //User allow all permissions storage
             isGranted -> getContentHelper?.getImage { imageUri ->
                 imageUri?.also {
-                    //performUploadProfileImage(it)
+                    launch(Main) { qrCodeAnalyzer.analyze(this@QRCodeScannerActivity, imageUri) }
                 }
             }
             //User denied access to storage.

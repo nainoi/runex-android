@@ -32,7 +32,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         set(value) {
             field = value
             myEvents.postValue(ArrayList(when (field) {
-                true -> _myEvents?.filter { it.getPaymentStatus() == PaymentStatus.SUCCESS }
+                true -> _myEvents?.filter { it.getPaymentStatus(0) == PaymentStatus.SUCCESS }
                 false -> _myEvents
             } ?: emptyList()))
         }
@@ -67,7 +67,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         }
 
         myEvents.postValue(ArrayList(when (filterByPaymentSuccess) {
-            true -> _myEvents?.filter { it.getPaymentStatus() == PaymentStatus.SUCCESS }
+            true -> _myEvents?.filter { it.getPaymentStatus(0) == PaymentStatus.SUCCESS }
             false -> _myEvents
         } ?: emptyList()))
 
@@ -87,7 +87,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
 
         //TODO("TODO Filter payment status success only for now")
         result.data = result.data?.filter {
-            it.isPaymentSuccess() && it.eventDetail?.isOpenSendActivity == true
+            it.isPaymentSuccess(0) && it.eventDetail?.isOpenSendActivity == true
         }
 
         return@withContext result.data

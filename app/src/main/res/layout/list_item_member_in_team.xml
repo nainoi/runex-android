@@ -8,7 +8,7 @@
     android:clickable="true"
     android:focusable="true"
     android:foreground="?selectableItemBackground"
-    android:minHeight="@dimen/space_48dp">
+    android:minHeight="@dimen/space_56dp">
 
     <androidx.appcompat.widget.AppCompatImageView
         android:id="@+id/profile_image"

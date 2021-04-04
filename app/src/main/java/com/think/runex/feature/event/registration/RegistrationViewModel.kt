@@ -18,9 +18,9 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.*
-import com.think.runex.feature.event.data.request.EventRegistrationBody
-import com.think.runex.feature.event.data.request.TicketOptionEventRegistrationBody
-import com.think.runex.feature.event.data.request.UserOptionEventRegistrationBody
+import com.think.runex.feature.event.data.EventRegistrationBody
+import com.think.runex.feature.event.data.TicketOptionEventRegistration
+import com.think.runex.feature.event.data.UserOptionEventRegistration
 import com.think.runex.feature.event.detail.EventDetailsViewModel
 import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
@@ -28,8 +28,8 @@ import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RegisterEventViewModel(eventRepo: EventRepository,
-                             private val addressRepo: AddressRepository) : EventDetailsViewModel(eventRepo) {
+class RegistrationViewModel(eventRepo: EventRepository,
+                            private val addressRepo: AddressRepository) : EventDetailsViewModel(eventRepo) {
 
     private var allSubDistrictList: List<SubDistrict>? = null
     private var firstThreeLettersQuery: String = ""
@@ -41,7 +41,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
     var currentNo: Int = 1
         private set
 
-    var ticketOptions: ArrayList<TicketOptionEventRegistrationBody> = ArrayList()
+    var ticketOptions: ArrayList<TicketOptionEventRegistration> = ArrayList()
         private set
 
     var subDistricts: ArrayList<SubDistrict> = ArrayList()
@@ -52,9 +52,9 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         updateScreen.postValue(ChooseTicketFragment::class.java.simpleName)
     }
 
-    fun getCurrentTicketOption(): TicketOptionEventRegistrationBody? {
+    fun getCurrentTicketOption(): TicketOptionEventRegistration? {
         if (ticketOptions.isEmpty()) {
-            ticketOptions.add(TicketOptionEventRegistrationBody())
+            ticketOptions.add(TicketOptionEventRegistration())
         }
         if (currentNo <= ticketOptions.size) {
             return ticketOptions[currentNo - 1]
@@ -83,7 +83,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         }
     }
 
-    fun setUserData(userOption: UserOptionEventRegistrationBody) {
+    fun setUserData(userOption: UserOptionEventRegistration) {
         getCurrentTicketOption()?.apply {
             this.userOption = userOption
             updateScreen.postValue(ConfirmRegistrationFragment::class.java.simpleName)
@@ -205,10 +205,10 @@ class RegisterEventViewModel(eventRepo: EventRepository,
 
         val registerBody = EventRegistrationBody().apply {
             this.event = eventDetail.value
-            this.totalPrice = this@RegisterEventViewModel.ticketOptions.sumByDouble { it.totalPrice }
+            this.totalPrice = this@RegistrationViewModel.ticketOptions.sumByDouble { it.totalPrice }
             this.registerDate = System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT)
             this.ticketId = getCurrentTicketOption()?.ticket?.id ?: ""
-            this.ticketOptions = this@RegisterEventViewModel.ticketOptions
+            this.ticketOptions = this@RegistrationViewModel.ticketOptions
         }
         val body = JsonObject().apply {
             addProperty("event_id", eventDetail.value?.id ?: 0)
@@ -224,6 +224,62 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         return@withContext result.data
     }
 
+
+    suspend fun registerEventWithKoa(event: EventItem, eBib: String): Boolean = withContext(IO) {
+
+//        val ticketObjects = JsonArray()
+//        event.ticket?.forEach { ticket ->
+//            val ticketObject = JsonObject().apply {
+//                addProperty("ticket_id", ticket.id)
+//                addProperty("ticket_name", ticket.name)
+//                addProperty("distance", ticket.distance ?: 0f)
+//                addProperty("total_price", ticket.price ?: 0)
+//            }
+//            ticketObjects.add(ticketObject)
+//        }
+//        val ticketOptionObject = JsonObject().apply {
+//            add("tickets", ticketObjects)
+//            addProperty("total_price", 0)
+//        }
+//
+//        val registerObject = JsonObject().apply {
+//            add("ticket_options", ticketOptionObject)
+//            addProperty("status", PaymentStatus.SUCCESS)
+//            addProperty("payment_type", PaymentType.FREE)
+//            addProperty("total_price", event.ticket?.get(0)?.price ?: 0)
+//            addProperty("promo_code", "")
+//            addProperty("discount_price", 0)
+//            add("coupon", null)
+//            addProperty("reg_date", System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT))
+//            addProperty("payment_date", System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT))
+//            addProperty("image", "")
+//            add("partner", Gson().toJsonTree(event.partner))
+//        }
+//
+//        val kaoObject = JsonObject().apply {
+//            addProperty("slug", event.partner?.slug ?: "")
+//            addProperty("ebib", eBib)
+//        }
+//
+//        val body = JsonObject().apply {
+//            addProperty("event_id", event.id)
+//            add("regs", registerObject)
+//            add("kao_request", kaoObject)
+//        }
+//
+//
+//        val result = repo.registerEventWithKao(body)
+//        if (result.isSuccessful().not()) {
+//            onHandleError(result.statusCode, result.message)
+//        }
+//
+//        return@withContext result.isSuccessful()
+
+        //TODO("Disable for now")
+        return@withContext false
+    }
+
+
     override fun onCleared() {
         //allSubDistrict = null
         updateScreen.postValue(null)
@@ -235,7 +291,7 @@ class RegisterEventViewModel(eventRepo: EventRepository,
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val service = ApiService()
-            return RegisterEventViewModel(
+            return RegistrationViewModel(
                     EventRepository(service.provideService(context, EventApi::class.java)),
                     AddressRepository(service.provideService(context, AddressApi::class.java))) as T
         }

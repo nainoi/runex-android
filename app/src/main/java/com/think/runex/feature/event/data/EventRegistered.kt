@@ -53,21 +53,32 @@ data class EventRegistered(
     fun getEventCode(): String = eventCode ?: eventDetail?.code ?: ""
 
 
-    //fun getEventId(): Int = eventDetail?.id ?: 0
-
-
-    fun getPaymentStatus(): String? {
-        if (eventRegisteredList?.isNotEmpty() == true) {
+    fun getPaymentStatus(position: Int): String? {
+        if (position < eventRegisteredList?.size ?: 0) {
             return eventRegisteredList?.get(0)?.status
         }
         return null
     }
 
-    fun isPaymentSuccess(): Boolean {
-        if (eventRegisteredList?.isNotEmpty() == true) {
+    fun isPaymentSuccess(position: Int): Boolean {
+        if (position < eventRegisteredList?.size ?: 0) {
             return eventRegisteredList?.get(0)?.status == PaymentStatus.SUCCESS
         }
         return false
+    }
+
+    fun getOrderId(position: Int): String {
+        if (position < eventRegisteredList?.size ?: 0) {
+            return eventRegisteredList?.get(0)?.orderId ?: ""
+        }
+        return ""
+    }
+
+    fun getRegisterId(position: Int): String {
+        if (position < eventRegisteredList?.size ?: 0) {
+            return eventRegisteredList?.get(0)?.id ?: ""
+        }
+        return ""
     }
 
     fun getTotalPrice(): Double {
@@ -77,18 +88,11 @@ data class EventRegistered(
         return 0.0
     }
 
-    fun getOrderId(): String {
+    fun getTicketAtRegister(): Ticket? {
         if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.orderId ?: ""
+            return eventRegisteredList?.get(0)?.ticketOptions?.get(0)?.ticket
         }
-        return ""
-    }
-
-    fun getRegisterId(): String {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.id ?: ""
-        }
-        return ""
+        return null
     }
 
     fun getParentRegisterId(): String {
@@ -102,18 +106,30 @@ data class EventRegistered(
         return id
     }
 
-    fun getTicketAtRegister(): Ticket? {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.ticketOptions?.get(0)?.ticket
-        }
-        return null
+    fun getParentRegisterData(): EventRegisteredData? {
+        return eventRegisteredList?.firstOrNull { it.isTeamLead == true }
     }
 
-    fun getPartner(): Partner? {
-        if (eventRegisteredList?.isNotEmpty() == true) {
-            return eventRegisteredList?.get(0)?.partner
-        }
-        return null
+    fun getTeamLeaderUserId(): String {
+        return eventRegisteredList?.firstOrNull { it.isTeamLead == true }?.userId ?: ""
     }
+
+
+//    fun copyRegisterData() {
+//
+//        val registerData = eventRegisteredList?.firstOrNull {
+//            it.isTeamLead == true
+//        } ?: EventRegisteredData()
+//
+//        EventRegisteredData().apply {
+//            coupon = registerData.coupon
+//            discountPrice = registerData.discountPrice
+//            eventCode = registerData.eventCode
+//            eventId = registerData.eventId
+//            id = ""
+//            isTeamLead = false
+//            orderId = registerData.orderId
+//        }
+//    }
 }
 

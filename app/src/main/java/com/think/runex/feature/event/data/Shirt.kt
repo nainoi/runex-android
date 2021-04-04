@@ -5,11 +5,11 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Shirt(
-        @SerializedName("chest") var chest: String? = null,
+        @SerializedName("chest") var chest: String? = "",
         @SerializedName("id") var id: Int? = 0,
-        @SerializedName("length") var length: String? = null,
+        @SerializedName("length") var length: String? = "",
         @SerializedName("short_sleeve_shirt") var shortSleeveShirt: Boolean? = false,
-        @SerializedName("size") var size: String? = null,
+        @SerializedName("size") var size: String? = "",
         @SerializedName("sleeveless_shirt") var sleevelessShirt: Boolean? = false) : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<Shirt> {

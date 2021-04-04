@@ -185,12 +185,40 @@
                 android:inputType="text"
                 android:maxLines="3" />
 
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_house_no_input"
+                style="@style/TextInput.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/address_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:hint="@string/house_no"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="3" />
+
+            <com.google.android.material.textfield.TextInputEditText
+                android:id="@+id/address_village_no_input"
+                style="@style/TextInput.Bold"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@+id/address_house_no_input"
+                android:layout_marginStart="@dimen/space_16dp"
+                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:hint="@string/village_no"
+                android:imeOptions="actionNext"
+                android:inputType="text"
+                android:maxLines="3" />
+
             <AutoCompleteTextView
                 android:id="@+id/zip_code_input"
                 style="@style/TextInput.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/address_input"
+                android:layout_below="@+id/address_village_no_input"
                 android:layout_marginStart="@dimen/space_16dp"
                 android:layout_marginTop="@dimen/space_8dp"
                 android:layout_marginEnd="@dimen/space_16dp"

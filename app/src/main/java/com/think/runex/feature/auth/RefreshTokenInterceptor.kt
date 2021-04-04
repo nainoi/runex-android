@@ -25,6 +25,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         var response = chain.proceed(request)
+        var refreshTokenResponse: Response? = null
 
         try {
             //Get body as string
@@ -37,13 +38,17 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
 
             if (response.code == 401 || response.code == 444) {
                 response.close()
+
                 //Log.w("RefreshTokenInterceptor", "Code: ${response.code} Auto refresh token!!")
                 val body = RefreshTokenBody(TokenManager.accessToken, TokenManager.refreshToken)
                 val refreshTokenRequest = Request.Builder()
                         .url(ApiConfig.REFRESH_TOKEN_URL)
                         .post(body.toJson().toRequestBody("application/json; charset=UTF-8".toMediaType()))
                         .build()
-                val refreshTokenResponse = chain.proceed(refreshTokenRequest)
+
+                refreshTokenResponse?.close()
+                refreshTokenResponse = chain.proceed(refreshTokenRequest)
+
                 if (refreshTokenResponse.code == 200) {
                     refreshTokenResponse.body?.string()?.also { bodyString ->
                         //Log.w("RefreshTokenInterceptor", "Refresh token response: $bodyString")
@@ -51,8 +56,10 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                             val jsonObject = Gson().fromJson(bodyString, JsonElement::class.java).asJsonObject
                             if (jsonObject.has(KEY_DATA)) {
                                 val tokenObject = jsonObject.get(KEY_DATA).asJsonObject
-                                val accessTokenText = tokenObject.get(KEY_ACCESS_TOKEN).asString ?: ""
-                                val refreshTokenText = tokenObject.get(KEY_REFRESH_TOKEN).asString ?: ""
+                                val accessTokenText = tokenObject.get(KEY_ACCESS_TOKEN).asString
+                                        ?: ""
+                                val refreshTokenText = tokenObject.get(KEY_REFRESH_TOKEN).asString
+                                        ?: ""
                                 if (accessTokenText.isNotBlank() && refreshTokenText.isNotBlank()) {
                                     //Log.e("RefreshTokenInterceptor", "Access token: $accessTokenText")
                                     //Log.e("RefreshTokenInterceptor", "Refresh token: $refreshTokenText")
@@ -74,6 +81,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                             }
                         }
                     }
+                    refreshTokenResponse.close()
                 }
             }
 
@@ -92,6 +100,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
         } catch (error: Throwable) {
             error.printStackTrace()
         } finally {
+            refreshTokenResponse?.close()
             return response
         }
     }

@@ -111,7 +111,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         currentBirthDate = userInfo?.birthDate
         userInfo?.getBirthDateCalendar()?.also { calendar ->
             when (calendar.year() > 1000) {
-                true -> birth_date_input?.setText(userInfo.getBirthDate(DISPLAY_DATE_FORMAT_FULL_MONTH))
+                true -> birth_date_input?.setText(userInfo.getBirthDateDisplay(DISPLAY_DATE_FORMAT_FULL_MONTH))
                 false -> birth_date_input?.setText("")
             }
         }

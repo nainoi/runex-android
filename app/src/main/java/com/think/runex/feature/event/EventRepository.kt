@@ -17,7 +17,7 @@ class EventRepository(private val api: EventApi) : RemoteDataSource() {
 
     suspend fun getMyEventsAtActive(): Result<List<EventRegistered>> = call(api.getMyEventsAtActiveAsync())
 
-    suspend fun getEventRegisteredInfo(body: JsonObject): Result<EventRegistered> = call(api.getEventRegisteredInfoAsync(body))
+    suspend fun getRegisterData(body: JsonObject): Result<EventRegistered> = call(api.getRegisterDataAsync(body))
 
     suspend fun registerEvent(body: JsonObject): Result<EventRegistered> = call(api.registerEventAsync(body))
 

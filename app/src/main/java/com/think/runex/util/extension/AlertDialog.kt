@@ -223,6 +223,26 @@ fun Fragment.showAlertDialog(
             cancelable = isCancelEnable)
 }
 
+fun Fragment.showAlertDialog(
+        @StringRes title: Int,
+        @StringRes message: Int,
+        @StringRes positiveText: Int? = R.string.ok,
+        isCancelEnable: Boolean = true,
+        onPositiveClick: (() -> Unit)? = null) {
+
+    if (isAdded.not() || view == null) return
+    view?.hideKeyboard()
+
+    requireContext().showAlertDialog(title = getString(title),
+            message = getString(message),
+            positiveText = if (positiveText != null) getString(positiveText) else null,
+            negativeText = null,
+            onPositiveClick = onPositiveClick,
+            onNegativeClick = null,
+            onDialogDismiss = null,
+            cancelable = isCancelEnable)
+}
+
 fun Context.showSettingPermissionInSettingDialog() = showAlertDialog(
         title = getString(R.string.app_name),
         message = getString(R.string.allow_permission_in_setting),

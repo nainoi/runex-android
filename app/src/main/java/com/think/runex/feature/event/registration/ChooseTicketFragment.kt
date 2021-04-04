@@ -17,12 +17,12 @@ import kotlinx.android.synthetic.main.fragment_choose_ticket.*
 
 class ChooseTicketFragment : BaseScreen() {
 
-    private lateinit var viewModel: RegisterEventViewModel
+    private lateinit var viewModel: RegistrationViewModel
     private lateinit var adapter: TicketsAdapter
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = requireParentFragment().getViewModel(RegisterEventViewModel.Factory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(RegistrationViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {

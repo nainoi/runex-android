@@ -11,8 +11,7 @@
         android:id="@+id/camera_preview"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_above="@+id/bottom_layout"
-        app:scaleType="fitCenter" />
+        android:layout_above="@+id/bottom_layout" />
 
     <com.think.runex.feature.qr.QRCodeGraphicOverlay
         android:id="@+id/qr_code_overlay"

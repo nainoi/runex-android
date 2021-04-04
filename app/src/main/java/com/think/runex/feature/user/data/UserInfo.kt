@@ -13,8 +13,8 @@ import java.util.*
 data class UserInfo(
         @SerializedName("id") var id: String? = null,
         @SerializedName("email") var email: String? = null,
-        @SerializedName("provider") var provider:String? = null,
-        @SerializedName("provider_id") var providerId:String? = null,
+        @SerializedName("provider") var provider: String? = null,
+        @SerializedName("provider_id") var providerId: String? = null,
         @SerializedName("fullname") var fullName: String? = null,
         @SerializedName("firstname") var firstName: String? = null,
         @SerializedName("firstname_th") var firstNameTh: String? = null,
@@ -76,14 +76,19 @@ data class UserInfo(
 
     var totalDistance: Double? = 0.0
 
-    @JvmName("getBirthDateDisplay")
-    fun getBirthDate(pattern: String = DISPLAY_DATE_FORMAT_SHOT_MONTH): String {
+    fun getBirthDateDisplay(pattern: String = DISPLAY_DATE_FORMAT_SHOT_MONTH): String {
         return birthDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, pattern) ?: ""
     }
 
     fun getBirthDateCalendar(): Calendar? = birthDate?.toCalendar(SERVER_DATE_TIME_FORMAT)
 
-    fun getTotalDistance(unit: String): String {
+    fun getTotalDistanceDisplay(unit: String): String {
         return ("${totalDistance?.displayFormat() ?: ""} $unit")
+    }
+
+    @JvmName("getFullNameDisplay")
+    fun getFullName() = when (firstName?.isNotBlank() == true && lastName?.isNotBlank() == true) {
+        true -> ("$firstName $lastName")
+        false -> fullName ?: ""
     }
 }

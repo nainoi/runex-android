@@ -1,19 +1,17 @@
-package com.think.runex.feature.event.data.request
+package com.think.runex.feature.event.data
 
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.think.runex.feature.event.data.Shirt
-import com.think.runex.feature.event.data.Ticket
 
-data class TicketOptionEventRegistrationBody(
-        @SerializedName("user_option") var userOption: UserOptionEventRegistrationBody? = null,
+data class TicketOptionEventRegistration(
+        @SerializedName("user_option") var userOption: UserOptionEventRegistration? = null,
         @SerializedName("tickets") var ticket: Ticket? = null,
         @SerializedName("shirts") var shirt: Shirt? = null,
         @SerializedName("total_price") var totalPrice: Double = 0.0,
         @SerializedName("reciept_type") var receiptType: String = "") : Parcelable {
     constructor(parcel: Parcel) : this(
-            parcel.readParcelable(UserOptionEventRegistrationBody::class.java.classLoader),
+            parcel.readParcelable(UserOptionEventRegistration::class.java.classLoader),
             parcel.readParcelable(Ticket::class.java.classLoader),
             parcel.readParcelable(Shirt::class.java.classLoader),
             parcel.readDouble(),
@@ -31,12 +29,12 @@ data class TicketOptionEventRegistrationBody(
         return 0
     }
 
-    companion object CREATOR : Parcelable.Creator<TicketOptionEventRegistrationBody> {
-        override fun createFromParcel(parcel: Parcel): TicketOptionEventRegistrationBody {
-            return TicketOptionEventRegistrationBody(parcel)
+    companion object CREATOR : Parcelable.Creator<TicketOptionEventRegistration> {
+        override fun createFromParcel(parcel: Parcel): TicketOptionEventRegistration {
+            return TicketOptionEventRegistration(parcel)
         }
 
-        override fun newArray(size: Int): Array<TicketOptionEventRegistrationBody?> {
+        override fun newArray(size: Int): Array<TicketOptionEventRegistration?> {
             return arrayOfNulls(size)
         }
     }

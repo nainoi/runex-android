@@ -1,7 +1,6 @@
 package com.think.runex.feature.dashboard
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -15,7 +14,6 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.config.*
 import com.think.runex.feature.activity.AddActivityScreen
 import com.think.runex.feature.dashboard.data.DashboardInfo
-import com.think.runex.feature.event.data.request.EventDashboardBody
 import com.think.runex.feature.event.team.TeamManagementScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
@@ -112,7 +110,7 @@ class DashboardScreen : BaseScreen() {
     private fun performGetEventDashBoard() = launch {
         progress_layout?.visible()
 
-        val dashboards = viewModel.getEventDashboard(EventDashboardBody(eventCode, orderId, registerId, parentRegisterId))
+        val dashboards = viewModel.getEventDashboard(eventCode, orderId, registerId, parentRegisterId)
 
         progress_layout?.gone()
 

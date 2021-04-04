@@ -15,6 +15,7 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.feature.dashboard.DashboardScreen
 import com.think.runex.feature.payment.PayEventScreen
+import com.think.runex.feature.payment.data.PaymentStatus
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_my_events.*
 
@@ -69,19 +70,22 @@ class MyEventsScreen : BaseScreen() {
             viewModel.getEventList()
         }
 
-        adapter.setOnItemClickListener { event ->
-            when (event.isPaymentSuccess()) {
-                true -> addFragment(DashboardScreen.newInstance(eventCode = event.getEventCode(),
-                        orderId = event.getOrderId(),
-                        registerId = event.getRegisterId(),
-                        parentRegisterId = event.getParentRegisterId()
+        adapter.setOnItemClickListener { register ->
+            when (register.getPaymentStatus(0)) {
+                PaymentStatus.SUCCESS -> addFragment(DashboardScreen.newInstance(eventCode = register.getEventCode(),
+                        orderId = register.getOrderId(0),
+                        registerId = register.getRegisterId(0),
+                        parentRegisterId = register.getParentRegisterId()
                 ))
-                false -> addFragment(PayEventScreen.newInstance(eventCode = event.getEventCode(),
-                        eventName = event.getEventName(),
-                        orderId = event.getOrderId(),
-                        registerId = event.getRegisterId(),
-                        ref2 = event.ref2 ?: "",
-                        totalPrice = event.getTotalPrice()))
+                PaymentStatus.WAITING_PAY -> addFragment(PayEventScreen.newInstance(eventCode = register.getEventCode(),
+                        eventName = register.getEventName(),
+                        orderId = register.getOrderId(0),
+                        registerId = register.getRegisterId(0),
+                        ref2 = register.ref2 ?: "",
+                        totalPrice = register.getTotalPrice()))
+                PaymentStatus.WAITING_CONFIRM -> {
+                    //TODO("")
+                }
             }
         }
 

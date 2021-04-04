@@ -9,11 +9,12 @@
     <string name="app_description_2">แอพพลิเคชั่นสำหรับส่งระยะผลวิ่ง\nVirtual Run สำหรับสมาชิก Runex</string>
     <string name="address">Address</string>
     <string name="add_activity">Add Activity</string>
+    <string name="add_image">Add Image</string>
+    <string name="add_member">Add Member</string>
+    <string name="add_member_success">Add member success</string>
     <string name="amount">Amount</string>
     <string name="activity_list">Activity List</string>
     <string name="activity_date">Activity Date</string>
-    <string name="add_image">Add Image</string>
-    <string name="add_member">Add Member</string>
     <string name="all_event">All Events</string>
     <string name="all_events_to_submit">All events to submit</string>
     <string name="allow_permission_in_setting">To use this feature, you need to allow permission in setting.</string>
@@ -35,6 +36,7 @@
     <string name="confirm_submit_result">Confirm to submit</string>
     <string name="confirm_to_ending_run">You confirm to ending run?</string>
     <string name="confirm_to_logout">You confirm to logout?</string>
+    <string name="confirm_to_add_member">Confirm to add %1$s to your team?</string>
     <string name="connection_timed_out">Connection timed out</string>
     <string name="calories_kcal">Calories(kcal)</string>
     <string name="contract">Contract</string>
@@ -60,6 +62,7 @@
     <string name="events">Events</string>
     <string name="event_detail">Event Detail</string>
     <string name="error">Error</string>
+    <string name="end_of_run">End of run</string>
 
     <!-- F -->
     <string name="facebook">Facebook</string>
@@ -76,6 +79,7 @@
 
     <!-- H -->
     <string name="history">History</string>
+    <string name="house_no">No.</string>
 
     <!-- I -->
     <string name="identification_number">Identification Number</string>
@@ -179,6 +183,7 @@
 
     <!-- V -->
     <string name="view_leader_board">View Leader Board</string>
+    <string name="village_no">Village No.</string>
 
     <!-- W -->
     <string name="warning">Warning</string>

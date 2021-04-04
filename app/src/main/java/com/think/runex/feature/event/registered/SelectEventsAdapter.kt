@@ -50,13 +50,13 @@ class SelectEventsAdapter : ListAdapter<EventRegistered, SelectEventsAdapter.Vie
     fun getEventSelectedList(): List<EventRegisteredForSubmitResult> {
         val list = ArrayList<EventRegisteredForSubmitResult>()
         selectedList?.forEach { position ->
-            getItem(position).also { event ->
+            getItem(position).also { register ->
                 list.add(EventRegisteredForSubmitResult(
-                        eventCode = event.getEventCode(),
-                        ticket = event.getTicketAtRegister() ?: Ticket(),
-                        orderId = event.getOrderId(),
-                        regId = event.getRegisterId(),
-                        parentRegId = event.getParentRegisterId()))
+                        eventCode = register.getEventCode(),
+                        ticket = register.getTicketAtRegister() ?: Ticket(),
+                        orderId = register.getOrderId(0),
+                        registerId = register.getRegisterId(0),
+                        parentRegisterId = register.getParentRegisterId()))
             }
         }
         return list

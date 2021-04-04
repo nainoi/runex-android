@@ -24,12 +24,12 @@ class ConfirmRegistrationFragment : BaseScreen() {
 //        }
 //    }
 
-    private lateinit var viewModel: RegisterEventViewModel
+    private lateinit var viewModel: RegistrationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
-        viewModel = requireParentFragment().getViewModel(RegisterEventViewModel.Factory(requireContext()))
+        viewModel = requireParentFragment().getViewModel(RegistrationViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -84,11 +84,11 @@ class ConfirmRegistrationFragment : BaseScreen() {
 
         showProgressDialog(R.string.register)
 
-        val event = viewModel.registerEvent()
+        val register = viewModel.registerEvent()
 
         hideProgressDialog()
 
-        if (event != null) {
+        if (register != null) {
 
             //Update live data for refresh screen().
             getMainViewModel().refreshScreen()
@@ -99,12 +99,12 @@ class ConfirmRegistrationFragment : BaseScreen() {
 
                     //Add Payment screen
                     addFragment(PayEventScreen.newInstance(
-                            eventCode = event.getEventCode(),
-                            eventName = event.getEventName(),
-                            orderId = event.getOrderId(),
-                            registerId = event.getRegisterId(),
-                            ref2 = event.ref2 ?: "",
-                            totalPrice = event.getTotalPrice()))
+                            eventCode = register.getEventCode(),
+                            eventName = register.getEventName(),
+                            orderId = register.getOrderId(0),
+                            registerId = register.getRegisterId(0),
+                            ref2 = register.ref2 ?: "",
+                            totalPrice = register.getTotalPrice()))
 
                     //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack
                     delay(100)

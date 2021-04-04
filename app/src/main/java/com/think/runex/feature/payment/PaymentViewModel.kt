@@ -9,7 +9,6 @@ import com.think.runex.config.KEY_QR
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.payment.data.PaymentMethod
-import com.think.runex.feature.payment.data.request.PayEventBody
 import com.think.runex.feature.qr.QRCodeUtil
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -57,16 +56,11 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
     }
 
     suspend fun payEventByCreditOrDebitCard(omiseTokenId: String): Boolean = withContext(IO) {
-        val body = PayEventBody().apply {
-            this.omiseTokenId = omiseTokenId
-            this.price = this@PaymentViewModel.price + (paymentMethod?.getChargeAmount(this@PaymentViewModel.price)
-                    ?: 0.0)
-            this.eventCode = this@PaymentViewModel.eventCode
-            this.registerId = this@PaymentViewModel.registerId
-            this.orderId = this@PaymentViewModel.orderId
-        }
 
-        val result = repo.payEvent(body)
+        val price = price + (paymentMethod?.getChargeAmount(price) ?: 0.0)
+
+        val result = repo.payEvent(omiseTokenId, price, eventCode, registerId, orderId)
+
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }

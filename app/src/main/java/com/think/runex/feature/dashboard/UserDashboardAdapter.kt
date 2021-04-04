@@ -103,11 +103,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
 
                 //Update user name data
                 result?.data?.also { userInfo ->
-                    if (userInfo.firstName?.isNotBlank() == true && userInfo.lastName?.isNotBlank() == true) {
-                        itemView.full_name_label?.text = ("${userInfo.firstName} ${userInfo.lastName}")
-                    } else {
-                        itemView.full_name_label?.text = userInfo.firstName ?: ""
-                    }
+                    itemView.full_name_label?.text = userInfo.getFullName()
                 }
             }
         }

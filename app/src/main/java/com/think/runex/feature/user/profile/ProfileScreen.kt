@@ -80,7 +80,7 @@ class ProfileScreen : BaseScreen() {
         profile_image?.loadProfileImage(userInfo?.avatar)
         username_label?.text = userInfo?.fullName ?: ""
         email_label?.text = userInfo?.email ?: ""
-        total_distances_label?.text = userInfo?.getTotalDistance(getString(R.string.km)) ?: ""
+        total_distances_label?.text = userInfo?.getTotalDistanceDisplay(getString(R.string.km)) ?: ""
     }
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
