@@ -70,7 +70,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.edit_info, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.edit_info, R.drawable.ic_navigation_back)
     }
 
     private fun subscribeUi() {

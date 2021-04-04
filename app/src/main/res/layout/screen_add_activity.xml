@@ -44,7 +44,7 @@
         android:layout_height="wrap_content"
         android:layout_alignBottom="@+id/activity_image"
         android:layout_marginBottom="@dimen/space_8dp"
-        android:background="@drawable/bg_btn_add_activity_image"
+        android:background="@drawable/bg_btn_write_small"
         android:clickable="true"
         android:focusable="true"
         android:paddingStart="@dimen/space_8dp"

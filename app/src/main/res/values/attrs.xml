@@ -37,4 +37,16 @@
     <declare-styleable name="ProgressLayout">
         <attr name="progressColor" format="color" />
     </declare-styleable>
+
+    <declare-styleable name="QRGraphicOverlay">
+        <attr name="frameCornersLength" format="dimension" />
+        <attr name="frameCornersThickness" format="dimension" />
+        <attr name="frameCornersRadius" format="dimension" />
+        <attr name="frameColor" format="color" />
+        <attr name="maskColor" format="color" />
+        <attr name="frameSizePercent" format="float" />
+        <attr name="frameAspectRatioWidth" format="float" />
+        <attr name="frameAspectRatioHeight" format="float" />
+        <attr name="frameMarginTop" format="dimension"/>
+    </declare-styleable>
 </resources>

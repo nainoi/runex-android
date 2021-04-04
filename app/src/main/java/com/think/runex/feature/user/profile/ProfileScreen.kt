@@ -11,7 +11,7 @@ import com.think.runex.util.extension.*
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.base.BaseScreen
 import com.think.runex.feature.setting.SettingScreen
-import com.think.runex.feature.qr.MyQRScreen
+import com.think.runex.feature.qr.MyQRCodeScreen
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_profile.*
@@ -61,7 +61,7 @@ class ProfileScreen : BaseScreen() {
         }
 
         my_qr_button?.setOnClickListener {
-            addFragment(MyQRScreen())
+            addFragment(MyQRCodeScreen())
         }
 
         viewModel.setOnHandleError(::errorHandler)

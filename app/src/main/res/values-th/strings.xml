@@ -47,6 +47,7 @@
     <string name="duration">ระยะเวลา</string>
     <string name="district">อำเภอ</string>
     <string name="data_not_found">ไม่พบข้อมูล</string>
+    <string name="download_qr">ดาวน์โหลด QR</string>
 
     <!-- E -->
     <string name="edit">แก้ไข</string>
@@ -108,6 +109,7 @@
     <string name="ok">ตกลง</string>
     <string name="other">อื่นๆ</string>
     <string name="open">เปิด</string>
+    <string name="open_camera">เปิดกล้อง</string>
     <string name="order_no">หมายเลขคำสั่งซื้อ</string>
     <string name="optional">ไม่จำเป็น</string>
 
@@ -123,6 +125,8 @@
     <string name="payment_successfully">ชำระเงินเรียบร้อยแล้ว</string>
     <string name="pay_event_in_progress">กำลังทำรายการ…\nโปรดอย่าออกจากหน้านี้จนกว่าการทำรายการจะเสร็จสมบูรณ์</string>
 
+    <!-- Q -->
+    <string name="qr_code_invalid">QR Code ไม่ถูกต้อง</string>
 
     <!-- R -->
     <string name="register">สมัครสมาชิก</string>
@@ -146,11 +150,12 @@
     <string name="success">สำเร็จ</string>
     <string name="share">แชร์</string>
     <string name="save_to_device">บันทึกภาพลงอุปกรณ์</string>
-    <string name="save_qr">ดาวน์โหลด QR</string>
     <string name="storage_permission_denied">ไม่สามารถเข้าถึงพื้นที่เก็บข้อมูลของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="sub_district">ตำบล</string>
     <string name="shirt_size">ขนาดเสื้อ</string>
     <string name="service_unavailable">ไม่สามารถใช้บริการได้ในขณะนี้</string>
+    <string name="scan_qr_code_for_add_member_in_event">สแกน QR Code เพื่อเพิ่มทีมในรายการวิ่ง</string>
+    <string name="scan_qr_code">สแกน QR Code</string>
 
     <!-- T -->
     <string name="total_distances">ระยะสะสม</string>
@@ -166,6 +171,7 @@
     <string name="username">ชื่อผู้ใช้</string>
     <string name="update_info">อัพเดทข้อมูล</string>
     <string name="update_profile_image">อัปเดตรูปโปรไฟล์…</string>
+    <string name="upload_qr">Upload QR</string>
 
     <!-- V -->
     <string name="view_leader_board">View Leaderboard</string>

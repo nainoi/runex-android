@@ -36,7 +36,7 @@ class EventPreviewActivity : BaseActivity(), RegisterEventWithEBIBDialog.OnEBIBS
 //    @SuppressLint("SetJavaScriptEnabled")
 //    private fun setupComponents() {
 //        setStatusBarColor(Color.TRANSPARENT, NightMode.isNightMode(this).not())
-//        setupToolbar(toolbar, R.string.detail, R.mipmap.ic_navigation_back)
+//        setupToolbar(toolbar_layout, R.string.detail, R.mipmap.ic_navigation_back)
 //
 //        //Setup view view
 //        web_view?.settings?.apply {

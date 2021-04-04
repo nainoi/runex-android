@@ -1,4 +1,4 @@
-package com.think.runex.util.extension
+package com.think.runex.feature.qr
 
 import android.content.Context
 import android.graphics.Bitmap
@@ -7,9 +7,9 @@ import com.google.zxing.BarcodeFormat
 import com.google.zxing.MultiFormatWriter
 import com.think.runex.config.DEFAULT_QR_CODE_SIZE
 
-class QRUtil {
+class QRCodeUtil {
 
-    fun generateQR(context: Context, data: String): Bitmap {
+    fun generateQRCode(context: Context, data: String): Bitmap {
         val bitMatrix = MultiFormatWriter().encode(data, BarcodeFormat.QR_CODE,
                 DEFAULT_QR_CODE_SIZE, DEFAULT_QR_CODE_SIZE, null)
 

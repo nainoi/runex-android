@@ -2,23 +2,16 @@ package com.think.runex.feature.payment
 
 import android.content.Context
 import android.graphics.Bitmap
-import android.util.Log
-import androidx.core.content.ContextCompat
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import com.google.zxing.BarcodeFormat
-import com.google.zxing.MultiFormatWriter
 import com.think.runex.base.BaseViewModel
-import com.think.runex.config.DEFAULT_QR_CODE_SIZE
-import com.think.runex.config.ERR_NO_STATUS_CODE
 import com.think.runex.config.KEY_QR
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.payment.data.PaymentMethod
 import com.think.runex.feature.payment.data.request.PayEventBody
-import com.think.runex.util.extension.QRUtil
+import com.think.runex.feature.qr.QRCodeUtil
 import kotlinx.coroutines.Dispatchers.IO
-import kotlinx.coroutines.delay
 import kotlinx.coroutines.withContext
 import java.net.HttpURLConnection
 
@@ -89,7 +82,7 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
             onHandleError(result.statusCode, result.message)
             return@withContext null
         }
-        qrCodeImage = QRUtil().generateQR(context, result.data ?: "")
+        qrCodeImage = QRCodeUtil().generateQRCode(context, result.data ?: "")
         return@withContext qrCodeImage
     }
 

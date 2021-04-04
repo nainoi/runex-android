@@ -66,6 +66,10 @@
         <item name="android:textColor">?textColorSecondary</item>
     </style>
 
+    <style name="Text.BodyHeading.Secondary.OnLight" parent="Text.BodyHeading">
+        <item name="android:textColor">@color/textColorSecondaryOnLight</item>
+    </style>
+
     <style name="Text.BodyHeading.Secondary.Bold" parent="Text.BodyHeading.Secondary">
         <item name="android:textStyle">bold</item>
     </style>

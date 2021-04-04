@@ -52,7 +52,7 @@ class RegisterEventScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.register_event, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.register_event, R.drawable.ic_navigation_back)
     }
 
     private fun subscribeUi() {

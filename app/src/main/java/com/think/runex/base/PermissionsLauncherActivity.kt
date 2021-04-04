@@ -2,10 +2,11 @@ package com.think.runex.base
 
 import android.os.Bundle
 import android.os.PersistableBundle
+import android.util.Log
 import androidx.activity.result.ActivityResultLauncher
 import androidx.activity.result.contract.ActivityResultContracts
 
-class PermissionsLauncherActivity : BaseActivity() {
+open class PermissionsLauncherActivity : BaseActivity() {
 
     private var requestPermissionsLauncher: ActivityResultLauncher<Array<String>>? = null
     private var requestPermissionsCallback: ((resultsMap: Map<String, Boolean>) -> Unit)? = null
@@ -13,7 +14,7 @@ class PermissionsLauncherActivity : BaseActivity() {
     private var requestPermissionLauncher: ActivityResultLauncher<String>? = null
     private var requestPermissionCallback: ((isGranted: Boolean) -> Unit)? = null
 
-    override fun onCreate(savedInstanceState: Bundle?, persistentState: PersistableBundle?) {
+    override fun onCreate(savedInstanceState: Bundle?) {
 
         requestPermissionsLauncher = registerForActivityResult(ActivityResultContracts.RequestMultiplePermissions()) { resultsMap ->
             requestPermissionsCallback?.invoke(resultsMap)
@@ -23,7 +24,7 @@ class PermissionsLauncherActivity : BaseActivity() {
             requestPermissionCallback?.invoke(isGranted)
         }
 
-        super.onCreate(savedInstanceState, persistentState)
+        super.onCreate(savedInstanceState)
     }
 
     fun requestPermissions(permissions: Array<String>, callback: ((resultsMap: Map<String, Boolean>) -> Unit)? = null) {

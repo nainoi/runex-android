@@ -44,7 +44,7 @@ class SettingScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.setting, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.setting, R.drawable.ic_navigation_back)
         app_version_label?.text = ("${getString(R.string.app_version)} ${BuildConfig.VERSION_NAME}")
     }
 

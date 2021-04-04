@@ -81,7 +81,7 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.add_activity, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.add_activity, R.drawable.ic_navigation_back)
         setActivityImageForPlaceholder()
     }
 

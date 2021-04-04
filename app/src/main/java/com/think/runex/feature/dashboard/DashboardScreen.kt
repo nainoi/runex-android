@@ -81,7 +81,7 @@ class DashboardScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.dashboard, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.dashboard, R.drawable.ic_navigation_back)
 
         //Set up recycler view
         adapter = UserDashboardAdapter(users_dashboard_list, this)

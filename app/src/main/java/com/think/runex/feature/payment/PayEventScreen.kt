@@ -80,7 +80,7 @@ class PayEventScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.payment, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.payment, R.drawable.ic_navigation_back)
 
         //Set price and order details
         price_label?.text = ("${viewModel.price.displayFormat()} ${getString(R.string.thai_bath)}")
@@ -104,11 +104,11 @@ class PayEventScreen : BaseScreen() {
                 }
                 PaymentType.QR_CODE -> {
                     viewModel.paymentMethod = paymentMethod
-                    showBottomSheet(QRToPayBottomSheet())
+                    showBottomSheet(QRCodeToPayBottomSheet())
                 }
                 PaymentType.QR -> {
                     viewModel.paymentMethod = paymentMethod
-                    showBottomSheet(QRToPayBottomSheet())
+                    showBottomSheet(QRCodeToPayBottomSheet())
                 }
             }
         }
@@ -152,7 +152,7 @@ class PayEventScreen : BaseScreen() {
         progress_bar?.gone()
         when (tag) {
             KEY_QR -> showAlertDialog(getString(R.string.error), message, isCancelEnable = false) {
-                findChildFragment<QRToPayBottomSheet>()?.closeBottomSheet()
+                findChildFragment<QRCodeToPayBottomSheet>()?.closeBottomSheet()
             }
             else -> super.errorHandler(statusCode, message, tag)
         }

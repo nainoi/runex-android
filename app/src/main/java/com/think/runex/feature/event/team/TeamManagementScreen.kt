@@ -1,9 +1,11 @@
 package com.think.runex.feature.event.team
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.activity.result.ActivityResultLauncher
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.text.toIntOrZero
@@ -17,6 +19,8 @@ import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.config.KEY_PARENT_REGISTER_ID
 import com.think.runex.config.KEY_REGISTER_ID
 import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.qr.QRCodeScannerActivity
+import com.think.runex.feature.qr.QRCodeScannerContract
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
 import com.think.runex.util.launch
@@ -38,8 +42,10 @@ class TeamManagementScreen : BaseScreen() {
 
     private lateinit var viewModel: TeamViewModel
     private lateinit var adapter: MembersAdapter
+    private lateinit var qrScannerLauncher: ActivityResultLauncher<QRCodeScannerContract.Input>
 
     private var eventCode: String = ""
+    private var eventName: String = ""
     private var registerId: String = ""
     private var parentRegisterId: String = ""
 
@@ -53,6 +59,12 @@ class TeamManagementScreen : BaseScreen() {
         }
 
         viewModel = getViewModel(TeamViewModel.Factory(requireContext()))
+
+        qrScannerLauncher = registerForActivityResult(QRCodeScannerContract()) { output ->
+            if (output?.data?.isNotBlank() == true) {
+                onScanQrCodeSuccess(output.data ?: "")
+            }
+        }
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -69,7 +81,7 @@ class TeamManagementScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.team_management, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.team_management, R.drawable.ic_navigation_back)
 
         //Set up recycler view
         adapter = MembersAdapter(requireContext(), this)
@@ -89,7 +101,11 @@ class TeamManagementScreen : BaseScreen() {
 
     private fun subscribeUi() {
         add_member_button?.setOnClickListener {
-
+            qrScannerLauncher.launch(QRCodeScannerContract.Input(
+                    titleText = getString(R.string.scan_qr_code_for_add_member_in_event),
+                    descriptionText = eventName,
+                    prefixFormat = QRCodeScannerActivity.PREFIX_RUNEX
+            ))
         }
 
         adapter.setOnItemClickListener {
@@ -108,6 +124,7 @@ class TeamManagementScreen : BaseScreen() {
         hideLoading()
 
         if (registerData != null) {
+            eventName = registerData.getEventName()
             updateUi(registerData)
         }
     }
@@ -122,6 +139,11 @@ class TeamManagementScreen : BaseScreen() {
         }
 
         adapter.submitList(registerData.eventRegisteredList?.toMutableList())
+    }
+
+    private fun onScanQrCodeSuccess(data: String) {
+        val userId = data.substring(QRCodeScannerActivity.PREFIX_RUNEX.length, data.length)
+        Log.e("Jozzee", "User Id: $userId")
     }
 
     private fun showLoading() {

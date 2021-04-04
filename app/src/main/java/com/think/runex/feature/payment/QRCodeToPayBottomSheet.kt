@@ -18,9 +18,9 @@ import com.think.runex.base.PermissionsLauncherBottomSheet
 import com.think.runex.util.extension.*
 import com.think.runex.feature.payment.data.PaymentType
 import com.think.runex.util.launch
-import kotlinx.android.synthetic.main.bottom_sheet_qr_to_pay.*
+import kotlinx.android.synthetic.main.bottom_sheet_qr_code_to_pay.*
 
-class QRToPayBottomSheet : PermissionsLauncherBottomSheet() {
+class QRCodeToPayBottomSheet : PermissionsLauncherBottomSheet() {
 
     private lateinit var viewModel: PaymentViewModel
 
@@ -32,7 +32,7 @@ class QRToPayBottomSheet : PermissionsLauncherBottomSheet() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.bottom_sheet_qr_to_pay, container, false)
+        return inflater.inflate(R.layout.bottom_sheet_qr_code_to_pay, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {

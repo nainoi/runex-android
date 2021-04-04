@@ -1,8 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<com.google.android.material.appbar.MaterialToolbar xmlns:android="http://schemas.android.com/apk/res/android"
-    android:id="@+id/toolbar"
+<FrameLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:id="@+id/toolbar_layout"
     android:layout_width="match_parent"
     android:layout_height="wrap_content">
+
+    <com.google.android.material.appbar.MaterialToolbar
+        android:id="@+id/toolbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <TextView
         android:id="@+id/toolbar_title"
@@ -13,10 +18,10 @@
         android:layout_marginStart="@dimen/space_48dp"
         android:layout_marginEnd="@dimen/space_48dp"
         android:ellipsize="end"
+        android:gravity="center_horizontal"
         android:maxLines="1"
         android:paddingStart="@dimen/space_8dp"
         android:paddingEnd="@dimen/space_8dp"
         android:textColor="?textColorPrimary"
         android:textSize="@dimen/text_size_title" />
-
-</com.google.android.material.appbar.MaterialToolbar>
+</FrameLayout>

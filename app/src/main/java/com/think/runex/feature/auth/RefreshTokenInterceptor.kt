@@ -25,6 +25,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         var response = chain.proceed(request)
+
         try {
             //Get body as string
 //            val body: String? = response.body?.source()?.let { source ->

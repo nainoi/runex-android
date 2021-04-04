@@ -52,7 +52,7 @@ class LeaderBoardScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.leader_board, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.leader_board, R.drawable.ic_navigation_back)
     }
 
     private fun subscribeUi() {

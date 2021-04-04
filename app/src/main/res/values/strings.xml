@@ -41,7 +41,6 @@
     <string name="connect_application">Connect Applications</string>
     <string name="color_optional">Color (Optional)</string>
 
-
     <!-- D -->
     <string name="dashboard">Dashboard</string>
     <string name="detail">Detail</string>
@@ -51,6 +50,7 @@
     <string name="duration">Duration</string>
     <string name="district">Amphoe</string>
     <string name="data_not_found">Data not found.</string>
+    <string name="download_qr">Download QR</string>
 
     <!-- E -->
     <string name="edit">Edit</string>
@@ -112,6 +112,7 @@
     <string name="ok">OK</string>
     <string name="other">Other</string>
     <string name="open">Open</string>
+    <string name="open_camera">Open Camera</string>
     <string name="order_no">Order No</string>
     <string name="optional">Optional</string>
 
@@ -126,6 +127,9 @@
     <string name="payment">Payment</string>
     <string name="payment_successfully">Payment successfully</string>
     <string name="pay_event_in_progress">In progress…\nPlease do not leave this page until the transaction is complete.</string>
+
+    <!-- Q -->
+    <string name="qr_code_invalid">QR Code invalid.</string>
 
     <!-- R -->
     <string name="register">Register</string>
@@ -149,11 +153,12 @@
     <string name="success">Success</string>
     <string name="share">Share</string>
     <string name="save_to_device">Save to device</string>
-    <string name="save_qr">Save QR</string>
     <string name="storage_permission_denied">Unable to access your storage due to being denied.</string>
     <string name="sub_district">District</string>
     <string name="shirt_size">Shirt Size</string>
     <string name="service_unavailable">The service is unavailable for now.</string>
+    <string name="scan_qr_code_for_add_member_in_event">Scan QR Code for add member to event</string>
+    <string name="scan_qr_code">Scan QR Code</string>
 
     <!-- T -->
     <string name="total_distances">Total Distances</string>
@@ -169,6 +174,7 @@
     <string name="username">Username</string>
     <string name="update_info">Update Info</string>
     <string name="update_profile_image">Update Profile Image…</string>
+    <string name="upload_qr">อัปโหลด QR</string>
 
     <!-- V -->
     <string name="view_leader_board">View Leader Board</string>

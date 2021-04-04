@@ -16,6 +16,15 @@ fun Context.getColorAttr(@AttrRes colorId: Int): Int {
     return typedValue.data
 }
 
+fun Context.getDrawable(@DrawableRes drawableId: Int, @ColorInt filterColor: Int? = null): Drawable? {
+    return ContextCompat.getDrawable(this, drawableId).apply {
+        if (this != null && filterColor != null) {
+            setColorFilter(filterColor)
+        }
+    }
+}
+
+
 fun Fragment.getDrawable(@DrawableRes drawableId: Int, @ColorInt filterColor: Int? = null): Drawable? {
     return ContextCompat.getDrawable(requireContext(), drawableId).apply {
         if (this != null && filterColor != null) {

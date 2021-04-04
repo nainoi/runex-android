@@ -1,17 +1,27 @@
 <?xml version="1.0" encoding="utf-8"?>
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     package="com.think.runex">
+
     <!-- Internet and Network -->
     <uses-permission android:name="android.permission.INTERNET" />
-    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" /> <!-- Storage -->
+    <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
+
+    <!-- Storage -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
-    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" /> <!-- Location -->
+    <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
+
+    <!-- Location -->
     <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
-    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" /> <!-- Camera -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+
+    <!-- Camera -->
     <uses-permission android:name="android.permission.CAMERA" />
 
     <uses-feature android:name="android.hardware.camera" />
-    <uses-feature android:name="android.hardware.camera.autofocus" /> <!-- Service -->
+    <uses-feature android:name="android.hardware.camera.any" />
+    <uses-feature android:name="android.hardware.camera.autofocus" />
+
+    <!-- Service -->
     <uses-permission android:name="android.permission.ACCESS_BACKGROUND_LOCATION" />
     <uses-permission android:name="android.permission.FOREGROUND_SERVICE" /> <!-- Other -->
     <uses-permission android:name="android.permission.VIBRATE" />
@@ -29,7 +39,7 @@
         android:theme="@style/Theme.Runex.TransparentStatus"
         android:usesCleartextTraffic="true"
         android:windowSoftInputMode="adjustResize|stateHidden">
-        <activity android:name=".feature.qr.ScanQRActivity"></activity>
+
         <activity
             android:name=".MainActivity"
             android:launchMode="singleTask"
@@ -40,10 +50,17 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
+
         <activity
             android:name=".feature.event.detail.EventPreviewActivity"
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
+
+        <activity
+            android:name=".feature.qr.QRCodeScannerActivity"
+            android:launchMode="singleTask"
+            android:screenOrientation="portrait" />
+
         <activity
             android:name=".DeepLinkActivity"
             android:launchMode="singleInstance">
@@ -57,11 +74,14 @@
                     android:host="data"
                     android:scheme="runex" />
             </intent-filter>
-        </activity> <!-- Facebook Activity -->
+        </activity>
+
+        <!-- Facebook Activity -->
         <activity
             android:name="com.facebook.FacebookActivity"
             android:configChanges="keyboard|keyboardHidden|screenLayout|screenSize|orientation"
             android:label="@string/app_name" />
+
         <activity
             android:name="com.facebook.CustomTabActivity"
             android:exported="true">
@@ -73,10 +93,13 @@
 
                 <data android:scheme="@string/fb_login_protocol_scheme" />
             </intent-filter>
-        </activity> <!-- Omise Credit cart activity -->
+        </activity>
+
+        <!-- Omise Credit cart activity -->
         <activity
             android:name="co.omise.android.ui.CreditCardActivity"
             android:theme="@style/Theme.Runex.CreditCardActivity" /> <!-- Firebase Cloud Messaging -->
+
         <service
             android:name=".service.FireBaseMessagingService"
             android:exported="false">
@@ -84,6 +107,7 @@
                 <action android:name="com.google.firebase.MESSAGING_EVENT" />
             </intent-filter>
         </service>
+
         <service
             android:name=".feature.workout.WorkoutService"
             android:enabled="true"
@@ -101,6 +125,7 @@
                 android:name="android.support.FILE_PROVIDER_PATHS"
                 android:resource="@xml/provider_paths" />
         </provider>
+
         <provider
             android:name="com.facebook.FacebookContentProvider"
             android:authorities="com.facebook.app.FacebookContentProvider657116381441095"
@@ -109,9 +134,15 @@
         <meta-data
             android:name="com.facebook.sdk.ApplicationId"
             android:value="@string/facebook_app_id" />
+
         <meta-data
             android:name="com.google.android.geo.API_KEY"
             android:value="AIzaSyAb-C-jWRRLpSGFUnI4E-XxurvEymJdeo0" />
+
+        <meta-data
+            android:name="com.google.mlkit.vision.DEPENDENCIES"
+            android:value="barcode" />
+        <!-- To use multiple models: android:value="barcode,model2,model3" -->
     </application>
 
 </manifest>

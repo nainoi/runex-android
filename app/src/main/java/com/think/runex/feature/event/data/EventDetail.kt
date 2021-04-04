@@ -172,22 +172,27 @@ data class EventDetail(
 
     @JvmName("getCoverImageJava")
     fun getCoverImage(): String {
-        return when (coverImage?.startsWith("http", false) == true) {
-            true -> coverImage ?: ""
-            false -> ("${ApiConfig.BASE_URL}${coverImage ?: ""}")
+        return when {
+            coverImage.isNullOrBlank() -> ""
+            (coverImage?.startsWith("http", false) == true) -> coverImage ?: ""
+            else -> ("${ApiConfig.BASE_URL}${coverImage ?: ""}")
         }
     }
 
     fun getEventPeriod(context: Context): String {
-        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH) ?: ""
-        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH) ?: ""
+        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
+        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT_SHOT_MONTH)
+                ?: ""
         return "${context.getString(R.string.register_date)} $startEventDate - $endEventDate"
     }
 
     fun getEventPeriodWithTime(): String {
         val dateTimeFormat = "dd MMM yyyy(HH:mm)"
-        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat) ?: ""
-        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat) ?: ""
+        val startEventDate = eventStartDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
+                ?: ""
+        val endEventDate = eventEndDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, dateTimeFormat)
+                ?: ""
         return "$startEventDate - $endEventDate"
     }
 

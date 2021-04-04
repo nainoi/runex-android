@@ -17,18 +17,17 @@ import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.util.extension.*
 import com.think.runex.util.NightMode
 import com.think.runex.util.launch
-import kotlinx.android.synthetic.main.screen_my_qr.*
+import kotlinx.android.synthetic.main.screen_my_qr_code.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-
-class MyQRScreen : PermissionsLauncherScreen() {
+class MyQRCodeScreen : PermissionsLauncherScreen() {
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_my_qr, container, false)
+        return inflater.inflate(R.layout.screen_my_qr_code, container, false)
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -41,7 +40,7 @@ class MyQRScreen : PermissionsLauncherScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar, R.string.my_qr_code, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, R.string.my_qr_code, R.drawable.ic_navigation_back)
     }
 
     private fun subscribeUi() {
@@ -55,7 +54,7 @@ class MyQRScreen : PermissionsLauncherScreen() {
         progress_bar?.visible()
 
         val data = "RUNEX|${getUserViewModel().getUSerInfoInstance()?.id ?: ""}"
-        qr_code_image?.setImageBitmap(QRUtil().generateQR(requireContext(), data))
+        qr_code_image?.setImageBitmap(QRCodeUtil().generateQRCode(requireContext(), data))
 
         progress_bar?.gone()
         save_button?.isClickable = true

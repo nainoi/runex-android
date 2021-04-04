@@ -4,7 +4,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    tools:context=".feature.payment.QRToPayBottomSheet">
+    tools:context=".feature.payment.QRCodeToPayBottomSheet">
 
     <RelativeLayout
         android:id="@+id/content_layout"
@@ -139,7 +139,7 @@
             android:layout_below="@+id/qr_code_layout"
             android:layout_centerHorizontal="true"
             android:minWidth="144dp"
-            android:text="@string/save_qr" />
+            android:text="@string/download_qr" />
 
     </RelativeLayout>
 

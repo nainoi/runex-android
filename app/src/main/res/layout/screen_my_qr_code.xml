@@ -5,7 +5,7 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@color/backgroundPrimary"
-    tools:context=".feature.qr.MyQRScreen">
+    tools:context=".feature.qr.MyQRCodeScreen">
 
     <com.google.android.material.appbar.AppBarLayout
         android:id="@+id/top_bar"
@@ -50,6 +50,6 @@
         android:layout_below="@+id/qr_code_layout"
         android:layout_centerHorizontal="true"
         android:minWidth="144dp"
-        android:text="@string/save_qr" />
+        android:text="@string/download_qr" />
 
 </RelativeLayout>
