@@ -20,6 +20,10 @@ import com.think.runex.util.extension.*
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_dashboard.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
+import kotlinx.coroutines.withContext
+import org.bouncycastle.asn1.cms.RsaKemParameters
 
 class DashboardScreen : BaseScreen() {
 
@@ -43,6 +47,9 @@ class DashboardScreen : BaseScreen() {
 
     private lateinit var adapter: UserDashboardAdapter
     private lateinit var layoutManager: LinearLayoutManager//For load more in the feature!
+
+    private var myUserId: String = ""
+    private var isTeamLeader: Boolean = false
 
     private var eventCode: String = ""
     private var orderId: String = ""
@@ -74,7 +81,13 @@ class DashboardScreen : BaseScreen() {
         setupComponents()
         subscribeUi()
 
-        performGetEventDashBoard()
+        launch {
+            progress_layout?.visible()
+
+            myUserId = getMyUserId()
+
+            performGetEventDashBoard()
+        }
     }
 
     private fun setupComponents() {
@@ -91,9 +104,7 @@ class DashboardScreen : BaseScreen() {
     private fun subscribeUi() {
 
         add_activity_button?.setOnClickListener {
-            getMyUserId { userId ->
 
-            }
         }
 
         view_leader_board_button?.setOnClickListener {
@@ -101,7 +112,7 @@ class DashboardScreen : BaseScreen() {
         }
 
         team_management_button?.setOnClickListener {
-            addFragment(TeamManagementScreen.newInstance(eventCode, registerId, parentRegisterId))
+            addFragment(TeamManagementScreen.newInstance(eventCode, registerId, parentRegisterId, isTeamLeader))
         }
 
         viewModel.setOnHandleError(::errorHandler)
@@ -123,7 +134,10 @@ class DashboardScreen : BaseScreen() {
     private fun updateUi(dashboards: DashboardInfo) {
         event_name_label?.text = dashboards.registered?.eventDetail?.title ?: ""
         total_distances_label?.text = dashboards.getTotalDistanceDisplay(getString(R.string.km))
+
+        isTeamLeader = dashboards.isTeamLeader(myUserId)
         team_management_button?.setVisible(dashboards.isEventCategoryTeam())
+        team_management_label.text = getString(if (isTeamLeader) R.string.team_management else R.string.team)
 
         adapter.submitList(dashboards.userActivityList?.toMutableList())
     }
@@ -133,31 +147,27 @@ class DashboardScreen : BaseScreen() {
         addFragment(AddActivityScreen())
     }
 
-    private fun getMyUserId(callback: (userId: String) -> Unit) {
-        launch {
+    private suspend fun getMyUserId(): String = withContext(IO) {
 
-            //Get user info from live data.
-            val userId = getUserViewModel().userInfo.value?.id
-            if (userId?.isNotBlank() == true) {
-                callback.invoke(userId)
-                return@launch
-            }
+        //Get user info from live data.
+        val userId = getUserViewModel().userInfo.value?.id
+        if (userId?.isNotBlank() == true) {
+            return@withContext userId
+        }
 
-            //Get user info from api.
-            showProgressDialog("Get User Info")
-            val userInfo = getUserViewModel().getUSerInfoInstance()
-            hideProgressDialog()
+        val userInfo = getUserViewModel().getUSerInfoInstance()
+        if (userInfo != null && userInfo.id?.isNotBlank() == true) {
+            return@withContext userInfo.id ?: ""
+        }
 
-            if (userInfo != null && userInfo.id?.isNotBlank() == true) {
-                callback.invoke(userInfo.id ?: "")
-                return@launch
-            }
-
-            //Get user info failed!.
+        //Get user info failed!.
+        launch(Main) {
             showAlertDialog(R.string.error, R.string.data_not_found, false) {
                 onBackPressed()
             }
         }
+
+        return@withContext ""
     }
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {

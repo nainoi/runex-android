@@ -10,6 +10,7 @@ import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.text.toIntOrZero
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
+import com.jozzee.android.core.view.setVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
@@ -31,11 +32,12 @@ class TeamManagementScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(eventCode: String, registerId: String, parentRegisterId: String) = TeamManagementScreen().apply {
+        fun newInstance(eventCode: String, registerId: String, parentRegisterId: String, isTeamLeader: Boolean) = TeamManagementScreen().apply {
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
                 putString(KEY_REGISTER_ID, registerId)
                 putString(KEY_PARENT_REGISTER_ID, parentRegisterId)
+                putBoolean("is_team_lead", isTeamLeader)
             }
         }
     }
@@ -48,6 +50,7 @@ class TeamManagementScreen : BaseScreen() {
     private var eventName: String = ""
     private var registerId: String = ""
     private var parentRegisterId: String = ""
+    private var isTeamLeader: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -56,6 +59,7 @@ class TeamManagementScreen : BaseScreen() {
             eventCode = getString(KEY_EVENT_CODE) ?: ""
             registerId = getString(KEY_REGISTER_ID) ?: ""
             parentRegisterId = getString(KEY_PARENT_REGISTER_ID) ?: ""
+            isTeamLeader = getBoolean("is_team_lead")
         }
 
         viewModel = getViewModel(TeamViewModel.Factory(requireContext()))
@@ -85,7 +89,7 @@ class TeamManagementScreen : BaseScreen() {
 
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
-        setupToolbar(toolbar_layout, R.string.team_management, R.drawable.ic_navigation_back)
+        setupToolbar(toolbar_layout, if (isTeamLeader) R.string.team_management else R.string.team, R.drawable.ic_navigation_back)
 
         //Set up recycler view
         adapter = MembersAdapter(requireContext(), this)
@@ -101,6 +105,10 @@ class TeamManagementScreen : BaseScreen() {
         member_list?.addItemDecoration(itemDecoration)
         member_list?.layoutManager = LinearLayoutManager(requireContext())
         member_list?.adapter = adapter
+
+        //Update scan qr code by team leader only.
+        add_member_button?.isEnabled = isTeamLeader
+        add_member_navigator_icon?.setVisible(isTeamLeader)
     }
 
     private fun subscribeUi() {
@@ -112,8 +120,8 @@ class TeamManagementScreen : BaseScreen() {
             ))
         }
 
-        adapter.setOnItemClickListener {
 
+        adapter.setOnItemClickListener {
         }
 
         observe(viewModel.registerData) { registerData ->
@@ -137,8 +145,8 @@ class TeamManagementScreen : BaseScreen() {
         registered.getTicketAtRegister()?.also { ticket ->
             val memberCount = (registered.registeredDataList?.size ?: 0)
 
-            add_member_label?.text = ("${getString(R.string.add_member)} ($memberCount/${ticket.runnerInTeam ?: ""})")
-            add_member_button?.isClickable = memberCount < ticket.runnerInTeam.toIntOrZero()
+            add_member_label?.text = ("${getString(if (isTeamLeader) R.string.add_member else R.string.member)} ($memberCount/${ticket.runnerInTeam ?: ""})")
+            add_member_button?.isEnabled = isTeamLeader && memberCount < ticket.runnerInTeam.toIntOrZero()
         }
 
         adapter.submitList(registered.registeredDataList?.toMutableList())

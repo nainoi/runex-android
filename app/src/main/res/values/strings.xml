@@ -101,6 +101,7 @@
     <string name="male">Male</string>
     <string name="my_events">My Events</string>
     <string name="my_qr_code">My QR Code</string>
+    <string name="member">Member</string>
     <string name="member_list">Member List</string>
 
     <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->

@@ -20,4 +20,8 @@ data class DashboardInfo(
     fun isEventCategoryTeam(): Boolean {
         return registered?.getTicketAtRegister()?.category == TicketCategory.TEAM
     }
+
+    fun isTeamLeader(userId: String): Boolean {
+        return registered?.registeredDataList?.find { it.userId == userId && it.isTeamLead == true } != null
+    }
 }

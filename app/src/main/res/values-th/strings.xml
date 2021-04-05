@@ -98,6 +98,7 @@
     <string name="male">ชาย</string>
     <string name="my_events">อีเว้นท์ของฉัน</string>
     <string name="my_qr_code">QR Code ของฉัน</string>
+    <string name="member">สมาชิก</string>
     <string name="member_list">รายชื่อสมาชิก</string>
 
     <!-- Time duration in minutes per kilometer. But design use word 'Pace'-->

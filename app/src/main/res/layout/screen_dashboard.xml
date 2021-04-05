@@ -200,7 +200,7 @@
         android:minHeight="@dimen/space_48dp">
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/add_member_icon"
+            android:id="@+id/member_icon"
             android:layout_width="@dimen/icon_size_in_action_bar"
             android:layout_height="@dimen/icon_size_in_action_bar"
             android:layout_marginStart="@dimen/space_16dp"
@@ -213,7 +213,7 @@
             app:tint="?iconColorPrimary" />
 
         <androidx.appcompat.widget.AppCompatTextView
-            android:id="@+id/add_member_label"
+            android:id="@+id/team_management_label"
             style="@style/Text.Body.Primary"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
@@ -225,12 +225,12 @@
             app:autoSizeMinTextSize="@dimen/text_size_caption"
             app:autoSizeTextType="uniform"
             app:layout_constraintBottom_toBottomOf="parent"
-            app:layout_constraintEnd_toStartOf="@+id/add_member_navigator_icon"
-            app:layout_constraintStart_toEndOf="@id/add_member_icon"
+            app:layout_constraintEnd_toStartOf="@+id/team_management_navigator_icon"
+            app:layout_constraintStart_toEndOf="@id/member_icon"
             app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
-            android:id="@+id/add_member_navigator_icon"
+            android:id="@+id/team_management_navigator_icon"
             android:layout_width="@dimen/icon_size_system"
             android:layout_height="@dimen/icon_size_system"
             android:layout_marginEnd="@dimen/space_16dp"
