@@ -18,7 +18,6 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.*
-import com.think.runex.feature.event.data.RegistrationBody
 import com.think.runex.feature.event.data.TicketOptionEventRegistration
 import com.think.runex.feature.event.data.UserOptionEventRegistration
 import com.think.runex.feature.event.detail.EventDetailsViewModel
@@ -46,24 +45,8 @@ class RegistrationViewModel(eventRepo: EventRepository,
 
     private var subDistricts: ArrayList<SubDistrict> = ArrayList()
 
+    private var registerId: String? = null
 
-    fun updateRegisterData(registered: Registered) {
-
-        //Update register status
-        registerStatus = registered.getRegisterStatus(0) ?: registerStatus
-
-        //Update ticket options
-        val ticketOption: TicketOptionEventRegistration? = registered.registerDataList?.get(0)?.ticketOptions?.get(0)
-        getCurrentTicketOption()?.apply {
-            userOption = ticketOption?.userOption
-            totalPrice = ticketOption?.totalPrice ?: 0.0
-            registerNumber = ticketOption?.registerNumber
-            receiptType = ticketOption?.receiptType ?: ""
-            ticket = ticketOption?.ticket
-        }
-
-        this.eventDetail.postValue(registered.eventDetail)
-    }
 
     fun onGetEventDetailCompleted() {
         updateScreen.postValue(ChooseTicketFragment::class.java.simpleName)
@@ -220,25 +203,72 @@ class RegistrationViewModel(eventRepo: EventRepository,
             }
         }
 
-        val registerBody = RegistrationBody().apply {
-            this.event = eventDetail.value
-            this.totalPrice = this@RegistrationViewModel.ticketOptions.sumByDouble { it.totalPrice }
-            this.registerDate = System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT)
-            this.ticketId = getCurrentTicketOption()?.ticket?.id ?: ""
-            this.ticketOptions = this@RegistrationViewModel.ticketOptions
+        val gSon = Gson()
+
+        val registerObject = JsonObject().apply {
+            add("event", gSon.toJsonTree(eventDetail.value))
+            addProperty("status", RegisterStatus.WAITING_PAY)
+            addProperty("payment_type", "")
+            addProperty("total_price", ticketOptions.sumByDouble { it.totalPrice })
+            addProperty("discount_price", 0.0)
+            addProperty("promo_code", "")
+            addProperty("reg_date", System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT))
+            addProperty("ticket_id", getCurrentTicketOption()?.ticket?.id ?: "")
+            add("ticket_options", gSon.toJsonTree(ticketOptions))
         }
+
         val body = JsonObject().apply {
             addProperty("event_id", eventDetail.value?.id ?: 0)
             addProperty("event_code", eventDetail.value?.code ?: "")
             addProperty("owner_id", eventDetail.value?.ownerId ?: "")
-            add("regs", Gson().toJsonTree(registerBody))
+            add("regs", gSon.toJsonTree(registerObject))
         }
 
         val result = repo.registerEvent(body)
+
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }
+
         return@withContext result.data
+    }
+
+    fun updateRegisterData(registered: Registered) {
+
+        //Update register status
+        registerStatus = registered.getRegisterStatus(0) ?: registerStatus
+
+        registerId = registered.registeredDataList?.get(0)?.id
+
+        //Update ticket options
+        val ticketOption: TicketOptionEventRegistration? = registered.registeredDataList?.get(0)?.ticketOptions?.get(0)
+
+        getCurrentTicketOption()?.apply {
+            userOption = ticketOption?.userOption
+            totalPrice = ticketOption?.totalPrice ?: 0.0
+            registerNumber = ticketOption?.registerNumber
+            receiptType = ticketOption?.receiptType ?: ""
+            ticket = ticketOption?.ticket
+        }
+
+        this.eventDetail.postValue(registered.eventDetail)
+    }
+
+    suspend fun updateRegisterInfo(): Boolean = withContext(IO) {
+
+        val body = JsonObject().apply {
+            addProperty("event_code", eventDetail.value?.code ?: "")
+            addProperty("reg_id", registerId ?: "")
+            add("ticket_options", Gson().toJsonTree(getCurrentTicketOption()))
+        }
+
+        val result = repo.updateRegisterInfo(body)
+
+        if (result.isSuccessful().not()) {
+            onHandleError(result.statusCode, result.message)
+        }
+
+        return@withContext result.isSuccessful()
     }
 
 

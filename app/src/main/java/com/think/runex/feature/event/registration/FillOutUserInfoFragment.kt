@@ -14,9 +14,11 @@ import android.widget.TextView
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.datetime.toCalendar
 import com.jozzee.android.core.datetime.year
+import com.jozzee.android.core.text.isPhoneNumber
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.*
+import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.util.extension.*
@@ -324,15 +326,30 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if (identification_input?.content().isNullOrBlank()) {
-            showRequiredInputDialog(getString(R.string.identification_number))
+        val citizenId = citizen_id_input?.content()
+
+        if (citizenId.isNullOrBlank()) {
+            showRequiredInputDialog(getString(R.string.citizen_id))
             return false
         }
 
-        if (phone_input?.content().isNullOrBlank()) {
+        if (BuildConfig.DEBUG.not() && citizenId.isThaiCitizenId().not()) {
+            showAlertDialog(getString(R.string.warning), getString(R.string.please_enter_correct_citizen_id))
+            return false
+        }
+
+        val phone = phone_input?.content()
+
+        if (phone.isNullOrBlank()) {
             showRequiredInputDialog(getString(R.string.phone))
             return false
         }
+
+        if (BuildConfig.DEBUG.not() && phone.isPhoneNumber().not()) {
+            showAlertDialog(getString(R.string.warning), getString(R.string.please_enter_correct_phone_number))
+            return false
+        }
+
         if (birth_date_input?.content().isNullOrBlank()) {
             showRequiredInputDialog(getString(R.string.birth_date))
             return false
@@ -343,12 +360,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if (birth_date_input?.content().isNullOrBlank()) {
-            showRequiredInputDialog(getString(R.string.birth_date))
-            return false
-        }
-
-        if (birth_date_input?.content().isNullOrBlank()) {
+        if (blood_type_input?.content().isNullOrBlank()) {
             showRequiredInputDialog(getString(R.string.blood_type))
             return false
         }
@@ -403,7 +415,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         firstName = first_name_input?.content() ?: ""
         lastName = last_name_input?.content() ?: ""
         fullName = "$firstName $lastName"
-        cityCenId = identification_input?.content() ?: ""
+        cityCenId = citizen_id_input?.content() ?: ""
         phone = phone_input?.content() ?: ""
         birthDate = currentBirthDate ?: ""
         gender = currentGender ?: ""

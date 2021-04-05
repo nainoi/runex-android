@@ -52,7 +52,7 @@
                 android:maxLines="1" />
 
             <com.google.android.material.textfield.TextInputEditText
-                android:id="@+id/identification_input"
+                android:id="@+id/citizen_id_input"
                 style="@style/TextInput.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
@@ -60,7 +60,7 @@
                 android:layout_marginStart="@dimen/space_16dp"
                 android:layout_marginTop="@dimen/space_8dp"
                 android:layout_marginEnd="@dimen/space_16dp"
-                android:hint="@string/identification_number"
+                android:hint="@string/citizen_id"
                 android:imeOptions="actionNext"
                 android:inputType="number"
                 android:maxLines="1" />
@@ -70,7 +70,7 @@
                 style="@style/TextInput.Bold"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:layout_below="@+id/identification_input"
+                android:layout_below="@+id/citizen_id_input"
                 android:layout_marginStart="@dimen/space_16dp"
                 android:layout_marginTop="@dimen/space_8dp"
                 android:layout_marginEnd="@dimen/space_16dp"

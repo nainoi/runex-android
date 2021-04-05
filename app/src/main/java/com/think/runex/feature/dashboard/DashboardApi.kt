@@ -1,5 +1,6 @@
 package com.think.runex.feature.dashboard
 
+import com.google.gson.JsonObject
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
@@ -16,11 +17,11 @@ interface DashboardApi {
 
     @POST("/api/${ApiConfig.API_VERSION}/activity/dashboard")
     fun getDashboardAsync(
-            @Body body: RequestBody,
+            @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<DashboardInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/user")
     fun getUserInfoByIdAsync(
-            @Body body: RequestBody,
+            @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
 }

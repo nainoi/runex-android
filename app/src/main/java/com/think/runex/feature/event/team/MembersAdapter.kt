@@ -12,14 +12,14 @@ import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.EventApi
-import com.think.runex.feature.event.data.RegisterData
+import com.think.runex.feature.event.data.RegisteredData
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.extension.getString
 import com.think.runex.util.extension.loadProfileImage
 import kotlinx.android.synthetic.main.list_item_member_in_team.view.*
 import kotlinx.coroutines.launch
 
-class MembersAdapter(context: Context, private val owner: LifecycleOwner) : ListAdapter<RegisterData, MembersAdapter.ViewHolder>(EventRegisteredDataDiffCallback()) {
+class MembersAdapter(context: Context, private val owner: LifecycleOwner) : ListAdapter<RegisteredData, MembersAdapter.ViewHolder>(EventRegisteredDataDiffCallback()) {
 
     private var repository: TeamRepository? = null
 
@@ -27,10 +27,10 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
         repository = TeamRepository(ApiService().provideService(context, EventApi::class.java))
     }
 
-    var onItemClickListener: ((registerData: RegisterData) -> Unit)? = null
+    var onItemClickListener: ((registeredData: RegisteredData) -> Unit)? = null
 
     @JvmName("setOnItemClickListenerJava")
-    fun setOnItemClickListener(onItemClick: (registerData: RegisterData) -> Unit) {
+    fun setOnItemClickListener(onItemClick: (registeredData: RegisteredData) -> Unit) {
         onItemClickListener = onItemClick
     }
 
@@ -45,12 +45,12 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
         repository = null
     }
 
-    class EventRegisteredDataDiffCallback : DiffUtil.ItemCallback<RegisterData>() {
-        override fun areItemsTheSame(oldItem: RegisterData, newItem: RegisterData): Boolean {
+    class EventRegisteredDataDiffCallback : DiffUtil.ItemCallback<RegisteredData>() {
+        override fun areItemsTheSame(oldItem: RegisteredData, newItem: RegisteredData): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: RegisterData, newItem: RegisterData): Boolean {
+        override fun areContentsTheSame(oldItem: RegisteredData, newItem: RegisteredData): Boolean {
             return oldItem == newItem
         }
     }
@@ -64,7 +64,7 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
         constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_item_member_in_team, parent, false))
 
-        fun bind(data: RegisterData?, onItemClick: ((registerData: RegisterData) -> Unit)? = null) {
+        fun bind(data: RegisteredData?, onItemClick: ((registeredData: RegisteredData) -> Unit)? = null) {
 
             //Subscribe Ui
             itemView.list_item_team_member?.setOnClickListener {

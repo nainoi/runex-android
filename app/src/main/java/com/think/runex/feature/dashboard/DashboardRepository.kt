@@ -24,7 +24,7 @@ class DashboardRepository(private val api: DashboardApi) : RemoteDataSource() {
             addProperty("parent_reg_id", parentRegisterId)
         }
 
-        return call(api.getDashboardAsync(jsonObject.toRequestBody()))
+        return call(api.getDashboardAsync(jsonObject))
     }
 
     suspend fun getUserInfoById(userId: String): Result<UserInfo> {
@@ -33,6 +33,6 @@ class DashboardRepository(private val api: DashboardApi) : RemoteDataSource() {
             addProperty("uid", userId)
         }
 
-        return call(api.getUserInfoByIdAsync(jsonObject.toRequestBody()))
+        return call(api.getUserInfoByIdAsync(jsonObject))
     }
 }

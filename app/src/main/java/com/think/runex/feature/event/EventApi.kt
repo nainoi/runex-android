@@ -44,17 +44,24 @@ interface EventApi {
             @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Registered>>
 
+    @POST("/api/${ApiConfig.API_VERSION}/register/regUpdateUserInfo")
+    fun updateRegisterInfoAsync(
+            @Body body: JsonObject,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventWithKaoAsync(
             @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
     @POST("/api/${ApiConfig.API_VERSION}/user")
-    fun getUserInfoByIdAsync(@Body body: JsonObject,
-                             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+    fun getUserInfoByIdAsync(
+            @Body body: JsonObject,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/team")
-    fun addMemberToTeamAsync(@Body body: JsonObject,
-                             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+    fun addMemberToTeamAsync(
+            @Body body: JsonObject,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
 }

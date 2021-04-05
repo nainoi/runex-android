@@ -135,13 +135,13 @@ class TeamManagementScreen : BaseScreen() {
     private fun updateUi(registered: Registered) {
 
         registered.getTicketAtRegister()?.also { ticket ->
-            val memberCount = (registered.registerDataList?.size ?: 0)
+            val memberCount = (registered.registeredDataList?.size ?: 0)
 
             add_member_label?.text = ("${getString(R.string.add_member)} ($memberCount/${ticket.runnerInTeam ?: ""})")
             add_member_button?.isClickable = memberCount < ticket.runnerInTeam.toIntOrZero()
         }
 
-        adapter.submitList(registered.registerDataList?.toMutableList())
+        adapter.submitList(registered.registeredDataList?.toMutableList())
     }
 
     private fun performGetUserInfoById(userId: String) = launch {

@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.jozzee.android.core.resource.getDimension
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
+import com.think.runex.feature.event.data.RegisterStatus
 import com.think.runex.util.extension.*
 import com.think.runex.feature.event.detail.EventDetailsScreen
 import com.think.runex.feature.payment.PayEventScreen
@@ -14,6 +15,7 @@ import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.fragment_confirm_registration.*
 import kotlinx.android.synthetic.main.fragment_confirm_registration.event_name_label
 import kotlinx.android.synthetic.main.list_item_event_registration.*
+import kotlinx.android.synthetic.main.toolbar.*
 import kotlinx.coroutines.delay
 
 class ConfirmRegistrationFragment : BaseScreen() {
@@ -57,6 +59,7 @@ class ConfirmRegistrationFragment : BaseScreen() {
     }
 
     private fun setupComponents() {
+
         val event = viewModel.eventDetail.value
         val ticket = viewModel.getCurrentTicketOption()?.ticket
 
@@ -67,16 +70,25 @@ class ConfirmRegistrationFragment : BaseScreen() {
         val user = viewModel.getCurrentTicketOption()?.userOption
         full_name_label?.text = user?.fullName ?: ""
         address_label?.text = ("${getString(R.string.address)}: ${user?.address ?: ""}")
-        identification_number_label?.text = ("${getString(R.string.identification_number)}: ${user?.cityCenId ?: ""}")
+        citizen_id_label?.text = ("${getString(R.string.citizen_id)}: ${user?.cityCenId ?: ""}")
         phone_label?.text = ("${getString(R.string.phone)}: ${user?.phone ?: ""}")
         event_name_label_confirm_register?.text = event?.title ?: ""
         distance_label?.text = ("${getString(R.string.distances)}: ${ticket?.distance ?: ""} ${getString(R.string.km)}")
         price_label?.text = ("${getString(R.string.price)}: ${ticket?.getPriceDisplay(requireContext())} ")
+
+        //Update confirm button
+        if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM) {
+            register_label?.text = getString(R.string.update_registration)
+        }
     }
 
     private fun subscribeUi() {
         register_button?.setOnClickListener {
-            performRegisterEvent()
+            if (viewModel.registerStatus == RegisterStatus.REGISTER) {
+                performRegisterEvent()
+            } else if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM) {
+                performUpdateRegisterInfo()
+            }
         }
     }
 
@@ -93,7 +105,7 @@ class ConfirmRegistrationFragment : BaseScreen() {
             //Update live data for refresh screen().
             getMainViewModel().refreshScreen()
 
-            showAlertDialog(R.string.register_event_success, isCancelEnable = false) {
+            showAlertDialog(R.string.success, R.string.register_event_success, isCancelEnable = false) {
                 //On positive click
                 launch {
 
@@ -106,6 +118,33 @@ class ConfirmRegistrationFragment : BaseScreen() {
                             ref2 = register.ref2 ?: "",
                             totalPrice = register.getTotalPrice()))
 
+                    //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack
+                    delay(100)
+                    findFragment<EventDetailsScreen>()?.also { removeFragment(it) }
+                    removeFragment(requireParentFragment())
+                }
+            }
+        }
+    }
+
+    //TODO("Handle response")
+    private fun performUpdateRegisterInfo() = launch {
+
+        showProgressDialog(R.string.update_registration)
+
+        delay(5000)
+        val isSuccess = viewModel.updateRegisterInfo()
+
+        hideProgressDialog()
+
+        if (isSuccess) {
+
+            //Update live data for refresh screen().
+            getMainViewModel().refreshScreen()
+
+            showAlertDialog(R.string.success, R.string.update_registration_success, isCancelEnable = false) {
+                //On positive click
+                launch {
                     //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack
                     delay(100)
                     findFragment<EventDetailsScreen>()?.also { removeFragment(it) }

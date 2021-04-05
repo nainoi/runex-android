@@ -43,6 +43,7 @@
     <string name="connect_application">Connect Applications</string>
     <string name="color_optional">Color (Optional)</string>
     <string name="check_information">Check information</string>
+    <string name="citizen_id">Citizen Id</string>
 
     <!-- D -->
     <string name="dashboard">Dashboard</string>
@@ -82,7 +83,6 @@
     <string name="house_no">No.</string>
 
     <!-- I -->
-    <string name="identification_number">Identification Number</string>
     <string name="invalid_data_format">Invalid data format.</string>
 
     <!-- J -->
@@ -126,6 +126,8 @@
     <string name="profile">Profile</string>
     <string name="please_specify_your_ebib">Please enter your EBIB</string>
     <string name="please_login">Please login</string>
+    <string name="please_enter_correct_citizen_id">Please enter the correct citizen id number</string>
+    <string name="please_enter_correct_phone_number">Please enter the correct phone number</string>
     <string name="phone">Phone</string>
     <string name="province">Province</string>
     <string name="price">Price</string>
@@ -181,6 +183,7 @@
     <string name="update_info">Update Info</string>
     <string name="update_profile_image">Update Profile Image…</string>
     <string name="update_registration">Update registration</string>
+    <string name="update_registration_success">Update registration success</string>
     <string name="upload_qr">อัปโหลด QR</string>
 
     <!-- V -->

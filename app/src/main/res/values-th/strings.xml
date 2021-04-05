@@ -40,6 +40,7 @@
     <string name="connect_application">เชื่อมต่อแอปพลิเคชั่น</string>
     <string name="color_optional">สี (ไม่จำเป็น)</string>
     <string name="check_information">ตรวจสอบข้อมูล</string>
+    <string name="citizen_id">เลขประจำตัวประชาชน</string>
 
     <!-- D -->
     <string name="dashboard">แดชบอร์ด</string>
@@ -79,7 +80,6 @@
     <string name="house_no">เลขที่</string>
 
     <!-- I -->
-    <string name="identification_number">เลขบัตรประจำตัวประชาชน</string>
     <string name="invalid_data_format">รูปแบบข้อมูลไม่ถูกต้อง</string>
 
     <!-- J -->
@@ -123,6 +123,8 @@
     <string name="profile">ข้อมูลส่วนตัว</string>
     <string name="please_specify_your_ebib">กรุณากรอก EBIB ของคุณ</string>
     <string name="please_login">กรุณาเข้าสู่ระบบ</string>
+    <string name="please_enter_correct_citizen_id">กรุณากรอกหมายเลขประจำตัวประชาชนให้ถูกต้อง</string>
+    <string name="please_enter_correct_phone_number">กรุณากรอกหมายเลขโทรศัพท์ให้ถูกต้อง</string>
     <string name="phone">เบอร์โทรศัพท์</string>
     <string name="province">จังหวัด</string>
     <string name="price">ราคา</string>
@@ -178,6 +180,7 @@
     <string name="update_info">อัพเดทข้อมูล</string>
     <string name="update_profile_image">อัปเดตรูปโปรไฟล์…</string>
     <string name="update_registration">อัพเดทข้อมูลการสมัครวิ่ง</string>
+    <string name="update_registration_success">อัพเดทข้อมูลการสมัครวิ่งสำเร็จ</string>
     <string name="upload_qr">Upload QR</string>
 
     <!-- V -->
