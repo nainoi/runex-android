@@ -97,7 +97,7 @@ data class Registered(
     fun getParentRegisterId(): String {
         var id = ""
         if (registeredDataList?.isNotEmpty() == true) {
-            id = registeredDataList?.get(0)?.id ?: ""
+            id = registeredDataList?.get(0)?.parentRegisterId ?: ""
         }
         if (id.contains("0000000000000")) {
             id = ""
@@ -105,7 +105,7 @@ data class Registered(
         return id
     }
 
-    fun getParentRegisterData(): RegisteredData? {
+    fun getTeamLeaderRegisteredData(): RegisteredData? {
         return registeredDataList?.firstOrNull { it.isTeamLead == true }
     }
 

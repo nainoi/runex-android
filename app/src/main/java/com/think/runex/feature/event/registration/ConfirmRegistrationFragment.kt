@@ -20,12 +20,6 @@ import kotlinx.coroutines.delay
 
 class ConfirmRegistrationFragment : BaseScreen() {
 
-//    companion object {
-//        @JvmStatic
-//        fun newInstance() = RegisterConfirmationFragment().apply {
-//        }
-//    }
-
     private lateinit var viewModel: RegistrationViewModel
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -132,7 +126,6 @@ class ConfirmRegistrationFragment : BaseScreen() {
 
         showProgressDialog(R.string.update_registration)
 
-        delay(5000)
         val isSuccess = viewModel.updateRegisterInfo()
 
         hideProgressDialog()

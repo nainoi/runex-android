@@ -42,12 +42,18 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
 
     suspend fun addMemberToTeam(userToAdd: UserInfo): Boolean = withContext(IO) {
 
-        val parentRegisterData = registerData.value?.getParentRegisterData() ?: RegisteredData()
         val eventDetail = registerData.value?.eventDetail ?: EventDetail()
-        val parentTicketOption = parentRegisterData.ticketOptions?.firstOrNull()
+
+        val teamLeaderRegisteredData = registerData.value?.getTeamLeaderRegisteredData()
+                ?: RegisteredData()
+
+        val teamLeaderTicketOption = teamLeaderRegisteredData.ticketOptions?.firstOrNull()
                 ?: TicketOptionEventRegistration()
-        val parentUserOption = parentTicketOption.userOption ?: UserOptionEventRegistration()
-        val ticket = parentTicketOption.ticket ?: Ticket()
+
+        val teamLeaderUserOption = teamLeaderTicketOption.userOption ?: UserOptionEventRegistration()
+
+        val ticketAtRegister = teamLeaderTicketOption.ticket ?: Ticket()
+
         val gSon = Gson()
 
         val userOptionObject = JsonObject().apply {
@@ -55,7 +61,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
             addProperty("birthdate", userToAdd.birthDate ?: "")
             addProperty("blood_type", userToAdd.bloodType ?: "")
             addProperty("citycen_id", userToAdd.citizenId ?: "")
-            addProperty("color", parentUserOption.color)
+            addProperty("color", teamLeaderUserOption.color)
             addProperty("confirm", userToAdd.isConfirmed)
             addProperty("created_at", userToAdd.createdAt ?: "")
             addProperty("emergency_contact", userToAdd.emergencyContact ?: "")
@@ -71,16 +77,16 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
             addProperty("passport", userToAdd.passport ?: "")
             addProperty("phone", userToAdd.phone ?: "")
             add("tambon", gSon.toJsonTree(SubDistrict()))
-            addProperty("team", parentUserOption.team)
-            addProperty("zone", parentUserOption.zone)
+            addProperty("team", teamLeaderUserOption.team)
+            addProperty("zone", teamLeaderUserOption.zone)
         }
 
         val ticketObject = JsonObject().apply {
-            addProperty("reciept_type", parentTicketOption.receiptType)
+            addProperty("reciept_type", teamLeaderTicketOption.receiptType)
             //addProperty("register_number", "")
-            addProperty("total_price", parentTicketOption.totalPrice)
+            addProperty("total_price", teamLeaderTicketOption.totalPrice)
             add("shirts", gSon.toJsonTree(Shirt()))
-            add("tickets", gSon.toJsonTree(ticket))
+            add("tickets", gSon.toJsonTree(ticketAtRegister))
             add("user_option", userOptionObject)
         }
 
@@ -89,23 +95,23 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         }
 
         val registerObject = JsonObject().apply {
-            add("coupon", gSon.toJsonTree(parentRegisterData.coupon))
+            add("coupon", gSon.toJsonTree(teamLeaderRegisteredData.coupon))
             //addProperty("created_at", "")
-            addProperty("discount_price", parentRegisterData.discountPrice ?: 0.0)
-            addProperty("event_code", parentRegisterData.eventCode ?: "")
-            addProperty("event_id", parentRegisterData.eventId ?: "")
+            addProperty("discount_price", teamLeaderRegisteredData.discountPrice ?: 0.0)
+            addProperty("event_code", teamLeaderRegisteredData.eventCode ?: "")
+            addProperty("event_id", teamLeaderRegisteredData.eventId ?: "")
             //addProperty("id","")
             addProperty("is_team_lead", false)
-            addProperty("order_id", parentRegisterData.orderId ?: "")
-            addProperty("parent_reg_id", parentRegisterData.parentRegisterId ?: "")
-            add("partner", gSon.toJsonTree(parentRegisterData.partner))
-            addProperty("payment_date", parentRegisterData.paymentDate ?: "")
-            addProperty("payment_type", parentRegisterData.paymentType ?: "")
-            addProperty("reg_date", parentRegisterData.registerDate ?: "")
-            addProperty("status", parentRegisterData.status ?: "")
-            addProperty("ticket_id", ticket.id ?: "")
+            addProperty("order_id", teamLeaderRegisteredData.orderId ?: "")
+            addProperty("parent_reg_id", teamLeaderRegisteredData.parentRegisterId ?: "")
+            add("partner", gSon.toJsonTree(teamLeaderRegisteredData.partner))
+            addProperty("payment_date", teamLeaderRegisteredData.paymentDate ?: "")
+            addProperty("payment_type", teamLeaderRegisteredData.paymentType ?: "")
+            addProperty("reg_date", teamLeaderRegisteredData.registerDate ?: "")
+            addProperty("status", teamLeaderRegisteredData.status ?: "")
+            addProperty("ticket_id", ticketAtRegister.id ?: "")
             add("ticket_options", ticketObjects)
-            addProperty("total_price", parentRegisterData.totalPrice ?: 0.0)
+            addProperty("total_price", teamLeaderRegisteredData.totalPrice ?: 0.0)
             //addProperty("updated_at", "")
             addProperty("user_id", userToAdd.id ?: "")
         }
@@ -114,7 +120,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
             add("event", gSon.toJsonTree(eventDetail))
             addProperty("event_code", eventDetail.code ?: "")
             addProperty("event_id", eventDetail.id ?: 0)
-            addProperty("parent_reg_id", parentRegisterData.parentRegisterId)
+            addProperty("parent_reg_id", teamLeaderRegisteredData.parentRegisterId)
             add("regs", registerObject)
             addProperty("team_user_id", userToAdd.id ?: "")
         }
@@ -127,8 +133,8 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
                 //Update register data
                 val updateRegisterDataResult = repo.getRegisterData(
                         eventCode = eventDetail.code ?: "",
-                        registerId = parentRegisterData.id ?: "",
-                        parentRegisterId = parentRegisterData.parentRegisterId ?: "")
+                        registerId = teamLeaderRegisteredData.id ?: "",
+                        parentRegisterId = teamLeaderRegisteredData.parentRegisterId ?: "")
 
                 if (updateRegisterDataResult.isSuccessful()) {
                     registerData.postValue(updateRegisterDataResult.data)
