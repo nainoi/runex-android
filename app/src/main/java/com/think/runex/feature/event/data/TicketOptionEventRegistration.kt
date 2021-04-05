@@ -9,12 +9,15 @@ data class TicketOptionEventRegistration(
         @SerializedName("tickets") var ticket: Ticket? = null,
         @SerializedName("shirts") var shirt: Shirt? = null,
         @SerializedName("total_price") var totalPrice: Double = 0.0,
+        @SerializedName("register_number") var registerNumber: String? = null,
         @SerializedName("reciept_type") var receiptType: String = "") : Parcelable {
+
     constructor(parcel: Parcel) : this(
             parcel.readParcelable(UserOptionEventRegistration::class.java.classLoader),
             parcel.readParcelable(Ticket::class.java.classLoader),
             parcel.readParcelable(Shirt::class.java.classLoader),
             parcel.readDouble(),
+            parcel.readString() ?: "",
             parcel.readString() ?: "")
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -22,6 +25,7 @@ data class TicketOptionEventRegistration(
         parcel.writeParcelable(ticket, flags)
         parcel.writeParcelable(shirt, flags)
         parcel.writeDouble(totalPrice)
+        parcel.writeString(registerNumber)
         parcel.writeString(receiptType)
     }
 

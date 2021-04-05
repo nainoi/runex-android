@@ -8,8 +8,8 @@ import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
-import com.think.runex.feature.event.data.EventRegistered
-import com.think.runex.feature.payment.data.PaymentStatus
+import com.think.runex.feature.event.data.Registered
+import com.think.runex.feature.event.data.RegisterStatus
 import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -18,9 +18,9 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
 
     val pageSize: Int = 20
 
-    private var _myEvents: ArrayList<EventRegistered>? = null
+    private var _myEvents: ArrayList<Registered>? = null
 
-    val myEvents: MutableLiveData<ArrayList<EventRegistered>> by lazy { MutableLiveData<ArrayList<EventRegistered>>() }
+    val myEvents: MutableLiveData<ArrayList<Registered>> by lazy { MutableLiveData<ArrayList<Registered>>() }
 
     var isLoading: Boolean = false
         private set
@@ -28,11 +28,11 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
     var isAllLoaded: Boolean = false
         private set
 
-    var filterByPaymentSuccess: Boolean = false
+    var filterByRegisterSuccess: Boolean = false
         set(value) {
             field = value
             myEvents.postValue(ArrayList(when (field) {
-                true -> _myEvents?.filter { it.getPaymentStatus(0) == PaymentStatus.SUCCESS }
+                true -> _myEvents?.filter { it.getRegisterStatus(0) == RegisterStatus.SUCCESS }
                 false -> _myEvents
             } ?: emptyList()))
         }
@@ -43,7 +43,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
 
         isLoading = true
 
-        realStartPosition = when (filterByPaymentSuccess && startPosition != null) {
+        realStartPosition = when (filterByRegisterSuccess && startPosition != null) {
             true -> _myEvents?.size ?: 0
             false -> startPosition
         }
@@ -66,8 +66,8 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
             _myEvents?.addAll(result.data ?: emptyList())
         }
 
-        myEvents.postValue(ArrayList(when (filterByPaymentSuccess) {
-            true -> _myEvents?.filter { it.getPaymentStatus(0) == PaymentStatus.SUCCESS }
+        myEvents.postValue(ArrayList(when (filterByRegisterSuccess) {
+            true -> _myEvents?.filter { it.isRegisterSuccess(0) }
             false -> _myEvents
         } ?: emptyList()))
 
@@ -79,7 +79,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         isLoading = false
     }
 
-    suspend fun getMyEventsForSubmitWorkout(): List<EventRegistered>? = withContext(IO) {
+    suspend fun getMyEventsForSubmitWorkout(): List<Registered>? = withContext(IO) {
         val result = repo.getMyEventsAtActive()
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
@@ -87,7 +87,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
 
         //TODO("TODO Filter payment status success only for now")
         result.data = result.data?.filter {
-            it.isPaymentSuccess(0) && it.eventDetail?.isOpenSendActivity == true
+            it.isRegisterSuccess(0) && it.eventDetail?.isOpenSendActivity == true
         }
 
         return@withContext result.data

@@ -8,7 +8,7 @@ import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
 import com.think.runex.util.extension.toByteArray
 import com.think.runex.datasource.api.ApiService
-import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.data.EventForSubmitResult
 import com.think.runex.feature.workout.data.WorkoutInfo
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -31,7 +31,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         return@withContext result.data
     }
 
-    suspend fun submitWorkoutToEventsManual(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
+    suspend fun submitWorkoutToEventsManual(eventsToSubmit: List<EventForSubmitResult>?,
                                             workoutInfo: WorkoutInfo?): Boolean = withContext(IO) {
         var isSuccessAll = true
         eventsToSubmit?.forEach { event ->
@@ -44,7 +44,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         return@withContext isSuccessAll
     }
 
-    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
+    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventForSubmitResult>?,
                                       workoutInfo: WorkoutInfo?,
                                       workoutImage: Bitmap?): Boolean = withContext(IO) {
 

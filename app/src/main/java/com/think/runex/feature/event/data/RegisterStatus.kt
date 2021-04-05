@@ -1,4 +1,4 @@
-package com.think.runex.feature.payment.data
+package com.think.runex.feature.event.data
 
 import android.content.Context
 import android.graphics.drawable.GradientDrawable
@@ -6,7 +6,8 @@ import androidx.annotation.ColorRes
 import androidx.core.content.ContextCompat
 import com.think.runex.R
 
-object PaymentStatus {
+object RegisterStatus {
+    const val REGISTER = "REGISTER"
     const val WAITING_CONFIRM = "WAIT_CONFIRM"
     const val WAITING_APPROVE = "PAYMENT_WAITING_APPROVE"
     const val WAITING_PAY = "PAYMENT_WAITING"
@@ -32,6 +33,7 @@ object PaymentStatus {
     fun getPaymentStatusText(context: Context, paymentState: String): String = when (paymentState) {
         WAITING_APPROVE -> context.getString(R.string.waiting_for_approve)
         WAITING_PAY -> context.getString(R.string.waiting_for_payment)
+        WAITING_CONFIRM -> context.getString(R.string.waiting_for_confirm)
         SUCCESS -> context.getString(R.string.success)
         FAILED -> context.getString(R.string.failed)
         else -> ""

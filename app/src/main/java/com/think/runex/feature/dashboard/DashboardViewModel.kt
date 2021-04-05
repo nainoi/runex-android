@@ -33,9 +33,9 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
     }
 
     fun getUserFullNameFromActivityPosition(position: Int): String {
-        if (position < dashboardInfo?.eventRegistered?.eventRegisteredList?.size ?: 0 &&
-                dashboardInfo?.eventRegistered?.eventRegisteredList?.get(position)?.ticketOptions?.isNotEmpty() == true) {
-            return dashboardInfo?.eventRegistered?.eventRegisteredList?.get(position)?.ticketOptions?.get(0)?.userOption?.let { userOption ->
+        if (position < dashboardInfo?.registered?.registerDataList?.size ?: 0 &&
+                dashboardInfo?.registered?.registerDataList?.get(position)?.ticketOptions?.isNotEmpty() == true) {
+            return dashboardInfo?.registered?.registerDataList?.get(position)?.ticketOptions?.get(0)?.userOption?.let { userOption ->
                 if (userOption.firstName.isNotBlank() && userOption.lastName.isNotBlank()) {
                     "${userOption.firstName} ${userOption.lastName}"
                 } else {

@@ -8,17 +8,17 @@ import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.util.extension.loadEventsImage
 import com.think.runex.util.extension.requireContext
-import com.think.runex.feature.event.data.EventRegistered
-import com.think.runex.feature.event.data.EventRegisteredDiffCallback
-import com.think.runex.feature.payment.data.PaymentStatus
+import com.think.runex.feature.event.data.Registered
+import com.think.runex.feature.event.data.RegisteredDiffCallback
+import com.think.runex.feature.event.data.RegisterStatus
 import kotlinx.android.synthetic.main.list_item_my_event.view.*
 
-class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>(EventRegisteredDiffCallback()) {
+class MyEventsAdapter : ListAdapter<Registered, MyEventsAdapter.ViewHolder>(RegisteredDiffCallback()) {
 
-    var onItemClickListener: ((register: EventRegistered) -> Unit)? = null
+    var onItemClickListener: ((register: Registered) -> Unit)? = null
 
     @JvmName("setOnItemClickListenerJava")
-    fun setOnItemClickListener(onItemClick: (register: EventRegistered) -> Unit) {
+    fun setOnItemClickListener(onItemClick: (register: Registered) -> Unit) {
         onItemClickListener = onItemClick
     }
 
@@ -36,15 +36,15 @@ class MyEventsAdapter : ListAdapter<EventRegistered, MyEventsAdapter.ViewHolder>
                     .inflate(R.layout.list_item_my_event, parent, false))
         }
 
-        fun bind(data: EventRegistered?, onItemClick: ((register: EventRegistered) -> Unit)? = null) {
+        fun bind(data: Registered?, onItemClick: ((register: Registered) -> Unit)? = null) {
 
 
             itemView.event_image?.loadEventsImage(data?.eventDetail?.getCoverImage())
             itemView.event_name_label?.text = data?.eventDetail?.title ?: ""
 
-            val paymentStatus = data?.getPaymentStatus(0) ?: ""
-            itemView.event_status_icon?.background = PaymentStatus.getPaymentStatusBackground(requireContext(), paymentStatus)
-            itemView.event_status_label?.text = PaymentStatus.getPaymentStatusText(requireContext(), paymentStatus)
+            val paymentStatus = data?.getRegisterStatus(0) ?: ""
+            itemView.event_status_icon?.background = RegisterStatus.getPaymentStatusBackground(requireContext(), paymentStatus)
+            itemView.event_status_label?.text = RegisterStatus.getPaymentStatusText(requireContext(), paymentStatus)
 
             itemView.list_item_event_registration?.setOnClickListener {
                 data?.also { onItemClick?.invoke(it) }

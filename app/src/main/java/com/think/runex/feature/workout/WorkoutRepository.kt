@@ -5,7 +5,7 @@ import com.google.gson.JsonObject
 import com.think.runex.util.extension.toJson
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
-import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.data.EventForSubmitResult
 import com.think.runex.feature.workout.data.WorkoutInfo
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.MultipartBody
@@ -31,7 +31,7 @@ class WorkoutRepository(private val api: WorkoutApi) : RemoteDataSource() {
         return call(api.submitWorkoutToEventAsync(body))
     }
 
-    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventRegisteredForSubmitResult>?,
+    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventForSubmitResult>?,
                                       workoutInfo: WorkoutInfo?,
                                       workoutImage: ByteArray?): Result<Any> {
 

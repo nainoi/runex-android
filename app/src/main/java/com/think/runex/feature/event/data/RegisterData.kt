@@ -4,7 +4,7 @@ import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
-data class EventRegisteredData(
+data class RegisterData(
         @SerializedName("id") var id: String? = "",
         @SerializedName("user_id") var userId: String? = "",
         @SerializedName("event_id") var eventId: String? = "",
@@ -25,12 +25,12 @@ data class EventRegisteredData(
         @SerializedName("created_at") var createdAt: String? = "",
         @SerializedName("updated_at") var updatedAt: String? = "") : Parcelable {
 
-    companion object CREATOR : Parcelable.Creator<EventRegisteredData> {
-        override fun createFromParcel(parcel: Parcel): EventRegisteredData {
-            return EventRegisteredData(parcel)
+    companion object CREATOR : Parcelable.Creator<RegisterData> {
+        override fun createFromParcel(parcel: Parcel): RegisterData {
+            return RegisterData(parcel)
         }
 
-        override fun newArray(size: Int): Array<EventRegisteredData?> {
+        override fun newArray(size: Int): Array<RegisterData?> {
             return arrayOfNulls(size)
         }
     }

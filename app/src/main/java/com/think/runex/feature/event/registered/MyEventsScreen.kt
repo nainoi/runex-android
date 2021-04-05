@@ -15,7 +15,8 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.feature.dashboard.DashboardScreen
 import com.think.runex.feature.payment.PayEventScreen
-import com.think.runex.feature.payment.data.PaymentStatus
+import com.think.runex.feature.event.data.RegisterStatus
+import com.think.runex.feature.event.registration.RegistrationScreen
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_my_events.*
 
@@ -71,21 +72,19 @@ class MyEventsScreen : BaseScreen() {
         }
 
         adapter.setOnItemClickListener { register ->
-            when (register.getPaymentStatus(0)) {
-                PaymentStatus.SUCCESS -> addFragment(DashboardScreen.newInstance(eventCode = register.getEventCode(),
+            when (register.getRegisterStatus(0)) {
+                RegisterStatus.SUCCESS -> addFragment(DashboardScreen.newInstance(eventCode = register.getEventCode(),
                         orderId = register.getOrderId(0),
                         registerId = register.getRegisterId(0),
                         parentRegisterId = register.getParentRegisterId()
                 ))
-                PaymentStatus.WAITING_PAY -> addFragment(PayEventScreen.newInstance(eventCode = register.getEventCode(),
+                RegisterStatus.WAITING_PAY -> addFragment(PayEventScreen.newInstance(eventCode = register.getEventCode(),
                         eventName = register.getEventName(),
                         orderId = register.getOrderId(0),
                         registerId = register.getRegisterId(0),
                         ref2 = register.ref2 ?: "",
                         totalPrice = register.getTotalPrice()))
-                PaymentStatus.WAITING_CONFIRM -> {
-                    //TODO("")
-                }
+                RegisterStatus.WAITING_CONFIRM -> addFragment(RegistrationScreen.newInstance(register))
             }
         }
 

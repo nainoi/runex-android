@@ -12,7 +12,7 @@ import com.think.runex.R
 import com.think.runex.base.BaseBottomSheet
 import com.think.runex.util.extension.getViewModel
 import com.think.runex.util.extension.removeObservers
-import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.data.EventForSubmitResult
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.bottom_sheet_select_events.*
 
@@ -36,7 +36,7 @@ class SelectEventsBottomSheet : BaseBottomSheet() {
         setStyle(STYLE_NORMAL, R.style.AppBottomSheetStyle)
 
         viewModel = getViewModel(MyEventListViewModel.Factory(requireContext()))
-        viewModel.filterByPaymentSuccess = true
+        viewModel.filterByRegisterSuccess = true
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -104,7 +104,7 @@ class SelectEventsBottomSheet : BaseBottomSheet() {
     }
 
     interface OnConfirmSelectEventToSubmitListener {
-        fun onConfirmSelectEventToSubmit(events: List<EventRegisteredForSubmitResult>)
+        fun onConfirmSelectEventToSubmit(events: List<EventForSubmitResult>)
     }
 
     override fun onDestroyView() {

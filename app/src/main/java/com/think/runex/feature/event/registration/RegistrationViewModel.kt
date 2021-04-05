@@ -18,7 +18,7 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.EventRepository
 import com.think.runex.feature.event.data.*
-import com.think.runex.feature.event.data.EventRegistrationBody
+import com.think.runex.feature.event.data.RegistrationBody
 import com.think.runex.feature.event.data.TicketOptionEventRegistration
 import com.think.runex.feature.event.data.UserOptionEventRegistration
 import com.think.runex.feature.event.detail.EventDetailsViewModel
@@ -34,19 +34,36 @@ class RegistrationViewModel(eventRepo: EventRepository,
     private var allSubDistrictList: List<SubDistrict>? = null
     private var firstThreeLettersQuery: String = ""
 
+    var registerStatus: String = RegisterStatus.REGISTER
+
     val updateScreen: MutableLiveData<String> by lazy { MutableLiveData() }
 
     val addressAutoFill: MutableLiveData<AddressAutoFill> by lazy { MutableLiveData() }
 
-    var currentNo: Int = 1
-        private set
+    private var currentNo: Int = 1
 
-    var ticketOptions: ArrayList<TicketOptionEventRegistration> = ArrayList()
-        private set
+    private var ticketOptions: ArrayList<TicketOptionEventRegistration> = ArrayList()
 
-    var subDistricts: ArrayList<SubDistrict> = ArrayList()
-        private set
+    private var subDistricts: ArrayList<SubDistrict> = ArrayList()
 
+
+    fun updateRegisterData(registered: Registered) {
+
+        //Update register status
+        registerStatus = registered.getRegisterStatus(0) ?: registerStatus
+
+        //Update ticket options
+        val ticketOption: TicketOptionEventRegistration? = registered.registerDataList?.get(0)?.ticketOptions?.get(0)
+        getCurrentTicketOption()?.apply {
+            userOption = ticketOption?.userOption
+            totalPrice = ticketOption?.totalPrice ?: 0.0
+            registerNumber = ticketOption?.registerNumber
+            receiptType = ticketOption?.receiptType ?: ""
+            ticket = ticketOption?.ticket
+        }
+
+        this.eventDetail.postValue(registered.eventDetail)
+    }
 
     fun onGetEventDetailCompleted() {
         updateScreen.postValue(ChooseTicketFragment::class.java.simpleName)
@@ -194,7 +211,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
         return getCurrentSubDistrict()
     }
 
-    suspend fun registerEvent(): EventRegistered? = withContext(IO) {
+    suspend fun registerEvent(): Registered? = withContext(IO) {
 
         ticketOptions.forEach { ticketOption ->
             ticketOption.receiptType = when (eventDetail.value?.category) {
@@ -203,7 +220,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
             }
         }
 
-        val registerBody = EventRegistrationBody().apply {
+        val registerBody = RegistrationBody().apply {
             this.event = eventDetail.value
             this.totalPrice = this@RegistrationViewModel.ticketOptions.sumByDouble { it.totalPrice }
             this.registerDate = System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT)

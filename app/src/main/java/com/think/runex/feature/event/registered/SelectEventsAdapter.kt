@@ -6,13 +6,13 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
-import com.think.runex.feature.event.data.EventRegistered
-import com.think.runex.feature.event.data.EventRegisteredDiffCallback
-import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.data.Registered
+import com.think.runex.feature.event.data.RegisteredDiffCallback
+import com.think.runex.feature.event.data.EventForSubmitResult
 import com.think.runex.feature.event.data.Ticket
 import kotlinx.android.synthetic.main.list_item_event_selection.view.*
 
-class SelectEventsAdapter : ListAdapter<EventRegistered, SelectEventsAdapter.ViewHolder>(EventRegisteredDiffCallback()) {
+class SelectEventsAdapter : ListAdapter<Registered, SelectEventsAdapter.ViewHolder>(RegisteredDiffCallback()) {
 
     private var selectedList: ArrayList<Int>? = null
 
@@ -47,11 +47,11 @@ class SelectEventsAdapter : ListAdapter<EventRegistered, SelectEventsAdapter.Vie
         onSelectionChange?.invoke(selectedList?.size ?: 0)
     }
 
-    fun getEventSelectedList(): List<EventRegisteredForSubmitResult> {
-        val list = ArrayList<EventRegisteredForSubmitResult>()
+    fun getEventSelectedList(): List<EventForSubmitResult> {
+        val list = ArrayList<EventForSubmitResult>()
         selectedList?.forEach { position ->
             getItem(position).also { register ->
-                list.add(EventRegisteredForSubmitResult(
+                list.add(EventForSubmitResult(
                         eventCode = register.getEventCode(),
                         ticket = register.getTicketAtRegister() ?: Ticket(),
                         orderId = register.getOrderId(0),

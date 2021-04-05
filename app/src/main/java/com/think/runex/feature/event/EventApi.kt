@@ -8,7 +8,6 @@ import com.think.runex.config.AUTHORIZATION
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.user.data.UserInfo
 import kotlinx.coroutines.Deferred
-import okhttp3.RequestBody
 import retrofit2.http.*
 
 interface EventApi {
@@ -29,21 +28,21 @@ interface EventApi {
 
     @GET("/api/${ApiConfig.API_VERSION}/register/myRegEvent")
     fun getMyEventsAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventRegistered>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<Registered>>>
 
     @GET("/api/${ApiConfig.API_VERSION}/register/myRegEventActivate")
     fun getMyEventsAtActiveAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventRegistered>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<Registered>>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/info")
     fun getRegisterDataAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventRegistered>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Registered>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventRegistered>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Registered>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventWithKaoAsync(

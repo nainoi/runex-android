@@ -121,7 +121,7 @@ class DashboardScreen : BaseScreen() {
     }
 
     private fun updateUi(dashboards: DashboardInfo) {
-        event_name_label?.text = dashboards.eventRegistered?.eventDetail?.title ?: ""
+        event_name_label?.text = dashboards.registered?.eventDetail?.title ?: ""
         total_distances_label?.text = dashboards.getTotalDistanceDisplay(getString(R.string.km))
         team_management_button?.setVisible(dashboards.isEventCategoryTeam())
 

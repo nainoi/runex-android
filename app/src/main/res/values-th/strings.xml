@@ -167,6 +167,7 @@
     <string name="total_price">ราคารวม</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">ขอบคุณสำหรับการชำระเงิน</string>
+    <string name="team">ทีม</string>
     <string name="team_name_optional">ชื่อทีม (ไม่จำเป็น)</string>
     <string name="team_management">จัดการสมาชิกในทีม</string>
     <string name="team_leader">หัวหน้าทีม</string>
@@ -176,6 +177,7 @@
     <string name="username">ชื่อผู้ใช้</string>
     <string name="update_info">อัพเดทข้อมูล</string>
     <string name="update_profile_image">อัปเดตรูปโปรไฟล์…</string>
+    <string name="update_registration">อัพเดทข้อมูลการสมัครวิ่ง</string>
     <string name="upload_qr">Upload QR</string>
 
     <!-- V -->
@@ -186,6 +188,7 @@
     <string name="warning">แจ้งเตือน</string>
     <string name="waiting_for_approve">รอการตรวจสอบ</string>
     <string name="waiting_for_payment">รอชำระเงิน</string>
+    <string name="waiting_for_confirm">รอการอัพเดทข้อมูล</string>
     <string name="workout">ออกกำลังกาย</string>
 
     <!-- Y -->

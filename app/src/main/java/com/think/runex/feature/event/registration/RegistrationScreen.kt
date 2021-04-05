@@ -9,7 +9,10 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
+import com.think.runex.config.KEY_DATA
 import com.think.runex.config.KEY_EVENT_CODE
+import com.think.runex.feature.event.data.Registered
+import com.think.runex.feature.event.data.RegisterStatus
 import com.think.runex.util.extension.*
 import com.think.runex.util.NightMode
 import kotlinx.android.synthetic.main.screen_event_registration.*
@@ -22,6 +25,13 @@ class RegistrationScreen : BaseScreen() {
         fun newInstance(eventCode: String?) = RegistrationScreen().apply {
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
+            }
+        }
+
+        @JvmStatic
+        fun newInstance(registered: Registered?) = RegistrationScreen().apply {
+            arguments = Bundle().apply {
+                putParcelable(KEY_DATA, registered)
             }
         }
     }
@@ -43,11 +53,22 @@ class RegistrationScreen : BaseScreen() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
         setupComponents()
         subscribeUi()
 
         progress_bar?.visible()
-        viewModel.getEventDetail(arguments?.getString(KEY_EVENT_CODE) ?: "")
+        //Get event detail from event code or register data in update register data.
+        val eventCode: String = arguments?.getString(KEY_EVENT_CODE) ?: ""
+        val registered: Registered? = arguments?.getParcelable(KEY_DATA)
+
+        when (registered != null) {
+            true -> {
+                setToolbarTitle(getString(R.string.update_registration), toolbar_title)
+                viewModel.updateRegisterData(registered)
+            }
+            false -> viewModel.getEventDetail(eventCode)
+        }
     }
 
     private fun setupComponents() {
@@ -63,9 +84,12 @@ class RegistrationScreen : BaseScreen() {
             if (view == null || isAdded.not()) return@observe
             progress_bar?.gone()
 
-            //If not have any child fragment
-            if (childFragmentCount() == 0) {
+            if (childFragmentCount() == 0 && viewModel.registerStatus == RegisterStatus.REGISTER) {
+                //Show select ticket screen
                 viewModel.onGetEventDetailCompleted()
+            } else if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM && viewModel.getCurrentTicketOption()?.ticket != null) {
+                //Show fill out info screen
+                viewModel.updateScreen.postValue(FillOutUserInfoFragment::class.java.simpleName)
             }
         }
 
@@ -75,8 +99,9 @@ class RegistrationScreen : BaseScreen() {
                 ChooseTicketFragment::class.java.simpleName -> {
                     replaceChildFragment(R.id.register_fragment_container, ChooseTicketFragment(), addToBackStack = true, clearChildFragment = true)
                 }
-                FillOutUserInfoFragment::class.java.simpleName -> {
-                    addChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment())
+                FillOutUserInfoFragment::class.java.simpleName -> when (childFragmentCount() == 0) {
+                    true -> replaceChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment(), addToBackStack = true, clearChildFragment = true)
+                    false -> addChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment())
                 }
                 ConfirmRegistrationFragment::class.java.simpleName -> {
                     addChildFragment(R.id.register_fragment_container, ConfirmRegistrationFragment())
@@ -84,6 +109,7 @@ class RegistrationScreen : BaseScreen() {
             }
         }
     }
+
 
     fun onClickBackPressed() {
         when (childFragmentCount() > 1) {

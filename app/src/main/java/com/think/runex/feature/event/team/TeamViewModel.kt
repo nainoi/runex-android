@@ -4,13 +4,12 @@ import android.content.Context
 import androidx.lifecycle.MutableLiveData
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
-import androidx.lifecycle.viewModelScope
 import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.EventDetail
-import com.think.runex.feature.event.data.EventRegistered
-import com.think.runex.feature.event.data.EventRegisteredData
+import com.think.runex.feature.event.data.Registered
+import com.think.runex.feature.event.data.RegisterData
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
@@ -18,7 +17,7 @@ import kotlinx.coroutines.withContext
 
 class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
 
-    var registerData: MutableLiveData<EventRegistered> = MutableLiveData()
+    var registerData: MutableLiveData<Registered> = MutableLiveData()
 
     fun getRegisterData(eventCode: String, registerId: String, parentRegisterId: String) = launch(IO) {
 
@@ -42,7 +41,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
     suspend fun addMemberToTeam(userToAdd: UserInfo): Boolean = withContext(IO) {
 
         val parentRegisterData = registerData.value?.getParentRegisterData()
-                ?: EventRegisteredData()
+                ?: RegisterData()
         val eventDetail = registerData.value?.eventDetail ?: EventDetail()
 
         val result = repo.addMEmberToTeam(userToAdd, parentRegisterData, eventDetail)

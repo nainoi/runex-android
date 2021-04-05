@@ -21,7 +21,7 @@ import com.think.runex.feature.workout.WorkoutViewModel
 import com.think.runex.feature.workout.data.WorkingOutLocation
 import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.base.BaseScreen
-import com.think.runex.feature.event.data.EventRegisteredForSubmitResult
+import com.think.runex.feature.event.data.EventForSubmitResult
 import com.think.runex.feature.event.registered.SelectEventsBottomSheet
 import com.think.runex.feature.workout.MapPresenter
 import com.think.runex.util.NightMode
@@ -128,7 +128,7 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
         updateUi()
     }
 
-    private fun performSubmitWorkoutToEvents(events: List<EventRegisteredForSubmitResult>, workoutImage: Bitmap?) = launch {
+    private fun performSubmitWorkoutToEvents(events: List<EventForSubmitResult>, workoutImage: Bitmap?) = launch {
 
         showProgressDialog(R.string.submit_result)
 
@@ -187,7 +187,7 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
         }
     }
 
-    override fun onConfirmSelectEventToSubmit(events: List<EventRegisteredForSubmitResult>) {
+    override fun onConfirmSelectEventToSubmit(events: List<EventForSubmitResult>) {
         mapPresenter?.snapshot {
             performSubmitWorkoutToEvents(events, it)
         }

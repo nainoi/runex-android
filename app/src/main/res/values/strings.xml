@@ -170,6 +170,7 @@
     <string name="total_price">Total Price</string>
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">Thank you for payment.</string>
+    <string name="team">Team</string>
     <string name="team_name_optional">Team name (Optional)</string>
     <string name="team_management">Team Management</string>
     <string name="team_leader">Team Leader</string>
@@ -179,6 +180,7 @@
     <string name="username">Username</string>
     <string name="update_info">Update Info</string>
     <string name="update_profile_image">Update Profile Image…</string>
+    <string name="update_registration">Update registration</string>
     <string name="upload_qr">อัปโหลด QR</string>
 
     <!-- V -->
@@ -189,6 +191,7 @@
     <string name="warning">Warning</string>
     <string name="waiting_for_approve">Waiting for approve</string>
     <string name="waiting_for_payment">Waiting for payment</string>
+    <string name="waiting_for_confirm">Waiting for update</string>
     <string name="workout">Workout</string>
 
     <!-- Y -->

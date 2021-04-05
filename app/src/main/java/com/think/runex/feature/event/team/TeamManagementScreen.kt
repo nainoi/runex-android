@@ -1,7 +1,6 @@
 package com.think.runex.feature.event.team
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -18,7 +17,7 @@ import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.config.KEY_PARENT_REGISTER_ID
 import com.think.runex.config.KEY_REGISTER_ID
-import com.think.runex.feature.event.data.EventRegistered
+import com.think.runex.feature.event.data.Registered
 import com.think.runex.feature.qr.QRCodeScannerActivity
 import com.think.runex.feature.qr.QRCodeScannerContract
 import com.think.runex.feature.user.data.UserInfo
@@ -27,8 +26,6 @@ import com.think.runex.util.extension.*
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_team_management.*
 import kotlinx.android.synthetic.main.toolbar.*
-import kotlinx.coroutines.Dispatchers.Main
-import kotlinx.coroutines.delay
 
 class TeamManagementScreen : BaseScreen() {
 
@@ -135,16 +132,16 @@ class TeamManagementScreen : BaseScreen() {
     }
 
 
-    private fun updateUi(registerData: EventRegistered) {
+    private fun updateUi(registered: Registered) {
 
-        registerData.getTicketAtRegister()?.also { ticket ->
-            val memberCount = (registerData.eventRegisteredList?.size ?: 0)
+        registered.getTicketAtRegister()?.also { ticket ->
+            val memberCount = (registered.registerDataList?.size ?: 0)
 
             add_member_label?.text = ("${getString(R.string.add_member)} ($memberCount/${ticket.runnerInTeam ?: ""})")
             add_member_button?.isClickable = memberCount < ticket.runnerInTeam.toIntOrZero()
         }
 
-        adapter.submitList(registerData.eventRegisteredList?.toMutableList())
+        adapter.submitList(registered.registerDataList?.toMutableList())
     }
 
     private fun performGetUserInfoById(userId: String) = launch {

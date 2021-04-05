@@ -82,9 +82,13 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     private fun setupComponents() {
         initTextChangedForAddressAutoFill()
 
-        //Update user info if event category is virtual run
-        if (viewModel.eventDetail.value?.category == EventCategory.VIRTUAL_RUN) {
-            setUserDataFromUserInfo()
+        updateUserDataFromUserInfo()
+
+        //Update team and optional data
+        viewModel.getCurrentTicketOption()?.userOption?.also {
+            optional_team_name_input?.setText(it.team)
+            optional_color_input?.setText(it.color)
+            optional_zone_input?.setText(it.zone)
         }
     }
 
@@ -418,7 +422,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
                 "${district_input?.content()}, ${province_input?.content()}, ${zip_code_input?.content()}"
     }
 
-    private fun setUserDataFromUserInfo() = launch {
+    private fun updateUserDataFromUserInfo() = launch {
         requireActivity().getViewModel<UserViewModel>(UserViewModel.Factory(requireContext())).getUSerInfoInstance()?.also { userInfo ->
             //Set user info form view model
             first_name_input?.setText(userInfo.firstName ?: "")

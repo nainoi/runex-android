@@ -11,13 +11,10 @@ import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.util.extension.toJson
-import com.think.runex.util.extension.toRequestBody
-import okhttp3.MediaType.Companion.toMediaType
-import okhttp3.RequestBody.Companion.toRequestBody
 
 class TeamRepository(private val api: EventApi) : RemoteDataSource() {
 
-    suspend fun getRegisterData(eventCode: String, registerId: String, parentRegisterId: String): Result<EventRegistered> {
+    suspend fun getRegisterData(eventCode: String, registerId: String, parentRegisterId: String): Result<Registered> {
         val body = JsonObject().apply {
             addProperty("event_code", eventCode)
             addProperty("reg_id", registerId)
@@ -35,7 +32,7 @@ class TeamRepository(private val api: EventApi) : RemoteDataSource() {
     }
 
     suspend fun addMEmberToTeam(userToAdd: UserInfo,
-                                parentRegisterData: EventRegisteredData,
+                                parentRegisterData: RegisterData,
                                 eventDetail: EventDetail): Result<Any> {
 
         val parentTicketOption = parentRegisterData.ticketOptions?.firstOrNull()
