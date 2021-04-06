@@ -13,6 +13,7 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.user.data.UserInfo
+import com.think.runex.feature.user.data.UserInfoRequestBody
 import com.think.runex.util.extension.launch
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -23,7 +24,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
 
     fun getRegisterData(eventCode: String, registerId: String, parentRegisterId: String) = launch(IO) {
 
-        val result = repo.getRegisterData(eventCode, registerId, parentRegisterId)
+        val result = repo.getRegisterData(RegisteredRequestBody(eventCode, registerId, parentRegisterId))
 
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
@@ -33,7 +34,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
     }
 
     suspend fun getUserInfoById(userId: String): UserInfo? = withContext(IO) {
-        val result = repo.getUserInfoById(userId)
+        val result = repo.getUserInfoById(UserInfoRequestBody(userId))
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }
@@ -50,7 +51,8 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         val teamLeaderTicketOption = teamLeaderRegisteredData.ticketOptions?.firstOrNull()
                 ?: TicketOptionEventRegistration()
 
-        val teamLeaderUserOption = teamLeaderTicketOption.userOption ?: UserOptionEventRegistration()
+        val teamLeaderUserOption = teamLeaderTicketOption.userOption
+                ?: UserOptionEventRegistration()
 
         val ticketAtRegister = teamLeaderTicketOption.ticket ?: Ticket()
 
@@ -131,10 +133,13 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
             true -> withContext(IO) {
 
                 //Update register data
-                val updateRegisterDataResult = repo.getRegisterData(
-                        eventCode = eventDetail.code ?: "",
-                        registerId = teamLeaderRegisteredData.id ?: "",
-                        parentRegisterId = teamLeaderRegisteredData.parentRegisterId ?: "")
+                val registerDataBody = RegisteredRequestBody().apply {
+                    eventCode = eventDetail.code ?: ""
+                    registerId = teamLeaderRegisteredData.id ?: ""
+                    parentRegisterId = teamLeaderRegisteredData.parentRegisterId ?: ""
+                }
+
+                val updateRegisterDataResult = repo.getRegisterData(registerDataBody)
 
                 if (updateRegisterDataResult.isSuccessful()) {
                     registerData.postValue(updateRegisterDataResult.data)

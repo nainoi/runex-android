@@ -94,7 +94,8 @@ class DashboardScreen : BaseScreen() {
         }
 
         view_leader_board_button?.setOnClickListener {
-            addFragment(LeaderBoardScreen.newInstance(eventCode))
+            val ticketId = viewModel.getTicketAtRegister()?.id ?: ""
+            addFragment(LeaderBoardScreen.newInstance(eventCode, registerId, parentRegisterId, ticketId))
         }
 
         team_management_button?.setOnClickListener {

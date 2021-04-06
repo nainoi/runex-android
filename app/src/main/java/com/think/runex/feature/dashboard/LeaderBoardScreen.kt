@@ -2,6 +2,7 @@ package com.think.runex.feature.dashboard
 
 import android.annotation.SuppressLint
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -12,14 +13,14 @@ import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
+import com.think.runex.config.*
 import com.think.runex.util.extension.setStatusBarColor
 import com.think.runex.util.extension.setupToolbar
-import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
-import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
+import com.think.runex.util.extension.toJson
 import kotlinx.android.synthetic.main.screen_leader_board.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*
@@ -28,12 +29,20 @@ class LeaderBoardScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(eventCode: String) = LeaderBoardScreen().apply {
+        fun newInstance(eventCode: String,
+                        registerId: String,
+                        parentRegisterId: String,
+                        ticketId: String) = LeaderBoardScreen().apply {
+
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
+                putString(KEY_REGISTER_ID, registerId)
+                putString(KEY_PARENT_REGISTER_ID, parentRegisterId)
+                putString(KEY_TICKET, ticketId)
             }
         }
     }
+
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_leader_board, container, false)
@@ -75,11 +84,19 @@ class LeaderBoardScreen : BaseScreen() {
             }
         }
 
-        val extraHeaders = HashMap<String, String>()
-        extraHeaders["token"] = TokenManager.accessToken
-        extraHeaders["id"] = "0"
-        extraHeaders["code"] = arguments?.getString(KEY_EVENT_CODE) ?: ""
-        //val url = "${ApiConfig.LEADER_BOARD_URL}/${userInfo.providerId ?: ""}/${userInfo.provider ?: ""}"
-        web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL, extraHeaders) //https://leaderboard.runex.co"
+        arguments?.run {
+
+            val extraHeaders = HashMap<String, String>()
+            extraHeaders["token"] = TokenManager.accessToken
+            extraHeaders["id"] = "16"
+            extraHeaders["event_code"] = getString(KEY_EVENT_CODE) ?: ""
+            extraHeaders["reg_id"] = getString(KEY_REGISTER_ID) ?: ""
+            extraHeaders["parent_reg_id"] = getString(KEY_PARENT_REGISTER_ID) ?: ""
+            extraHeaders["ticket_id"] = getString(KEY_TICKET) ?: ""
+
+            Log.e("Jozzee", "extraHeaders: ${extraHeaders.toJson()}")
+
+            web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL, extraHeaders) //https://leaderboard.runex.co"
+        }
     }
 }

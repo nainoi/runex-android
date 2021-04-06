@@ -49,6 +49,17 @@
 
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <intent-filter>
+                <action android:name="android.intent.action.VIEW" />
+
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <!-- Accepts URIs that begin with "runex://data?param1=value&param1=value” -->
+                <data
+                    android:host="data"
+                    android:scheme="runex" />
+            </intent-filter>
         </activity>
 
         <activity
@@ -61,20 +72,6 @@
             android:launchMode="singleTask"
             android:screenOrientation="portrait" />
 
-        <activity
-            android:name=".DeepLinkActivity"
-            android:launchMode="singleInstance">
-            <intent-filter>
-                <action android:name="android.intent.action.VIEW" />
-
-                <category android:name="android.intent.category.DEFAULT" />
-                <category android:name="android.intent.category.BROWSABLE" />
-                <!-- Accepts URIs that begin with "runex://data?param1=value&param1=value” -->
-                <data
-                    android:host="data"
-                    android:scheme="runex" />
-            </intent-filter>
-        </activity>
 
         <!-- Facebook Activity -->
         <activity

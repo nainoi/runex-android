@@ -14,6 +14,7 @@ import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.RegisteredData
 import com.think.runex.feature.user.data.UserInfo
+import com.think.runex.feature.user.data.UserInfoRequestBody
 import com.think.runex.util.extension.getString
 import com.think.runex.util.extension.loadProfileImage
 import kotlinx.android.synthetic.main.list_item_member_in_team.view.*
@@ -76,7 +77,7 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
 
                 showSkeleton()
 
-                val result = repository?.getUserInfoById(data?.userId ?: "")
+                val result = repository?.getUserInfoById(UserInfoRequestBody(data?.userId ?: ""))
 
                 showContents()
 

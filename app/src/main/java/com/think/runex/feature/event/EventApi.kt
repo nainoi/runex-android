@@ -37,7 +37,7 @@ interface EventApi : UserInfoApi {
 
     @POST("/api/${ApiConfig.API_VERSION}/register/info")
     fun getRegisterDataAsync(
-            @Body body: JsonObject,
+            @Body body: RegisteredRequestBody,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Registered>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
