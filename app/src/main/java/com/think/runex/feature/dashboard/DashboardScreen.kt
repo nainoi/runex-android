@@ -94,7 +94,7 @@ class DashboardScreen : BaseScreen() {
         }
 
         view_leader_board_button?.setOnClickListener {
-            //addFragment(LeaderBoardScreen.newInstance(eventCode))
+            addFragment(LeaderBoardScreen.newInstance(eventCode))
         }
 
         team_management_button?.setOnClickListener {

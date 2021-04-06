@@ -6,11 +6,12 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.feature.event.data.*
+import com.think.runex.feature.user.UserInfoApi
 import com.think.runex.feature.user.data.UserInfo
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 
-interface EventApi {
+interface EventApi : UserInfoApi {
 
     @GET("/api/${ApiConfig.API_VERSION}/event/all")
     fun getAllEventAsync(
@@ -48,16 +49,6 @@ interface EventApi {
     fun updateRegisterInfoAsync(
             @Body body: JsonObject,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
-
-    @POST("/api/${ApiConfig.API_VERSION}/register/add")
-    fun registerEventWithKaoAsync(
-            @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
-
-    @POST("/api/${ApiConfig.API_VERSION}/user")
-    fun getUserInfoByIdAsync(
-            @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/team")
     fun addMemberToTeamAsync(

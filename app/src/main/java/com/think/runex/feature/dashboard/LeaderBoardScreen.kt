@@ -35,10 +35,6 @@ class LeaderBoardScreen : BaseScreen() {
         }
     }
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-    }
-
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
         return inflater.inflate(R.layout.screen_leader_board, container, false)
     }
@@ -81,7 +77,8 @@ class LeaderBoardScreen : BaseScreen() {
 
         val extraHeaders = HashMap<String, String>()
         extraHeaders["token"] = TokenManager.accessToken
-        extraHeaders["id"] = "7Zy0R"
+        extraHeaders["id"] = "0"
+        extraHeaders["code"] = arguments?.getString(KEY_EVENT_CODE) ?: ""
         //val url = "${ApiConfig.LEADER_BOARD_URL}/${userInfo.providerId ?: ""}/${userInfo.provider ?: ""}"
         web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL, extraHeaders) //https://leaderboard.runex.co"
     }
