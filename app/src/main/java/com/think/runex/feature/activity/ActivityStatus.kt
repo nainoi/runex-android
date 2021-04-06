@@ -15,7 +15,7 @@ object ActivityStatus {
     @ColorRes
     fun getStatusColor(status: String?) = when (status) {
         APPROVE -> R.color.statusSuccess
-        WAITING -> R.color.statusWaitingForApprove
+        WAITING -> R.color.statusWaiting
         FAILED -> R.color.error
         else -> R.color.statusUnknown
     }

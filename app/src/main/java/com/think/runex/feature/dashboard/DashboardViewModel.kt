@@ -58,6 +58,7 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
 
     fun getTicketAtRegister(): Ticket? = dashboardInfo?.registered?.getTicketAtRegister()
 
+    fun getEventId() = dashboardInfo?.registered?.eventDetail?.id ?: 0
 
     class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")

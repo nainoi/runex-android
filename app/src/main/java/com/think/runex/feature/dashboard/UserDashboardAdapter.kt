@@ -12,6 +12,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.jozzee.android.core.datetime.toTimeMillis
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.setVisible
@@ -19,6 +20,7 @@ import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.util.extension.*
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.dashboard.data.UserActivityDashboard
 import com.think.runex.feature.user.data.UserInfoRequestBody
@@ -85,7 +87,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
             itemView.user_activity_list?.addItemDecoration(itemDecoration)
             itemView.user_activity_list?.layoutManager = LinearLayoutManager(requireContext())
             itemView.user_activity_list?.adapter = UserActivityAdapter().apply {
-                submitList(data?.activityInfoList?.toMutableList())
+                submitList(data?.activityInfoList?.sortedByDescending { it.activityDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT) }?.toMutableList())
             }
 
             //Subscribe Ui

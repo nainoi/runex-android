@@ -41,6 +41,7 @@
     <string name="color_optional">สี (ไม่จำเป็น)</string>
     <string name="check_information">ตรวจสอบข้อมูล</string>
     <string name="citizen_id">เลขประจำตัวประชาชน</string>
+    <string name="closed">ปิด</string>
 
     <!-- D -->
     <string name="dashboard">แดชบอร์ด</string>

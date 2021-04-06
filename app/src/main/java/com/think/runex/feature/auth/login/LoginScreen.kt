@@ -58,8 +58,6 @@ class LoginScreen : BaseScreen(), SelectEnvironmentDialog.OnEnvironmentSelectedL
     private fun setupComponents() {
         setStatusBarColor(getColor(R.color.backgroundPrimaryLight), isLightStatusBar = true)
 
-        set_environment_button?.setVisible(BuildConfig.DEBUG)
-
         web_view?.settings?.apply {
             //setAppCacheEnabled(false)
             cacheMode = WebSettings.LOAD_NO_CACHE
@@ -71,6 +69,7 @@ class LoginScreen : BaseScreen(), SelectEnvironmentDialog.OnEnvironmentSelectedL
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
                 progress_bar?.gone()
+                set_environment_button?.setVisible(BuildConfig.DEBUG)
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
@@ -153,5 +152,4 @@ class LoginScreen : BaseScreen(), SelectEnvironmentDialog.OnEnvironmentSelectedL
         CookieManager.getInstance().flush()
         super.onDestroy()
     }
-
 }

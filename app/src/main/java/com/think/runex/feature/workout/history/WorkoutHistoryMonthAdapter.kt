@@ -10,6 +10,7 @@ import androidx.recyclerview.widget.DiffUtil
 import androidx.recyclerview.widget.LinearLayoutManager
 import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
+import com.jozzee.android.core.datetime.toTimeMillis
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
@@ -17,6 +18,7 @@ import com.think.runex.util.extension.*
 import com.think.runex.feature.workout.data.WorkoutHistoryDay
 import com.think.runex.feature.workout.data.WorkoutHistoryMonth
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import kotlinx.android.synthetic.main.list_item_workout_history_month.view.*
 
 class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView,
@@ -82,7 +84,7 @@ class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView,
             itemView.workout_day_list?.addItemDecoration(itemDecoration)
             itemView.workout_day_list?.layoutManager = LinearLayoutManager(requireContext())
             itemView.workout_day_list?.adapter = WorkoutHistoryDayAdapter(onItemClickListener).apply {
-                submitList(data?.workouts?.toMutableList())
+                submitList(data?.workouts?.sortedByDescending { it.workoutDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT) }?.toMutableList())
             }
 
             itemView.summary_month_layout?.setOnClickListener {

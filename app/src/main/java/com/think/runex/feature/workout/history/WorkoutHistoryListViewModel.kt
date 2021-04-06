@@ -27,6 +27,7 @@ class WorkoutHistoryListViewModel(private val repo: WorkoutRepository) : BaseVie
         if (result.isSuccessful().not()) {
             onHandleError(result.statusCode, result.message)
         }
+        result.data = result.data?.sortedWith(compareByDescending<WorkoutHistoryMonth> { it.year }.thenByDescending { it.month })
         isLoading = false
         historyList.postValue(result.data)
     }

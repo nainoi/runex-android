@@ -79,8 +79,7 @@
     <color name="iconColorWhite">@android:color/white</color>
 
     <!-- Status colors -->
-    <color name="statusWaitingForApprove">@color/colorAccent</color>
-    <color name="statusWaiting">#494E52</color>
+    <color name="statusWaiting">@color/colorAccent</color>
     <color name="statusSuccess">@color/success</color>
     <color name="statusFailed">@color/error</color>
     <color name="statusUnknown">@color/textColorHint</color>

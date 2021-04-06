@@ -30,12 +30,14 @@ class LeaderBoardScreen : BaseScreen() {
     companion object {
         @JvmStatic
         fun newInstance(eventCode: String,
+                        eventId: Int,
                         registerId: String,
                         parentRegisterId: String,
                         ticketId: String) = LeaderBoardScreen().apply {
 
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
+                putInt(KEY_EVENT_ID, eventId)
                 putString(KEY_REGISTER_ID, registerId)
                 putString(KEY_PARENT_REGISTER_ID, parentRegisterId)
                 putString(KEY_TICKET, ticketId)
@@ -88,7 +90,7 @@ class LeaderBoardScreen : BaseScreen() {
 
             val extraHeaders = HashMap<String, String>()
             extraHeaders["token"] = TokenManager.accessToken
-            extraHeaders["id"] = "16"
+            extraHeaders["id"] = getInt(KEY_EVENT_ID).toString()
             extraHeaders["event_code"] = getString(KEY_EVENT_CODE) ?: ""
             extraHeaders["reg_id"] = getString(KEY_REGISTER_ID) ?: ""
             extraHeaders["parent_reg_id"] = getString(KEY_PARENT_REGISTER_ID) ?: ""

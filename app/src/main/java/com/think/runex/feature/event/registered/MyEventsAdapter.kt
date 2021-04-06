@@ -43,8 +43,10 @@ class MyEventsAdapter : ListAdapter<Registered, MyEventsAdapter.ViewHolder>(Regi
             itemView.event_name_label?.text = data?.eventDetail?.title ?: ""
 
             val paymentStatus = data?.getRegisterStatus(0) ?: ""
-            itemView.event_status_icon?.background = RegisterStatus.getPaymentStatusBackground(requireContext(), paymentStatus)
-            itemView.event_status_label?.text = RegisterStatus.getPaymentStatusText(requireContext(), paymentStatus)
+            val isClosed = data?.eventDetail?.isClosed ?: false
+
+            itemView.event_status_icon?.background = RegisterStatus.getPaymentStatusBackground(requireContext(), paymentStatus, isClosed)
+            itemView.event_status_label?.text = RegisterStatus.getPaymentStatusText(requireContext(), paymentStatus, isClosed)
 
             itemView.list_item_event_registration?.setOnClickListener {
                 data?.also { onItemClick?.invoke(it) }

@@ -9,7 +9,4 @@
 
     <!-- Service -->
     <string name="workout_service_name" translatable="false">Workout</string>
-
-    <!-- Omise -->
-    <string name="omise_key" translatable="false">pkey_test_5i6ivm4cotoab601bfr</string>
 </resources>

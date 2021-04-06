@@ -16,7 +16,7 @@ class ApiConfig {
         var BASE_URL: String = "https://api.runex.co"
             private set
             get() = when (BuildConfig.DEBUG) {
-                true -> field//"https://runex-api.thinkdev.app" //"https://api.runex.co"
+                true -> field
                 false -> BASE_URL_PRODUCTION
             }
 
@@ -56,14 +56,8 @@ class ApiConfig {
 
         fun updateBaseUrl(@Environment environment: Int) {
             BASE_URL = when (environment) {
-                Environment.DEV -> {
-                    Log.w("ApiConfig", "Set Environment Dev")
-                    BASE_URL_DEV
-                }
-                else -> {
-                    Log.w("ApiConfig", "Set Environment Production")
-                    BASE_URL_PRODUCTION
-                }
+                Environment.DEV -> BASE_URL_DEV
+                else -> BASE_URL_PRODUCTION
             }
         }
     }

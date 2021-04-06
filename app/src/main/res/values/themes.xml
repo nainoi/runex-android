@@ -9,8 +9,8 @@
         <item name="android:windowLightStatusBar">true</item>
 
         <!-- Set windowBackground to dark color for dark mode default.-->
-        <!-- <item name="android:windowBackground">@color/backgroundDark</item> -->
-        <item name="android:windowBackground">@color/backgroundPrimary</item>
+         <item name="android:windowBackground">@color/backgroundPrimaryDark</item>
+<!--        <item name="android:windowBackground">@color/backgroundPrimary</item>-->
 
         <!-- Color Attributes -->
         <item name="colorBackgroundPrimary">@color/backgroundPrimary</item>

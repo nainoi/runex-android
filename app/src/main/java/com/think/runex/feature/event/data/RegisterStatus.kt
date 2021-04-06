@@ -15,27 +15,33 @@ object RegisterStatus {
     const val FAILED = "PAYMENT_FAIL"
 
     @ColorRes
-    fun getPaymentStatusColor(paymentState: String?) = when (paymentState) {
-        WAITING_APPROVE -> R.color.statusWaitingForApprove
-        WAITING_PAY -> R.color.statusWaiting
-        SUCCESS -> R.color.statusSuccess
-        FAILED -> R.color.error
-        else -> R.color.textColorHint
+    fun getPaymentStatusColor(paymentState: String?, isClosed: Boolean): Int {
+        if (isClosed) return R.color.statusWaiting
+        return when (paymentState) {
+            WAITING_APPROVE -> R.color.statusUnknown
+            WAITING_PAY -> R.color.statusWaiting
+            SUCCESS -> R.color.statusSuccess
+            FAILED -> R.color.error
+            else -> R.color.statusUnknown
+        }
     }
 
-    fun getPaymentStatusBackground(context: Context, paymentState: String?) = GradientDrawable().apply {
+    fun getPaymentStatusBackground(context: Context, paymentState: String?, isClosed: Boolean) = GradientDrawable().apply {
         shape = GradientDrawable.OVAL
         cornerRadii = floatArrayOf(0f, 0f, 0f, 0f, 0f, 0f, 0f, 0f)
-        setColor(ContextCompat.getColor(context, getPaymentStatusColor(paymentState)))
+        setColor(ContextCompat.getColor(context, getPaymentStatusColor(paymentState, isClosed)))
     }
 
 
-    fun getPaymentStatusText(context: Context, paymentState: String): String = when (paymentState) {
-        WAITING_APPROVE -> context.getString(R.string.waiting_for_approve)
-        WAITING_PAY -> context.getString(R.string.waiting_for_payment)
-        WAITING_CONFIRM -> context.getString(R.string.waiting_for_confirm)
-        SUCCESS -> context.getString(R.string.success)
-        FAILED -> context.getString(R.string.failed)
-        else -> ""
+    fun getPaymentStatusText(context: Context, paymentState: String, isClosed: Boolean): String {
+        if (isClosed) return context.getString(R.string.closed)
+        return when (paymentState) {
+            WAITING_APPROVE -> context.getString(R.string.waiting_for_approve)
+            WAITING_PAY -> context.getString(R.string.waiting_for_payment)
+            WAITING_CONFIRM -> context.getString(R.string.waiting_for_confirm)
+            SUCCESS -> context.getString(R.string.success)
+            FAILED -> context.getString(R.string.failed)
+            else -> ""
+        }
     }
 }
