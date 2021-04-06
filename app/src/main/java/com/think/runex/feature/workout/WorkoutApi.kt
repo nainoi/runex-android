@@ -1,5 +1,6 @@
 package com.think.runex.feature.workout
 
+import com.google.gson.JsonObject
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
@@ -32,8 +33,14 @@ interface WorkoutApi {
             @Body body: MultipartBody,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 
+    @Deprecated("Use [submitWorkoutToEventsAsync] instead")
     @POST("/api/${ApiConfig.API_VERSION}/activity/activityWorkout")
     fun submitWorkoutToEventAsync(
-            @Body body: RequestBody,
+            @Body body: JsonObject,
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+
+    @POST("/api/${ApiConfig.API_VERSION}/activity/add")
+    fun submitActivityToEventAsync(
+            @Body body: MultipartBody,
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
 }

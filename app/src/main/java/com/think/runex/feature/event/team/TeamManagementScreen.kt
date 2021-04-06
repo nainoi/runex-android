@@ -187,7 +187,7 @@ class TeamManagementScreen : BaseScreen() {
 
     private fun showLoading() {
         add_member_button?.inVisible()
-        member_list_placeholder?.visible()
+        member_list_placeholder?.inVisible()
         member_list?.inVisible()
         progress_bar?.visible()
     }

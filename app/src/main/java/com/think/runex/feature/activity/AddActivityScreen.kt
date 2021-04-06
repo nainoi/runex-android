@@ -19,6 +19,7 @@ import com.jozzee.android.core.datetime.toCalendar
 import com.jozzee.android.core.datetime.year
 import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.resource.getDimension
+import com.jozzee.android.core.text.toDoubleOrZero
 import com.jozzee.android.core.view.content
 import com.jozzee.android.core.view.hideKeyboard
 import com.jozzee.android.core.view.showToast
@@ -27,8 +28,10 @@ import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.util.extension.*
 import com.think.runex.config.DISPLAY_DATE_FORMAT_FULL_MONTH
 import com.think.runex.config.KEY_BODY
+import com.think.runex.config.KEY_DATA
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
-import com.think.runex.feature.activity.data.AddActivityBody
+import com.think.runex.feature.activity.data.ActivityForSubmitEvent
+import com.think.runex.feature.dashboard.DashboardScreen
 import com.think.runex.util.GetContentHelper
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
@@ -40,9 +43,9 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
 
     companion object {
         @JvmStatic
-        fun newInstance(body: AddActivityBody) = AddActivityScreen().apply {
+        fun newInstance(activityForSubmit: ActivityForSubmitEvent) = AddActivityScreen().apply {
             arguments = Bundle().apply {
-                putParcelable(KEY_BODY, body)
+                putParcelable(KEY_DATA, activityForSubmit)
             }
         }
     }
@@ -50,7 +53,7 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
     private lateinit var viewModel: ActivityViewModel
     private var getContentHelper: GetContentHelper? = null
 
-    private var addActivityBody: AddActivityBody? = null
+    private var activityForSubmit: ActivityForSubmitEvent? = null
     private var activityImageUri: Uri? = null
     private var activityDate: String? = null
 
@@ -59,8 +62,7 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
 
         viewModel = getViewModel(ActivityViewModel.Factory(requireContext()))
         getContentHelper = GetContentHelper(this)
-
-        addActivityBody = arguments?.getParcelable(KEY_BODY)
+        activityForSubmit = arguments?.getParcelable(KEY_DATA)
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -72,7 +74,7 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
         setupComponents()
         subscribeUi()
 
-        if (addActivityBody == null) {
+        if (activityForSubmit == null) {
             showAlertDialog(R.string.error, R.string.data_not_found, false) {
                 onBackPressed()
             }
@@ -98,15 +100,36 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
 
         submit_button?.setOnClickListener {
             if (isDataValid()) {
-                performAddActivity()
+                performSubmitActivityToEvent()
             }
         }
 
         viewModel.setOnHandleError(::errorHandler)
     }
 
-    private fun performAddActivity() = launch {
+
+    private fun performSubmitActivityToEvent() = launch {
+
         showProgressDialog(R.string.add_activity)
+
+        val isSuccess = viewModel.submitActivityToEvent(requireContext(),
+                activityImageUri,
+                distance_input?.content()?.toDoubleOrZero() ?: 0.0,
+                activityDate ?: "",
+                note_input?.content() ?: "",
+                activityForSubmit)
+
+        hideProgressDialog()
+
+        if (isSuccess) {
+
+            //Update live data for refresh screen().
+            getMainViewModel().refreshScreen(DashboardScreen::class.java.simpleName)
+
+            showAlertDialog(R.string.submit_result_running_success, R.string.success, isCancelEnable = false) {
+                onBackPressed()
+            }
+        }
     }
 
     private fun checkPermissionAndGetImageContent() = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->

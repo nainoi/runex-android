@@ -6,13 +6,13 @@ import com.think.runex.feature.event.data.Registered
 import com.think.runex.feature.event.data.TicketCategory
 
 data class DashboardInfo(
-        @SerializedName("activities") var userActivityList: List<UserDashboard>? = null,
+        @SerializedName("activities") var activityList: List<UserActivityDashboard>? = null,
         @SerializedName("register") var registered: Registered? = null) {
 
     fun getTotalDistanceDisplay(unit: String): String {
         var totalDistances = 0.0
-        if (userActivityList?.isNotEmpty() == true) {
-            totalDistances = userActivityList?.sumByDouble { it.totalDistances ?: 0.0 } ?: 0.0
+        if (activityList?.isNotEmpty() == true) {
+            totalDistances = activityList?.sumByDouble { it.totalDistances ?: 0.0 } ?: 0.0
         }
         return "${totalDistances.displayFormat()} $unit"
     }

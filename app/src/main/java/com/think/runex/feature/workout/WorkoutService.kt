@@ -60,7 +60,7 @@ open class WorkoutService : Service() {
             override fun onLocationResult(result: LocationResult) {
                 super.onLocationResult(result)
                 result.lastLocation.let { location ->
-                    Logger.info("WorkoutService", "Location update : latitude: ${location.latitude}, longitude: ${location.longitude}, accuracy: ${location.accuracy} at time: ${location.time}")
+                    //Logger.info("WorkoutService", "Location update : latitude: ${location.latitude}, longitude: ${location.longitude}, accuracy: ${location.accuracy} at time: ${location.time}")
                     newLocation = location
                     if (status == WorkoutStatus.UNKNOWN) {
                         status = WorkoutStatus.READY

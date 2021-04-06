@@ -132,7 +132,7 @@
         android:layout_marginEnd="@dimen/space_16dp"
         android:hint="@string/take_note"
         android:imeOptions="actionDone"
-        android:inputType="numberDecimal"
+        android:inputType="text"
         android:maxLines="1"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"

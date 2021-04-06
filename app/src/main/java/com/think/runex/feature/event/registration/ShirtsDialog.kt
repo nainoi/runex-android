@@ -20,7 +20,6 @@ class ShirtsDialog : DialogFragment() {
     companion object {
         @JvmStatic
         fun newInstance(shirts: ArrayList<Shirt>?) = ShirtsDialog().apply {
-            Log.e("Jozzee", "Shirt: ${shirts.toJson()}")
             arguments = Bundle().apply {
                 putParcelableArrayList("shirts", shirts)
             }

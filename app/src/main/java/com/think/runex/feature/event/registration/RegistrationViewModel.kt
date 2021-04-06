@@ -9,6 +9,7 @@ import com.google.gson.Gson
 import com.google.gson.JsonObject
 import com.jozzee.android.core.datetime.dateTimeFormat
 import com.jozzee.android.core.text.toDoubleOrZero
+import com.jozzee.android.core.util.Logger
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.address.AddressApi
@@ -92,7 +93,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
 
 
     fun searchAddressByZipCode(zipCode: String, viewRequestId: Int) = launch(IO) {
-        Log.v("Jozzee", "searchAddressByZipCode: $zipCode")
+        Logger.debug("Jozzee", "searchAddressByZipCode: $zipCode")
         val result = addressRepo.getSubDistrictByZipCode(zipCode)
         when (result.isSuccessful()) {
             true -> {
@@ -107,7 +108,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
     }
 
     fun searchAddressBySubDistricts(query: String, viewRequestId: Int) = launch(IO) {
-        Log.v("Jozzee", "searchAddressBySubDistricts: $query")
+        Logger.debug("Jozzee", "searchAddressBySubDistricts: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
             allSubDistrictList?.forEach { address ->
@@ -133,7 +134,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
     }
 
     fun searchAddressByDistricts(query: String, viewRequestId: Int) = launch(IO) {
-        Log.v("Jozzee", "searchAddressByDistricts: $query")
+        Logger.debug("Jozzee", "searchAddressByDistricts: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
             allSubDistrictList?.forEach { address ->
@@ -159,7 +160,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
     }
 
     fun searchAddressByProvince(query: String, viewRequestId: Int) = launch(IO) {
-        Log.v("Jozzee", "searchAddressByProvince: $query")
+        Logger.debug("Jozzee", "searchAddressByProvince: $query")
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
             allSubDistrictList?.forEach { address ->

@@ -157,6 +157,7 @@
     <string name="stop_recording">Stop</string>
     <string name="submit_result">Submit Result</string>
     <string name="submit_result_running">Submit Result</string>
+    <string name="submit_result_running_success">Submit Result Success</string>
     <string name="summary">Summary</string>
     <string name="success">Success</string>
     <string name="share">Share</string>

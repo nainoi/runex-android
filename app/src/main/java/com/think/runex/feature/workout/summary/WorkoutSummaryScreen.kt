@@ -139,7 +139,7 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
 
         if (isSuccess) {
 
-            showAlertDialog(R.string.success)
+            showAlertDialog(R.string.submit_result_running_success, R.string.success)
 
             //Update workout info
             workoutInfo = viewModel.getWorkoutInfo(workoutId ?: "")

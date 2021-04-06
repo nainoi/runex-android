@@ -6,6 +6,8 @@ import androidx.lifecycle.ViewModelProvider
 import com.think.runex.base.BaseViewModel
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.dashboard.data.DashboardInfo
+import com.think.runex.feature.dashboard.data.DashboardInfoRequestBody
+import com.think.runex.feature.event.data.Ticket
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 
@@ -13,38 +15,49 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
 
     private var dashboardInfo: DashboardInfo? = null
 
-    suspend fun getEventDashboard(eventCode: String,
-                                  orderId: String,
-                                  registerId: String,
-                                  parentRegisterId: String): DashboardInfo? = withContext(IO) {
+    var myUserId: String = ""
+        private set
 
-        if (dashboardInfo != null) {
+    var isTeamLeader: Boolean = false
+        private set
+
+    suspend fun getDashboardInfo(eventCode: String,
+                                 orderId: String,
+                                 registerId: String,
+                                 parentRegisterId: String,
+                                 forceRefresh: Boolean = false): DashboardInfo? = withContext(IO) {
+
+        if (dashboardInfo != null && forceRefresh.not()) {
             return@withContext dashboardInfo
         }
 
-        val result = repo.getEventDashboard(eventCode, orderId, registerId, parentRegisterId)
+        //Get my user info for check is team leader.
+        if (myUserId.isBlank()) {
+            val myUserInfoResult = repo.getMyUserInfo()
+            if (myUserInfoResult.isSuccessful().not()) {
+                onHandleError(myUserInfoResult.statusCode, myUserInfoResult.message, "dashboard")
+                return@withContext null
+            }
+            myUserId = myUserInfoResult.data?.id ?: ""
+        }
+
+        //Get dashboard info.
+        val result = repo.getDashboardInfo(DashboardInfoRequestBody(eventCode, orderId, registerId, parentRegisterId))
 
         when (result.isSuccessful()) {
-            true -> dashboardInfo = result.data
+            true -> {
+                //Update dashboard data
+                dashboardInfo = result.data
+                isTeamLeader = dashboardInfo?.isTeamLeader(myUserId) ?: false
+            }
             false -> onHandleError(result.statusCode, result.message, "dashboard")
         }
 
         return@withContext dashboardInfo
     }
 
-    fun getUserFullNameFromActivityPosition(position: Int): String {
-        if (position < dashboardInfo?.registered?.registeredDataList?.size ?: 0 &&
-                dashboardInfo?.registered?.registeredDataList?.get(position)?.ticketOptions?.isNotEmpty() == true) {
-            return dashboardInfo?.registered?.registeredDataList?.get(position)?.ticketOptions?.get(0)?.userOption?.let { userOption ->
-                if (userOption.firstName.isNotBlank() && userOption.lastName.isNotBlank()) {
-                    "${userOption.firstName} ${userOption.lastName}"
-                } else {
-                    userOption.fullName
-                }
-            } ?: ""
-        }
-        return ""
-    }
+    fun getTicketAtRegister(): Ticket? = dashboardInfo?.registered?.getTicketAtRegister()
+
 
     class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")

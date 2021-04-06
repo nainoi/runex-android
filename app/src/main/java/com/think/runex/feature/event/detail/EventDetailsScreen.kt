@@ -87,14 +87,18 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
         observe(viewModel.eventDetail) { eventDetail ->
             if (view == null || isAdded.not()) return@observe
+
             hideLoading()
             updateEventDetails(eventDetail)
         }
 
-        observe(getMainViewModel().refreshScreen) {
+        observe(getMainViewModel().refreshScreen) { screenName ->
             if (view == null || isAdded.not()) return@observe
-            showLoading()
-            viewModel.getEventDetail(eventCode)
+
+            if (screenName.isNullOrBlank() || screenName == this@EventDetailsScreen::class.java.simpleName) {
+                showLoading()
+                viewModel.getEventDetail(eventCode)
+            }
         }
     }
 

@@ -121,7 +121,6 @@ class ConfirmRegistrationFragment : BaseScreen() {
         }
     }
 
-    //TODO("Handle response")
     private fun performUpdateRegisterInfo() = launch {
 
         showProgressDialog(R.string.update_registration)

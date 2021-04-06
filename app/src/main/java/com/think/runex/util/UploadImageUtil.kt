@@ -36,8 +36,7 @@ open class UploadImageUtil {
             var reqWidth = 0
             var reqHeight = 0
 
-            if (maxWidthOrHeight > 0 &&
-                    (options.outWidth > maxWidthOrHeight || options.outHeight > maxWidthOrHeight)) {
+            if (maxWidthOrHeight > 0 && (options.outWidth > maxWidthOrHeight || options.outHeight > maxWidthOrHeight)) {
 
                 when {
                     options.outWidth >= options.outHeight -> {
@@ -106,6 +105,12 @@ open class UploadImageUtil {
             bitmap?.recycle()
         }
     }
+
+//    fun reduceImageSize(context: Context, bitmap: Bitmap, maxWidthOrHeight: Int = 1080): ByteArray {
+//        if (maxWidthOrHeight > 0 && (bitmap.width > maxWidthOrHeight || bitmap.height > maxWidthOrHeight)) {
+//
+//        }
+//    }
 
     private fun calculateInSampleSize(options: BitmapFactory.Options, reqWidth: Int, reqHeight: Int): Int {
         // Raw height and width of image

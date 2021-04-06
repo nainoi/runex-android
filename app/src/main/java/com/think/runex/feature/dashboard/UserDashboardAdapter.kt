@@ -20,12 +20,13 @@ import com.think.runex.R
 import com.think.runex.util.extension.*
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.datasource.api.ApiService
-import com.think.runex.feature.dashboard.data.UserDashboard
+import com.think.runex.feature.dashboard.data.UserActivityDashboard
+import com.think.runex.feature.user.data.UserInfoRequestBody
 import kotlinx.android.synthetic.main.list_item_dashboard_user.view.*
 import kotlinx.coroutines.launch
 
 class UserDashboardAdapter(private val recyclerView: RecyclerView,
-                           private val owner: LifecycleOwner) : ListAdapter<UserDashboard, UserDashboardAdapter.ViewHolder>(UserActivityDiffCallback()) {
+                           private val owner: LifecycleOwner) : ListAdapter<UserActivityDashboard, UserDashboardAdapter.ViewHolder>(UserActivityDiffCallback()) {
 
     private var repository: DashboardRepository? = null
 
@@ -39,12 +40,12 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
         holder.bind(getItem(position))
     }
 
-    class UserActivityDiffCallback : DiffUtil.ItemCallback<UserDashboard>() {
-        override fun areItemsTheSame(oldItem: UserDashboard, newItem: UserDashboard): Boolean {
+    class UserActivityDiffCallback : DiffUtil.ItemCallback<UserActivityDashboard>() {
+        override fun areItemsTheSame(oldItem: UserActivityDashboard, newItem: UserActivityDashboard): Boolean {
             return oldItem.id == newItem.id
         }
 
-        override fun areContentsTheSame(oldItem: UserDashboard, newItem: UserDashboard): Boolean {
+        override fun areContentsTheSame(oldItem: UserActivityDashboard, newItem: UserActivityDashboard): Boolean {
             return oldItem == newItem
         }
     }
@@ -64,13 +65,14 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
         constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
                 .inflate(R.layout.list_item_dashboard_user, parent, false))
 
-        fun bind(data: UserDashboard?) {
+        fun bind(data: UserActivityDashboard?) {
 
             //Set views to skeleton on loading
             showSkeleton()
 
             //Setup views
-            itemView.activity_times_label?.text = (data?.activityInfo?.size ?: 0).displayFormat()
+            itemView.activity_times_label?.text = (data?.activityInfoList?.size
+                    ?: 0).displayFormat()
             itemView.total_distance_label?.text = data?.getTotalDistanceDisplay(getString(R.string.km))
 
             //Setup user activity info list
@@ -83,7 +85,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
             itemView.user_activity_list?.addItemDecoration(itemDecoration)
             itemView.user_activity_list?.layoutManager = LinearLayoutManager(requireContext())
             itemView.user_activity_list?.adapter = UserActivityAdapter().apply {
-                submitList(data?.activityInfo?.toMutableList())
+                submitList(data?.activityInfoList?.toMutableList())
             }
 
             //Subscribe Ui
@@ -97,7 +99,7 @@ class UserDashboardAdapter(private val recyclerView: RecyclerView,
             //Get user name from api
             owner.lifecycleScope.launch {
 
-                val result = repository?.getUserInfoById(data?.userId ?: "")
+                val result = repository?.getUserInfoById(UserInfoRequestBody(data?.userId ?: ""))
 
                 showContents()
 

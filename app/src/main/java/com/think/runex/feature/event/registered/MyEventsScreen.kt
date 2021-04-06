@@ -71,20 +71,20 @@ class MyEventsScreen : BaseScreen() {
             viewModel.getEventList()
         }
 
-        adapter.setOnItemClickListener { register ->
-            when (register.getRegisterStatus(0)) {
-                RegisterStatus.SUCCESS -> addFragment(DashboardScreen.newInstance(eventCode = register.getEventCode(),
-                        orderId = register.getOrderId(0),
-                        registerId = register.getRegisterId(0),
-                        parentRegisterId = register.getParentRegisterId()
+        adapter.setOnItemClickListener { registered ->
+            when (registered.getRegisterStatus(0)) {
+                RegisterStatus.SUCCESS -> addFragment(DashboardScreen.newInstance(eventCode = registered.getEventCode(),
+                        orderId = registered.getOrderId(0),
+                        registerId = registered.getRegisterId(0),
+                        parentRegisterId = registered.getParentRegisterId()
                 ))
-                RegisterStatus.WAITING_PAY -> addFragment(PayEventScreen.newInstance(eventCode = register.getEventCode(),
-                        eventName = register.getEventName(),
-                        orderId = register.getOrderId(0),
-                        registerId = register.getRegisterId(0),
-                        ref2 = register.ref2 ?: "",
-                        totalPrice = register.getTotalPrice()))
-                RegisterStatus.WAITING_CONFIRM -> addFragment(RegistrationScreen.newInstance(register))
+                RegisterStatus.WAITING_PAY -> addFragment(PayEventScreen.newInstance(eventCode = registered.getEventCode(),
+                        eventName = registered.getEventName(),
+                        orderId = registered.getOrderId(0),
+                        registerId = registered.getRegisterId(0),
+                        ref2 = registered.ref2 ?: "",
+                        totalPrice = registered.getTotalPrice()))
+                RegisterStatus.WAITING_CONFIRM -> addFragment(RegistrationScreen.newInstance(registered))
             }
         }
 
@@ -97,11 +97,14 @@ class MyEventsScreen : BaseScreen() {
             adapter.submitList(eventList?.toMutableList())
         }
 
-        observe(getMainViewModel().refreshScreen) {
+        observe(getMainViewModel().refreshScreen) { screenName ->
             if (view == null || isAdded.not()) return@observe
             //Initial get all event list
-            refresh_layout?.isRefreshing = true
-            viewModel.getEventList()
+
+            if (screenName.isNullOrBlank() || screenName == this@MyEventsScreen::class.java.simpleName) {
+                refresh_layout?.isRefreshing = true
+                viewModel.getEventList()
+            }
         }
     }
 

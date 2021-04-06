@@ -11,11 +11,7 @@ import kotlinx.coroutines.Deferred
 import okhttp3.MultipartBody
 import retrofit2.http.*
 
-interface UserApi {
-
-    @GET("/api/${ApiConfig.API_VERSION}/user")
-    fun getUserInfoAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+interface UserApi : UserInfoApi {
 
     @PUT("/api/${ApiConfig.API_VERSION}/user")
     fun updateUserInfoAsync(
@@ -30,4 +26,5 @@ interface UserApi {
     @GET("/api/${ApiConfig.API_VERSION}/workouts")
     fun getTotalDistancesAsync(
             @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<TotalDistance>>
+
 }

@@ -5,9 +5,9 @@ import com.think.runex.base.BaseViewModel
 
 class MainViewModel : BaseViewModel() {
 
-    val refreshScreen: MutableLiveData<Any> by lazy { MutableLiveData() }
+    val refreshScreen: MutableLiveData<String> by lazy { MutableLiveData() }
 
-    fun refreshScreen() {
-        refreshScreen.postValue(null)
+    fun refreshScreen(screenName: String? = null) {
+        refreshScreen.postValue(screenName)
     }
 }

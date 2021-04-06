@@ -90,8 +90,6 @@ class LineSeparatorItemDecoration () : RecyclerView.ItemDecoration() {
 //        val bottom = (parent.height - parent.paddingBottom)
         val count: Int = parent.childCount
 
-        // Log.e("Jozzee","Left: $left, Right: $right")
-
         for (i in 0 until count) {
             val child = parent.getChildAt(i)
             if (child != null) {

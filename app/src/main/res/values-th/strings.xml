@@ -154,6 +154,7 @@
     <string name="stop_recording">จบการจับเวลา</string>
     <string name="submit_result">ส่งผล</string>
     <string name="submit_result_running">ส่งผลการวิ่ง</string>
+    <string name="submit_result_running_success">ส่งผลวิ่งสำเร็จ</string>
     <string name="summary">สรุปผล</string>
     <string name="success">สำเร็จ</string>
     <string name="share">แชร์</string>

@@ -155,8 +155,6 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
             //Keep track of the display in which this view is attached
             displayId = camera_preview.display.displayId
 
-            //Log.w("Jozzee", "PreviewView Width: ${camera_preview?.width}, Height: ${camera_preview?.height}")
-
             //Build UI controls and bind all camera use cases
             val screenAspectRatio = Rational(camera_preview.height, camera_preview.width)
             //val screenAspectRatio = Rational(1, 1)
@@ -188,11 +186,6 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
 
                     // Bind use cases to camera
                     cameraProvider.bindToLifecycle(this, cameraSelector, preview, imageAnalyzer)
-
-//                    preview?.attachedSurfaceResolution?.also {
-//                        Log.e("Jozzee", "Width: ${it.width}, Height: ${it.height}")
-//                    }
-
 
                 } catch (exc: Exception) {
                     Log.e(simpleName(), "Use case binding failed", exc)
