@@ -33,6 +33,7 @@ const val KEY_CODE = "code"
 const val KEY_EVENT_NAME = "event_name"
 const val KEY_EVENT_CODE = "event_code"
 const val KEY_ERROR = "error"
+const val KEY_ENVIRONMENT = "environment"
 const val KEY_DATA = "data"
 const val KEY_ID = "id"
 const val KEY_FIREBASE_TOKEN = "firebase_token"
@@ -71,14 +72,8 @@ const val DISPLAY_TIME_FORMAT = "HH:mm"
 /**
  * Request Code
  */
-const val RC_LOGIN = 2000
+const val RC_RESTART_APP = 2000
 const val RC_OPEN_GPS = 2001
-const val RC_TAKE_PICTURE = 2002
-const val RC_IMAGE_PICKER = 2003
-
-const val RC_PERMISSION_LOCATION = 3000
-const val RC_PERMISSION_TAKE_PICTURE = 3010
-const val RC_PERMISSION_OPEN_GALLERY = 3011
 
 /**
  * Notification chanel id and request code

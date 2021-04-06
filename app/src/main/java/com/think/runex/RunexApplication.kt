@@ -2,6 +2,8 @@ package com.think.runex
 
 import android.app.Application
 import android.content.Context
+import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.util.AppPreference
 import com.think.runex.util.Localization
 import com.think.runex.util.NightMode
 import io.realm.Realm
@@ -16,7 +18,10 @@ class RunexApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
+
         initRealm()
+
+        ApiConfig.updateBaseUrl(AppPreference.getEnvironment(this))
     }
 
     private fun initRealm(){

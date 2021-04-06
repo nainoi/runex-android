@@ -1,7 +1,6 @@
 package com.think.runex.feature.setting
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -17,7 +16,6 @@ import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.base.BaseScreen
-import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.profile.ProfileEditorScreen
 import com.think.runex.util.Localization
 import com.think.runex.util.NightMode
@@ -52,7 +50,7 @@ class SettingScreen : BaseScreen(), SelectLanguageDialog.OnLanguageSelectedListe
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar_layout, R.string.setting, R.drawable.ic_navigation_back)
-        app_version_label?.text = ("${getString(R.string.app_version)} ${BuildConfig.VERSION_NAME}")
+        app_version_label?.text = ("${getString(R.string.app_version)} ${BuildConfig.VERSION_NAME} ${if (BuildConfig.DEBUG) "(${getString(R.string.environment_dev)})" else ""}")
 
         if (BuildConfig.DEBUG) {
             current_language_label?.text = ("(${Localization.setCurrentLanguageDisplay(requireContext())})")
@@ -139,6 +137,7 @@ class SettingScreen : BaseScreen(), SelectLanguageDialog.OnLanguageSelectedListe
             replaceFragment(LoginScreen(), addToBackStack = false, clearFragment = true)
         }
     }
+
 
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
         super.errorHandler(statusCode, message, tag)

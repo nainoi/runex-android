@@ -8,7 +8,9 @@ import androidx.core.content.edit
 import androidx.security.crypto.EncryptedSharedPreferences
 import androidx.security.crypto.MasterKey
 import com.think.runex.BuildConfig
+import com.think.runex.config.KEY_ENVIRONMENT
 import com.think.runex.config.PREFERENCES_NAME
+import com.think.runex.feature.setting.Environment
 
 object AppPreference {
 
@@ -16,6 +18,15 @@ object AppPreference {
 
     fun setFirstOpen(context: Context, isFirstOpen: Boolean) = createPreference(context).edit {
         putBoolean("firstOpen", isFirstOpen)
+    }
+
+    @Environment
+    fun getEnvironment(context: Context): Int {
+        return createPreference(context).getInt(KEY_ENVIRONMENT, if (BuildConfig.DEBUG) Environment.DEV else Environment.PRODUCTION)
+    }
+
+    fun setEnvironment(context: Context, @Environment environment: Int) = createPreference(context).edit {
+        putInt(KEY_ENVIRONMENT, environment)
     }
 
     fun createPreferenceNotEncrypt(context: Context): SharedPreferences {

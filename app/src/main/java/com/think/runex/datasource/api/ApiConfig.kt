@@ -1,17 +1,23 @@
 package com.think.runex.datasource.api
 
+import android.util.Log
 import com.think.runex.BuildConfig
 import com.think.runex.config.AppConfig
+import com.think.runex.feature.setting.Environment
 
 class ApiConfig {
     companion object {
+
+        private const val BASE_URL_DEV = "https://runex-api.thinkdev.app"
+        private const val BASE_URL_PRODUCTION = "https://api.runex.co"
+
         const val API_VERSION = "v2"
 
         var BASE_URL: String = "https://api.runex.co"
             private set
             get() = when (BuildConfig.DEBUG) {
-                true -> "https://api.runex.co"//"https://runex-api.thinkdev.app" //"https://api.runex.co"
-                false -> "https://api.runex.co"
+                true -> field//"https://runex-api.thinkdev.app" //"https://api.runex.co"
+                false -> BASE_URL_PRODUCTION
             }
 
         var AUTH_URL = "https://auth.runex.co/v1/oauth2/token"
@@ -46,6 +52,19 @@ class ApiConfig {
             PREVIEW_EVENT_URL = config.previewEventUrl ?: PREVIEW_EVENT_URL
             QR_URL = config.qrUrl ?: QR_URL
             QR_CODE_URL = config.qrCodeUrl ?: QR_CODE_URL
+        }
+
+        fun updateBaseUrl(@Environment environment: Int) {
+            BASE_URL = when (environment) {
+                Environment.DEV -> {
+                    Log.w("ApiConfig", "Set Environment Dev")
+                    BASE_URL_DEV
+                }
+                else -> {
+                    Log.w("ApiConfig", "Set Environment Production")
+                    BASE_URL_PRODUCTION
+                }
+            }
         }
     }
 }

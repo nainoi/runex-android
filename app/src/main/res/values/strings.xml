@@ -66,6 +66,8 @@
     <string name="error">Error</string>
     <string name="end_of_run">End of run</string>
     <string name="english_language" translatable="false">English</string>
+    <string name="environment_dev" translatable="false">Dev</string>
+    <string name="environment_production" translatable="false">Production</string>
 
     <!-- F -->
     <string name="facebook">Facebook</string>
@@ -220,7 +222,8 @@
     <!-- Input required -->
     <string name="input_required">%1$s is required</string>
     <string name="activity_image_required">Please add activity image</string>
-
+    <!-- TODO: Remove or change this placeholder text -->
+    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>
