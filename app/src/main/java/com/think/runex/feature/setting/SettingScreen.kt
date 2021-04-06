@@ -1,9 +1,14 @@
 package com.think.runex.feature.setting
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import androidx.appcompat.app.AppCompatActivity
+import androidx.appcompat.app.AppCompatDelegate
+import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.showDialog
 import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.util.extension.*
@@ -12,13 +17,15 @@ import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.base.BaseScreen
+import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.profile.ProfileEditorScreen
+import com.think.runex.util.Localization
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class SettingScreen : BaseScreen() {
+class SettingScreen : BaseScreen(), SelectLanguageDialog.OnLanguageSelectedListener {
 
     private lateinit var viewModel: UserViewModel
 
@@ -46,6 +53,15 @@ class SettingScreen : BaseScreen() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar_layout, R.string.setting, R.drawable.ic_navigation_back)
         app_version_label?.text = ("${getString(R.string.app_version)} ${BuildConfig.VERSION_NAME}")
+
+        if (BuildConfig.DEBUG) {
+            current_language_label?.text = ("(${Localization.setCurrentLanguageDisplay(requireContext())})")
+            current_dark_mode_status_label?.text = ("(${NightMode.getDarkModeDisplay(requireContext())})")
+            dark_mode_switch?.isChecked = NightMode.isNightMode(requireContext())
+        } else {
+            language_menu_layout?.gone()
+            dark_mode_menu_layout?.gone()
+        }
     }
 
     private fun subscribeUi() {
@@ -65,6 +81,23 @@ class SettingScreen : BaseScreen() {
 
         }
 
+        language_menu_layout?.setOnClickListener {
+            showDialog(SelectLanguageDialog())
+        }
+
+        dark_mode_menu_layout?.setOnClickListener {
+            dark_mode_switch?.apply {
+                isChecked = isChecked.not()
+            }
+        }
+
+        dark_mode_switch?.setOnCheckedChangeListener { _, isChecked ->
+            if (requireActivity() is AppCompatActivity) {
+                val nightMode = if (isChecked) AppCompatDelegate.MODE_NIGHT_YES else AppCompatDelegate.MODE_NIGHT_NO
+                NightMode.setNightMode(requireActivity() as AppCompatActivity, nightMode)
+            }
+        }
+
         logout_button?.setOnClickListener {
             showConfirmToLogoutDialog()
         }
@@ -74,6 +107,12 @@ class SettingScreen : BaseScreen() {
         observe(viewModel.userInfo) { userInfo ->
             if (view == null || isAdded.not()) return@observe
             updateUserInfo(userInfo)
+        }
+    }
+
+    override fun onLanguageSelected(key: String) {
+        if (key.equals(Localization.getBaseLanguage(requireContext()), ignoreCase = true).not()) {
+            Localization.setCurrentLanguage(requireActivity(), key)
         }
     }
 
@@ -104,6 +143,7 @@ class SettingScreen : BaseScreen() {
     override fun errorHandler(statusCode: Int, message: String, tag: String?) {
         super.errorHandler(statusCode, message, tag)
     }
+
 
     override fun onDestroy() {
         removeObservers(viewModel.userInfo)

@@ -10,7 +10,7 @@ class ApiConfig {
         var BASE_URL: String = "https://api.runex.co"
             private set
             get() = when (BuildConfig.DEBUG) {
-                true -> "https://runex-api.thinkdev.app" //"https://api.runex.co"
+                true -> "https://api.runex.co"//"https://runex-api.thinkdev.app" //"https://api.runex.co"
                 false -> "https://api.runex.co"
             }
 

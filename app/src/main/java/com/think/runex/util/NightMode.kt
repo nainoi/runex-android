@@ -6,6 +6,7 @@ import android.util.Log
 import androidx.appcompat.app.AppCompatActivity
 import androidx.appcompat.app.AppCompatDelegate
 import androidx.core.content.edit
+import com.think.runex.R
 
 class NightMode {
     companion object {
@@ -19,18 +20,32 @@ class NightMode {
          * [AppCompatDelegate.MODE_NIGHT_UNSPECIFIED]
          */
         fun setNightMode(activity: AppCompatActivity, nightMode: Int) {
-            AppPreference.createPreferenceNotEncrypt(activity).edit {
-                putInt(KEY_NIGHT_MODE, nightMode)
-            }
+            setNightModePreference(activity, nightMode)
             //AppCompatDelegate.setDefaultNightMode(nightMode)
             //activity.delegate.localNightMode = nightMode
             //activity.delegate.applyDayNight()
             activity.recreate()
         }
 
+        /**
+         * Default night mode is [AppCompatDelegate.MODE_NIGHT_YES]
+         */
         fun getNightMode(context: Context): Int {
-            //TODO("Default night mode is yes")
             return AppPreference.createPreferenceNotEncrypt(context).getInt(KEY_NIGHT_MODE, AppCompatDelegate.MODE_NIGHT_YES)
+        }
+
+        private fun setNightModePreference(context: Context, nightMode: Int) {
+            AppPreference.createPreferenceNotEncrypt(context).edit {
+                putInt(KEY_NIGHT_MODE, nightMode)
+            }
+        }
+
+        /**
+         * Return 'On' if night mode is yes or 'Off' if night mode is no
+         */
+        fun getDarkModeDisplay(context: Context) = when (isNightMode(context)) {
+            true -> context.getString(R.string.on)
+            false -> context.getString(R.string.off)
         }
 
         fun isNightMode(context: Context): Boolean {
@@ -45,14 +60,19 @@ class NightMode {
             if (baseContext == null) return baseContext
             val nightMode = getNightMode(baseContext)
             if (nightMode != 0) {
+
                 AppCompatDelegate.setDefaultNightMode(nightMode)
+
                 val config = Configuration(baseContext.resources.configuration)
                 config.uiMode = when (nightMode) {
                     AppCompatDelegate.MODE_NIGHT_YES -> Configuration.UI_MODE_NIGHT_YES
                     AppCompatDelegate.MODE_NIGHT_NO -> Configuration.UI_MODE_NIGHT_NO
                     else -> config.uiMode
                 }
+
                 Log.d("UiMode", "Set ui mode: ${config.uiMode}")
+
+                setNightModePreference(baseContext, nightMode)
                 return baseContext.createConfigurationContext(config)
             }
             return baseContext

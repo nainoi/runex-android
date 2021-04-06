@@ -3,6 +3,7 @@ package com.think.runex.feature.main
 import android.content.Intent
 import android.graphics.PorterDuff
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -14,15 +15,19 @@ import com.jozzee.android.core.fragment.addChildFragment
 import com.jozzee.android.core.fragment.childFragmentCount
 import com.jozzee.android.core.fragment.childFragments
 import com.jozzee.android.core.resource.getColor
+import com.jozzee.android.core.util.simpleName
 import com.think.runex.R
 import com.think.runex.config.KEY_SCREEN
 import com.think.runex.config.RC_OPEN_GPS
 import com.think.runex.base.BaseScreen
+import com.think.runex.config.KEY_POSITION
+import com.think.runex.config.KEY_PRICE
 import com.think.runex.feature.event.all.AllEventsScreen
 import com.think.runex.feature.event.registered.MyEventsScreen
 import com.think.runex.feature.user.profile.ProfileScreen
 import com.think.runex.feature.workout.history.WorkoutHistoryScreen
 import com.think.runex.feature.workout.record.WorkoutScreen
+import com.think.runex.util.extension.getTopChildFragment
 import kotlinx.android.synthetic.main.screen_main.*
 
 class MainScreen : BaseScreen() {
@@ -43,6 +48,11 @@ class MainScreen : BaseScreen() {
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
+
+        //Update current bottom bar position
+        selectedBottomBarPosition = savedInstanceState?.getInt(KEY_POSITION)
+                ?: selectedBottomBarPosition
+
         setupComponents()
         subscribeUi()
     }
@@ -71,8 +81,17 @@ class MainScreen : BaseScreen() {
                     setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
                 }
             }
+        } else {
+            when (selectedBottomBarPosition) {
+                1 -> setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
+                2 -> setActiveScreen<MyEventsScreen>(bottom_bar_menu_my_event_icon, bottom_bar_menu_my_event_label)
+                3 -> setActiveScreen<WorkoutScreen>(bottom_bar_menu_workout, bottom_bar_menu_workout_label)
+                4 -> setActiveScreen<WorkoutHistoryScreen>(bottom_bar_menu_history_icon, bottom_bar_menu_history_label)
+                5 -> setActiveScreen<ProfileScreen>(bottom_bar_menu_profile_icon, bottom_bar_menu_profile_label)
+            }
         }
     }
+
 
     private fun setupComponents() {
     }
@@ -162,5 +181,10 @@ class MainScreen : BaseScreen() {
             }
             else -> super.onActivityResult(requestCode, resultCode, data)
         }
+    }
+
+    override fun onSaveInstanceState(outState: Bundle) {
+        outState.putInt(KEY_POSITION, selectedBottomBarPosition)
+        super.onSaveInstanceState(outState)
     }
 }

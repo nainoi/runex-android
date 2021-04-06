@@ -90,11 +90,11 @@
         <item name="android:textStyle">bold</item>
     </style>
 
-    <style name="Tex.tBodyHeading.Accent" parent="Text.BodyHeading">
+    <style name="Text.BodyHeading.Accent" parent="Text.BodyHeading">
         <item name="android:textColor">@color/colorAccent</item>
     </style>
 
-    <style name="Tex.tBodyHeading.Accent.Bold" parent="Tex.tBodyHeading.Accent">
+    <style name="Text.BodyHeading.Accent.Bold" parent="Text.BodyHeading.Accent">
         <item name="android:textStyle">bold</item>
     </style>
 

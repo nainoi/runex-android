@@ -41,17 +41,17 @@ class GenderDialog : DialogFragment() {
         if (::rootView.isInitialized.not()) return
 
         //Subscribe Ui
-        rootView.female_label.setOnClickListener {
+        rootView.female_label?.setOnClickListener {
             getOnGenderSelectedListener()?.onGenderSelected(Gender.FEMALE)
             dismissAllowingStateLoss()
         }
 
-        rootView.male_label.setOnClickListener {
+        rootView.male_label?.setOnClickListener {
             getOnGenderSelectedListener()?.onGenderSelected(Gender.MALE)
             dismissAllowingStateLoss()
         }
 
-        rootView.other_label.setOnClickListener {
+        rootView.other_label?.setOnClickListener {
             getOnGenderSelectedListener()?.onGenderSelected(Gender.OTHER)
             dismissAllowingStateLoss()
         }

@@ -55,6 +55,7 @@
     <string name="district">Amphoe</string>
     <string name="data_not_found">Data not found.</string>
     <string name="download_qr">Download QR</string>
+    <string name="dark_mode">Dark Mode</string>
 
     <!-- E -->
     <string name="edit">Edit</string>
@@ -64,6 +65,7 @@
     <string name="event_detail">Event Detail</string>
     <string name="error">Error</string>
     <string name="end_of_run">End of run</string>
+    <string name="english_language" translatable="false">English</string>
 
     <!-- F -->
     <string name="facebook">Facebook</string>
@@ -91,6 +93,7 @@
     <string name="km">km</string>
 
     <!-- L -->
+    <string name="language">Language</string>
     <string name="last_name">Last name</string>
     <string name="logout">Logout</string>
     <string name="location_permission_denied">Unable to access your current location due to being denied.</string>
@@ -118,6 +121,8 @@
     <string name="ok">OK</string>
     <string name="other">Other</string>
     <string name="open">Open</string>
+    <string name="on">On</string>
+    <string name="off">Off</string>
     <string name="open_camera">Open Camera</string>
     <string name="order_no">Order No</string>
     <string name="optional">Optional</string>
@@ -179,6 +184,7 @@
     <string name="team_management">Team Management</string>
     <string name="team_leader">Team Leader</string>
     <string name="take_note">Note</string>
+    <string name="thai_language" translatable="false">ไทย</string>
 
     <!-- U -->
     <string name="username">Username</string>
@@ -214,6 +220,7 @@
     <!-- Input required -->
     <string name="input_required">%1$s is required</string>
     <string name="activity_image_required">Please add activity image</string>
+
 
 
 </resources>

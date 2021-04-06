@@ -97,6 +97,7 @@
             android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginEnd="@dimen/space_16dp"
             android:layout_toStartOf="@+id/next_icon_1"
+            android:maxLines="1"
             android:text="@string/application_service_and_devices" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -128,6 +129,7 @@
             android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginEnd="@dimen/space_16dp"
             android:layout_toStartOf="@+id/next_icon_2"
+            android:maxLines="1"
             android:text="@string/about_us" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -159,6 +161,7 @@
             android:layout_marginStart="@dimen/space_16dp"
             android:layout_marginEnd="@dimen/space_16dp"
             android:layout_toStartOf="@+id/next_icon_3"
+            android:maxLines="1"
             android:text="@string/contract" />
 
         <androidx.appcompat.widget.AppCompatImageView
@@ -193,12 +196,101 @@
         android:layout_marginBottom="@dimen/space_16dp"
         android:background="@color/line" />
 
+    <RelativeLayout
+        android:id="@+id/language_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/underline_action_placeholder"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:minHeight="@dimen/space_48dp">
+
+        <TextView
+            android:id="@+id/current_language_placeholder"
+            style="@style/Text.BodyHeading.Secondary.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:maxLines="1"
+            android:text="@string/language" />
+
+        <TextView
+            android:id="@+id/current_language_label"
+            style="@style/Text.BodyHeading.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_toStartOf="@+id/language_navigator_icon"
+            android:layout_toEndOf="@+id/current_language_placeholder"
+            android:maxLines="1"
+            tools:text="@string/english_language" />
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/language_navigator_icon"
+            android:layout_width="@dimen/icon_size_system"
+            android:layout_height="@dimen/icon_size_system"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_16dp"
+            app:srcCompat="@drawable/ic_control_next"
+            app:tint="@color/iconColorDisable" />
+    </RelativeLayout>
+
+    <RelativeLayout
+        android:id="@+id/dark_mode_menu_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/language_menu_layout"
+        android:clickable="true"
+        android:focusable="true"
+        android:foreground="?selectableItemBackground"
+        android:minHeight="@dimen/space_48dp">
+
+        <TextView
+            android:id="@+id/current_dark_mode_status_placeholder"
+            style="@style/Text.BodyHeading.Secondary.Bold"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:maxLines="1"
+            android:text="@string/dark_mode" />
+
+        <TextView
+            android:id="@+id/current_dark_mode_status_label"
+            style="@style/Text.BodyHeading.Secondary"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_toStartOf="@+id/dark_mode_switch"
+            android:layout_toEndOf="@+id/current_dark_mode_status_placeholder"
+            android:maxLines="1"
+            tools:text="@string/on" />
+
+        <com.google.android.material.switchmaterial.SwitchMaterial
+            android:id="@+id/dark_mode_switch"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:checked="true" />
+
+
+    </RelativeLayout>
+
     <TextView
         android:id="@+id/logout_button"
         style="@style/Text.BodyHeading.Secondary.Bold"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/underline_action_placeholder"
+        android:layout_below="@+id/dark_mode_menu_layout"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"

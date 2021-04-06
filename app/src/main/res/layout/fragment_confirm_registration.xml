@@ -55,7 +55,7 @@
 
         <TextView
             android:id="@+id/event_price_label"
-            style="@style/Tex.tBodyHeading.Accent.Bold"
+            style="@style/Text.BodyHeading.Accent.Bold"
             android:layout_width="0dp"
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/space_16dp"
