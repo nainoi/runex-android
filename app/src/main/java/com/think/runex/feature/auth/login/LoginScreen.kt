@@ -76,9 +76,11 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
                         val parameters = request.url?.getQueryParameters("code")
                         if (parameters?.isNotEmpty() == true) {
                             performLogin(parameters[0])
+                            set_environment_button?.gone()
                         }
                     } else if (uri.scheme == "auth.runex.co") {
                         web_view?.inVisible()
+                        set_environment_button?.gone()
                     }
                 }
                 return super.shouldOverrideUrlLoading(view, request)

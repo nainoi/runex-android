@@ -16,6 +16,8 @@ import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.base.BaseScreen
+import com.think.runex.datasource.api.ApiConfig
+import com.think.runex.feature.WebViewScreen
 import com.think.runex.feature.user.profile.ProfileEditorScreen
 import com.think.runex.util.Localization
 import com.think.runex.util.NightMode
@@ -72,11 +74,11 @@ class SettingScreen : BaseScreen(), LanguageDialog.OnLanguageSelectedListener {
         }
 
         about_us_menu_layout?.setOnClickListener {
-
+            addFragment(WebViewScreen.newInstance(ApiConfig.ABOUT_US_URL))
         }
 
         contract_menu_layout?.setOnClickListener {
-
+            addFragment(WebViewScreen.newInstance(ApiConfig.CONTACT_URL))
         }
 
         language_menu_layout?.setOnClickListener {

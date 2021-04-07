@@ -29,12 +29,14 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.data.EventCategory
 import com.think.runex.feature.event.data.Shirt
 import com.think.runex.feature.event.data.UserOptionEventRegistration
+import com.think.runex.feature.setting.data.Environment
 import com.think.runex.feature.user.BloodTypeDialog
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.UserViewModel
 import com.think.runex.feature.user.data.BloodType
 import com.think.runex.feature.user.data.Gender
 import com.think.runex.feature.user.data.getDisplayName
+import com.think.runex.util.AppPreference
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.fragment_fill_out_user_info.*
 import java.util.*
@@ -343,7 +345,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if (BuildConfig.DEBUG.not() && citizenId.isThaiCitizenId().not()) {
+        if ((BuildConfig.DEBUG.not() || AppPreference.getEnvironment(requireContext()) == Environment.PRODUCTION) && citizenId.isThaiCitizenId().not()) {
             showAlertDialog(getString(R.string.warning), getString(R.string.please_enter_correct_citizen_id))
             return false
         }
@@ -355,7 +357,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if (BuildConfig.DEBUG.not() && phone.isPhoneNumber().not()) {
+        if ((BuildConfig.DEBUG.not() || AppPreference.getEnvironment(requireContext()) == Environment.PRODUCTION) && phone.isPhoneNumber().not()) {
             showAlertDialog(getString(R.string.warning), getString(R.string.please_enter_correct_phone_number))
             return false
         }

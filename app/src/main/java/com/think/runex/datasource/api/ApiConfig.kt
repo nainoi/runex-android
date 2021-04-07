@@ -42,6 +42,9 @@ class ApiConfig {
         var KONEX_URL = "https://konex.thinkdev.app/settings"
             private set
 
+        val ABOUT_US_URL = "https://runex.co/about-us"
+
+        val CONTACT_URL = "https://runex.co/contact"
 
         fun updateAppConfig(config: AppConfig?) {
             if (config == null) return
