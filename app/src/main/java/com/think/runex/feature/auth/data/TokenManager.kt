@@ -2,16 +2,10 @@ package com.think.runex.feature.auth.data
 
 class TokenManager {
     companion object {
+
         private var tokenType: String = ""
 
         private var accessToken: String = ""
-
-        fun accessToken(withTokenType: Boolean = true): String {
-            if (withTokenType && accessToken.isNotBlank()) {
-                return "$tokenType $accessToken"
-            }
-            return accessToken
-        }
 
         var refreshToken: String = ""
             private set
@@ -21,12 +15,29 @@ class TokenManager {
 
         fun isAlive(): Boolean = accessToken.isNotBlank()
 
+        fun accessToken(withTokenType: Boolean = true): String {
+            if (withTokenType && accessToken.isNotBlank()) {
+                return "$tokenType $accessToken"
+            }
+            return accessToken
+        }
+
+        fun tokenType() = tokenType
+
         fun updateToken(accessToken: AccessToken) {
             tokenType = accessToken.tokenType
             Companion.accessToken = accessToken.accessToken
             refreshToken = accessToken.refreshToken
             //this.expiresIn = accessToken.expiresIn
         }
+
+        //private var userId: String = ""
+
+        //fun userId() = userId
+
+        //fun updateUserId(userId: String) {
+        //    this.userId = userId
+        //}
 
         fun clearToken() {
             tokenType = ""

@@ -70,13 +70,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
                 }
             }
         }
-
-        //Get User info for old java code
-        val userResult = repo.getUserInfo()
-        if (loginResult.isSuccessful().not()) {
-            onHandleError(loginResult.code, loginResult.message)
-        }
-
+        
         return@withContext loginResult.isSuccessful()
     }
 

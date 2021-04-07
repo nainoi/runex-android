@@ -37,12 +37,12 @@ class ApiService {
                 .readTimeout(30, TimeUnit.SECONDS)
                 .writeTimeout(10, TimeUnit.SECONDS)
                 .apply {
+                    addInterceptor(TokenInterceptor(context))
                     if (BuildConfig.DEBUG) {
                         addInterceptor(HttpLoggingInterceptor().apply {
                             level = httpLoggingLevel
                         })
                     }
-                    addInterceptor(TokenInterceptor(context))
                 }
     }
 }

@@ -2,8 +2,6 @@ package com.think.runex.feature.user
 
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.auth.data.TokenManager
-import com.think.runex.config.AUTHORIZATION
 import com.think.runex.feature.user.data.UpdateProfileImageResult
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.workout.data.TotalDistance
@@ -14,17 +12,12 @@ import retrofit2.http.*
 interface UserApi : UserInfoApi {
 
     @PUT("/api/${ApiConfig.API_VERSION}/user")
-    fun updateUserInfoAsync(
-            @Body userInfo: UserInfo,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UserInfo>>
+    fun updateUserInfoAsync(@Body userInfo: UserInfo): Deferred<Result<UserInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/uploads")
-    fun updateProfileImageAsync(
-            @Body body: MultipartBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UpdateProfileImageResult>>
+    fun updateProfileImageAsync(@Body body: MultipartBody): Deferred<Result<UpdateProfileImageResult>>
 
     @GET("/api/${ApiConfig.API_VERSION}/workouts")
-    fun getTotalDistancesAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<TotalDistance>>
+    fun getTotalDistancesAsync(): Deferred<Result<TotalDistance>>
 
 }
