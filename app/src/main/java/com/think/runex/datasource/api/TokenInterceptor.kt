@@ -1,4 +1,4 @@
-package com.think.runex.feature.auth
+package com.think.runex.datasource.api
 
 import android.content.Context
 import androidx.core.content.edit
@@ -7,7 +7,6 @@ import com.google.gson.JsonElement
 import com.jozzee.android.core.text.isJsonFormat
 import com.think.runex.util.extension.toJson
 import com.think.runex.config.AUTHORIZATION
-import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.request.RefreshTokenBody
 import com.think.runex.util.AppPreference
 import com.think.runex.config.KEY_ACCESS_TOKEN
@@ -20,10 +19,19 @@ import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
 import java.net.UnknownHostException
 
-class RefreshTokenInterceptor(private val context: Context) : Interceptor {
+class TokenInterceptor(private val context: Context) : Interceptor {
 
     override fun intercept(chain: Interceptor.Chain): Response {
-        val request = chain.request()
+
+        var request = chain.request()
+
+        if (TokenManager.isAlive()) {
+            //Add access token to header of request
+            request = request.newBuilder()
+                    .addHeader(AUTHORIZATION, TokenManager.accessToken())
+                    .build()
+        }
+
         var response = chain.proceed(request)
         var refreshTokenResponse: Response? = null
 
@@ -40,7 +48,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                 response.close()
 
                 //Log.w("RefreshTokenInterceptor", "Code: ${response.code} Auto refresh token!!")
-                val body = RefreshTokenBody(TokenManager.accessToken, TokenManager.refreshToken)
+                val body = RefreshTokenBody(TokenManager.accessToken(), TokenManager.refreshToken)
                 val refreshTokenRequest = Request.Builder()
                         .url(ApiConfig.REFRESH_TOKEN_URL)
                         .post(body.toJson().toRequestBody("application/json; charset=UTF-8".toMediaType()))
@@ -74,7 +82,7 @@ class RefreshTokenInterceptor(private val context: Context) : Interceptor {
                                     //re new request
                                     response = chain.proceed(request.newBuilder()
                                             .removeHeader(AUTHORIZATION)
-                                            .addHeader(AUTHORIZATION, TokenManager.accessToken)
+                                            .addHeader(AUTHORIZATION, TokenManager.accessToken())
                                             .build())
 
                                 }

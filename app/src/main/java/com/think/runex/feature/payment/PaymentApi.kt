@@ -18,10 +18,10 @@ interface PaymentApi {
     @POST("/api/${ApiConfig.API_VERSION}/register/payment")
     fun payEventAsync(
             @Body body: RequestBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
     @GET
     fun getQRCodeImageAsync(
             @Url url: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<QRCodeImage>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<QRCodeImage>>
 }

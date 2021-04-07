@@ -17,5 +17,5 @@ interface DashboardApi : UserInfoApi {
     @POST("/api/${ApiConfig.API_VERSION}/activity/dashboard")
     fun getDashboardInfoAsync(
             @Body body: DashboardInfoRequestBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<DashboardInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<DashboardInfo>>
 }

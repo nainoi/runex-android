@@ -43,8 +43,8 @@ class Localization {
             val baseLanguage: String = getBaseLanguage(baseContext)
             val currentLanguage: String = getCurrentLanguage(baseContext)
 
-            Log.e("Localization", "Base language: $baseLanguage")
-            Log.e("Localization", "Current language: $currentLanguage")
+            //Log.e("Localization", "Base language: $baseLanguage")
+            //Log.e("Localization", "Current language: $currentLanguage")
 
             if (currentLanguage.equals(baseLanguage, ignoreCase = true).not()) {
                 val locale = Locale(currentLanguage)

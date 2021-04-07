@@ -456,14 +456,14 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         }
     }
 
-    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+    override fun errorHandler(code: Int, message: String, tag: String?) {
         when (tag) {
             "Address" -> {
-                val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, statusCode, message)
-                Logger.error(simpleName(), "Error Handler: Status code: $statusCode, Message: $errorMessage")
+                val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, code, message)
+                Logger.error(simpleName(), "Error Handler: Status code: $code, Message: $errorMessage")
                 showToast(errorMessage)
             }
-            else -> super.errorHandler(statusCode, message, tag)
+            else -> super.errorHandler(code, message, tag)
         }
     }
 

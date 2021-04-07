@@ -15,44 +15,44 @@ interface EventApi : UserInfoApi {
 
     @GET("/api/${ApiConfig.API_VERSION}/event/all")
     fun getAllEventAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<EventItem>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<EventItem>>>
 
     @GET("/api/${ApiConfig.API_VERSION}/event/detail/{eventCode}")
     fun getEventDetailsAsync(
             @Path("eventCode") eventCode: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<EventDetail>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<EventDetail>>
 
     @GET("/api/${ApiConfig.API_VERSION}/register/checkRegEventCode/{eventCode}")
     fun isRegisteredEventAsync(
             @Path("eventCode") eventCode: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<IsRegisteredEvent>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<IsRegisteredEvent>>
 
     @GET("/api/${ApiConfig.API_VERSION}/register/myRegEvent")
     fun getMyEventsAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<Registered>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<Registered>>>
 
     @GET("/api/${ApiConfig.API_VERSION}/register/myRegEventActivate")
     fun getMyEventsAtActiveAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<Registered>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<Registered>>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/info")
     fun getRegisterDataAsync(
             @Body body: RegisteredRequestBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Registered>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Registered>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/add")
     fun registerEventAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Registered>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Registered>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/regUpdateUserInfo")
     fun updateRegisterInfoAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
     @POST("/api/${ApiConfig.API_VERSION}/register/team")
     fun addMemberToTeamAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
 }

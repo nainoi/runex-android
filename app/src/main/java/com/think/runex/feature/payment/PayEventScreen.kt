@@ -152,13 +152,13 @@ class PayEventScreen : BaseScreen() {
     }
 
 
-    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+    override fun errorHandler(code: Int, message: String, tag: String?) {
         progress_bar?.gone()
         when (tag) {
             KEY_QR -> showAlertDialog(getString(R.string.error), message, isCancelEnable = false) {
                 findChildFragment<QRCodeToPayBottomSheet>()?.closeBottomSheet()
             }
-            else -> super.errorHandler(statusCode, message, tag)
+            else -> super.errorHandler(code, message, tag)
         }
     }
 }

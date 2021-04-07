@@ -9,7 +9,7 @@ import javax.net.ssl.HttpsURLConnection
 
 class ApiExceptionMessage {
     companion object {
-        fun getExceptionMessageFromStatusCode(resource: Resources, statusCode: Int, defaultMessage: String): String = when (statusCode) {
+        fun getExceptionMessageFromStatusCode(resource: Resources, code: Int, defaultMessage: String): String = when (code) {
             ERR_NO_INTERNET_CONNECTION -> resource.getString(R.string.no_internet_connection)
             HttpsURLConnection.HTTP_CLIENT_TIMEOUT -> resource.getString(R.string.connection_timed_out)
             HttpsURLConnection.HTTP_UNAUTHORIZED -> resource.getString(R.string.please_login)

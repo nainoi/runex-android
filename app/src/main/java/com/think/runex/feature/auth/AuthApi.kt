@@ -24,20 +24,20 @@ interface AuthApi {
 
     @GET("/api/${API_VERSION}/user")
     fun getUserInfoAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UserInfo>>
 
     @POST("/api/${API_VERSION}/registerFirebase")
     fun sendFirebaseTokenToServerAsync(
             @Body body: FirebaseTokenBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
     @POST("/api/${API_VERSION}/logout")
     fun logoutAsync(
             @Body body: FirebaseTokenBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
     @GET("/api/${API_VERSION}/logout")
     fun logoutWithoutFirebaseTokenAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
 }

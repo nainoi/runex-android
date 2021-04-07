@@ -27,7 +27,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         val result = repo.getRegisterData(RegisteredRequestBody(eventCode, registerId, parentRegisterId))
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         registerData.postValue(result.data)
@@ -36,7 +36,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
     suspend fun getUserInfoById(userId: String): UserInfo? = withContext(IO) {
         val result = repo.getUserInfoById(UserInfoRequestBody(userId))
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
         return@withContext result.data
     }
@@ -145,7 +145,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
                     registerData.postValue(updateRegisterDataResult.data)
                 }
             }
-            false -> onHandleError(result.statusCode, result.message)
+            false -> onHandleError(result.code, result.message)
         }
 
         return@withContext result.isSuccessful()

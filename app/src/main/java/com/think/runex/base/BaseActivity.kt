@@ -77,11 +77,11 @@ open class BaseActivity : AppCompatActivity() {
         }
     }
 
-    open fun errorHandler(statusCode: Int, message: String, tag: String? = null) {
+    open fun errorHandler(code: Int, message: String, tag: String? = null) {
         if (isDestroyed || isFinishing) return
 
-        val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, statusCode, message)
-        Logger.error(simpleName(), "Error Handler: Status code: $statusCode, Message: $errorMessage")
+        val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, code, message)
+        Logger.error(simpleName(), "Error Handler: Status code: $code, Message: $errorMessage")
 
         runOnUiThread {
             hideProgressDialog()

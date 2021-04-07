@@ -17,11 +17,11 @@ open class BaseBottomSheet : BottomSheetDialogFragment() {
         getBottomSheetBehavior()?.state = BottomSheetBehavior.STATE_HIDDEN
     }
 
-    open fun errorHandler(statusCode: Int, message: String, tag: String? = null) {
+    open fun errorHandler(code: Int, message: String, tag: String? = null) {
         if (isAdded.not() || view == null) return
 
-        val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, statusCode, message)
-        Logger.error(simpleName(), "Error Handler: Status code: $statusCode, Message: $errorMessage")
+        val errorMessage = ApiExceptionMessage.getExceptionMessageFromStatusCode(resources, code, message)
+        Logger.error(simpleName(), "Error Handler: Status code: $code, Message: $errorMessage")
 
         activity?.runOnUiThread {
             if (errorMessage.isNotBlank()) {

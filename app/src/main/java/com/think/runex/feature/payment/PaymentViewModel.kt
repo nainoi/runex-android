@@ -41,7 +41,7 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
     suspend fun getPaymentMethods(): List<PaymentMethod>? = withContext(IO) {
         val result = repo.getPaymentMethods()
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
         return@withContext result.data
     }
@@ -62,7 +62,7 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
         val result = repo.payEvent(omiseTokenId, price, eventCode, registerId, orderId)
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
         return@withContext result.isSuccessful()
     }
@@ -73,7 +73,7 @@ class PaymentViewModel(private val repo: PaymentRepository) : BaseViewModel() {
 
         val result = repo.getQRData(url)
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
             return@withContext null
         }
         qrCodeImage = QRCodeUtil().generateQRCode(context, result.data ?: "")

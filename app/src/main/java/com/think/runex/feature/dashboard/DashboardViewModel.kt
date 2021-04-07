@@ -35,7 +35,7 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
         if (myUserId.isBlank()) {
             val myUserInfoResult = repo.getMyUserInfo()
             if (myUserInfoResult.isSuccessful().not()) {
-                onHandleError(myUserInfoResult.statusCode, myUserInfoResult.message, "dashboard")
+                onHandleError(myUserInfoResult.code, myUserInfoResult.message, "dashboard")
                 return@withContext null
             }
             myUserId = myUserInfoResult.data?.id ?: ""
@@ -50,7 +50,7 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
                 dashboardInfo = result.data
                 isTeamLeader = dashboardInfo?.isTeamLeader(myUserId) ?: false
             }
-            false -> onHandleError(result.statusCode, result.message, "dashboard")
+            false -> onHandleError(result.code, result.message, "dashboard")
         }
 
         return@withContext dashboardInfo

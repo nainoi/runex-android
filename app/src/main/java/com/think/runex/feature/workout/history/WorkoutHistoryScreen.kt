@@ -1,6 +1,7 @@
 package com.think.runex.feature.workout.history
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -73,16 +74,16 @@ class WorkoutHistoryScreen : BaseScreen() {
 
         viewModel.setOnHandleError(::errorHandler)
 
-        observe(viewModel.historyList) { eventList ->
+        observe(viewModel.historyList) { historyList ->
             if (view == null || isAdded.not()) return@observe
 
             refresh_layout?.isRefreshing = false
-            adapter.submitList(eventList?.toMutableList())
+            adapter.submitList(historyList?.toMutableList())
         }
     }
 
-    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
-        super.errorHandler(statusCode, message, tag)
+    override fun errorHandler(code: Int, message: String, tag: String?) {
+        super.errorHandler(code, message, tag)
         refresh_layout?.isRefreshing = false
     }
 

@@ -25,7 +25,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         val result = repo.addWorkout(workout)
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
 
         }
         return@withContext result.data
@@ -36,7 +36,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         val result = repo.getWorkoutInfo(workoutId)
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         return@withContext result.data
@@ -60,7 +60,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
             val result = repo.submitWorkoutToEvent(body)
 
             if (result.isSuccessful().not()) {
-                onHandleError(result.statusCode, "Cannot submit workout to event", "submit_workout")
+                onHandleError(result.code, "Cannot submit workout to event", "submit_workout")
                 isSuccessAll = false
             }
         }
@@ -85,7 +85,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         val result = repo.submitWorkoutToEvents(body)
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message, "submit_workout")
+            onHandleError(result.code, result.message, "submit_workout")
         }
 
         return@withContext result.isSuccessful()

@@ -26,7 +26,7 @@ open class RemoteDataSource {
 
         return@withContext try {
             job.await().apply {
-                statusCode = HttpsURLConnection.HTTP_OK
+                code = HttpsURLConnection.HTTP_OK
             }
         } catch (e: HttpException) {
             e.printStackTrace()

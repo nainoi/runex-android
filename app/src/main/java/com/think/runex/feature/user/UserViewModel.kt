@@ -34,7 +34,7 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
             userInfo.postValue(userInfoResult.data)
 
         } else {
-            onHandleError(userInfoResult.statusCode, userInfoResult.message)
+            onHandleError(userInfoResult.code, userInfoResult.message)
         }
     }
 
@@ -54,7 +54,7 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
             userInfo.postValue(userInfoResult.data)
 
         } else {
-            onHandleError(userInfoResult.statusCode, userInfoResult.message)
+            onHandleError(userInfoResult.code, userInfoResult.message)
         }
 
         return@withContext userInfoResult.data
@@ -81,7 +81,7 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
             this@UserViewModel.userInfo.postValue(result.data)
 
         } else {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         return@withContext result.isSuccessful()
@@ -101,7 +101,7 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
         val uploadImageResult = repo.uploadProfileImage(body)
 
         if (uploadImageResult.isSuccessful().not()) {
-            onHandleError(uploadImageResult.statusCode, uploadImageResult.message)
+            onHandleError(uploadImageResult.code, uploadImageResult.message)
             return@withContext false
         }
 
@@ -116,7 +116,7 @@ class UserViewModel(private val repo: UserRepository) : BaseViewModel() {
         val userInfoUpdateResult = repo.updateUserInfo(userInfoUpdate)
 
         if (userInfoUpdateResult.isSuccessful().not()) {
-            onHandleError(userInfoUpdateResult.statusCode, userInfoUpdateResult.message)
+            onHandleError(userInfoUpdateResult.code, userInfoUpdateResult.message)
             return@withContext false
         }
 

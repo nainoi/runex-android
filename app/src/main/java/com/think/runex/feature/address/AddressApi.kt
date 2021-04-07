@@ -15,21 +15,21 @@ interface AddressApi {
     @GET("/api/${ApiConfig.API_VERSION}/tambon/{zipCode}")
     fun getSubDistrictByZipCodeAsync(
             @Path("zipCode") code: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<SubDistrict>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<SubDistrict>>>
 
 
     @GET("/api/${ApiConfig.API_VERSION}/district/{subDistrict}")
     fun getSubDistrictBySubDistrictAsync(
             @Path("subDistrict") subDistrict: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<SubDistrict>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<SubDistrict>>>
 
     @GET("/api/${ApiConfig.API_VERSION}/amphoe/{district}")
     fun getSubDistrictByDistrictAsync(
             @Path("district") district: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<SubDistrict>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<SubDistrict>>>
 
     @GET("/api/${ApiConfig.API_VERSION}/province/{province}")
     fun getSubDistrictByProvinceAsync(
             @Path("province") province: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<SubDistrict>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<SubDistrict>>>
 }

@@ -2,9 +2,7 @@ package com.think.runex.datasource.api
 
 import android.content.Context
 import androidx.annotation.NonNull
-import com.jakewharton.retrofit2.adapter.kotlin.coroutines.CoroutineCallAdapterFactory
 import com.think.runex.BuildConfig
-import com.think.runex.feature.auth.RefreshTokenInterceptor
 import okhttp3.OkHttpClient
 import okhttp3.logging.HttpLoggingInterceptor
 import retrofit2.Retrofit
@@ -44,8 +42,7 @@ class ApiService {
                             level = httpLoggingLevel
                         })
                     }
-                    //addInterceptor(HeaderInterceptor())
-                    addInterceptor(RefreshTokenInterceptor(context))
+                    addInterceptor(TokenInterceptor(context))
                 }
     }
 }

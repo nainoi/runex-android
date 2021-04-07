@@ -16,15 +16,15 @@ interface UserApi : UserInfoApi {
     @PUT("/api/${ApiConfig.API_VERSION}/user")
     fun updateUserInfoAsync(
             @Body userInfo: UserInfo,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UserInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/uploads")
     fun updateProfileImageAsync(
             @Body body: MultipartBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UpdateProfileImageResult>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UpdateProfileImageResult>>
 
     @GET("/api/${ApiConfig.API_VERSION}/workouts")
     fun getTotalDistancesAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<TotalDistance>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<TotalDistance>>
 
 }

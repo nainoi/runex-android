@@ -52,7 +52,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     suspend fun loginWithCode(code: String): Boolean = withContext(IO) {
         val loginResult = repo.loginWithCode(AuthWithCodeBody(code))
         if (loginResult.isSuccessful().not()) {
-            onHandleError(loginResult.statusCode, loginResult.message)
+            onHandleError(loginResult.code, loginResult.message)
             TokenManager.clearToken()
             return@withContext false
         }
@@ -74,7 +74,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         //Get User info for old java code
         val userResult = repo.getUserInfo()
         if (loginResult.isSuccessful().not()) {
-            onHandleError(loginResult.statusCode, loginResult.message)
+            onHandleError(loginResult.code, loginResult.message)
         }
 
         return@withContext loginResult.isSuccessful()
@@ -88,7 +88,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
                 TokenManager.clearToken()
                 repo.removeLocalAccessToken()
             }
-            false -> onHandleError(result.statusCode, result.message)
+            false -> onHandleError(result.code, result.message)
         }
         return@withContext result.isSuccessful()
     }

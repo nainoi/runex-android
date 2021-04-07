@@ -4,13 +4,14 @@ class TokenManager {
     companion object {
         private var tokenType: String = ""
 
-        var accessToken: String = ""
-            private set
-            get() {
-                if (field.isBlank()) return field
-                return "$tokenType $field"
-            }
+        private var accessToken: String = ""
 
+        fun accessToken(withTokenType: Boolean = true): String {
+            if (withTokenType && accessToken.isNotBlank()) {
+                return "$tokenType $accessToken"
+            }
+            return accessToken
+        }
 
         var refreshToken: String = ""
             private set

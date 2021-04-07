@@ -51,7 +51,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
         val result = repo.getMyEvents()
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         if (realStartPosition == null) {
@@ -82,7 +82,7 @@ class MyEventListViewModel(private val repo: EventRepository) : BaseViewModel() 
     suspend fun getMyEventsForSubmitWorkout(): List<Registered>? = withContext(IO) {
         val result = repo.getMyEventsAtActive()
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         //TODO("TODO Filter payment status success only for now")

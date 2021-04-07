@@ -17,30 +17,30 @@ interface WorkoutApi {
     @POST("/api/${ApiConfig.API_VERSION}/workout")
     fun addWorkoutAsync(
             @Body body: WorkoutInfo,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<WorkoutInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<WorkoutInfo>>
 
     @GET("/api/${ApiConfig.API_VERSION}/workouts/historyAll")
     fun getWorkoutHistoryAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<List<WorkoutHistoryMonth>>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<List<WorkoutHistoryMonth>?>>
 
     @GET("/api/${ApiConfig.API_VERSION}/workoutDetail/{workoutId}")
     fun getWorkoutInfoAsync(
             @Path("workoutId") workoutId: String,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<WorkoutInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<WorkoutInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/activity/activitiesWorkout")
     fun submitWorkoutToEventsAsync(
             @Body body: MultipartBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
     @Deprecated("Use [submitWorkoutToEventsAsync] instead")
     @POST("/api/${ApiConfig.API_VERSION}/activity/activityWorkout")
     fun submitWorkoutToEventAsync(
             @Body body: JsonObject,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 
     @POST("/api/${ApiConfig.API_VERSION}/activity/add")
     fun submitActivityToEventAsync(
             @Body body: MultipartBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<Any>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<Any>>
 }

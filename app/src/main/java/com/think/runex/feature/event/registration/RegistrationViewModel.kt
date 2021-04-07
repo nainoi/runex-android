@@ -103,7 +103,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
                 val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
-            false -> onHandleError(result.statusCode, result.message, "Address")
+            false -> onHandleError(result.code, result.message, "Address")
         }
     }
 
@@ -129,7 +129,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
                 val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
-            false -> onHandleError(result.statusCode, result.message, "Address")
+            false -> onHandleError(result.code, result.message, "Address")
         }
     }
 
@@ -155,7 +155,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
                 val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
-            false -> onHandleError(result.statusCode, result.message, "Address")
+            false -> onHandleError(result.code, result.message, "Address")
         }
     }
 
@@ -181,7 +181,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
                 val autoFillList = allSubDistrictList?.map { it.getFullAddress() } ?: emptyList()
                 addressAutoFill.postValue(AddressAutoFill(viewRequestId, autoFillList.toTypedArray()))
             }
-            false -> onHandleError(result.statusCode, result.message, "Address")
+            false -> onHandleError(result.code, result.message, "Address")
         }
     }
 
@@ -228,7 +228,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
         val result = repo.registerEvent(body)
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         return@withContext result.data
@@ -266,7 +266,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
         val result = repo.updateRegisterInfo(body)
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         return@withContext result.isSuccessful()
@@ -318,7 +318,7 @@ class RegistrationViewModel(eventRepo: EventRepository,
 //
 //        val result = repo.registerEventWithKao(body)
 //        if (result.isSuccessful().not()) {
-//            onHandleError(result.statusCode, result.message)
+//            onHandleError(result.code, result.message)
 //        }
 //
 //        return@withContext result.isSuccessful()

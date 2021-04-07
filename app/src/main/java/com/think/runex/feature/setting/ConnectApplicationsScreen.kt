@@ -76,8 +76,8 @@ class ConnectApplicationsScreen : BaseScreen() {
         web_view?.loadUrl(url)
     }
 
-    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
-        super.errorHandler(statusCode, message, tag)
+    override fun errorHandler(code: Int, message: String, tag: String?) {
+        super.errorHandler(code, message, tag)
         progress_bar?.gone()
     }
 }

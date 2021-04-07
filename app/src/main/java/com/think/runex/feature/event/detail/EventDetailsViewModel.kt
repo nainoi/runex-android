@@ -26,7 +26,7 @@ open class EventDetailsViewModel(val repo: EventRepository) : BaseViewModel() {
         //Get event details.
         val result = repo.getEventDetails(eventCode)
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
 
         //Check registered event
@@ -42,7 +42,7 @@ open class EventDetailsViewModel(val repo: EventRepository) : BaseViewModel() {
         if (isRegisteredEvent == null) {
             val result = repo.isRegisteredEvent(eventCode)
             if (result.isSuccessful().not()) {
-                onHandleError(result.statusCode, result.message)
+                onHandleError(result.code, result.message)
             }
             isRegisteredEvent = result.data?.isRegistered
         }

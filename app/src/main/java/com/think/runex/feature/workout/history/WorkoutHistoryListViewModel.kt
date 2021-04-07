@@ -1,5 +1,6 @@
 package com.think.runex.feature.workout.history
 
+import android.util.Log
 import androidx.lifecycle.MutableLiveData
 import com.think.runex.base.BaseViewModel
 import com.think.runex.feature.workout.WorkoutRepository
@@ -25,7 +26,7 @@ class WorkoutHistoryListViewModel(private val repo: WorkoutRepository) : BaseVie
         isLoading = true
         val result = repo.getWorkoutHistory()
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
         result.data = result.data?.sortedWith(compareByDescending<WorkoutHistoryMonth> { it.year }.thenByDescending { it.month })
         isLoading = false

@@ -30,7 +30,7 @@ class AllEventListViewModel(private val repo: EventRepository) : BaseViewModel()
         isLoading = true
         val result = repo.getAllEvents()
         if (result.isSuccessful().not()) {
-            onHandleError(result.statusCode, result.message)
+            onHandleError(result.code, result.message)
         }
         isLoading = false
         eventList.postValue(result.data)

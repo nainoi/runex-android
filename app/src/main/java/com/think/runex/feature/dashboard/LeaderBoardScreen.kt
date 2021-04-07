@@ -76,7 +76,7 @@ class LeaderBoardScreen : BaseScreen() {
             cacheMode = WebSettings.LOAD_NO_CACHE
             javaScriptEnabled = true
             //Set face user agent for google sign in.
-            userAgentString = FACE_USER_AGENT_FOR_WEB_VIEW
+            //userAgentString = FACE_USER_AGENT_FOR_WEB_VIEW
         }
 
         web_view?.webViewClient = object : WebViewClient() {
@@ -89,9 +89,9 @@ class LeaderBoardScreen : BaseScreen() {
         arguments?.run {
 
             val extraHeaders = HashMap<String, String>()
-            extraHeaders["token"] = TokenManager.accessToken
-            extraHeaders["id"] = getInt(KEY_EVENT_ID).toString()
-            extraHeaders["event_code"] = getString(KEY_EVENT_CODE) ?: ""
+            extraHeaders["token"] = TokenManager.accessToken(false)
+            extraHeaders["id"] = getString(KEY_EVENT_CODE) ?: ""//getInt(KEY_EVENT_ID).toString()
+            //extraHeaders["event_code"] = getString(KEY_EVENT_CODE) ?: ""
             extraHeaders["reg_id"] = getString(KEY_REGISTER_ID) ?: ""
             extraHeaders["parent_reg_id"] = getString(KEY_PARENT_REGISTER_ID) ?: ""
             extraHeaders["ticket_id"] = getString(KEY_TICKET) ?: ""

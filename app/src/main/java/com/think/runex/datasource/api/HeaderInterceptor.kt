@@ -9,7 +9,7 @@ class HeaderInterceptor : Interceptor {
     override fun intercept(chain: Interceptor.Chain): Response {
         val request = chain.request()
         val newRequest = request.newBuilder()
-                .addHeader(AUTHORIZATION, TokenManager.accessToken)
+                .addHeader(AUTHORIZATION, TokenManager.accessToken())
                 .build()
         return chain.proceed(newRequest)
     }

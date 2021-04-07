@@ -17,10 +17,10 @@ interface UserInfoApi {
 
     @GET("/api/${ApiConfig.API_VERSION}/user")
     fun getUserInfoAsync(
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UserInfo>>
 
     @POST("/api/${ApiConfig.API_VERSION}/user")
     fun getUserInfoByIdAsync(
             @Body body: UserInfoRequestBody,
-            @Header(AUTHORIZATION) token: String = TokenManager.accessToken): Deferred<Result<UserInfo>>
+            @Header(AUTHORIZATION) token: String = TokenManager.accessToken()): Deferred<Result<UserInfo>>
 }

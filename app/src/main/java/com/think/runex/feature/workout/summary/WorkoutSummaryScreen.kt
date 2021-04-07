@@ -205,12 +205,12 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
         else -> super.onOptionsItemSelected(item)
     }
 
-    override fun errorHandler(statusCode: Int, message: String, tag: String?) {
+    override fun errorHandler(code: Int, message: String, tag: String?) {
         when (tag) {
             "submit_workout" -> {
                 showToast(message)
             }
-            else -> super.errorHandler(statusCode, message, tag)
+            else -> super.errorHandler(code, message, tag)
         }
     }
 
