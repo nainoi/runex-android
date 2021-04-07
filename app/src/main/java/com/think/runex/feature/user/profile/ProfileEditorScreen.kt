@@ -26,6 +26,7 @@ import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.component.ImageSourcesDialog
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.UserViewModel
+import com.think.runex.feature.user.data.getDisplayName
 import com.think.runex.util.*
 import kotlinx.android.synthetic.main.screen_profile_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -42,7 +43,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
     private var getContentHelper: GetContentHelper? = null
 
     private var currentBirthDate: String? = null
-    private var currentGender: String? = null
+    private var currentGender: Gender? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -85,7 +86,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         }
 
         gender_input?.setOnClickListener {
-            showDialog(GenderDialog())
+            showDialog(GenderDialog.newInstance(currentGender))
         }
 
         viewModel.setOnHandleError(::errorHandler)
@@ -117,8 +118,8 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         }
 
         //Gender
-        currentGender = userInfo?.gender
-        gender_input?.setText(userInfo?.gender ?: "")
+        currentGender = userInfo?.getGender()
+        gender_input?.setText(currentGender?.getDisplayName(requireContext()) ?: "")
 
         first_name_input?.addTextChangedListener(textWatcher)
         last_name_input?.addTextChangedListener(textWatcher)
@@ -145,13 +146,9 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         isDataValid()
     }
 
-    override fun onGenderSelected(gender: String) {
+    override fun onGenderSelected(gender: Gender) {
         currentGender = gender
-        when (gender) {
-            Gender.FEMALE -> gender_input.setText(getString(R.string.female))
-            Gender.MALE -> gender_input.setText(getString(R.string.male))
-            else -> gender_input.setText(getString(R.string.other))
-        }
+        gender_input.setText(gender.getDisplayName(requireContext()))
         isDataValid()
     }
 
@@ -184,7 +181,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         currentUserInfo.birthDate = currentBirthDate
 
         //Gender
-        currentUserInfo.gender = currentGender
+        currentUserInfo.gender = currentGender?.name ?: ""
 
         //Update state of confirm button
         confirmButton?.isEnabled = currentUserInfo != viewModel.userInfo.value

@@ -91,4 +91,10 @@ data class UserInfo(
         true -> ("$firstName $lastName")
         false -> fullName ?: ""
     }
+
+    fun getGender(): Gender? = when (gender == Gender.Female.name || gender == Gender.Male.name || gender == Gender.Other.name) {
+        true -> Gender.valueOf(gender ?: "")
+        false -> null
+    }
+
 }

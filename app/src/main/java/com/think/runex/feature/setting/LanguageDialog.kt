@@ -12,9 +12,9 @@ import com.think.runex.R
 import com.think.runex.base.BaseDialog
 import com.think.runex.util.Localization
 import com.think.runex.util.extension.setTextStyle
-import kotlinx.android.synthetic.main.dialog_select_language.view.*
+import kotlinx.android.synthetic.main.dialog_language.view.*
 
-class SelectLanguageDialog : BaseDialog() {
+class LanguageDialog : BaseDialog() {
 
     private lateinit var rootView: View
 
@@ -24,12 +24,12 @@ class SelectLanguageDialog : BaseDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_select_language, container, false)
+        return inflater.inflate(R.layout.dialog_language, container, false)
     }
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        rootView = LayoutInflater.from(context).inflate(R.layout.dialog_select_language, null)
+        rootView = LayoutInflater.from(context).inflate(R.layout.dialog_language, null)
         return MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Runex_AlertDialog).apply {
             setView(rootView)
             setupComponents()

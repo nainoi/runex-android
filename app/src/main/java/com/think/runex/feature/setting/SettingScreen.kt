@@ -23,7 +23,7 @@ import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_setting.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class SettingScreen : BaseScreen(), SelectLanguageDialog.OnLanguageSelectedListener {
+class SettingScreen : BaseScreen(), LanguageDialog.OnLanguageSelectedListener {
 
     private lateinit var viewModel: UserViewModel
 
@@ -80,7 +80,7 @@ class SettingScreen : BaseScreen(), SelectLanguageDialog.OnLanguageSelectedListe
         }
 
         language_menu_layout?.setOnClickListener {
-            showDialog(SelectLanguageDialog())
+            showDialog(LanguageDialog())
         }
 
         dark_mode_menu_layout?.setOnClickListener {

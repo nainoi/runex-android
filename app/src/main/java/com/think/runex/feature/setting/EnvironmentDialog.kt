@@ -10,11 +10,12 @@ import android.view.WindowManager
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.think.runex.R
 import com.think.runex.base.BaseDialog
+import com.think.runex.feature.setting.data.Environment
 import com.think.runex.util.AppPreference
 import com.think.runex.util.extension.setTextStyle
-import kotlinx.android.synthetic.main.dialog_select_environment.view.*
+import kotlinx.android.synthetic.main.dialog_environment.view.*
 
-class SelectEnvironmentDialog : BaseDialog() {
+class EnvironmentDialog : BaseDialog() {
 
     private lateinit var rootView: View
 
@@ -24,12 +25,12 @@ class SelectEnvironmentDialog : BaseDialog() {
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.dialog_select_environment, container, false)
+        return inflater.inflate(R.layout.dialog_environment, container, false)
     }
 
     @SuppressLint("InflateParams")
     override fun onCreateDialog(savedInstanceState: Bundle?): Dialog {
-        rootView = LayoutInflater.from(context).inflate(R.layout.dialog_select_environment, null)
+        rootView = LayoutInflater.from(context).inflate(R.layout.dialog_environment, null)
         return MaterialAlertDialogBuilder(requireContext(), R.style.Theme_Runex_AlertDialog).apply {
             setView(rootView)
             setupComponents()

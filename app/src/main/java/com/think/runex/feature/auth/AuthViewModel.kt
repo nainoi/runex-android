@@ -70,7 +70,7 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
                 }
             }
         }
-        
+
         return@withContext loginResult.isSuccessful()
     }
 

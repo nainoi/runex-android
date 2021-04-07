@@ -144,12 +144,27 @@
                 android:layout_height="wrap_content"
                 android:layout_below="@+id/gender_input"
                 android:layout_marginStart="@dimen/space_16dp"
-                android:layout_marginTop="@dimen/space_8dp"
+                android:layout_marginTop="@dimen/space_4dp"
                 android:layout_marginEnd="@dimen/space_16dp"
+                android:cursorVisible="false"
+                android:focusable="false"
                 android:hint="@string/blood_type"
-                android:imeOptions="actionNext"
-                android:inputType="text"
-                android:maxLines="1" />
+                android:inputType="none"
+                android:maxLines="1"
+                android:paddingEnd="@dimen/space_40dp"
+                tools:ignore="RtlSymmetry" />
+
+            <androidx.appcompat.widget.AppCompatImageView
+                android:layout_width="@dimen/icon_size_system"
+                android:layout_height="@dimen/icon_size_system"
+                android:layout_alignBottom="@+id/blood_type_input"
+                android:layout_alignParentEnd="true"
+                android:layout_marginEnd="@dimen/space_16dp"
+                android:layout_marginBottom="@dimen/space_12dp"
+                android:adjustViewBounds="true"
+                android:scaleType="fitCenter"
+                app:srcCompat="@drawable/ic_control_next"
+                app:tint="@color/iconColorDisable" />
 
             <View
                 android:id="@+id/underline_user_info"

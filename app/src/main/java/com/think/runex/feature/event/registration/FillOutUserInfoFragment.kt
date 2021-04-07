@@ -29,21 +29,25 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.data.EventCategory
 import com.think.runex.feature.event.data.Shirt
 import com.think.runex.feature.event.data.UserOptionEventRegistration
+import com.think.runex.feature.user.BloodTypeDialog
 import com.think.runex.feature.user.GenderDialog
 import com.think.runex.feature.user.UserViewModel
+import com.think.runex.feature.user.data.BloodType
 import com.think.runex.feature.user.data.Gender
+import com.think.runex.feature.user.data.getDisplayName
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.fragment_fill_out_user_info.*
 import java.util.*
 import kotlin.collections.ArrayList
 
 class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener,
-        GenderDialog.OnGenderSelectedListener, ShirtsDialog.OnShirtSelectedListener {
+        GenderDialog.OnGenderSelectedListener, ShirtsDialog.OnShirtSelectedListener, BloodTypeDialog.OnBloodTypeSelectedListener {
 
     private lateinit var viewModel: RegistrationViewModel
 
     private var currentBirthDate: String? = null
-    private var currentGender: String? = null
+    private var currentGender: Gender? = null
+    private var currentBloodType: BloodType? = null
 
     private var zipCodeTextWatcher: TextWatcher? = null
     private var subDistrictTextWatcher: TextWatcher? = null
@@ -96,6 +100,11 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
 
     private fun subscribeUi() {
 
+        blood_type_input?.setOnClickListener {
+            view?.hideKeyboard()
+            showDialog(BloodTypeDialog.newInstance(currentBloodType))
+        }
+
         birth_date_input?.setOnClickListener {
             view?.hideKeyboard()
             showDatePicker()
@@ -103,7 +112,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
 
         gender_input?.setOnClickListener {
             view?.hideKeyboard()
-            showDialog(GenderDialog())
+            showDialog(GenderDialog.newInstance(currentGender))
         }
 
         zip_code_input?.setOnItemClickListener { _, view, _, _ ->
@@ -187,19 +196,20 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         //isDataValid()
     }
 
-    override fun onGenderSelected(gender: String) {
+    override fun onGenderSelected(gender: Gender) {
         currentGender = gender
-        when (gender) {
-            Gender.FEMALE -> gender_input.setText(getString(R.string.female))
-            Gender.MALE -> gender_input.setText(getString(R.string.male))
-            else -> gender_input.setText(getString(R.string.other))
-        }
+        gender_input?.setText(currentGender?.getDisplayName(requireContext()))
         //isDataValid()
     }
 
     override fun onShirtSelected(shirt: Shirt) {
         viewModel.onSelectShirt(shirt)
         shirt_size_input?.setText(shirt.size ?: "")
+    }
+
+    override fun onBloodTypeSelected(bloodType: BloodType) {
+        currentBloodType = bloodType
+        blood_type_input?.setText(currentBloodType?.name ?: "")
     }
 
     private fun AutoCompleteTextView.showAddressAutoFill() {
@@ -360,7 +370,7 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if (blood_type_input?.content().isNullOrBlank()) {
+        if (currentBloodType == null) {
             showRequiredInputDialog(getString(R.string.blood_type))
             return false
         }
@@ -418,8 +428,8 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
         cityCenId = citizen_id_input?.content() ?: ""
         phone = phone_input?.content() ?: ""
         birthDate = currentBirthDate ?: ""
-        gender = currentGender ?: ""
-        bloodType = blood_type_input?.content() ?: ""
+        gender = currentGender?.name ?: ""
+        bloodType = currentBloodType?.name ?: ""
         address = getFullAddress()
         houseNo = address_house_no_input?.content() ?: ""
         villageNo = address_village_no_input?.content() ?: ""
@@ -451,8 +461,8 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             }
 
             //Gender
-            currentGender = userInfo.gender
-            gender_input?.setText(userInfo.gender ?: "")
+            currentGender = userInfo.getGender()
+            gender_input?.setText(currentGender?.getDisplayName(requireContext()) ?: "")
         }
     }
 

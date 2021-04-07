@@ -6,12 +6,10 @@ import android.app.PendingIntent
 import android.content.Context
 import android.content.Intent
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.*
-import androidx.core.content.IntentCompat
 import com.jozzee.android.core.resource.getColor
 import com.jozzee.android.core.view.*
 import com.think.runex.BuildConfig
@@ -25,14 +23,14 @@ import com.think.runex.config.FACE_USER_AGENT_FOR_WEB_VIEW
 import com.think.runex.config.RC_RESTART_APP
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.main.MainScreen
-import com.think.runex.feature.setting.SelectEnvironmentDialog
+import com.think.runex.feature.setting.EnvironmentDialog
 import com.think.runex.util.AppPreference
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_login.*
 import kotlinx.coroutines.delay
 import kotlin.system.exitProcess
 
-class LoginScreen : BaseScreen(), SelectEnvironmentDialog.OnEnvironmentSelectedListener {
+class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListener {
 
     private lateinit var viewModel: AuthViewModel
 
@@ -92,7 +90,7 @@ class LoginScreen : BaseScreen(), SelectEnvironmentDialog.OnEnvironmentSelectedL
     private fun subscribeUi() {
 
         set_environment_button?.setOnClickListener {
-            showDialog(SelectEnvironmentDialog())
+            showDialog(EnvironmentDialog())
         }
 
         viewModel.setOnHandleError(::errorHandler)

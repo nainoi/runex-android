@@ -1,4 +1,4 @@
-package com.think.runex.feature.setting
+package com.think.runex.feature.setting.data
 
 import androidx.annotation.IntDef
 

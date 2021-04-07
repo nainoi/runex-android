@@ -1,9 +1,8 @@
 package com.think.runex.datasource.api
 
-import android.util.Log
 import com.think.runex.BuildConfig
 import com.think.runex.config.AppConfig
-import com.think.runex.feature.setting.Environment
+import com.think.runex.feature.setting.data.Environment
 
 class ApiConfig {
     companion object {

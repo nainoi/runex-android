@@ -9,17 +9,13 @@ import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
-import com.think.runex.BuildConfig
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
 import com.think.runex.util.extension.*
 import com.think.runex.component.recyclerview.MarginItemDecoration
 import com.think.runex.config.*
-import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.payment.creditcard.CreditCardActivityContract
 import com.think.runex.feature.payment.data.PaymentType
-import com.think.runex.feature.setting.Environment
-import com.think.runex.util.AppPreference
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_pay_event.*

@@ -9,8 +9,7 @@ import co.omise.android.ui.CreditCardActivity
 import co.omise.android.ui.OmiseActivity
 import co.omise.android.ui.OmiseActivity.Companion.EXTRA_TOKEN_OBJECT
 import com.think.runex.BuildConfig
-import com.think.runex.datasource.api.ApiConfig
-import com.think.runex.feature.setting.Environment
+import com.think.runex.feature.setting.data.Environment
 import com.think.runex.util.AppPreference
 
 class CreditCardActivityContract : ActivityResultContract<Any, Token?>() {

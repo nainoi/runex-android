@@ -26,6 +26,10 @@
     <!-- B -->
     <string name="birth_date">Birth date</string>
     <string name="blood_type">Blood type</string>
+    <string name="blood_type_a" translatable="false">A</string>
+    <string name="blood_type_ab" translatable="false">AB</string>
+    <string name="blood_type_b" translatable="false">B</string>
+    <string name="blood_type_o" translatable="false">O</string>
 
     <!-- c -->
     <string name="camera">Camera</string>

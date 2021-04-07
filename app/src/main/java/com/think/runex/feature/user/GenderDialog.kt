@@ -7,15 +7,28 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.view.WindowManager
+import android.widget.TextView
 import androidx.fragment.app.DialogFragment
 import com.google.android.material.dialog.MaterialAlertDialogBuilder
 import com.think.runex.R
 import com.think.runex.feature.user.data.Gender
+import com.think.runex.util.extension.setTextStyle
 import kotlinx.android.synthetic.main.dialog_gender.view.*
 
 class GenderDialog : DialogFragment() {
 
     private lateinit var rootView: View
+
+    companion object {
+        private const val KEY_GENDER = "gender"
+
+        @JvmStatic
+        fun newInstance(currentGender: Gender? = null) = GenderDialog().apply {
+            arguments = Bundle().apply {
+                putString(KEY_GENDER, currentGender?.name)
+            }
+        }
+    }
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -40,21 +53,33 @@ class GenderDialog : DialogFragment() {
     private fun setupComponents() {
         if (::rootView.isInitialized.not()) return
 
+        updateViewsOnGenderSelected(arguments?.getString(KEY_GENDER)?.let { Gender.valueOf(it) })
+
         //Subscribe Ui
         rootView.female_label?.setOnClickListener {
-            getOnGenderSelectedListener()?.onGenderSelected(Gender.FEMALE)
+            getOnGenderSelectedListener()?.onGenderSelected(Gender.Female)
             dismissAllowingStateLoss()
         }
 
         rootView.male_label?.setOnClickListener {
-            getOnGenderSelectedListener()?.onGenderSelected(Gender.MALE)
+            getOnGenderSelectedListener()?.onGenderSelected(Gender.Male)
             dismissAllowingStateLoss()
         }
 
         rootView.other_label?.setOnClickListener {
-            getOnGenderSelectedListener()?.onGenderSelected(Gender.OTHER)
+            getOnGenderSelectedListener()?.onGenderSelected(Gender.Other)
             dismissAllowingStateLoss()
         }
+    }
+
+    private fun updateViewsOnGenderSelected(gender: Gender?) {
+        rootView.female_label?.setIsSelected(gender == Gender.Female)
+        rootView.male_label?.setIsSelected(gender == Gender.Male)
+        rootView.other_label?.setIsSelected(gender == Gender.Other)
+    }
+
+    private fun TextView.setIsSelected(isSelected: Boolean) {
+        setTextStyle(if (isSelected) R.style.Text_BodyHeading_Accent_Bold else R.style.Text_BodyHeading_Primary)
     }
 
     private fun getOnGenderSelectedListener(): OnGenderSelectedListener? {
@@ -67,6 +92,6 @@ class GenderDialog : DialogFragment() {
     }
 
     interface OnGenderSelectedListener {
-        fun onGenderSelected(gender: String)
+        fun onGenderSelected(gender: Gender)
     }
 }

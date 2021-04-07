@@ -10,7 +10,7 @@ import androidx.security.crypto.MasterKey
 import com.think.runex.BuildConfig
 import com.think.runex.config.KEY_ENVIRONMENT
 import com.think.runex.config.PREFERENCES_NAME
-import com.think.runex.feature.setting.Environment
+import com.think.runex.feature.setting.data.Environment
 
 object AppPreference {
 
