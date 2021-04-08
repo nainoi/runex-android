@@ -96,8 +96,6 @@ class LeaderBoardScreen : BaseScreen() {
             extraHeaders["parent_reg_id"] = getString(KEY_PARENT_REGISTER_ID) ?: ""
             extraHeaders["ticket_id"] = getString(KEY_TICKET) ?: ""
 
-            Log.e("Jozzee", "extraHeaders: ${extraHeaders.toJson()}")
-
             web_view?.loadUrl(ApiConfig.LEADER_BOARD_URL, extraHeaders) //https://leaderboard.runex.co"
         }
     }
