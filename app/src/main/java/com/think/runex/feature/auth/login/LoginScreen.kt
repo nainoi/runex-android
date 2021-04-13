@@ -71,19 +71,24 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
             }
 
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-                request?.url?.also { uri ->
-                    if (uri.scheme == BuildConfig.APP_SCHEME) {
-                        val parameters = request.url?.getQueryParameters("code")
-                        if (parameters?.isNotEmpty() == true) {
-                            performLogin(parameters[0])
-                            set_environment_button?.gone()
-                        }
-                    } else if (uri.scheme == "auth.runex.co") {
-                        web_view?.inVisible()
+
+                val url = request?.url
+
+                if (url?.scheme == BuildConfig.APP_SCHEME) {
+                    val parameters = request.url?.getQueryParameters("code")
+                    if (parameters?.isNotEmpty() == true) {
+                        performLogin(parameters[0])
                         set_environment_button?.gone()
                     }
+                } else if (url?.scheme == "auth.runex.co") {
+                    web_view?.inVisible()
+                    set_environment_button?.gone()
                 }
-                return super.shouldOverrideUrlLoading(view, request)
+
+                return when (url?.toString()?.startsWith("http") == true || url?.toString()?.startsWith("https") == true) {
+                    true -> super.shouldOverrideUrlLoading(view, request)
+                    false -> true
+                }
             }
         }
         web_view.loadUrl("${ApiConfig.LOGIN_URL}?device=android")

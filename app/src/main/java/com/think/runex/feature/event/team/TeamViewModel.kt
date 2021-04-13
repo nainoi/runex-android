@@ -7,7 +7,9 @@ import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
 import com.google.gson.JsonArray
 import com.google.gson.JsonObject
+import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.base.BaseViewModel
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.EventApi
@@ -22,9 +24,9 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
 
     var registerData: MutableLiveData<Registered> = MutableLiveData()
 
-    fun getRegisterData(eventCode: String, registerId: String, parentRegisterId: String) = launch(IO) {
+    fun getRegisterData(body: RegisteredRequestBody) = launch(IO) {
 
-        val result = repo.getRegisterData(RegisteredRequestBody(eventCode, registerId, parentRegisterId))
+        val result = repo.getRegisterData(body)
 
         if (result.isSuccessful().not()) {
             onHandleError(result.code, result.message)
@@ -59,26 +61,27 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         val gSon = Gson()
 
         val userOptionObject = JsonObject().apply {
-            addProperty("address", "")
-            addProperty("birthdate", userToAdd.birthDate ?: "")
+            //addProperty("address", "")
+            //addProperty("birthdate", userToAdd.birthDate ?: "")
             addProperty("blood_type", userToAdd.bloodType ?: "")
             addProperty("citycen_id", userToAdd.citizenId ?: "")
             addProperty("color", teamLeaderUserOption.color)
-            addProperty("confirm", userToAdd.isConfirmed)
-            addProperty("created_at", userToAdd.createdAt ?: "")
-            addProperty("emergency_contact", userToAdd.emergencyContact ?: "")
-            addProperty("emergency_phone", userToAdd.emergencyPhone ?: "")
+            //addProperty("confirm", userToAdd.isConfirmed)
+            //addProperty("created_at", userToAdd.createdAt ?: "")
+            //addProperty("emergency_contact", userToAdd.emergencyContact ?: "")
+            //addProperty("emergency_phone", userToAdd.emergencyPhone ?: "")
             addProperty("firstname", userToAdd.firstName ?: "")
-            addProperty("firstname_th", userToAdd.firstNameTh ?: "")
+            //addProperty("firstname_th", userToAdd.firstNameTh ?: "")
             addProperty("gender", userToAdd.gender ?: "")
-            addProperty("home_no", "")
+            //addProperty("home_no", "")
             addProperty("lastname", userToAdd.lastName ?: "")
-            addProperty("lastname_th", userToAdd.lastNameTh ?: "")
-            addProperty("moo", "")
-            addProperty("nationality", userToAdd.nationality ?: "")
-            addProperty("passport", userToAdd.passport ?: "")
+            addProperty("fullname", userToAdd.getFullName())
+            //addProperty("lastname_th", userToAdd.lastNameTh ?: "")
+            //addProperty("moo", "")
+            //addProperty("nationality", userToAdd.nationality ?: "")
+            //addProperty("passport", userToAdd.passport ?: "")
             addProperty("phone", userToAdd.phone ?: "")
-            add("tambon", gSon.toJsonTree(SubDistrict()))
+            //add("tambon", gSon.toJsonTree(SubDistrict()))
             addProperty("team", teamLeaderUserOption.team)
             addProperty("zone", teamLeaderUserOption.zone)
         }
@@ -86,7 +89,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         val ticketObject = JsonObject().apply {
             addProperty("reciept_type", teamLeaderTicketOption.receiptType)
             //addProperty("register_number", "")
-            addProperty("total_price", teamLeaderTicketOption.totalPrice)
+            addProperty("total_price", 0)
             add("shirts", gSon.toJsonTree(Shirt()))
             add("tickets", gSon.toJsonTree(ticketAtRegister))
             add("user_option", userOptionObject)
@@ -99,7 +102,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         val registerObject = JsonObject().apply {
             add("coupon", gSon.toJsonTree(teamLeaderRegisteredData.coupon))
             //addProperty("created_at", "")
-            addProperty("discount_price", teamLeaderRegisteredData.discountPrice ?: 0.0)
+            addProperty("discount_price", 0)
             addProperty("event_code", teamLeaderRegisteredData.eventCode ?: "")
             addProperty("event_id", teamLeaderRegisteredData.eventId ?: "")
             //addProperty("id","")
@@ -109,11 +112,11 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
             add("partner", gSon.toJsonTree(teamLeaderRegisteredData.partner))
             addProperty("payment_date", teamLeaderRegisteredData.paymentDate ?: "")
             addProperty("payment_type", teamLeaderRegisteredData.paymentType ?: "")
-            addProperty("reg_date", teamLeaderRegisteredData.registerDate ?: "")
+            addProperty("reg_date", System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT))
             addProperty("status", teamLeaderRegisteredData.status ?: "")
             addProperty("ticket_id", ticketAtRegister.id ?: "")
             add("ticket_options", ticketObjects)
-            addProperty("total_price", teamLeaderRegisteredData.totalPrice ?: 0.0)
+            addProperty("total_price", 0)
             //addProperty("updated_at", "")
             addProperty("user_id", userToAdd.id ?: "")
         }
@@ -137,6 +140,7 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
                     eventCode = eventDetail.code ?: ""
                     registerId = teamLeaderRegisteredData.id ?: ""
                     parentRegisterId = teamLeaderRegisteredData.parentRegisterId ?: ""
+                    ticketId = teamLeaderTicketOption.ticket?.id ?: ""
                 }
 
                 val updateRegisterDataResult = repo.getRegisterData(registerDataBody)

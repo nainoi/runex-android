@@ -5,4 +5,5 @@ import com.google.gson.annotations.SerializedName
 data class RegisteredRequestBody(
         @SerializedName("event_code") var eventCode: String = "",
         @SerializedName("reg_id") var registerId: String = "",
-        @SerializedName("parent_reg_id") var parentRegisterId: String = "")
+        @SerializedName("parent_reg_id") var parentRegisterId: String = "",
+        @SerializedName("ticket_id") var ticketId: String = "")

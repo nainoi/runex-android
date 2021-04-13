@@ -73,6 +73,9 @@ fun Bitmap.saveToExternalStorage(context: Context, fileName: String): Uri? {
         }
         uri = outputFile.getUriProvider(context)
         this.writeToOutputStream(FileOutputStream(outputFile), Bitmap.CompressFormat.JPEG)
+
+        //Add image to gallery
+        //context.sendBroadcast(Intent(ACTION_MEDIA_SCANNER_SCAN_FILE, uri))
     }
 
     return uri

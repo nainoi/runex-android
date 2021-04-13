@@ -99,7 +99,8 @@ class DashboardScreen : BaseScreen() {
         }
 
         team_management_button?.setOnClickListener {
-            addFragment(TeamManagementScreen.newInstance(eventCode, registerId, parentRegisterId, viewModel.isTeamLeader))
+            addFragment(TeamManagementScreen.newInstance(eventCode, registerId, parentRegisterId,
+                    viewModel.getTicketAtRegister()?.id ?: "", viewModel.isTeamLeader))
         }
 
         observe(getMainViewModel().refreshScreen) { screenName ->

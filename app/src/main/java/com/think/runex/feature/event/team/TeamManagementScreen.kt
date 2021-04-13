@@ -18,7 +18,9 @@ import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.config.KEY_EVENT_CODE
 import com.think.runex.config.KEY_PARENT_REGISTER_ID
 import com.think.runex.config.KEY_REGISTER_ID
+import com.think.runex.config.KEY_TICKET
 import com.think.runex.feature.event.data.Registered
+import com.think.runex.feature.event.data.RegisteredRequestBody
 import com.think.runex.feature.qr.QRCodeScannerActivity
 import com.think.runex.feature.qr.QRCodeScannerContract
 import com.think.runex.feature.user.data.UserInfo
@@ -32,11 +34,16 @@ class TeamManagementScreen : BaseScreen() {
 
     companion object {
         @JvmStatic
-        fun newInstance(eventCode: String, registerId: String, parentRegisterId: String, isTeamLeader: Boolean) = TeamManagementScreen().apply {
+        fun newInstance(eventCode: String,
+                        registerId: String,
+                        parentRegisterId: String,
+                        ticketId: String,
+                        isTeamLeader: Boolean) = TeamManagementScreen().apply {
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
                 putString(KEY_REGISTER_ID, registerId)
                 putString(KEY_PARENT_REGISTER_ID, parentRegisterId)
+                putString(KEY_TICKET, ticketId)
                 putBoolean("is_team_lead", isTeamLeader)
             }
         }
@@ -50,6 +57,7 @@ class TeamManagementScreen : BaseScreen() {
     private var eventName: String = ""
     private var registerId: String = ""
     private var parentRegisterId: String = ""
+    private var ticketId: String = ""
     private var isTeamLeader: Boolean = false
 
     override fun onCreate(savedInstanceState: Bundle?) {
@@ -59,6 +67,7 @@ class TeamManagementScreen : BaseScreen() {
             eventCode = getString(KEY_EVENT_CODE) ?: ""
             registerId = getString(KEY_REGISTER_ID) ?: ""
             parentRegisterId = getString(KEY_PARENT_REGISTER_ID) ?: ""
+            ticketId = getString(KEY_TICKET) ?: ""
             isTeamLeader = getBoolean("is_team_lead")
         }
 
@@ -84,7 +93,7 @@ class TeamManagementScreen : BaseScreen() {
 
         //Get register data initial.
         showLoading()
-        viewModel.getRegisterData(eventCode, registerId, parentRegisterId)
+        viewModel.getRegisterData(RegisteredRequestBody(eventCode, registerId, parentRegisterId, ticketId))
     }
 
     private fun setupComponents() {
