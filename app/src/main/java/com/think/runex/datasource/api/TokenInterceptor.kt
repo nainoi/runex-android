@@ -1,6 +1,7 @@
 package com.think.runex.datasource.api
 
 import android.content.Context
+import android.net.Uri
 import androidx.core.content.edit
 import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
@@ -20,6 +21,7 @@ import com.think.runex.feature.auth.data.TokenManager
 import okhttp3.*
 import okhttp3.MediaType.Companion.toMediaType
 import okhttp3.RequestBody.Companion.toRequestBody
+import retrofit2.HttpException
 import java.net.UnknownHostException
 
 class TokenInterceptor(private val context: Context) : Interceptor {
@@ -94,15 +96,6 @@ class TokenInterceptor(private val context: Context) : Interceptor {
                     }
                     refreshTokenResponse.close()
                 }
-            } else if (response.isSuccessful.not()) {
-                val exceptionBody = JsonObject().apply {
-                    addProperty("url", request.url.toString())
-                    addProperty("code", response.code)
-                    //body = request.body?.toString() ?: ""
-                }
-                Logger.error("Api Exception", "Exception: ${exceptionBody.toJson()}")
-                Logger.error("Api Exception", "Send Exception to Firebase")
-                FirebaseCrashlytics.getInstance().recordException(ApiException(exceptionBody.toJson()))
             }
 
 //            if (body?.contains(ERR_MSG_UNAUTHORIZED, true) == true) {

@@ -1,13 +1,16 @@
 package com.think.runex.datasource.api
 
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.google.gson.JsonSyntaxException
 import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.text.isJsonFormat
 import com.think.runex.config.*
 import com.think.runex.datasource.Result
 import com.think.runex.util.*
+import com.think.runex.util.extension.toJson
 import kotlinx.coroutines.Deferred
 import kotlinx.coroutines.Dispatchers
 import kotlinx.coroutines.withContext
@@ -30,6 +33,7 @@ open class RemoteDataSource {
             }
         } catch (e: HttpException) {
             e.printStackTrace()
+            e.logToFirebase()
             Result.error(e.code(), getHttpExceptionMessage(e))
         } catch (e: SocketTimeoutException) {
             Result.error(HttpsURLConnection.HTTP_CLIENT_TIMEOUT, e.message)
@@ -49,11 +53,11 @@ open class RemoteDataSource {
         if (NetworkMonitor.isConnected.not()) {
             return@withContext Result.error<T>(ERR_NO_INTERNET_CONNECTION, "No Internet Connection")
         }
-
         return@withContext try {
             Result.success(job.await(), null)
         } catch (e: HttpException) {
             e.printStackTrace()
+            e.logToFirebase()
             Result.error(e.code(), getHttpExceptionMessage(e))
         } catch (e: SocketTimeoutException) {
             Result.error(HttpsURLConnection.HTTP_CLIENT_TIMEOUT, e.message)
@@ -68,12 +72,7 @@ open class RemoteDataSource {
 
     fun getHttpExceptionMessage(exception: HttpException): String {
 
-        val stringBody: String? = exception.response()?.errorBody()?.source()?.use { source ->
-            source.request(java.lang.Long.MAX_VALUE) // Buffer the entire body.
-            return@use exception.response()?.errorBody()?.contentType()?.charset(StandardCharsets.UTF_8)?.let { charset ->
-                return@let source.buffer.clone().readString(charset)
-            }
-        }
+        val stringBody: String? = exception.getErrorBody()
 
         if (stringBody?.isJsonFormat() == true) {
             val jsonObject = Gson().fromJson(stringBody, JsonElement::class.java).asJsonObject
@@ -83,6 +82,30 @@ open class RemoteDataSource {
                 return jsonObject.get(KEY_ERROR).asString
             }
         }
-        return exception.message()
+        return stringBody ?: exception.message()
+    }
+
+    private fun HttpException.logToFirebase() {
+        try {
+            val errorBody = JsonObject().apply {
+                addProperty("Url", response()?.raw()?.request?.url?.toString() ?: "")
+                addProperty("Method", response()?.raw()?.request?.method ?: "")
+                addProperty("Request", response()?.raw()?.request?.body?.toString() ?: "")
+                addProperty("Response", getErrorBody() ?: "")
+            }
+            FirebaseCrashlytics.getInstance().recordException(ApiException(errorBody.toJson()))
+
+        } catch (e: Throwable) {
+            e.printStackTrace()
+        }
+    }
+
+    private fun HttpException.getErrorBody(): String? {
+        return response()?.errorBody()?.source()?.use { source ->
+            source.request(java.lang.Long.MAX_VALUE) // Buffer the entire body.
+            return@use response()?.errorBody()?.contentType()?.charset(StandardCharsets.UTF_8)?.let { charset ->
+                return@let source.buffer.clone().readString(charset)
+            }
+        }
     }
 }
