@@ -35,6 +35,7 @@
     <string name="camera">Camera</string>
     <string name="camera_permission_denied">Unable to access your camera due to being denied.</string>
     <string name="cancel">Cancel</string>
+    <string name="cancel_update_app">You cancel for update new version.</string>
     <string name="confirm">Confirm</string>
     <string name="confirm_register">Confirm register</string>
     <string name="confirm_submit_result">Confirm to submit</string>
@@ -158,6 +159,7 @@
     <string name="register_event_success">Register event success</string>
     <string name="register_confirmation">Register confirmation</string>
     <string name="resume_recording">Resume</string>
+    <string name="restart">Restart</string>
 
     <!-- S -->
     <string name="select_image">Select image</string>
@@ -195,11 +197,15 @@
 
     <!-- U -->
     <string name="username">Username</string>
+    <string name="update_app_just_downloaded">An update has just been downloaded.</string>
+    <string name="update_app_failed">App update failed.</string>
+    <string name="update_app_success">App update success.</string>
     <string name="update_info">Update Info</string>
     <string name="update_profile_image">Update Profile Image…</string>
     <string name="update_registration">Update registration</string>
     <string name="update_registration_success">Update registration success</string>
     <string name="upload_qr">อัปโหลด QR</string>
+
 
     <!-- V -->
     <string name="view_leader_board">View Leader Board</string>

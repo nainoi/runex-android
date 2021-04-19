@@ -10,7 +10,7 @@ import retrofit2.http.*
 
 interface EventApi : UserInfoApi {
 
-    @GET("/api/${ApiConfig.API_VERSION}/event/all")
+    @GET("/api/${ApiConfig.API_VERSION}/event/alls")
     fun getAllEventAsync(): Deferred<Result<List<EventItem>>>
 
     @GET("/api/${ApiConfig.API_VERSION}/event/detail/{eventCode}")

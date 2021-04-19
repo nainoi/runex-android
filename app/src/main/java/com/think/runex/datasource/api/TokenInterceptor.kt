@@ -2,9 +2,12 @@ package com.think.runex.datasource.api
 
 import android.content.Context
 import androidx.core.content.edit
+import com.google.firebase.crashlytics.FirebaseCrashlytics
 import com.google.gson.Gson
 import com.google.gson.JsonElement
+import com.google.gson.JsonObject
 import com.jozzee.android.core.text.isJsonFormat
+import com.jozzee.android.core.util.Logger
 import com.think.runex.util.extension.toJson
 import com.think.runex.config.AUTHORIZATION
 import com.think.runex.feature.auth.data.request.RefreshTokenBody
@@ -91,6 +94,15 @@ class TokenInterceptor(private val context: Context) : Interceptor {
                     }
                     refreshTokenResponse.close()
                 }
+            } else if (response.isSuccessful.not()) {
+                val exceptionBody = JsonObject().apply {
+                    addProperty("url", request.url.toString())
+                    addProperty("code", response.code)
+                    //body = request.body?.toString() ?: ""
+                }
+                Logger.error("Api Exception", "Exception: ${exceptionBody.toJson()}")
+                Logger.error("Api Exception", "Send Exception to Firebase")
+                FirebaseCrashlytics.getInstance().recordException(ApiException(exceptionBody.toJson()))
             }
 
 //            if (body?.contains(ERR_MSG_UNAUTHORIZED, true) == true) {

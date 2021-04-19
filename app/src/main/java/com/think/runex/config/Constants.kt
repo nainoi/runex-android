@@ -75,7 +75,7 @@ const val DISPLAY_TIME_FORMAT = "HH:mm"
  */
 const val RC_RESTART_APP = 2000
 const val RC_OPEN_GPS = 2001
-
+const val RC_UPDATE_APP = 2112
 /**
  * Notification chanel id and request code
  */

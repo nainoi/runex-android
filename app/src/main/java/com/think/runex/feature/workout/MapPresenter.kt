@@ -83,7 +83,7 @@ class MapPresenter(private var googleMap: GoogleMap?,
     }
 
     fun zoomToFitWorkoutLine() {
-        if (points?.isNullOrEmpty() == true) return
+        if (points.isNullOrEmpty()) return
 
         val bounds = LatLngBounds.Builder().apply {
             points?.forEach { location ->

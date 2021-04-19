@@ -28,6 +28,7 @@
     <string name="camera">กล้อง</string>
     <string name="camera_permission_denied">ไม่สามารถเข้าถึงกล้องถ่ายรูปของคุณได้เนื่องจากถูกปฏิเสธ</string>
     <string name="cancel">ยกเลิก</string>
+    <string name="cancel_update_app">คุณยกเลิกการอัปเดตเวอร์ชันใหม่</string>
     <string name="confirm">ยืนยัน</string>
     <string name="confirm_register">ยืนยันการสมัคร</string>
     <string name="confirm_submit_result">ยืนยันการส่งผล</string>
@@ -148,6 +149,7 @@
     <string name="register_event_success">ลงสมัครวิ่งสำเร็จ</string>
     <string name="register_confirmation">ยืนยันการสมัคร</string>
     <string name="resume_recording">จับเวลาต่อ</string>
+    <string name="restart">รีสตาท</string>
 
     <!-- S -->
     <string name="select_image">เลือกรูปภาพ</string>
@@ -184,6 +186,9 @@
 
     <!-- U -->
     <string name="username">ชื่อผู้ใช้</string>
+    <string name="update_app_just_downloaded">ดาวน์โหลดการอัปเดตแล้ว</string>
+    <string name="update_app_failed">การอัปเดตแอปล้มเหลว</string>
+    <string name="update_app_success">การอัปเดตแอปสำเร็จ</string>
     <string name="update_info">อัพเดทข้อมูล</string>
     <string name="update_profile_image">อัปเดตรูปโปรไฟล์…</string>
     <string name="update_registration">อัพเดทข้อมูลการสมัครวิ่ง</string>

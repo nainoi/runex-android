@@ -8,6 +8,7 @@ import android.content.Intent
 import android.net.Uri
 import android.os.Build
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -43,7 +44,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
         super.onCreate(savedInstanceState)
 
         viewModel = getViewModel(AuthViewModel.Factory(requireContext()))
-
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -79,8 +79,19 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
         web_view?.webViewClient = object : WebViewClient() {
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
+
                 //Log.i("Jozzee", "onPageFinished: $url")
+
                 progress_bar?.gone()
+
+                if (url?.contains("facebook") == true
+                        || url?.contains("google") == true
+                        || url?.contains("apple") == true) {
+                    set_environment_button?.gone()
+                } else if (BuildConfig.DEBUG && url?.contains("login?device=android") == true) {
+                    set_environment_button?.visible()
+                }
+
 
                 if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
 
@@ -90,7 +101,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
                         val parameters = uri.getQueryParameters("code")
                         if (parameters?.isNotEmpty() == true) {
                             performLogin(parameters[0])
-                            set_environment_button?.gone()
                         }
                     }
                 }
@@ -108,11 +118,9 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
                     val parameters = uri.getQueryParameters("code")
                     if (parameters?.isNotEmpty() == true) {
                         performLogin(parameters[0])
-                        set_environment_button?.gone()
                     }
                 } else if (uri?.scheme == "auth.runex.co") {
                     web_view?.inVisible()
-                    set_environment_button?.gone()
                 }
 
                 if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N && uri?.host == "m.facebook.com") {
@@ -128,7 +136,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
 
             override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
                 super.onReceivedError(view, request, error)
-                //Log.e("Jozzee", "Error: ${error?.description}")
             }
         }
         web_view.loadUrl("${ApiConfig.LOGIN_URL}?device=android")
@@ -179,6 +186,14 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
         }
     }
 
+    fun handleBackPressed(): Boolean {
+        if (web_view?.canGoBack() == true) {
+            web_view?.goBack()
+            return true
+        }
+        return false
+    }
+
     override fun errorHandler(code: Int, message: String, tag: String?) {
         super.errorHandler(code, message, tag)
         progress_bar?.gone()
@@ -201,7 +216,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
 //    inner class UriWebViewClient : WebViewClient() {
 //        override fun onPageFinished(view: WebView?, url: String?) {
 //            super.onPageFinished(view, url)
-//            Log.i("Jozzee", "onPageFinished: $url")
 //            progress_bar?.gone()
 //
 //            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
@@ -222,9 +236,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
 //        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
 //
 //            val uri = request?.url
-//
-//            Log.w("Jozzee", "shouldOverrideUrlLoading: $uri")
-//            Log.w("Jozzee", "shouldOverrideUrlLoading Host: ${uri?.host}")
 //
 //            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
 //                Log.w("Jozzee", "is isRedirect: ${request?.isRedirect}")
@@ -259,7 +270,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
 //
 //        override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
 //            super.onReceivedError(view, request, error)
-//            Log.e("Jozzee", "Error: ${error?.description}")
 //        }
 //    }
 //
@@ -288,7 +298,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
 //
 //        override fun onCloseWindow(window: WebView?) {
 //            super.onCloseWindow(window)
-//            Log.d("Jozzee", "onCloseWindow")
 //        }
 //    }
 }
