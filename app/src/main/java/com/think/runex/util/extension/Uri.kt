@@ -5,6 +5,7 @@ import android.media.MediaMetadataRetriever
 import android.net.Uri
 import android.provider.OpenableColumns
 import android.webkit.MimeTypeMap
+import com.jozzee.android.core.text.isUrl
 
 fun Uri.isImage(context: Context?): Boolean {
     return context?.contentResolver?.getType(this)?.startsWith("image") == true
@@ -43,6 +44,9 @@ fun Uri.getSize(context: Context?): Long? {
 fun Uri.getSizeKb(context: Context?): Float = (getSize(context) ?: 0) / 1024f
 
 fun Uri.getDisplayName(context: Context?): String? {
+    if (this.toString().isUrl() && lastPathSegment != null) {
+        return lastPathSegment
+    }
     return (context?.contentResolver?.query(this, null,
             null, null, null)?.use { cursor ->
         when (cursor.moveToFirst()) {

@@ -204,7 +204,7 @@ class WorkoutScreen : PermissionsLauncherScreen(), ActionControlsFragment.Action
         Logger.warning(simpleName(), "initialMaps...")
         (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment ->
             mapFragment.getMapAsync { googleMap: GoogleMap ->
-                googleMap.uiSettings?.isMyLocationButtonEnabled = false
+                googleMap.uiSettings.isMyLocationButtonEnabled = false
                 mapPresenter = MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
                 Logger.warning(simpleName(), "Setup mapPresenter")
                 callbacks.invoke()
