@@ -21,8 +21,10 @@ import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import kotlinx.android.synthetic.main.list_item_workout_history_month.view.*
 
-class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView,
-                                 var onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null) : ListAdapter<WorkoutHistoryMonth, WorkoutHistoryMonthAdapter.ViewHolder>(WorkoutHistoryMonthDiffCallback()) {
+class WorkoutHistoryMonthAdapter(
+    private val recyclerView: RecyclerView,
+    var onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null
+) : ListAdapter<WorkoutHistoryMonth, WorkoutHistoryMonthAdapter.ViewHolder>(WorkoutHistoryMonthDiffCallback()) {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent)
@@ -56,35 +58,40 @@ class WorkoutHistoryMonthAdapter(private val recyclerView: RecyclerView,
 //                    .inflate(R.layout.list_item_workout_history_month, parent, false))
 //        }
 
-        constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_workout_history_month, parent, false))
+        constructor(parent: ViewGroup) : this(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_workout_history_month, parent, false)
+        )
 
         fun bind(data: WorkoutHistoryMonth?) {
             //Set workout summary month details.
             (data?.workouts?.size ?: 0).also { workoutTimes ->
                 itemView.workout_times_in_month_label?.text = workoutTimes.toString()
-                itemView.workout_times_in_month_placeholder?.text = getString(when (workoutTimes > 1) {
-                    true -> R.string.number_of_times
-                    false -> R.string.number_of_time
-                })
+                itemView.workout_times_in_month_placeholder?.text = getString(
+                    when (workoutTimes > 1) {
+                        true -> R.string.number_of_times
+                        false -> R.string.number_of_time
+                    }
+                )
             }
             itemView.month_year_label?.text = data?.getMontAndYear() ?: ""
             itemView.distance_label?.text = data?.totalDistances?.displayFormat(awaysShowDecimal = true)
-                    ?: ""
+                ?: ""
             itemView.duration_label?.text = data?.totalDuration ?: ""
             itemView.calorie_label?.text = data?.calories?.displayFormat() ?: ""
 
             //Setup workout day list
             val itemDecoration = LineSeparatorItemDecoration(
-                    lineSeparator = getDrawable(R.drawable.line_separator_list_item),
-                    addLineOnBottomOrRightOfLastItem = true).apply {
+                lineSeparator = getDrawable(R.drawable.line_separator_list_item),
+                addLineOnBottomOrRightOfLastItem = true
+            ).apply {
                 marginLeftOrTop = getDimension(R.dimen.space_44dp).toInt()
                 marginRightOrBottom = getDimension(R.dimen.space_16dp).toInt()
             }
             itemView.workout_day_list?.addItemDecoration(itemDecoration)
             itemView.workout_day_list?.layoutManager = LinearLayoutManager(requireContext())
             itemView.workout_day_list?.adapter = WorkoutHistoryDayAdapter(onItemClickListener).apply {
-                submitList(data?.workouts?.sortedByDescending { it.workoutDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT) }?.toMutableList())
+                submitList(data?.getWorkoutList())
             }
 
             itemView.summary_month_layout?.setOnClickListener {

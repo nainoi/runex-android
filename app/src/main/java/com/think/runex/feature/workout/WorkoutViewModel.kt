@@ -3,6 +3,7 @@ package com.think.runex.feature.workout
 
 import android.content.Context
 import android.graphics.Bitmap
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.google.gson.Gson
@@ -39,15 +40,27 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
             onHandleError(result.code, result.message)
         }
 
+        val url: String? = result.data?.locationsUrl
+        if(url.isNullOrBlank()){
+            return@withContext result.data
+        }
+        val locationsResult = repo.getWorkoutLocations(url)
+        if (locationsResult.data?.locations?.isNotEmpty() == true) {
+            result.data?.locations = locationsResult.data?.locations
+        }
+
         return@withContext result.data
     }
+
 
     /** @deprecated
      *  Submit workout each a event by for loop
      */
     @Deprecated("Use [submitWorkoutToEvents] instead")
-    suspend fun submitWorkoutToEventsManual(eventsToSubmit: List<EventForSubmitResult>?,
-                                            workoutInfo: WorkoutInfo?): Boolean = withContext(IO) {
+    suspend fun submitWorkoutToEventsManual(
+        eventsToSubmit: List<EventForSubmitResult>?,
+        workoutInfo: WorkoutInfo?
+    ): Boolean = withContext(IO) {
         var isSuccessAll = true
 
         eventsToSubmit?.forEach { event ->
@@ -67,19 +80,22 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         return@withContext isSuccessAll
     }
 
-    suspend fun submitWorkoutToEvents(eventsToSubmit: List<EventForSubmitResult>?,
-                                      workoutInfo: WorkoutInfo?,
-                                      workoutImage: Bitmap?): Boolean = withContext(IO) {
+    suspend fun submitWorkoutToEvents(
+        eventsToSubmit: List<EventForSubmitResult>?,
+        workoutInfo: WorkoutInfo?,
+        workoutImage: Bitmap?
+    ): Boolean = withContext(IO) {
 
         val body = MultipartBody.Builder()
-                .setType(MultipartBody.FORM)
-                .addFormDataPart("event_activity", eventsToSubmit?.toJson() ?: "")
-                .addFormDataPart("workout_info", workoutInfo?.toJson() ?: "")
-                .addFormDataPart(
-                        name = "image",
-                        filename = "workout-image",
-                        body = (workoutImage?.toByteArray() ?: byteArrayOf()).toRequestBody())
-                .build()
+            .setType(MultipartBody.FORM)
+            .addFormDataPart("event_activity", eventsToSubmit?.toJson() ?: "")
+            .addFormDataPart("workout_info", workoutInfo?.toJson() ?: "")
+            .addFormDataPart(
+                name = "image",
+                filename = "workout-image",
+                body = (workoutImage?.toByteArray() ?: byteArrayOf()).toRequestBody()
+            )
+            .build()
 
 
         val result = repo.submitWorkoutToEvents(body)
@@ -94,7 +110,14 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
     class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return WorkoutViewModel(WorkoutRepository(ApiService().provideService(context, WorkoutApi::class.java))) as T
+            return WorkoutViewModel(
+                WorkoutRepository(
+                    ApiService().provideService(
+                        context,
+                        WorkoutApi::class.java
+                    )
+                )
+            ) as T
         }
     }
 }

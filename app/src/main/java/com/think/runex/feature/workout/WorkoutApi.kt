@@ -20,6 +20,9 @@ interface WorkoutApi {
     @GET("/api/${ApiConfig.API_VERSION}/workoutDetail/{workoutId}")
     fun getWorkoutInfoAsync(@Path("workoutId") workoutId: String): Deferred<Result<WorkoutInfo>>
 
+    @GET
+    fun getWorkoutLocationsAsync(@Url url: String): Deferred<WorkoutInfo>
+
     @POST("/api/${ApiConfig.API_VERSION}/activity/activitiesWorkout")
     fun submitWorkoutToEventsAsync(@Body body: MultipartBody): Deferred<Result<Any>>
 
@@ -29,4 +32,6 @@ interface WorkoutApi {
 
     @POST("/api/${ApiConfig.API_VERSION}/activity/add")
     fun submitActivityToEventAsync(@Body body: MultipartBody): Deferred<Result<Any>>
+
+
 }

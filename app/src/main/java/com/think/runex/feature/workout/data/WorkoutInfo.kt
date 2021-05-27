@@ -8,24 +8,27 @@ import com.think.runex.util.extension.displayFormat
 import com.think.runex.util.extension.timeDisplayFormat
 import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT_2
 
 data class WorkoutInfo(
-        @SerializedName("activity_type") var activityType: String? = null,
-        @SerializedName("app") var app: String? = null,
-        @SerializedName("calory") var calories: Double? = 0.0,
-        @SerializedName("caption") var caption: String? = null,
-        @SerializedName("distance") var distanceKilometers: Float? = 0f,
-        @SerializedName("duration") var durationSecond: Long? = 0,
-        @SerializedName("end_date") var endDate: String? = null,
-        @SerializedName("id") var id: String? = null,
-        @SerializedName("is_sync") var isSync: Boolean? = false,
-        @SerializedName("net_elevation_gain") var netElevationGain: Double? = 0.0,
-        @SerializedName("locations") var locations: List<WorkingOutLocation>? = null,
-        @SerializedName("pace") var durationMinutePerKilometer: Double? = 0.0,
-        @SerializedName("ref_id") var refId: String? = null,
-        @SerializedName("start_date") var startDate: String? = null,
-        @SerializedName("time_string") var timeDisplay: String? = null,
-        @SerializedName("workout_date") var workoutDate: String? = null) : Parcelable {
+    @SerializedName("activity_type") var activityType: String? = null,
+    @SerializedName("app") var app: String? = null,
+    @SerializedName("calory") var calories: Double? = 0.0,
+    @SerializedName("caption") var caption: String? = null,
+    @SerializedName("distance") var distanceKilometers: Float? = 0f,
+    @SerializedName("duration") var durationSecond: Long? = 0,
+    @SerializedName("end_date") var endDate: String? = null,
+    @SerializedName("id") var id: String? = null,
+    @SerializedName("is_sync") var isSync: Boolean? = false,
+    @SerializedName("net_elevation_gain") var netElevationGain: Double? = 0.0,
+    @SerializedName("locations") var locations: List<WorkingOutLocation>? = null,
+    @SerializedName("pace") var durationMinutePerKilometer: Double? = 0.0,
+    @SerializedName("ref_id") var refId: String? = null,
+    @SerializedName("start_date") var startDate: String? = null,
+    @SerializedName("time_string") var timeDisplay: String? = null,
+    @SerializedName("workout_date") var workoutDate: String? = null,
+    @SerializedName("loc_url") var locationsUrl: String? = null
+) : Parcelable {
 
     companion object CREATOR : Parcelable.Creator<WorkoutInfo> {
         override fun createFromParcel(parcel: Parcel): WorkoutInfo {
@@ -38,40 +41,43 @@ data class WorkoutInfo(
     }
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readValue(Double::class.java.classLoader) as? Double,
-            parcel.readString(),
-            parcel.readValue(Float::class.java.classLoader) as? Float,
-            parcel.readValue(Long::class.java.classLoader) as? Long,
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
-            parcel.readValue(Double::class.java.classLoader) as? Double,
-            parcel.createTypedArrayList(WorkingOutLocation),
-            parcel.readValue(Double::class.java.classLoader) as? Double,
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString())
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readString(),
+        parcel.readValue(Float::class.java.classLoader) as? Float,
+        parcel.readValue(Long::class.java.classLoader) as? Long,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.createTypedArrayList(WorkingOutLocation),
+        parcel.readValue(Double::class.java.classLoader) as? Double,
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString()
+    )
 
     constructor(record: WorkingOutRecord?, locations: List<WorkingOutLocation>?) : this(
-            activityType = record?.type ?: WorkoutType.RUNNING,
-            app = "RUNEX",
-            calories = record?.getCalories() ?: 0.0,
-            caption = "",
-            distanceKilometers = record?.getDistancesKilometers() ?: 0f,
-            durationSecond = record?.getDurationSecond() ?: 0,
-            endDate = record?.stop?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
-            id = "",
-            isSync = false,
-            netElevationGain = 0.0,
-            locations = locations ?: emptyList(),
-            durationMinutePerKilometer = record?.getDurationMinutePerKilometer() ?: 0.0,
-            refId = "",
-            startDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
-            workoutDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
-            timeDisplay = record?.duration?.timeDisplayFormat() ?: "")
+        activityType = record?.type ?: WorkoutType.RUNNING,
+        app = "RUNEX",
+        calories = record?.getCalories() ?: 0.0,
+        caption = "",
+        distanceKilometers = record?.getDistancesKilometers() ?: 0f,
+        durationSecond = record?.getDurationSecond() ?: 0,
+        endDate = record?.stop?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
+        id = "",
+        isSync = false,
+        netElevationGain = 0.0,
+        locations = locations ?: emptyList(),
+        durationMinutePerKilometer = record?.getDurationMinutePerKilometer() ?: 0.0,
+        refId = "",
+        startDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
+        workoutDate = record?.start?.dateTimeFormat(SERVER_DATE_TIME_FORMAT) ?: "",
+        timeDisplay = record?.duration?.timeDisplayFormat() ?: ""
+    )
 
 
     override fun writeToParcel(parcel: Parcel, flags: Int) {
@@ -91,6 +97,7 @@ data class WorkoutInfo(
         parcel.writeString(startDate)
         parcel.writeString(timeDisplay)
         parcel.writeString(workoutDate)
+        parcel.writeString(locationsUrl)
     }
 
     override fun describeContents(): Int {
@@ -106,12 +113,12 @@ data class WorkoutInfo(
 
         //Update duration
         displayData.duration = timeDisplay
-                ?: "00:00:00"//((durationSecond ?: 0L) * 1000).timeDisplayFormat()
+            ?: "00:00:00"//((durationSecond ?: 0L) * 1000).timeDisplayFormat()
 
         //Update duration per kilometer
         if (distanceKilometers ?: 0f > 0) {
             val millisPerKilometer: Long = (((durationSecond ?: 0) / (distanceKilometers
-                    ?: 0f)) * 1000).toLong()
+                ?: 0f)) * 1000).toLong()
             //Check durations millisecond per kilometer more than 1 hour (3600000 millisecond)
             when (millisPerKilometer < 3600000) {
                 true -> displayData.durationPerKilometer = millisPerKilometer.timeDisplayFormat().let {
@@ -134,8 +141,22 @@ data class WorkoutInfo(
     }
 
     fun getWorkoutDateTime(): String {
-        return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH)
-                ?: workoutDate ?: ""
+        return try {
+            workoutDate?.dateTimeFormat(
+                SERVER_DATE_TIME_FORMAT,
+                DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
+            ) ?: ""
+        } catch (e: Throwable) {
+            try {
+                workoutDate?.dateTimeFormat(
+                    SERVER_DATE_TIME_FORMAT_2,
+                    DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
+                ) ?: ""
+            } catch (e: Throwable) {
+                e.printStackTrace()
+                ""
+            }
+        }
     }
 
     fun getWorkoutDateTimeForImageName(): String {

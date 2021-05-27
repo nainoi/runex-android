@@ -10,6 +10,7 @@ import com.jozzee.android.core.resource.getDimension
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.setVisible
 import com.jozzee.android.core.view.showToast
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
@@ -150,8 +151,12 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
     private fun updateUi() {
         //Update record data to views.
         workoutInfo?.getDisplayData()?.also { displayDate ->
-            distance_on_map_label?.text = displayDate.distances
+
+            distance_on_map_label?.text = ("${displayDate.distances}(${getString(R.string.km)})")
             duration_on_map_label?.text = displayDate.duration
+            workout_time_on_map_label?.text = workoutInfo?.getWorkoutDateTime() ?: ""
+            workout_time_on_map_label?.setVisible(workout_time_on_map_label?.text?.isNotBlank() == true)
+
             distance_label?.text = displayDate.distances
             duration_label?.text = displayDate.duration
             duration_per_kilometer_label?.text = displayDate.durationPerKilometer
@@ -162,8 +167,10 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
 
         initMaps {
             workoutInfo?.locations?.also {
-                mapPresenter?.drawPolyline(it)
-                mapPresenter?.zoomToFitWorkoutLine()
+                runOnUiThread {
+                    mapPresenter?.drawPolyline(it)
+                    mapPresenter?.zoomToFitWorkoutLine()
+                }
             }
         }
     }
@@ -177,9 +184,12 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
         Logger.warning(simpleName(), "initialMaps...")
         (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment ->
             mapFragment.getMapAsync { googleMap: GoogleMap ->
-                googleMap.uiSettings?.isMyLocationButtonEnabled = false
+                googleMap.uiSettings.isMyLocationButtonEnabled = false
                 googleMap.uiSettings.setAllGesturesEnabled(false)
-                mapPresenter = MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
+                mapPresenter = MapPresenter(
+                    googleMap, getColor(R.color.colorAccent),
+                    getDimension(R.dimen.space_8dp).toFloat()
+                )
                 Logger.warning(simpleName(), "Setup mapPresenter")
                 map_layout?.visible()
                 callbacks.invoke()

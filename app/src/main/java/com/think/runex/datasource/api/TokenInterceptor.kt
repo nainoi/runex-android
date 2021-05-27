@@ -30,7 +30,7 @@ class TokenInterceptor(private val context: Context) : Interceptor {
 
         var request = chain.request()
 
-        if (TokenManager.isAlive()) {
+        if (request.url.host.contains(ApiConfig.BASE_URL) && TokenManager.isAlive()) {
             //Add access token to header of request
             request = request.newBuilder()
                     .addHeader(AUTHORIZATION, TokenManager.accessToken())

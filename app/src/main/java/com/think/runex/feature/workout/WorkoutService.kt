@@ -144,7 +144,7 @@ open class WorkoutService : Service() {
     }
 
     private fun onPauseWorkingOut() {
-        Log.d(simpleName(), "Action Pause")
+        //Log.d(simpleName(), "Action Pause")
         status = WorkoutStatus.PAUSE
         stopScheduledThread()
         updateWorkingOutRecord()
@@ -152,14 +152,14 @@ open class WorkoutService : Service() {
     }
 
     private fun onResumeWorkingOut() {
-        Log.d(simpleName(), "Action Resume")
+        //Log.d(simpleName(), "Action Resume")
         status = WorkoutStatus.WORKING_OUT
         startScheduledThread()
         broadcastWorkingOutUpdate(lastUpdateLocation, record?.getDisplayData())
     }
 
     private fun onStopWorkingOut() {
-        Log.d(simpleName(), "Action Stop")
+        //Log.d(simpleName(), "Action Stop")
         stopSelf()
         stopForeground(true)
         notificationManager = null

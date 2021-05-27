@@ -61,10 +61,10 @@ class FireBaseMessagingService : FirebaseMessagingService() {
         }
          */
 
-        Log.d("FirebaseService", "onMessageReceived")
-        Log.d("FirebaseService", "From: ${remoteMessage.from}")
-        Log.d("FirebaseService", "Notification: ${remoteMessage.notification?.toJson()}")
-        Log.d("FirebaseService", "Data: ${remoteMessage.data.toJson()}")
+        //Log.d("FirebaseService", "onMessageReceived")
+        //Log.d("FirebaseService", "From: ${remoteMessage.from}")
+        //Log.d("FirebaseService", "Notification: ${remoteMessage.notification?.toJson()}")
+        //Log.d("FirebaseService", "Data: ${remoteMessage.data.toJson()}")
 
         val title = remoteMessage.notification?.title ?: remoteMessage.data[KEY_TITLE] ?: ""
         val body = remoteMessage.notification?.body ?: remoteMessage.data[KEY_BODY] ?: ""
@@ -77,7 +77,7 @@ class FireBaseMessagingService : FirebaseMessagingService() {
 
     override fun onNewToken(firebaseToken: String) {
         super.onNewToken(firebaseToken)
-        Log.i("FireBasService", "New firebase token: $firebaseToken")
+        //Log.i("FireBasService", "New firebase token: $firebaseToken")
 
         //Send firebase token to server.
         launch(IO) {

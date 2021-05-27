@@ -70,7 +70,7 @@ class NightMode {
                     else -> config.uiMode
                 }
 
-                Log.d("UiMode", "Set ui mode: ${config.uiMode}")
+                //Log.d("UiMode", "Set ui mode: ${config.uiMode}")
 
                 setNightModePreference(baseContext, nightMode)
                 return baseContext.createConfigurationContext(config)

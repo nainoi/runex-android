@@ -57,7 +57,7 @@ class SocialLoginManger {
 
         //When login error.
         override fun onError(error: FacebookException?) {
-            Log.e(simpleName(), "Login with Facebook Error: ${error?.message}")
+            //Log.e(simpleName(), "Login with Facebook Error: ${error?.message}")
             loginListener?.onLoginWithSocialError(Exception(error?.message, error?.cause))
         }
     }

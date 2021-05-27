@@ -59,7 +59,7 @@ class Localization {
                     config.setLocales(localeList)
                 }
 
-                Log.d("Localization", "Set Language to: $currentLanguage")
+                //Log.d("Localization", "Set Language to: $currentLanguage")
                 CURRENT_LANGUAGE = currentLanguage
                 setCurrentLanguagePreference(baseContext, currentLanguage)
                 return baseContext.createConfigurationContext(config)

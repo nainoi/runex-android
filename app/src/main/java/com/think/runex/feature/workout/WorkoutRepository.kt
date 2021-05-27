@@ -14,6 +14,8 @@ class WorkoutRepository(private val api: WorkoutApi) : RemoteDataSource() {
 
     suspend fun getWorkoutInfo(workoutId: String) = call(api.getWorkoutInfoAsync(workoutId))
 
+    suspend fun getWorkoutLocations(url: String) = calls(api.getWorkoutLocationsAsync(url))
+
     @Deprecated("Use [submitWorkoutToEvents] instead")
     suspend fun submitWorkoutToEvent(body: JsonObject): Result<Any> = call(api.submitWorkoutToEventAsync(body))
 
