@@ -3,9 +3,11 @@ package com.think.runex.feature.workout.data
 import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import android.util.Log
 import androidx.annotation.DrawableRes
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.jozzee.android.core.datetime.toTimeMillis
 import com.think.runex.R
 import com.think.runex.config.DISPLAY_DATE_FORMAT
 import com.think.runex.util.extension.displayFormat
@@ -13,6 +15,8 @@ import com.think.runex.util.extension.timeDisplayFormat
 import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT_2
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class WorkoutInfo(
     @SerializedName("activity_type") var activityType: String? = null,
@@ -144,33 +148,59 @@ data class WorkoutInfo(
         return displayData
     }
 
-    fun getWorkoutDateTime(): String {
-        return try {
-            workoutDate?.dateTimeFormat(
-                SERVER_DATE_TIME_FORMAT,
-                DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
-            ) ?: ""
+    fun getWorkoutDateTime(displayPattern: String = DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH): String {
+        var text = ""
+        try {
+            val sdf = SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault())
+            sdf.timeZone = TimeZone.getDefault()
+            sdf.parse(workoutDate ?: "")?.also { date ->
+                text = SimpleDateFormat(displayPattern, Locale.getDefault()).format(date)
+            }
         } catch (e: Throwable) {
             try {
-                workoutDate?.dateTimeFormat(
-                    SERVER_DATE_TIME_FORMAT_2,
-                    DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
-                ) ?: ""
+                val sdf = SimpleDateFormat(SERVER_DATE_TIME_FORMAT_2, Locale.getDefault())
+                sdf.timeZone = TimeZone.getDefault()
+                sdf.parse(workoutDate ?: "")?.also { date ->
+                    text = SimpleDateFormat(displayPattern, Locale.getDefault()).format(date)
+                }
             } catch (e: Throwable) {
-                e.printStackTrace()
-                ""
+                try {
+                    val sdf = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                    sdf.timeZone = TimeZone.getDefault()
+                    sdf.parse(workoutDate ?: "")?.also { date ->
+                        text = SimpleDateFormat(displayPattern, Locale.getDefault()).format(date)
+                    }
+                } catch (e: Throwable) {
+                }
             }
         }
+        return text
     }
 
-    fun getWorkoutDateTimeForHistoryDay(): String {
-        return "${workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT)}\n${timeDisplay ?: ""}"
+    fun getWorkoutDateTimeMillis(): Long {
+        var time: Long = 0
+        try {
+            time = SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault())
+                .parse(workoutDate ?: "")?.time ?: 0
+        } catch (e: Throwable) {
+            try {
+                time = SimpleDateFormat(SERVER_DATE_TIME_FORMAT_2, Locale.getDefault())
+                    .parse(workoutDate ?: "")?.time ?: 0
+            } catch (e: Throwable) {
+                try {
+                    time = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                        .parse(workoutDate ?: "")?.time ?: 0
+                } catch (e: Throwable) {
+
+                }
+            }
+        }
+        return time
     }
 
     fun getWorkoutDateTimeForImageName(): String {
         return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, "yyyyMMddHHmm") ?: ""
     }
-
 
     fun getDistances(context: Context): String {
         return "${distanceKilometers?.displayFormat(awaysShowDecimal = true) ?: ""} ${context.getString(R.string.km)}"

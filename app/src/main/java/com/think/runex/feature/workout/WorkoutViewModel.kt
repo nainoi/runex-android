@@ -29,6 +29,16 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
             onHandleError(result.code, result.message)
 
         }
+
+        val url: String? = result.data?.locationsUrl
+        if (url.isNullOrBlank()) {
+            return@withContext result.data
+        }
+        val locationsResult = repo.getWorkoutLocations(url)
+        if (locationsResult.data?.locations?.isNotEmpty() == true) {
+            result.data?.locations = locationsResult.data?.locations
+        }
+
         return@withContext result.data
     }
 

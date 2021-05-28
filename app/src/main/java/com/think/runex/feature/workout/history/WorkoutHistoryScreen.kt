@@ -15,18 +15,19 @@ import com.think.runex.feature.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
 import kotlinx.android.synthetic.main.screen_workout_history.*
-import kotlinx.coroutines.delay
 
-class WorkoutHistoryScreen : BaseScreen() {
+class WorkoutHistoryScreen : BaseScreen(),
+    WorkoutHistoryDayAdapter.OnClickWorkoutListener,
+    WorkoutHistoryDayAdapter.OnDeleteWorkoutListener {
 
-    private lateinit var viewModel: WorkoutHistoryListViewModel
+    private lateinit var viewModel: WorkoutHistoryViewModel
 
     private lateinit var adapter: WorkoutHistoryMonthAdapter
     private lateinit var layoutManager: LinearLayoutManager//For load more in the feature!
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        viewModel = getViewModel(WorkoutHistoryListViewModelFactory(requireContext()))
+        viewModel = getViewModel(WorkoutHistoryViewModel.Factory(requireContext()))
     }
 
     override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -37,16 +38,14 @@ class WorkoutHistoryScreen : BaseScreen() {
         super.onViewCreated(view, savedInstanceState)
         setupComponents()
         subscribeUi()
-
-        //Initial get all event list
-        refresh_layout?.isRefreshing = true
-        viewModel.getHistoryList()
+        performGetHistoryList()
     }
 
     override fun onHiddenChanged(hidden: Boolean) {
         super.onHiddenChanged(hidden)
         if (hidden.not()) {
             setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
+            performGetHistoryList()
         }
     }
 
@@ -55,54 +54,72 @@ class WorkoutHistoryScreen : BaseScreen() {
         refresh_layout?.setColorSchemeResources(R.color.colorPrimary)
 
         //Set up recycler view
-        adapter = WorkoutHistoryMonthAdapter(history_list)
+        adapter = WorkoutHistoryMonthAdapter(history_list, this, this)
         layoutManager = LinearLayoutManager(requireContext())
         history_list?.addItemDecoration(MarginItemDecoration(getDimension(R.dimen.space_16dp), 0, 0))
         history_list?.layoutManager = layoutManager
         history_list?.adapter = adapter
+
+
     }
 
     private fun subscribeUi() {
         refresh_layout?.setOnRefreshListener {
-            viewModel.getHistoryList()
-        }
-
-        adapter.setOnItemClickListener { workoutHistory ->
-            addFragment(WorkoutSummaryScreen.newInstance(workoutHistory.id ?: ""))
-        }
-
-        adapter.setOnDeleteWorkoutListener { monthPosition, workoutInfo ->
-            launch {
-
-                showProgressDialog(R.string.delete)
-                val isSuccess = viewModel.deleteWorkout(monthPosition, workoutInfo)
-                hideProgressDialog()
-                if (isSuccess) {
-                    delay(100)
-                    adapter.notifyItemChanged(monthPosition)
-                }
-            }
+            performGetHistoryList()
         }
 
         viewModel.setOnHandleError(::errorHandler)
+    }
 
-        observe(viewModel.historyList) { historyList ->
-            if (view == null || isAdded.not()) return@observe
+    private fun performGetHistoryList(lastPosition: Int = 0) = launch {
+        if (viewModel.isLoading || lastPosition > 0 && viewModel.isAllLoaded) return@launch
 
-            refresh_layout?.isRefreshing = false
-            adapter.submitList(historyList?.toMutableList())
+        if (lastPosition == 0) {
+            refresh_layout?.isRefreshing = true
+        }
+
+        val historyList = viewModel.getHistoryList()
+
+        refresh_layout?.isRefreshing = false
+
+        if (lastPosition == 0) {
+            adapter.submitList(historyList)
+        } else {
+            adapter.addList(historyList)
+        }
+
+        if (historyList?.size ?: 0 != viewModel.pageSize) {
+            viewModel.isAllLoaded = true
         }
     }
 
+    override fun onClickWorkout(workoutInfo: WorkoutInfo) {
+        addFragment(WorkoutSummaryScreen.newInstance(workoutInfo.id ?: ""))
+    }
+
+    override fun onDeleteWorkout(
+        month: Int,
+        year: Int,
+        monthPosition: Int,
+        dayPosition: Int,
+        workoutInfo: WorkoutInfo
+    ) {
+        launch {
+            showProgressDialog(R.string.delete)
+            val historyMonth = viewModel.deleteWorkout(month, year, workoutInfo)
+            hideProgressDialog()
+            adapter.onDeleteWorkout(monthPosition, historyMonth)
+        }
+    }
 
     override fun errorHandler(code: Int, message: String, tag: String?) {
         super.errorHandler(code, message, tag)
         refresh_layout?.isRefreshing = false
     }
 
-    override fun onDestroy() {
-        removeObservers(viewModel.historyList)
-        super.onDestroy()
+    override fun onDestroyView() {
+        adapter.clear()
+        history_list?.recycledViewPool?.clear()
+        super.onDestroyView()
     }
-
 }

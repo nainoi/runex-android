@@ -5,6 +5,7 @@ import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.graphics.RectF
+import android.util.Log
 import android.util.TypedValue
 import android.view.Gravity
 import android.view.MotionEvent
@@ -60,6 +61,12 @@ class SwipeMenuListItemCallback(
 
     fun setOnSwipeMenuSelected(block: (position: Int, menu: SwipeMenu) -> Unit) {
         this.onSwipeMenuSelected = block
+    }
+
+    private var onTouchReleased: ((position: Int) -> Unit)? = null
+
+    fun setOnTouchReleased(block: (position: Int) -> Unit) {
+        this.onTouchReleased = block
     }
 
     fun setMenuWidth(menuWidth: Int) {
@@ -138,6 +145,11 @@ class SwipeMenuListItemCallback(
                 if (swipeState != SwipeState.GONE) {
                     setTouchDownListener(c, recyclerView, viewHolder, dY, actionState, isCurrentlyActive)
                     setItemsClickable(recyclerView, false)
+                } else {
+                    swipeState = SwipeState.GONE
+                    currentItemViewHolder = null
+                    menuRectFList?.clear()
+                    onTouchReleased?.invoke(viewHolder.adapterPosition)
                 }
             }
 
@@ -186,10 +198,9 @@ class SwipeMenuListItemCallback(
                     }
                 }
 
+                onTouchReleased?.invoke(viewHolder.adapterPosition)
                 swipeState = SwipeState.GONE
                 currentItemViewHolder = null
-
-
             }
             false
         }

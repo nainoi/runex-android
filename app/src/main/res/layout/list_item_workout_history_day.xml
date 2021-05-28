@@ -62,7 +62,7 @@
         android:layout_height="wrap_content"
         android:layout_marginStart="@dimen/space_8dp"
         android:layout_marginEnd="@dimen/space_16dp"
-        android:text="0.00"
+        tools:text="0.00"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent" />

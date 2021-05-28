@@ -80,8 +80,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
             override fun onPageFinished(view: WebView?, url: String?) {
                 super.onPageFinished(view, url)
 
-                //Log.i("Jozzee", "onPageFinished: $url")
-
                 progress_bar?.gone()
 
                 if (url?.contains("facebook") == true
@@ -110,9 +108,6 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
             override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
 
                 val uri = request?.url
-
-                //Log.w("Jozzee", "shouldOverrideUrlLoading: $uri")
-                //Log.w("Jozzee", "shouldOverrideUrlLoading Host: ${uri?.host}")
 
                 if (uri?.scheme == BuildConfig.APP_SCHEME) {
                     val parameters = uri.getQueryParameters("code")
@@ -212,92 +207,4 @@ class LoginScreen : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListene
         CookieManager.getInstance().flush()
         super.onDestroy()
     }
-
-//    inner class UriWebViewClient : WebViewClient() {
-//        override fun onPageFinished(view: WebView?, url: String?) {
-//            super.onPageFinished(view, url)
-//            progress_bar?.gone()
-//
-//            if (Build.VERSION.SDK_INT <= Build.VERSION_CODES.M) {
-//
-//                val uri = Uri.parse(url)
-//
-//                if (uri?.scheme == BuildConfig.APP_SCHEME) {
-//                    val parameters = uri.getQueryParameters("code")
-//                    if (parameters?.isNotEmpty() == true) {
-//                        performLogin(parameters[0])
-//                        set_environment_button?.gone()
-//                    }
-//                }
-//            }
-//        }
-//
-//        //@RequiresApi(Build.VERSION_CODES.N)
-//        override fun shouldOverrideUrlLoading(view: WebView?, request: WebResourceRequest?): Boolean {
-//
-//            val uri = request?.url
-//
-//            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.N) {
-//                Log.w("Jozzee", "is isRedirect: ${request?.isRedirect}")
-//            }
-//
-//            if (uri?.scheme == BuildConfig.APP_SCHEME) {
-//                val parameters = uri.getQueryParameters("code")
-//                if (parameters?.isNotEmpty() == true) {
-//                    performLogin(parameters[0])
-//                    set_environment_button?.gone()
-//                }
-//            } else if (uri?.scheme == "auth.runex.co") {
-//                web_view?.inVisible()
-//                set_environment_button?.gone()
-//            }
-//
-//            if (webViewPopup != null) {
-//                webViewPopup?.gone()
-//                web_view_popup_container?.removeAllViews()
-//                webViewPopup = null
-//            }
-//
-//            if (Build.VERSION.SDK_INT == Build.VERSION_CODES.N && uri?.host == "m.facebook.com") {
-//                return false
-//            }
-//
-//            return when (uri?.toString()?.startsWith("http") == true || uri?.toString()?.startsWith("https") == true) {
-//                true -> super.shouldOverrideUrlLoading(view, request)
-//                false -> true
-//            }
-//        }
-//
-//        override fun onReceivedError(view: WebView?, request: WebResourceRequest?, error: WebResourceError?) {
-//            super.onReceivedError(view, request, error)
-//        }
-//    }
-//
-//    inner class UriChromeClient : WebChromeClient() {
-//
-//        @SuppressLint("SetJavaScriptEnabled")
-//        override fun onCreateWindow(view: WebView?, isDialog: Boolean, isUserGesture: Boolean, resultMsg: Message?): Boolean {
-//
-//            webViewPopup = WebView(requireContext())
-//            webViewPopup?.isVerticalScrollBarEnabled = false
-//            webViewPopup?.isHorizontalScrollBarEnabled = false
-//            webViewPopup?.webViewClient = UriWebViewClient()
-//            webViewPopup?.settings?.javaScriptEnabled = true
-//            webViewPopup?.settings?.savePassword = false
-//            webViewPopup?.layoutParams = FrameLayout.LayoutParams(ViewGroup.LayoutParams.MATCH_PARENT, ViewGroup.LayoutParams.MATCH_PARENT)
-//            web_view_popup_container?.addView(webViewPopup)
-//
-//            val transport: WebView.WebViewTransport = resultMsg?.obj as? WebView.WebViewTransport
-//                    ?: return false
-//
-//            transport.webView = webViewPopup
-//            resultMsg.sendToTarget()
-//
-//            return true
-//        }
-//
-//        override fun onCloseWindow(window: WebView?) {
-//            super.onCloseWindow(window)
-//        }
-//    }
 }

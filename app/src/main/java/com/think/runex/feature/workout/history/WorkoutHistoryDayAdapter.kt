@@ -3,8 +3,6 @@ package com.think.runex.feature.workout.history
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.ListAdapter
 import androidx.recyclerview.widget.RecyclerView
 import com.think.runex.R
 import com.think.runex.feature.workout.data.WorkoutInfo
@@ -12,29 +10,34 @@ import com.think.runex.util.extension.requireContext
 import com.think.runex.util.extension.loadWorkoutIcon
 import kotlinx.android.synthetic.main.list_item_workout_history_day.view.*
 
-class WorkoutHistoryDayAdapter(private var onItemClickListener: ((WorkoutHistoryDay: WorkoutInfo) -> Unit)? = null) :
-    ListAdapter<WorkoutInfo, WorkoutHistoryDayAdapter.ViewHolder>(WorkoutHistoryDayDiffCallback()) {
+class WorkoutHistoryDayAdapter(
+    val list: List<WorkoutInfo>,
+    var clickWorkoutListener: OnClickWorkoutListener? = null
+) : RecyclerView.Adapter<WorkoutHistoryDayAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent)
     }
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position), onItemClickListener)
+        holder.bind(list[position])
     }
 
-    class WorkoutHistoryDayDiffCallback : DiffUtil.ItemCallback<WorkoutInfo>() {
-        override fun areItemsTheSame(oldItem: WorkoutInfo, newItem: WorkoutInfo): Boolean {
-            return oldItem.workoutDate == newItem.workoutDate
-                    && oldItem.timeDisplay == newItem.timeDisplay
-        }
+    override fun getItemCount(): Int = list.size
 
-        override fun areContentsTheSame(oldItem: WorkoutInfo, newItem: WorkoutInfo): Boolean {
-            return oldItem == newItem
-        }
-    }
+//    class WorkoutHistoryDayDiffCallback : DiffUtil.ItemCallback<WorkoutInfo>() {
+//        override fun areItemsTheSame(oldItem: WorkoutInfo, newItem: WorkoutInfo): Boolean {
+//            return oldItem.workoutDate == newItem.workoutDate
+//                    && oldItem.timeDisplay == newItem.timeDisplay
+//        }
+//
+//        override fun areContentsTheSame(oldItem: WorkoutInfo, newItem: WorkoutInfo): Boolean {
+//            return oldItem == newItem
+//        }
+//    }
 
-    class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+    inner class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
+
 //        companion object {
 //            fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
 //                    .inflate(R.layout.list_item_workout_history_day, parent, false))
@@ -45,16 +48,28 @@ class WorkoutHistoryDayAdapter(private var onItemClickListener: ((WorkoutHistory
                 .inflate(R.layout.list_item_workout_history_day, parent, false)
         )
 
-        fun bind(
-            data: WorkoutInfo?,
-            onItemClickListener: ((WorkoutHistoryDay: WorkoutInfo) -> Unit)? = null
-        ) {
-            itemView.workout_time_label?.text = data?.getWorkoutDateTimeForHistoryDay() ?: ""
+        fun bind(data: WorkoutInfo?) {
+            itemView.workout_time_label?.text = data?.getWorkoutDateTime("dd/MM/yyyy\nHH:mm:ss") ?: ""
             itemView.distance_label?.text = data?.getDistances(requireContext()) ?: ""
             itemView.workout_type_icon?.loadWorkoutIcon(data?.getPartnerIcon())
             itemView.list_item_workout_day?.setOnClickListener {
-                data?.also { onItemClickListener?.invoke(it) }
+                data?.also { clickWorkoutListener?.onClickWorkout(data) }
             }
         }
+    }
+
+
+    interface OnClickWorkoutListener {
+        fun onClickWorkout(workoutInfo: WorkoutInfo)
+    }
+
+    interface OnDeleteWorkoutListener {
+        fun onDeleteWorkout(
+            month: Int,
+            year: Int,
+            monthPosition: Int,
+            dayPosition: Int,
+            workoutInfo: WorkoutInfo
+        )
     }
 }

@@ -13,7 +13,9 @@ import com.think.runex.util.extension.setColorFilter
 import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.feature.workout.data.WorkoutStatus
 import com.think.runex.util.extension.getDrawable
+import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.fragment_action_controls.*
+import kotlinx.coroutines.delay
 
 class ActionControlsFragment : Fragment() {
 
@@ -80,7 +82,10 @@ class ActionControlsFragment : Fragment() {
         main_action_label?.setTextColor(getColor(R.color.textColorThirdly))
         main_action_label?.setText(R.string.pause_recording)
         main_action_button?.setOnClickListener {
-            getActionControlsListener()?.onActionPause()
+            launch {
+                delay(250)
+                getActionControlsListener()?.onActionPause()
+            }
         }
 
         resume_action_button_layout?.gone()
