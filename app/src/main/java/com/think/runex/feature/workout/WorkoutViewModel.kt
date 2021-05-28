@@ -41,7 +41,7 @@ class WorkoutViewModel(private val repo: WorkoutRepository) : BaseViewModel() {
         }
 
         val url: String? = result.data?.locationsUrl
-        if(url.isNullOrBlank()){
+        if (url.isNullOrBlank()) {
             return@withContext result.data
         }
         val locationsResult = repo.getWorkoutLocations(url)

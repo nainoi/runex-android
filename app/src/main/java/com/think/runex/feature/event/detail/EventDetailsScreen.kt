@@ -6,8 +6,6 @@ import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.fragment.onBackPressed
-import com.jozzee.android.core.resource.getColor
-import com.jozzee.android.core.resource.getDrawable
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.visible
@@ -66,9 +64,7 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
 
         //Set up recycler view
         adapter = TicketsAdapter()
-        val lineSeparator = getDrawable(R.drawable.line_separator_list_item)?.apply {
-            setColorFilter(getColor(R.color.border))
-        }
+        val lineSeparator = getDrawable(R.drawable.line_separator_list_item, R.color.border)
         tickets_list?.addItemDecoration(LineSeparatorItemDecoration(lineSeparator))
         tickets_list?.layoutManager = LinearLayoutManager(requireContext())
         tickets_list?.adapter = adapter
@@ -174,8 +170,12 @@ class EventDetailsScreen : BaseScreen(), RegisterEventWithEBIBDialog.OnEBIBSpeci
     }
 
     private fun setEnableRegisterButton(isEnabled: Boolean) = runOnUiThread {
-        val iconColor = getColor(if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable)
-        running_icon?.setImageDrawable(getDrawable(R.drawable.ic_running, iconColor))
+        running_icon?.setImageDrawable(
+            getDrawable(
+                R.drawable.ic_running,
+                if (isEnabled) R.color.iconColorWhite else R.color.iconColorDisable
+            )
+        )
 
         register_label?.isEnabled = isEnabled
 

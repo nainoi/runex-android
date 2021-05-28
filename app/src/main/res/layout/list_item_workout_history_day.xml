@@ -38,8 +38,7 @@
             android:adjustViewBounds="true"
             android:background="@drawable/shape_circle_thirdly"
             android:scaleType="center"
-            app:srcCompat="@drawable/ic_running"
-            app:tint="@color/iconColorAccent" />
+            app:srcCompat="@drawable/ic_running" />
     </FrameLayout>
 
     <TextView

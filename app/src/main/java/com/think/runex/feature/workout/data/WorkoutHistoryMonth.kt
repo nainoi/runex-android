@@ -30,25 +30,9 @@ data class WorkoutHistoryMonth(
     /**
      * Workout info list each a month
      */
-    @SerializedName("workout_day") var workouts: List<WorkoutHistoryDay>? = null
+    @SerializedName("workout_day") var workouts: List<WorkoutInfo>? = null
 ) {
 
     fun getMontAndYear() = "$monthName $year"
 
-    fun getWorkoutList() = workouts?.sortedByDescending {
-        dateServerToMillis(it.workoutDate)
-    }?.toMutableList()
-
-    private fun dateServerToMillis(workoutDate: String?): Long {
-        return try {
-            workoutDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT) ?: 0
-        } catch (e: Throwable) {
-            try {
-                workoutDate?.toTimeMillis(SERVER_DATE_TIME_FORMAT_2) ?: 0
-            } catch (e: Throwable) {
-                e.printStackTrace()
-                0
-            }
-        }
-    }
 }

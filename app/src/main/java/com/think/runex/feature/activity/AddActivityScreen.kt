@@ -112,12 +112,14 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
 
         showProgressDialog(R.string.add_activity)
 
-        val isSuccess = viewModel.submitActivityToEvent(requireContext(),
-                activityImageUri,
-                distance_input?.content()?.toDoubleOrZero() ?: 0.0,
-                activityDate ?: "",
-                note_input?.content() ?: "",
-                activityForSubmit)
+        val isSuccess = viewModel.submitActivityToEvent(
+            requireContext(),
+            activityImageUri,
+            distance_input?.content()?.toDoubleOrZero() ?: 0.0,
+            activityDate ?: "",
+            note_input?.content() ?: "",
+            activityForSubmit
+        )
 
         hideProgressDialog()
 
@@ -132,43 +134,54 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
         }
     }
 
-    private fun checkPermissionAndGetImageContent() = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
-        when {
-            //User allow all permissions storage
-            isGranted -> getContentHelper?.getImage { imageUri ->
-                activityImageUri = imageUri
-                loadActivityImage()
+    private fun checkPermissionAndGetImageContent() =
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+            when {
+                //User allow all permissions storage
+                isGranted -> getContentHelper?.getImage { imageUri ->
+                    activityImageUri = imageUri
+                    loadActivityImage()
+                }
+                //User denied access to storage.
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
             }
-            //User denied access to storage.
-            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
-            //User denied and select don't ask again.
-            else -> requireContext().showSettingPermissionInSettingDialog()
         }
-    }
 
     private fun loadActivityImage() {
         setActivityImageForImage()
         Glide.with(activity_image)
-                .load(activityImageUri)
-                .centerCrop()
-                .addListener(object : RequestListener<Drawable> {
-                    override fun onLoadFailed(e: GlideException?, model: Any?, target: Target<Drawable>?, isFirstResource: Boolean): Boolean {
-                        setActivityImageForPlaceholder()
-                        return false
-                    }
+            .load(activityImageUri)
+            .centerCrop()
+            .addListener(object : RequestListener<Drawable> {
+                override fun onLoadFailed(
+                    e: GlideException?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    setActivityImageForPlaceholder()
+                    return false
+                }
 
-                    override fun onResourceReady(resource: Drawable?, model: Any?, target: Target<Drawable>?, dataSource: DataSource?, isFirstResource: Boolean): Boolean {
-                        return false
-                    }
-                })
-                .into(activity_image)
+                override fun onResourceReady(
+                    resource: Drawable?,
+                    model: Any?,
+                    target: Target<Drawable>?,
+                    dataSource: DataSource?,
+                    isFirstResource: Boolean
+                ): Boolean {
+                    return false
+                }
+            })
+            .into(activity_image)
     }
 
     private fun setActivityImageForPlaceholder() {
         val space56Dp = getDimension(R.dimen.space_56dp)
         activity_image?.setPadding(space56Dp, space56Dp, space56Dp, space56Dp)
-        val color = activity_image?.context?.getColorAttr(R.attr.iconColorDisable)
-        activity_image?.setImageDrawable(getDrawable(R.drawable.ic_running, color))
+        activity_image?.setImageDrawable(getDrawable(R.drawable.ic_running, R.color.iconColorDisable))
     }
 
     private fun setActivityImageForImage() {
@@ -181,7 +194,13 @@ class AddActivityScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDateSe
         if (calendar.year() < 1000) {
             calendar = Calendar.getInstance()
         }
-        DatePickerDialog(requireContext(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).run {
+        DatePickerDialog(
+            requireContext(),
+            this,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).run {
             datePicker.maxDate = System.currentTimeMillis()
             show()
         }

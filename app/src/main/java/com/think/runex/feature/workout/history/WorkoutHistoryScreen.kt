@@ -8,15 +8,14 @@ import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDimension
 import com.think.runex.R
-import com.think.runex.util.extension.getViewModel
-import com.think.runex.util.extension.observe
-import com.think.runex.util.extension.removeObservers
-import com.think.runex.util.extension.setStatusBarColor
 import com.think.runex.base.BaseScreen
 import com.think.runex.component.recyclerview.MarginItemDecoration
+import com.think.runex.feature.workout.data.WorkoutInfo
 import com.think.runex.feature.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.NightMode
+import com.think.runex.util.extension.*
 import kotlinx.android.synthetic.main.screen_workout_history.*
+import kotlinx.coroutines.delay
 
 class WorkoutHistoryScreen : BaseScreen() {
 
@@ -72,6 +71,19 @@ class WorkoutHistoryScreen : BaseScreen() {
             addFragment(WorkoutSummaryScreen.newInstance(workoutHistory.id ?: ""))
         }
 
+        adapter.setOnDeleteWorkoutListener { monthPosition, workoutInfo ->
+            launch {
+
+                showProgressDialog(R.string.delete)
+                val isSuccess = viewModel.deleteWorkout(monthPosition, workoutInfo)
+                hideProgressDialog()
+                if (isSuccess) {
+                    delay(100)
+                    adapter.notifyItemChanged(monthPosition)
+                }
+            }
+        }
+
         viewModel.setOnHandleError(::errorHandler)
 
         observe(viewModel.historyList) { historyList ->
@@ -81,6 +93,7 @@ class WorkoutHistoryScreen : BaseScreen() {
             adapter.submitList(historyList?.toMutableList())
         }
     }
+
 
     override fun errorHandler(code: Int, message: String, tag: String?) {
         super.errorHandler(code, message, tag)

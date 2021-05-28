@@ -9,7 +9,6 @@ import androidx.fragment.app.DialogFragment
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.resource.getDrawable
 import com.think.runex.R
-import com.think.runex.util.extension.toJson
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.feature.event.ShirtsAdapter
 import com.think.runex.feature.event.data.Shirt

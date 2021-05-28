@@ -1,9 +1,13 @@
 package com.think.runex.feature.workout.data
 
+import android.content.Context
 import android.os.Parcel
 import android.os.Parcelable
+import androidx.annotation.DrawableRes
 import com.google.gson.annotations.SerializedName
 import com.jozzee.android.core.datetime.dateTimeFormat
+import com.think.runex.R
+import com.think.runex.config.DISPLAY_DATE_FORMAT
 import com.think.runex.util.extension.displayFormat
 import com.think.runex.util.extension.timeDisplayFormat
 import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
@@ -159,7 +163,25 @@ data class WorkoutInfo(
         }
     }
 
+    fun getWorkoutDateTimeForHistoryDay(): String {
+        return "${workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_FORMAT)}\n${timeDisplay ?: ""}"
+    }
+
     fun getWorkoutDateTimeForImageName(): String {
         return workoutDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, "yyyyMMddHHmm") ?: ""
+    }
+
+
+    fun getDistances(context: Context): String {
+        return "${distanceKilometers?.displayFormat(awaysShowDecimal = true) ?: ""} ${context.getString(R.string.km)}"
+    }
+
+    @DrawableRes
+    fun getPartnerIcon(): Int = when {
+        app?.contains(Partner.GARMIN, true) == true -> R.mipmap.ic_logo_garmin
+        app?.contains(Partner.SUUNTO, true) == true -> R.mipmap.ic_logo_suunto
+        app?.contains(Partner.STRAVA, true) == true -> R.mipmap.ic_logo_strava
+        app?.contains(Partner.FITBIT, true) == true -> R.mipmap.ic_logo_fitbit
+        else -> R.drawable.ic_running
     }
 }

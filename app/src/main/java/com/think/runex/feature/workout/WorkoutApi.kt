@@ -14,6 +14,9 @@ interface WorkoutApi {
     @POST("/api/${ApiConfig.API_VERSION}/workout")
     fun addWorkoutAsync(@Body body: WorkoutInfo): Deferred<Result<WorkoutInfo>>
 
+    @HTTP(method = "DELETE", path = "/api/${ApiConfig.API_VERSION}/workout", hasBody = true)
+    fun deleteWorkoutAsync(@Body body: JsonObject): Deferred<Result<Any>>
+
     @GET("/api/${ApiConfig.API_VERSION}/workouts/historyAll")
     fun getWorkoutHistoryAsync(): Deferred<Result<List<WorkoutHistoryMonth>?>>
 

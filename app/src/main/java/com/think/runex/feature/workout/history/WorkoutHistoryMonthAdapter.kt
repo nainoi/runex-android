@@ -1,30 +1,44 @@
 package com.think.runex.feature.workout.history
 
+import android.graphics.Canvas
 import android.transition.AutoTransition
 import android.transition.TransitionManager
+import android.util.Log
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.recyclerview.widget.DiffUtil
-import androidx.recyclerview.widget.LinearLayoutManager
-import androidx.recyclerview.widget.ListAdapter
-import androidx.recyclerview.widget.RecyclerView
-import com.jozzee.android.core.datetime.toTimeMillis
+import androidx.recyclerview.widget.*
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.setVisible
 import com.think.runex.R
 import com.think.runex.util.extension.*
-import com.think.runex.feature.workout.data.WorkoutHistoryDay
 import com.think.runex.feature.workout.data.WorkoutHistoryMonth
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
-import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.component.recyclerview.swipemenu.SwipeMenu
+import com.think.runex.component.recyclerview.swipemenu.SwipeMenuListItemCallback
+import com.think.runex.feature.workout.data.WorkoutInfo
 import kotlinx.android.synthetic.main.list_item_workout_history_month.view.*
 
 class WorkoutHistoryMonthAdapter(
+
     private val recyclerView: RecyclerView,
-    var onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null
+
+    var onItemClickListener: ((
+        WorkoutHistoryDay: WorkoutInfo
+    ) -> Unit)? = null,
+
+    var onDeleteWorkoutListener: ((
+        monthPosition: Int,
+        WorkoutHistoryDay: WorkoutInfo
+    ) -> Unit)? = null
+
 ) : ListAdapter<WorkoutHistoryMonth, WorkoutHistoryMonthAdapter.ViewHolder>(WorkoutHistoryMonthDiffCallback()) {
+
+    companion object {
+        const val ID_MENU_DELETE = -1
+    }
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder {
         return ViewHolder(parent)
@@ -35,8 +49,13 @@ class WorkoutHistoryMonthAdapter(
     }
 
     @JvmName("setOnItemClickListenerJava")
-    fun setOnItemClickListener(onItemClickListener: ((WorkoutHistoryDay: WorkoutHistoryDay) -> Unit)? = null) {
+    fun setOnItemClickListener(onItemClickListener: ((workoutInfo: WorkoutInfo) -> Unit)?) {
         this.onItemClickListener = onItemClickListener
+    }
+
+    @JvmName("setOnDeleteWorkoutListenerJava")
+    fun setOnDeleteWorkoutListener(onDeleteWorkoutListener: ((monthPosition: Int, workoutInfo: WorkoutInfo) -> Unit)? = null) {
+        this.onDeleteWorkoutListener = onDeleteWorkoutListener
     }
 
     class WorkoutHistoryMonthDiffCallback : DiffUtil.ItemCallback<WorkoutHistoryMonth>() {
@@ -44,6 +63,7 @@ class WorkoutHistoryMonthAdapter(
             return oldItem.year == newItem.year
                     && oldItem.month == newItem.month
                     && oldItem.totalDistances == newItem.totalDistances
+                    && oldItem.workouts?.size == newItem.workouts?.size
         }
 
         override fun areContentsTheSame(oldItem: WorkoutHistoryMonth, newItem: WorkoutHistoryMonth): Boolean {
@@ -88,11 +108,6 @@ class WorkoutHistoryMonthAdapter(
                 marginLeftOrTop = getDimension(R.dimen.space_44dp).toInt()
                 marginRightOrBottom = getDimension(R.dimen.space_16dp).toInt()
             }
-            itemView.workout_day_list?.addItemDecoration(itemDecoration)
-            itemView.workout_day_list?.layoutManager = LinearLayoutManager(requireContext())
-            itemView.workout_day_list?.adapter = WorkoutHistoryDayAdapter(onItemClickListener).apply {
-                submitList(data?.getWorkoutList())
-            }
 
             itemView.summary_month_layout?.setOnClickListener {
                 when (itemView.workout_day_list?.adapter?.itemCount ?: 0 > 0) {
@@ -100,6 +115,37 @@ class WorkoutHistoryMonthAdapter(
                     false -> itemView.workout_day_list?.gone()
                 }
             }
+
+            itemView.workout_day_list?.addItemDecoration(itemDecoration)
+            itemView.workout_day_list?.layoutManager = LinearLayoutManager(requireContext())
+            itemView.workout_day_list?.adapter = WorkoutHistoryDayAdapter(onItemClickListener).apply {
+                submitList(data?.workouts?.toMutableList())
+            }
+
+            //Set swipe menu to recycler view.
+            val swipeMenu = SwipeMenuListItemCallback(createSwipeToDeleteMenu())
+            swipeMenu.setMenuWidth(getDimension(R.dimen.space_84dp).toInt())
+            swipeMenu.setOnSwipeMenuSelected { dayPosition, menu ->
+                if(dayPosition < data?.workouts?.size ?: 0) {
+                    data?.workouts?.get(dayPosition)?.also { workoutInfo ->
+                        if (menu.id == ID_MENU_DELETE) {
+                            requireContext().showAlertDialog(title = getString(R.string.warning),
+                                message = getString(R.string.delete_workout_confirm_msg),
+                                negativeText = getString(R.string.cancel),
+                                positiveText = getString(R.string.delete),
+                                onPositiveClick = {
+                                    onDeleteWorkoutListener?.invoke(adapterPosition, workoutInfo)
+                                })
+                        }
+                    }
+                }
+            }
+            ItemTouchHelper(swipeMenu).attachToRecyclerView(itemView.workout_day_list)
+            itemView.workout_day_list?.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                    swipeMenu.onDraw(c)
+                }
+            })
         }
 
         private fun setVisibleWorkoutDaysWithAnimation(isVisible: Boolean?) {
@@ -107,5 +153,14 @@ class WorkoutHistoryMonthAdapter(
             TransitionManager.beginDelayedTransition(recyclerView, AutoTransition())
             itemView.workout_day_list?.setVisible(isVisible)
         }
+
+        private fun createSwipeToDeleteMenu() = listOf(
+            SwipeMenu(
+                id = ID_MENU_DELETE,
+                name = getString(R.string.delete),
+                backgroundColor = getColor(R.color.error),
+                gravity = Gravity.END
+            )
+        )
     }
 }

@@ -6,13 +6,13 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.jozzee.android.core.resource.getColor
-import com.jozzee.android.core.resource.getDrawable
 import com.jozzee.android.core.view.gone
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.util.extension.setColorFilter
 import com.think.runex.util.extension.showAlertDialog
 import com.think.runex.feature.workout.data.WorkoutStatus
+import com.think.runex.util.extension.getDrawable
 import kotlinx.android.synthetic.main.fragment_action_controls.*
 
 class ActionControlsFragment : Fragment() {
@@ -76,9 +76,7 @@ class ActionControlsFragment : Fragment() {
         main_action_button?.isEnabled = true
         main_action_button?.setBackgroundResource(R.drawable.shape_circle_border_asscent)
         main_action_icon?.setBackgroundResource(R.drawable.shape_circle_secondary)
-        main_action_icon?.setImageDrawable(getDrawable(R.drawable.ic_control_pause)?.apply {
-            setColorFilter(getColor(R.color.iconColorAccent))
-        })
+        main_action_icon?.setImageDrawable(getDrawable(R.drawable.ic_control_pause, R.color.iconColorAccent))
         main_action_label?.setTextColor(getColor(R.color.textColorThirdly))
         main_action_label?.setText(R.string.pause_recording)
         main_action_button?.setOnClickListener {
@@ -106,9 +104,14 @@ class ActionControlsFragment : Fragment() {
     }
 
     private fun showConfirmToStopDialog() {
-        showAlertDialog(R.string.end_of_run, R.string.confirm_to_ending_run, R.string.confirm, R.string.cancel, onPositiveClick = {
-            getActionControlsListener()?.onActionStop()
-        })
+        showAlertDialog(
+            R.string.end_of_run,
+            R.string.confirm_to_ending_run,
+            R.string.confirm,
+            R.string.cancel,
+            onPositiveClick = {
+                getActionControlsListener()?.onActionStop()
+            })
     }
 
     private fun getActionControlsListener(): ActionControlsListener? {

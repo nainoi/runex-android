@@ -55,6 +55,8 @@
     <string name="data_not_found">ไม่พบข้อมูล</string>
     <string name="download_qr">ดาวน์โหลด QR</string>
     <string name="dark_mode">โหมดสีเข้ม</string>
+    <string name="delete">ลบ</string>
+    <string name="delete_workout_confirm_msg">คุณต้องการที่จะลบกิจกรรมนี้?</string>
 
     <!-- E -->
     <string name="edit">แก้ไข</string>

@@ -76,7 +76,7 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
 
         override fun onDisplayRemoved(displayId: Int) = Unit
 
-        @SuppressLint("UnsafeExperimentalUsageError")
+        @SuppressLint("UnsafeExperimentalUsageError", "UnsafeOptInUsageError")
         override fun onDisplayChanged(displayId: Int) = root_layout?.let { view ->
             if (displayId == this@QRCodeScannerActivity.displayId) {
                 Log.d(simpleName(), "Rotation changed: ${view.display.rotation}")
@@ -103,7 +103,11 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
         setContentView(R.layout.activity_qr_code_scanner)
 
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(this).not())
-        setupToolbar(toolbar_layout, "", getDrawable(R.drawable.ic_close, ContextCompat.getColor(this, R.color.iconColorWhite)))
+        setupToolbar(
+            toolbar_layout,
+            "",
+            getDrawable(R.drawable.ic_close, R.color.iconColorWhite)
+        )
 
         //Setup components
         qrCodeAnalyzer = QRCodeAnalyzer(this)
@@ -167,18 +171,18 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
 
                 //Preview
                 preview = Preview.Builder()
-                        //.setDefaultResolution(Size(camera_preview.width, camera_preview.height))
-                        //.setTargetResolution(Size(camera_preview.width, camera_preview.height))
-                        .build()
-                        .also {
-                            it.setSurfaceProvider(camera_preview.surfaceProvider)
-                        }
+                    //.setDefaultResolution(Size(camera_preview.width, camera_preview.height))
+                    //.setTargetResolution(Size(camera_preview.width, camera_preview.height))
+                    .build()
+                    .also {
+                        it.setSurfaceProvider(camera_preview.surfaceProvider)
+                    }
 
                 imageAnalyzer = ImageAnalysis.Builder()
-                        .build()
-                        .also {
-                            it.setAnalyzer(Executors.newSingleThreadExecutor(), qrCodeAnalyzer)
-                        }
+                    .build()
+                    .also {
+                        it.setAnalyzer(Executors.newSingleThreadExecutor(), qrCodeAnalyzer)
+                    }
 
                 try {
                     // Unbind use cases before rebinding
@@ -280,8 +284,8 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
         // Get the device's sensor orientation.
         val cameraManager = activity.getSystemService(CAMERA_SERVICE) as CameraManager
         val sensorOrientation = cameraManager
-                .getCameraCharacteristics(cameraId)
-                .get(CameraCharacteristics.SENSOR_ORIENTATION)!!
+            .getCameraCharacteristics(cameraId)
+            .get(CameraCharacteristics.SENSOR_ORIENTATION)!!
 
         rotationCompensation = when (isFrontFacing) {
             true -> (sensorOrientation + rotationCompensation) % 360
@@ -290,26 +294,27 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
         return rotationCompensation
     }
 
-    private fun checkPermissionAndGetImageContent() = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
-        when {
-            //User allow all permissions storage
-            isGranted -> getContentHelper?.getImage { imageUri ->
-                imageUri?.also {
-                    launch(Main) { qrCodeAnalyzer.analyze(this@QRCodeScannerActivity, imageUri) }
+    private fun checkPermissionAndGetImageContent() =
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+            when {
+                //User allow all permissions storage
+                isGranted -> getContentHelper?.getImage { imageUri ->
+                    imageUri?.also {
+                        launch(Main) { qrCodeAnalyzer.analyze(this@QRCodeScannerActivity, imageUri) }
+                    }
                 }
+                //User denied access to storage.
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
+                //User denied and select don't ask again.
+                else -> showSettingPermissionInSettingDialog()
             }
-            //User denied access to storage.
-            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
-            //User denied and select don't ask again.
-            else -> showSettingPermissionInSettingDialog()
         }
-    }
 
     private fun showOpenCameraButton() {
         stopCameraPreview()
         open_camera_button?.isClickable = true
         open_camera_button?.setBackgroundResource(R.drawable.bg_btn_write_small)
-        camera_icon?.setImageDrawable(getDrawable(R.drawable.ic_camera, getColor(R.color.iconColorAccent)))
+        camera_icon?.setImageDrawable(getDrawable(R.drawable.ic_camera, R.color.iconColorAccent))
         open_camera_label?.text = getString(R.string.open_camera)
         open_camera_label?.setTextStyle(R.style.Text_BodyHeading_Secondary_OnLight)
     }
@@ -317,7 +322,7 @@ class QRCodeScannerActivity : PermissionsLauncherActivity(), QRCodeAnalyzer.Anal
     private fun hideOpenCameraButton() {
         open_camera_button?.isClickable = false
         open_camera_button?.background = null
-        camera_icon?.setImageDrawable(getDrawable(R.drawable.ic_qr_code, getColor(R.color.iconColorSecondary)))
+        camera_icon?.setImageDrawable(getDrawable(R.drawable.ic_qr_code, R.color.iconColorSecondary))
         open_camera_label?.text = getString(R.string.scan_qr_code)
         open_camera_label?.setTextStyle(R.style.Text_BodyHeading_Secondary)
     }
