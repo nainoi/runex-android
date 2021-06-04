@@ -2,7 +2,6 @@ package com.think.runex.feature.dashboard
 
 import android.annotation.SuppressLint
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -20,7 +19,6 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
-import com.think.runex.util.extension.toJson
 import kotlinx.android.synthetic.main.screen_leader_board.*
 import kotlinx.android.synthetic.main.toolbar.*
 import java.util.*

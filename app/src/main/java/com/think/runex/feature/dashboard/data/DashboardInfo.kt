@@ -6,7 +6,7 @@ import com.think.runex.feature.event.data.Registered
 import com.think.runex.feature.event.data.TicketCategory
 
 data class DashboardInfo(
-        @SerializedName("activities") var activityList: List<UserActivityDashboard>? = null,
+        @SerializedName("activities") var activityList: ArrayList<UserActivityDashboard>? = null,
         @SerializedName("register") var registered: Registered? = null) {
 
     fun getTotalDistanceDisplay(unit: String): String {

@@ -57,19 +57,4 @@ class WorkoutHistoryDayAdapter(
             }
         }
     }
-
-
-    interface OnClickWorkoutListener {
-        fun onClickWorkout(workoutInfo: WorkoutInfo)
-    }
-
-    interface OnDeleteWorkoutListener {
-        fun onDeleteWorkout(
-            month: Int,
-            year: Int,
-            monthPosition: Int,
-            dayPosition: Int,
-            workoutInfo: WorkoutInfo
-        )
-    }
 }

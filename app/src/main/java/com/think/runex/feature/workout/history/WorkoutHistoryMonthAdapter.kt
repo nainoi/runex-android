@@ -21,8 +21,8 @@ import kotlinx.android.synthetic.main.list_item_workout_history_month.view.*
 
 class WorkoutHistoryMonthAdapter(
     private val recyclerView: RecyclerView,
-    var clickWorkoutListener: WorkoutHistoryDayAdapter.OnClickWorkoutListener? = null,
-    var deleteWorkoutListener: WorkoutHistoryDayAdapter.OnDeleteWorkoutListener? = null
+    var clickWorkoutListener: OnClickWorkoutListener? = null,
+    var deleteWorkoutListener: OnDeleteWorkoutListener? = null
 ) : RecyclerView.Adapter<WorkoutHistoryMonthAdapter.ViewHolder>() {
 
     companion object {

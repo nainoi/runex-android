@@ -63,6 +63,8 @@
     <string name="download_qr">Download QR</string>
     <string name="dark_mode">Dark Mode</string>
     <string name="delete">Delete</string>
+    <string name="delete_activity">Delete Activity</string>
+    <string name="delete_workout">Delete Workout</string>
     <string name="delete_workout_confirm_msg">Do you want to delete this activity?</string>
 
     <!-- E -->

@@ -16,9 +16,7 @@ import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
 import kotlinx.android.synthetic.main.screen_workout_history.*
 
-class WorkoutHistoryScreen : BaseScreen(),
-    WorkoutHistoryDayAdapter.OnClickWorkoutListener,
-    WorkoutHistoryDayAdapter.OnDeleteWorkoutListener {
+class WorkoutHistoryScreen : BaseScreen(), OnClickWorkoutListener, OnDeleteWorkoutListener {
 
     private lateinit var viewModel: WorkoutHistoryViewModel
 
@@ -105,7 +103,7 @@ class WorkoutHistoryScreen : BaseScreen(),
         workoutInfo: WorkoutInfo
     ) {
         launch {
-            showProgressDialog(R.string.delete)
+            showProgressDialog(R.string.delete_workout)
             val historyMonth = viewModel.deleteWorkout(month, year, workoutInfo)
             hideProgressDialog()
             adapter.onDeleteWorkout(monthPosition, historyMonth)

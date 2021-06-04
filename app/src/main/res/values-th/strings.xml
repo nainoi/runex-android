@@ -56,6 +56,8 @@
     <string name="download_qr">ดาวน์โหลด QR</string>
     <string name="dark_mode">โหมดสีเข้ม</string>
     <string name="delete">ลบ</string>
+    <string name="delete_activity">ลบกิจกรรม</string>
+    <string name="delete_workout">ลบกิจกรรม</string>
     <string name="delete_workout_confirm_msg">คุณต้องการที่จะลบกิจกรรมนี้?</string>
 
     <!-- E -->

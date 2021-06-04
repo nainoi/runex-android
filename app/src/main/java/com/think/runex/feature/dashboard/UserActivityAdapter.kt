@@ -13,29 +13,35 @@ import com.think.runex.feature.activity.ActivityStatus
 import com.think.runex.feature.activity.data.ActivityInfo
 import kotlinx.android.synthetic.main.list_item_dashboard_user_activity.view.*
 
-class UserActivityAdapter : ListAdapter<ActivityInfo, UserActivityAdapter.ViewHolder>(UserActivityDiffCallback()) {
+class UserActivityAdapter(
+    val list: List<ActivityInfo>
+) : RecyclerView.Adapter<UserActivityAdapter.ViewHolder>() {
 
     override fun onCreateViewHolder(parent: ViewGroup, viewType: Int): ViewHolder = ViewHolder.create(parent)
 
     override fun onBindViewHolder(holder: ViewHolder, position: Int) {
-        holder.bind(getItem(position))
+        holder.bind(list[position])
     }
 
-    class UserActivityDiffCallback : DiffUtil.ItemCallback<ActivityInfo>() {
-        override fun areItemsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
-            return oldItem.id == newItem.id
-        }
+    override fun getItemCount(): Int = list.size
 
-        override fun areContentsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
-            return oldItem == newItem
-        }
-    }
+//    class UserActivityDiffCallback : DiffUtil.ItemCallback<ActivityInfo>() {
+//        override fun areItemsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
+//            return oldItem.id == newItem.id
+//        }
+//
+//        override fun areContentsTheSame(oldItem: ActivityInfo, newItem: ActivityInfo): Boolean {
+//            return oldItem == newItem
+//        }
+//    }
 
 
     class ViewHolder(view: View) : RecyclerView.ViewHolder(view) {
         companion object {
-            fun create(parent: ViewGroup) = ViewHolder(LayoutInflater.from(parent.context)
-                    .inflate(R.layout.list_item_dashboard_user_activity, parent, false))
+            fun create(parent: ViewGroup) = ViewHolder(
+                LayoutInflater.from(parent.context)
+                    .inflate(R.layout.list_item_dashboard_user_activity, parent, false)
+            )
         }
 
         fun bind(data: ActivityInfo? /*onItemClickListener: ((userActivity: UserActivity) -> Unit)? = null*/) {

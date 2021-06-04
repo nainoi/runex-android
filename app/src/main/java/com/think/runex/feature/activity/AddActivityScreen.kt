@@ -27,7 +27,6 @@ import com.think.runex.R
 import com.think.runex.base.PermissionsLauncherScreen
 import com.think.runex.util.extension.*
 import com.think.runex.config.DISPLAY_DATE_FORMAT_FULL_MONTH
-import com.think.runex.config.KEY_BODY
 import com.think.runex.config.KEY_DATA
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.feature.activity.data.ActivityForSubmitEvent

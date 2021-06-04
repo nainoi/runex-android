@@ -1,13 +1,13 @@
 package com.think.runex.feature.dashboard
 
 import android.os.Bundle
-import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.view.gone
+import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.setVisible
 import com.jozzee.android.core.view.visible
 import com.think.runex.R
@@ -16,6 +16,7 @@ import com.think.runex.config.*
 import com.think.runex.feature.activity.AddActivityScreen
 import com.think.runex.feature.activity.data.ActivityForSubmitEvent
 import com.think.runex.feature.dashboard.data.DashboardInfo
+import com.think.runex.feature.dashboard.data.DeleteActivityBody
 import com.think.runex.feature.event.team.TeamManagementScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
@@ -23,14 +24,16 @@ import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_dashboard.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class DashboardScreen : BaseScreen() {
+class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
 
     companion object {
         @JvmStatic
-        fun newInstance(eventCode: String,
-                        orderId: String,
-                        registerId: String,
-                        parentRegisterId: String) = DashboardScreen().apply {
+        fun newInstance(
+            eventCode: String,
+            orderId: String,
+            registerId: String,
+            parentRegisterId: String
+        ) = DashboardScreen().apply {
 
             arguments = Bundle().apply {
                 putString(KEY_EVENT_CODE, eventCode)
@@ -73,7 +76,16 @@ class DashboardScreen : BaseScreen() {
         setupComponents()
         subscribeUi()
 
+        //Load initial data.
+        content_layout?.inVisible()
         performGetDashBoardInfo()
+    }
+
+    override fun onHiddenChanged(hidden: Boolean) {
+        super.onHiddenChanged(hidden)
+        if (hidden.not()) {
+            setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
+        }
     }
 
     private fun setupComponents() {
@@ -81,7 +93,7 @@ class DashboardScreen : BaseScreen() {
         setupToolbar(toolbar_layout, R.string.dashboard, R.drawable.ic_navigation_back)
 
         //Set up recycler view
-        adapter = UserDashboardAdapter(users_dashboard_list, this)
+        adapter = UserDashboardAdapter(users_dashboard_list, this, this)
         layoutManager = LinearLayoutManager(requireContext())
         users_dashboard_list?.layoutManager = layoutManager
         users_dashboard_list?.adapter = adapter
@@ -95,34 +107,64 @@ class DashboardScreen : BaseScreen() {
 
         view_leader_board_button?.setOnClickListener {
             val ticketId = viewModel.getTicketAtRegister()?.id ?: ""
-            addFragment(LeaderBoardScreen.newInstance(eventCode, viewModel.getEventId(), registerId, parentRegisterId, ticketId))
+            addFragment(
+                LeaderBoardScreen.newInstance(
+                    eventCode,
+                    viewModel.getEventId(),
+                    registerId,
+                    parentRegisterId,
+                    ticketId
+                )
+            )
         }
 
         team_management_button?.setOnClickListener {
-            addFragment(TeamManagementScreen.newInstance(eventCode, registerId, parentRegisterId,
-                    viewModel.getTicketAtRegister()?.id ?: "", viewModel.isTeamLeader))
+            addFragment(
+                TeamManagementScreen.newInstance(
+                    eventCode, registerId, parentRegisterId,
+                    viewModel.getTicketAtRegister()?.id ?: "", viewModel.isTeamLeader
+                )
+            )
         }
 
         observe(getMainViewModel().refreshScreen) { screenName ->
             if (view == null || isAdded.not()) return@observe
-
             if (screenName == this@DashboardScreen::class.java.simpleName) {
-                performGetDashBoardInfo(true)
+                performGetDashBoardInfo()
             }
         }
 
         viewModel.setOnHandleError(::errorHandler)
     }
 
-    private fun performGetDashBoardInfo(forceRefresh: Boolean = false) = launch {
-        progress_layout?.visible()
+    override fun onDeleteActivity(
+        userPosition: Int,
+        activityPosition: Int,
+        activityId: String,
+        activityToDelete: DeleteActivityBody
+    ) {
+        launch {
+            showProgressDialog(R.string.delete_activity)
+            val dashboardInfo = viewModel.deleteActivity(activityToDelete)
+            hideProgressDialog()
+            if (dashboardInfo != null) {
+                adapter.submitList(dashboardInfo.activityList)
+            }
+        }
+    }
 
-        val dashboards = viewModel.getDashboardInfo(eventCode, orderId, registerId, parentRegisterId, forceRefresh)
+    private fun performGetDashBoardInfo() = launch {
 
-        progress_layout?.gone()
+        progress_bar?.visible()
+        if (viewModel.dashboardInfo == null) {
+            content_layout?.inVisible()
+        }
 
+        val dashboards = viewModel.getDashboardInfo(eventCode, orderId, registerId, parentRegisterId)
+
+        progress_bar?.gone()
         if (dashboards != null) {
-            //Update Ui
+            content_layout?.visible()
             updateUi(dashboards)
         }
     }
@@ -151,9 +193,8 @@ class DashboardScreen : BaseScreen() {
         addFragment(AddActivityScreen.newInstance(activityForSubmit))
     }
 
-
     override fun errorHandler(code: Int, message: String, tag: String?) {
-        progress_layout?.gone()
+        progress_bar?.gone()
         when (tag) {
             "dashboard" -> showAlertDialog(getString(R.string.error), message, isCancelEnable = false) {
                 onBackPressed()

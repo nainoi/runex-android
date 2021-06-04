@@ -3,7 +3,6 @@ package com.think.runex.feature.event.data
 import android.os.Parcel
 import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
-import com.think.runex.feature.dashboard.data.DashboardInfoRequestBody
 
 data class Registered(
         @SerializedName("owner_id") var ownerId: String? = null,

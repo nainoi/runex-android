@@ -7,6 +7,9 @@ import com.jozzee.android.core.datetime.dateTimeFormat
 import com.think.runex.util.extension.displayFormat
 import com.think.runex.config.DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
+import com.think.runex.config.SERVER_DATE_TIME_FORMAT_2
+import java.text.SimpleDateFormat
+import java.util.*
 
 data class ActivityInfo(
         @SerializedName("id") var id: String? = "",
@@ -66,5 +69,26 @@ data class ActivityInfo(
 
     fun getActivityDateDisplay(): String {
         return "${activityDate?.dateTimeFormat(SERVER_DATE_TIME_FORMAT, DISPLAY_DATE_TIME_FORMAT_THREE_LETTERS_DATE_MONTH)}"
+    }
+
+    fun getActivityDateTimeMillis(): Long {
+        var time: Long = 0
+        try {
+            time = SimpleDateFormat(SERVER_DATE_TIME_FORMAT, Locale.getDefault())
+                .parse(activityDate ?: "")?.time ?: 0
+        } catch (e: Throwable) {
+            try {
+                time = SimpleDateFormat(SERVER_DATE_TIME_FORMAT_2, Locale.getDefault())
+                    .parse(activityDate ?: "")?.time ?: 0
+            } catch (e: Throwable) {
+                try {
+                    time = SimpleDateFormat("yyyy-MM-dd'T'HH:mm:ss.SSS'Z'", Locale.getDefault())
+                        .parse(activityDate ?: "")?.time ?: 0
+                } catch (e: Throwable) {
+
+                }
+            }
+        }
+        return time
     }
 }
