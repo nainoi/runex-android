@@ -37,6 +37,8 @@ class UserDashboardAdapter(
     private var repository: DashboardRepository? = null
     private var list: ArrayList<UserActivityDashboard>? = null
 
+    var myUserId: String = ""
+
     init {
         repository = DashboardRepository(ApiService().provideService(recyclerView.context, DashboardApi::class.java))
     }
@@ -111,50 +113,52 @@ class UserDashboardAdapter(
             itemView.user_activity_list?.layoutManager = LinearLayoutManager(requireContext())
             itemView.user_activity_list?.adapter = UserActivityAdapter(data.activityInfoList ?: emptyList())
 
-            //Set swipe menu to recycler view.
-            val swipeMenu = SwipeMenuListItemCallback(createSwipeToDeleteMenu())
-            swipeMenu.setMenuWidth(getDimension(R.dimen.space_84dp).toInt())
-            swipeMenu.setOnSwipeMenuSelected { activityPosition, menu ->
-                if (menu.id != WorkoutHistoryMonthAdapter.ID_MENU_DELETE) return@setOnSwipeMenuSelected
-                try {
-                    list?.get(adapterPosition)?.also { userDashboard ->
-                        userDashboard.activityInfoList?.get(activityPosition)?.also { activityInfo ->
-                            requireContext().showAlertDialog(title = getString(R.string.warning),
-                                message = getString(R.string.delete_workout_confirm_msg),
-                                negativeText = getString(R.string.cancel),
-                                positiveText = getString(R.string.delete),
-                                onPositiveClick = {
-                                    deleteActivityListener?.onDeleteActivity(
-                                        adapterPosition,
-                                        activityPosition,
-                                        userDashboard.id ?: "",
-                                        DeleteActivityBody().apply {
-                                            this.activityInfo = activityInfo
-                                            this.eventCode = userDashboard.eventCode ?: ""
-                                            this.orderId = userDashboard.orderId ?: ""
-                                            this.registerId = userDashboard.registerId ?: ""
-                                            this.parentRegisterId = userDashboard.parentRegisterId ?: ""
-                                            this.ticketId = userDashboard.ticket?.id ?: ""
-                                        }
-                                    )
-                                })
+            if (data.userId == myUserId) {
+                //Set swipe menu to recycler view.
+                val swipeMenu = SwipeMenuListItemCallback(createSwipeToDeleteMenu())
+                swipeMenu.setMenuWidth(getDimension(R.dimen.space_84dp).toInt())
+                swipeMenu.setOnSwipeMenuSelected { activityPosition, menu ->
+                    if (menu.id != WorkoutHistoryMonthAdapter.ID_MENU_DELETE) return@setOnSwipeMenuSelected
+                    try {
+                        list?.get(adapterPosition)?.also { userDashboard ->
+                            userDashboard.activityInfoList?.get(activityPosition)?.also { activityInfo ->
+                                requireContext().showAlertDialog(title = getString(R.string.warning),
+                                    message = getString(R.string.delete_workout_confirm_msg),
+                                    negativeText = getString(R.string.cancel),
+                                    positiveText = getString(R.string.delete),
+                                    onPositiveClick = {
+                                        deleteActivityListener?.onDeleteActivity(
+                                            adapterPosition,
+                                            activityPosition,
+                                            userDashboard.id ?: "",
+                                            DeleteActivityBody().apply {
+                                                this.activityInfo = activityInfo
+                                                this.eventCode = userDashboard.eventCode ?: ""
+                                                this.orderId = userDashboard.orderId ?: ""
+                                                this.registerId = userDashboard.registerId ?: ""
+                                                this.parentRegisterId = userDashboard.parentRegisterId ?: ""
+                                                this.ticketId = userDashboard.ticket?.id ?: ""
+                                            }
+                                        )
+                                    })
+                            }
                         }
+
+                    } catch (e: Throwable) {
+                        e.printStackTrace()
                     }
-
-                } catch (e: Throwable) {
-                    e.printStackTrace()
                 }
-            }
-            swipeMenu.setOnTouchReleased {
-                itemView.user_activity_list?.adapter?.notifyDataSetChanged()
-            }
-            ItemTouchHelper(swipeMenu).attachToRecyclerView(itemView.user_activity_list)
-            itemView.user_activity_list?.addItemDecoration(object : RecyclerView.ItemDecoration() {
-                override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
-                    swipeMenu.onDraw(c)
+                swipeMenu.setOnTouchReleased {
+                    itemView.user_activity_list?.adapter?.notifyDataSetChanged()
                 }
-            })
+                ItemTouchHelper(swipeMenu).attachToRecyclerView(itemView.user_activity_list)
+                itemView.user_activity_list?.addItemDecoration(object : RecyclerView.ItemDecoration() {
+                    override fun onDraw(c: Canvas, parent: RecyclerView, state: RecyclerView.State) {
+                        swipeMenu.onDraw(c)
+                    }
+                })
 
+            }
 
             //Subscribe Ui
             itemView.user_dashboard_layout?.setOnClickListener {

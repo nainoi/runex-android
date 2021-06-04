@@ -173,10 +173,10 @@ class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
         event_name_label?.text = dashboards.registered?.eventDetail?.title ?: ""
         total_distances_label?.text = dashboards.getTotalDistanceDisplay(getString(R.string.km))
 
-
         team_management_button?.setVisible(dashboards.isEventCategoryTeam())
         team_management_label.text = getString(if (viewModel.isTeamLeader) R.string.team_management else R.string.team)
 
+        adapter.myUserId = viewModel.myUserId
         adapter.submitList(dashboards.activityList?.toMutableList())
     }
 
