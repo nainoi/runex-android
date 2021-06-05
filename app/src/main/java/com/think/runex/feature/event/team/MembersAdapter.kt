@@ -18,9 +18,12 @@ import com.think.runex.feature.user.data.UserInfoRequestBody
 import com.think.runex.util.extension.getString
 import com.think.runex.util.extension.loadProfileImage
 import kotlinx.android.synthetic.main.list_item_member_in_team.view.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.launch
 
-class MembersAdapter(context: Context, private val owner: LifecycleOwner) : ListAdapter<RegisteredData, MembersAdapter.ViewHolder>(EventRegisteredDataDiffCallback()) {
+class MembersAdapter(context: Context, private val owner: LifecycleOwner) :
+    ListAdapter<RegisteredData, MembersAdapter.ViewHolder>(EventRegisteredDataDiffCallback()) {
 
     private var repository: TeamRepository? = null
 
@@ -28,7 +31,7 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
         repository = TeamRepository(ApiService().provideService(context, EventApi::class.java))
     }
 
-    var onItemClickListener: ((registeredData: RegisteredData) -> Unit)? = null
+    private var onItemClickListener: ((registeredData: RegisteredData) -> Unit)? = null
 
     @JvmName("setOnItemClickListenerJava")
     fun setOnItemClickListener(onItemClick: (registeredData: RegisteredData) -> Unit) {
@@ -62,48 +65,33 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) : List
 //                    .inflate(R.layout.list_item_team_member, parent, false))
 //        }
 
-        constructor(parent: ViewGroup) : this(LayoutInflater.from(parent.context)
-                .inflate(R.layout.list_item_member_in_team, parent, false))
+        constructor(parent: ViewGroup) : this(
+            LayoutInflater.from(parent.context)
+                .inflate(R.layout.list_item_member_in_team, parent, false)
+        )
 
         fun bind(data: RegisteredData?, onItemClick: ((registeredData: RegisteredData) -> Unit)? = null) {
 
-            //Subscribe Ui
-            itemView.list_item_team_member?.setOnClickListener {
-                data?.also { onItemClick?.invoke(it) }
-            }
+            if (data == null) return
 
-            //Get user in from api
-            owner.lifecycleScope.launch {
+            itemView.full_name_label?.text = data.ticketOptions?.firstOrNull()?.userOption?.getFullName() ?: ""
 
-                showSkeleton()
-
-                val result = repository?.getUserInfoById(UserInfoRequestBody(data?.userId ?: ""))
-
-                showContents()
-
-                //Update user  data
+            //Get profile image from api
+            owner.lifecycleScope.launch(IO) {
+                val result = repository?.getUserInfoById(UserInfoRequestBody(data.userId ?: ""))
                 result?.data?.also { userInfo ->
-                    updateUi(userInfo, data?.isTeamLead == true)
+                    owner.lifecycleScope.launch(Main) {
+                        itemView.profile_image?.loadProfileImage(userInfo.avatar)
+                    }
                 }
             }
-        }
 
-        private fun updateUi(userInfo: UserInfo, isTeamLeader: Boolean) {
-
-            //Set up components
-            itemView.profile_image?.loadProfileImage(userInfo.avatar)
-            itemView.full_name_label?.text = ("${userInfo.getFullName()}${if (isTeamLeader) " (${getString(R.string.team_leader)})" else ""}")
-
-        }
-
-        private fun showSkeleton() {
+            //Subscribe Ui
+            //itemView.list_item_team_member?.setOnClickListener {
+            //    onItemClick?.invoke(data)
+            //}
+            //TODO("Force to disable click for now")
             itemView.list_item_team_member?.isClickable = false
-            itemView.full_name_label?.setBackgroundResource(R.drawable.shape_rectangle_thirdly_corner_radius_8dp)
-        }
-
-        private fun showContents() {
-            itemView.list_item_team_member?.isClickable = true
-            itemView.full_name_label?.background = null
         }
     }
 }

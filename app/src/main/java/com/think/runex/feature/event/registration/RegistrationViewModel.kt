@@ -23,13 +23,16 @@ import com.think.runex.feature.event.data.TicketOptionEventRegistration
 import com.think.runex.feature.event.data.UserOptionEventRegistration
 import com.think.runex.feature.event.detail.EventDetailsViewModel
 import com.think.runex.util.extension.launch
+import com.think.runex.util.extension.toJson
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
 import java.util.*
 import kotlin.collections.ArrayList
 
-class RegistrationViewModel(eventRepo: EventRepository,
-                            private val addressRepo: AddressRepository) : EventDetailsViewModel(eventRepo) {
+class RegistrationViewModel(
+    eventRepo: EventRepository,
+    private val addressRepo: AddressRepository
+) : EventDetailsViewModel(eventRepo) {
 
     private var allSubDistrictList: List<SubDistrict>? = null
     private var firstThreeLettersQuery: String = ""
@@ -91,6 +94,12 @@ class RegistrationViewModel(eventRepo: EventRepository,
         }
     }
 
+    fun initialSubDistrict(subDistrict: SubDistrict) {
+        when (currentNo > subDistricts.size) {
+            true -> subDistricts.add(subDistrict)
+            false -> subDistricts[(currentNo - 1)] = subDistrict
+        }
+    }
 
     fun searchAddressByZipCode(zipCode: String, viewRequestId: Int) = launch(IO) {
         Logger.debug("Jozzee", "searchAddressByZipCode: $zipCode")
@@ -112,7 +121,9 @@ class RegistrationViewModel(eventRepo: EventRepository,
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
             allSubDistrictList?.forEach { address ->
-                if (address.subDistrict?.toLowerCase(Locale.getDefault())?.contains(query.toLowerCase(Locale.getDefault())) == true) {
+                if (address.subDistrict?.lowercase(Locale.getDefault())
+                        ?.contains(query.lowercase(Locale.getDefault())) == true
+                ) {
                     autoFillList.add(address.getFullAddress())
                 }
             }
@@ -138,7 +149,9 @@ class RegistrationViewModel(eventRepo: EventRepository,
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
             allSubDistrictList?.forEach { address ->
-                if (address.district?.toLowerCase(Locale.getDefault())?.contains(query.toLowerCase(Locale.getDefault())) == true) {
+                if (address.district?.lowercase(Locale.getDefault())
+                        ?.contains(query.lowercase(Locale.getDefault())) == true
+                ) {
                     autoFillList.add(address.getFullAddress())
                 }
             }
@@ -164,7 +177,9 @@ class RegistrationViewModel(eventRepo: EventRepository,
         if (addressAutoFill.value?.viewRequestId == viewRequestId && query.startsWith(firstThreeLettersQuery)) {
             val autoFillList = ArrayList<String>()
             allSubDistrictList?.forEach { address ->
-                if (address.province?.toLowerCase(Locale.getDefault())?.contains(query.toLowerCase(Locale.getDefault())) == true) {
+                if (address.province?.lowercase(Locale.getDefault())
+                        ?.contains(query.lowercase(Locale.getDefault())) == true
+                ) {
                     autoFillList.add(address.getFullAddress())
                 }
             }
@@ -245,11 +260,12 @@ class RegistrationViewModel(eventRepo: EventRepository,
         val ticketOption: TicketOptionEventRegistration? = registered.registeredDataList?.get(0)?.ticketOptions?.get(0)
 
         getCurrentTicketOption()?.apply {
-            userOption = ticketOption?.userOption
-            totalPrice = ticketOption?.totalPrice ?: 0.0
-            registerNumber = ticketOption?.registerNumber
             receiptType = ticketOption?.receiptType ?: ""
+            registerNumber = ticketOption?.registerNumber
+            shirt = ticketOption?.shirt
             ticket = ticketOption?.ticket
+            totalPrice = ticketOption?.totalPrice ?: 0.0
+            userOption = ticketOption?.userOption
         }
 
         this.eventDetail.postValue(registered.eventDetail)
@@ -340,8 +356,9 @@ class RegistrationViewModel(eventRepo: EventRepository,
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
             val service = ApiService()
             return RegistrationViewModel(
-                    EventRepository(service.provideService(context, EventApi::class.java)),
-                    AddressRepository(service.provideService(context, AddressApi::class.java))) as T
+                EventRepository(service.provideService(context, EventApi::class.java)),
+                AddressRepository(service.provideService(context, AddressApi::class.java))
+            ) as T
         }
     }
 }

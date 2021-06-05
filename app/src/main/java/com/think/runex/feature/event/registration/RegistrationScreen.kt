@@ -1,6 +1,7 @@
 package com.think.runex.feature.event.registration
 
 import android.os.Bundle
+import android.util.Log
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
@@ -83,11 +84,13 @@ class RegistrationScreen : BaseScreen() {
         observe(viewModel.eventDetail) { _ ->
             if (view == null || isAdded.not()) return@observe
             progress_bar?.gone()
-
             if (childFragmentCount() == 0 && viewModel.registerStatus == RegisterStatus.REGISTER) {
                 //Show select ticket screen
                 viewModel.onGetEventDetailCompleted()
-            } else if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM && viewModel.getCurrentTicketOption()?.ticket != null) {
+            } else if ((viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM ||
+                        viewModel.registerStatus == RegisterStatus.SUCCESS) &&
+                viewModel.getCurrentTicketOption()?.ticket != null
+            ) {
                 //Show fill out info screen
                 viewModel.updateScreen.postValue(FillOutUserInfoFragment::class.java.simpleName)
             }
@@ -97,10 +100,20 @@ class RegistrationScreen : BaseScreen() {
             if (view == null || isAdded.not() && screenName?.isNotBlank() == true) return@observe
             when (screenName) {
                 ChooseTicketFragment::class.java.simpleName -> {
-                    replaceChildFragment(R.id.register_fragment_container, ChooseTicketFragment(), addToBackStack = true, clearChildFragment = true)
+                    replaceChildFragment(
+                        R.id.register_fragment_container,
+                        ChooseTicketFragment(),
+                        addToBackStack = true,
+                        clearChildFragment = true
+                    )
                 }
                 FillOutUserInfoFragment::class.java.simpleName -> when (childFragmentCount() == 0) {
-                    true -> replaceChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment(), addToBackStack = true, clearChildFragment = true)
+                    true -> replaceChildFragment(
+                        R.id.register_fragment_container,
+                        FillOutUserInfoFragment(),
+                        addToBackStack = true,
+                        clearChildFragment = true
+                    )
                     false -> addChildFragment(R.id.register_fragment_container, FillOutUserInfoFragment())
                 }
                 ConfirmRegistrationFragment::class.java.simpleName -> {

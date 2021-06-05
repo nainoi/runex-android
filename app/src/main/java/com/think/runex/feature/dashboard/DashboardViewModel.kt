@@ -103,6 +103,14 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
 
     fun getEventId() = dashboardInfo?.registered?.eventDetail?.id ?: 0
 
+    fun getRegistrationDataForEdit() = dashboardInfo?.getRegistrationDataForEdit(myUserId)
+
+    fun getRegistrationName(userId: String?): String {
+        return dashboardInfo?.registered?.registeredDataList?.find {
+            it.userId == userId
+        }?.ticketOptions?.firstOrNull()?.userOption?.getFullName() ?: ""
+    }
+
     class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {

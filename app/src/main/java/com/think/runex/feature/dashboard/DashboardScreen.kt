@@ -1,9 +1,7 @@
 package com.think.runex.feature.dashboard
 
 import android.os.Bundle
-import android.view.LayoutInflater
-import android.view.View
-import android.view.ViewGroup
+import android.view.*
 import androidx.recyclerview.widget.LinearLayoutManager
 import com.jozzee.android.core.fragment.onBackPressed
 import com.jozzee.android.core.view.gone
@@ -17,6 +15,7 @@ import com.think.runex.feature.activity.AddActivityScreen
 import com.think.runex.feature.activity.data.ActivityForSubmitEvent
 import com.think.runex.feature.dashboard.data.DashboardInfo
 import com.think.runex.feature.dashboard.data.DeleteActivityBody
+import com.think.runex.feature.event.registration.RegistrationScreen
 import com.think.runex.feature.event.team.TeamManagementScreen
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.*
@@ -24,7 +23,7 @@ import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_dashboard.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
+class DashboardScreen : BaseScreen(), UserDashboardListener {
 
     companion object {
         @JvmStatic
@@ -54,8 +53,11 @@ class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
     private var registerId: String = ""
     private var parentRegisterId: String = ""
 
+    private var menuEdit: MenuItem? = null
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        setHasOptionsMenu(true)
 
         arguments?.run {
             eventCode = getString(KEY_EVENT_CODE) ?: ""
@@ -88,12 +90,16 @@ class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
         }
     }
 
+    fun refreshScreen() {
+        performGetDashBoardInfo()
+    }
+
     private fun setupComponents() {
         setStatusBarColor(isLightStatusBar = NightMode.isNightMode(requireContext()).not())
         setupToolbar(toolbar_layout, R.string.dashboard, R.drawable.ic_navigation_back)
 
         //Set up recycler view
-        adapter = UserDashboardAdapter(users_dashboard_list, this, this)
+        adapter = UserDashboardAdapter(users_dashboard_list,  this)
         layoutManager = LinearLayoutManager(requireContext())
         users_dashboard_list?.layoutManager = layoutManager
         users_dashboard_list?.adapter = adapter
@@ -153,6 +159,10 @@ class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
         }
     }
 
+    override fun getRegistrationName(userId: String?): String {
+        return viewModel.getRegistrationName(userId)
+    }
+
     private fun performGetDashBoardInfo() = launch {
 
         progress_bar?.visible()
@@ -165,11 +175,14 @@ class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
         progress_bar?.gone()
         if (dashboards != null) {
             content_layout?.visible()
-            updateUi(dashboards)
+            setupUi(dashboards)
         }
     }
 
-    private fun updateUi(dashboards: DashboardInfo) {
+    private fun setupUi(dashboards: DashboardInfo) {
+
+        menuEdit?.isVisible = true//dashboards.registered?.eventDetail?.isOpenEditProfile == true
+
         event_name_label?.text = dashboards.registered?.eventDetail?.title ?: ""
         total_distances_label?.text = dashboards.getTotalDistanceDisplay(getString(R.string.km))
 
@@ -191,6 +204,29 @@ class DashboardScreen : BaseScreen(), OnDeleteActivityListener {
             this.ticket = viewModel.getTicketAtRegister()
         }
         addFragment(AddActivityScreen.newInstance(activityForSubmit))
+    }
+
+    private fun gotoEditRegistrationScreen() {
+        viewModel.getRegistrationDataForEdit()?.also { registered ->
+            addFragment(RegistrationScreen.newInstance(registered))
+        }
+    }
+
+    override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
+        super.onCreateOptionsMenu(menu, inflater)
+
+        inflater.inflate(R.menu.menu_dashboard, menu)
+
+        menuEdit = menu.findItem(R.id.menu_edit_registration)
+        menuEdit?.isVisible = false
+    }
+
+    override fun onOptionsItemSelected(item: MenuItem): Boolean = when (item.itemId) {
+        R.id.menu_edit_registration -> {
+            gotoEditRegistrationScreen()
+            true
+        }
+        else -> super.onOptionsItemSelected(item)
     }
 
     override fun errorHandler(code: Int, message: String, tag: String?) {

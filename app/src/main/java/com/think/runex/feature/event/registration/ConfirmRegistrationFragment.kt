@@ -7,6 +7,7 @@ import android.view.ViewGroup
 import com.jozzee.android.core.resource.getDimension
 import com.think.runex.R
 import com.think.runex.base.BaseScreen
+import com.think.runex.feature.dashboard.DashboardScreen
 import com.think.runex.feature.event.data.RegisterStatus
 import com.think.runex.util.extension.*
 import com.think.runex.feature.event.detail.EventDetailsScreen
@@ -71,7 +72,9 @@ class ConfirmRegistrationFragment : BaseScreen() {
         price_label?.text = ("${getString(R.string.price)}: ${ticket?.getPriceDisplay(requireContext())} ")
 
         //Update confirm button
-        if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM) {
+        if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM ||
+            viewModel.registerStatus == RegisterStatus.SUCCESS
+        ) {
             register_label?.text = getString(R.string.update_registration)
         }
     }
@@ -80,7 +83,9 @@ class ConfirmRegistrationFragment : BaseScreen() {
         register_button?.setOnClickListener {
             if (viewModel.registerStatus == RegisterStatus.REGISTER) {
                 performRegisterEvent()
-            } else if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM) {
+            } else if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM ||
+                viewModel.registerStatus == RegisterStatus.SUCCESS
+            ) {
                 performUpdateRegisterInfo()
             }
         }
@@ -104,13 +109,16 @@ class ConfirmRegistrationFragment : BaseScreen() {
                 launch {
 
                     //Add Payment screen
-                    addFragment(PayEventScreen.newInstance(
+                    addFragment(
+                        PayEventScreen.newInstance(
                             eventCode = register.getEventCode(),
                             eventName = register.getEventName(),
                             orderId = register.getOrderId(0),
                             registerId = register.getRegisterId(0),
                             ref2 = register.ref2 ?: "",
-                            totalPrice = register.getTotalPrice()))
+                            totalPrice = register.getTotalPrice()
+                        )
+                    )
 
                     //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack
                     delay(100)
@@ -140,6 +148,7 @@ class ConfirmRegistrationFragment : BaseScreen() {
                     //Remove previous screens (EventDetailsScreen) and remove self from fragment back stack
                     delay(100)
                     findFragment<EventDetailsScreen>()?.also { removeFragment(it) }
+                    findFragment<DashboardScreen>()?.also { it.refreshScreen() }
                     removeFragment(requireParentFragment())
                 }
             }

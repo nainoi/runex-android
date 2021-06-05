@@ -2,7 +2,7 @@ package com.think.runex.feature.dashboard
 
 import com.think.runex.feature.dashboard.data.DeleteActivityBody
 
-interface OnDeleteActivityListener {
+interface UserDashboardListener {
 
     fun onDeleteActivity(
         userPosition: Int,
@@ -10,4 +10,6 @@ interface OnDeleteActivityListener {
         activityId: String,
         activityToDelete: DeleteActivityBody,
     )
+
+    fun getRegistrationName(userId: String?): String
 }

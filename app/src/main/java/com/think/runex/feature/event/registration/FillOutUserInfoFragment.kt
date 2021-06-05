@@ -27,6 +27,7 @@ import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiExceptionMessage
 import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.event.data.EventCategory
+import com.think.runex.feature.event.data.RegisterStatus
 import com.think.runex.feature.event.data.Shirt
 import com.think.runex.feature.event.data.UserOptionEventRegistration
 import com.think.runex.feature.setting.data.Environment
@@ -43,7 +44,8 @@ import java.util.*
 import kotlin.collections.ArrayList
 
 class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener,
-        GenderDialog.OnGenderSelectedListener, ShirtsDialog.OnShirtSelectedListener, BloodTypeDialog.OnBloodTypeSelectedListener {
+    GenderDialog.OnGenderSelectedListener, ShirtsDialog.OnShirtSelectedListener,
+    BloodTypeDialog.OnBloodTypeSelectedListener {
 
     private lateinit var viewModel: RegistrationViewModel
 
@@ -88,16 +90,72 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun setupComponents() {
-        initTextChangedForAddressAutoFill()
 
-        updateUserDataFromUserInfo()
+        if (viewModel.registerStatus == RegisterStatus.REGISTER) {
+            updateUserDataFromUserInfo()
+        } else if (viewModel.registerStatus == RegisterStatus.WAITING_CONFIRM ||
+            viewModel.registerStatus == RegisterStatus.SUCCESS
+        ) {
+            viewModel.getCurrentTicketOption()?.userOption?.also { userOption ->
 
-        //Update team and optional data
-        viewModel.getCurrentTicketOption()?.userOption?.also {
-            optional_team_name_input?.setText(it.team)
-            optional_color_input?.setText(it.color)
-            optional_zone_input?.setText(it.zone)
+                try {
+                    //Update user info
+                    first_name_input?.setText(userOption.firstName)
+                    last_name_input?.setText(userOption.lastName)
+                    citizen_id_input?.setText(userOption.cityCenId)
+                    phone_input?.setText(userOption.phone)
+
+                    if (userOption.birthDate.isNotBlank()) {
+                        currentBirthDate = userOption.birthDate
+                        birth_date_input?.setText(
+                            currentBirthDate?.dateTimeFormat(
+                                SERVER_DATE_TIME_FORMAT,
+                                DISPLAY_DATE_FORMAT_FULL_MONTH
+                            )
+                        )
+                    }
+
+                    if (userOption.gender.isNotBlank()) {
+                        currentGender = Gender.valueOf(userOption.gender)
+                        gender_input?.setText(currentGender?.getDisplayName(requireContext()))
+                    }
+
+                    if (userOption.bloodType.isNotBlank()) {
+                        currentBloodType = BloodType.valueOf(userOption.bloodType)
+                        blood_type_input?.setText(currentBloodType?.name ?: "")
+                    }
+
+                    //Update user address
+                    address_input?.setText(userOption.address)
+                    address_house_no_input?.setText(userOption.houseNo)
+                    address_village_no_input?.setText(userOption.villageNo)
+                    userOption.subDistrict?.also { subDistrict ->
+                        viewModel.initialSubDistrict(subDistrict)
+                        if ((subDistrict.zipCode ?: 0) > 0) {
+                            zip_code_input?.setText(subDistrict.zipCode?.toString() ?: "")
+                            sub_district_input?.setText(subDistrict.subDistrict ?: "")
+                            district_input?.setText(subDistrict.district ?: "")
+                            province_input?.setText(subDistrict.province ?: "")
+                        }
+                    }
+
+                    //Update user team
+                    optional_team_name_input?.setText(userOption.team)
+                    optional_color_input?.setText(userOption.color)
+                    optional_zone_input?.setText(userOption.zone)
+
+                } catch (e: Throwable) {
+                    e.printStackTrace()
+                }
+            }
+
+            viewModel.getCurrentTicketOption()?.shirt?.also { shirt ->
+                //Update user shirt
+                shirt_size_input?.setText(shirt.size ?: "")
+            }
         }
+
+        initTextChangedForAddressAutoFill()
     }
 
     private fun subscribeUi() {
@@ -179,11 +237,17 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
 
     private fun showDatePicker() {
         var calendar = currentBirthDate?.toCalendar(SERVER_DATE_TIME_FORMAT)
-                ?: Calendar.getInstance()
+            ?: Calendar.getInstance()
         if (calendar.year() < 1000) {
             calendar = Calendar.getInstance()
         }
-        DatePickerDialog(requireContext(), this, calendar.get(Calendar.YEAR), calendar.get(Calendar.MONTH), calendar.get(Calendar.DAY_OF_MONTH)).run {
+        DatePickerDialog(
+            requireContext(),
+            this,
+            calendar.get(Calendar.YEAR),
+            calendar.get(Calendar.MONTH),
+            calendar.get(Calendar.DAY_OF_MONTH)
+        ).run {
             datePicker.maxDate = System.currentTimeMillis()
             show()
         }
@@ -215,8 +279,10 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun AutoCompleteTextView.showAddressAutoFill() {
-        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(requireContext(), R.layout.list_item_address_auto_fill,
-                viewModel.addressAutoFill.value?.autoFillArray ?: emptyArray())
+        val adapter: ArrayAdapter<String> = ArrayAdapter<String>(
+            requireContext(), R.layout.list_item_address_auto_fill,
+            viewModel.addressAutoFill.value?.autoFillArray ?: emptyArray()
+        )
 
         removeTextChangedAddressAutoFill()
         setAdapter(adapter)
@@ -240,6 +306,8 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
 
         zip_code_input.setText(subDistrict.zipCode.toString())
         zip_code_input?.setSelection(zip_code_input?.length() ?: 0)
+
+        address_input?.setText(getFullAddress())
 
         addTextChangedAddressAutoFill()
         view?.hideKeyboard()
@@ -267,8 +335,10 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Logger.debug("Jozzee", "Sub District: onTextChanged: ${s.toString()}")
                 when (s?.length ?: 0 >= 3) {
-                    true -> viewModel.searchAddressBySubDistricts(s.toString(), sub_district_input?.id
-                            ?: -1)
+                    true -> viewModel.searchAddressBySubDistricts(
+                        s.toString(), sub_district_input?.id
+                            ?: -1
+                    )
                     false -> sub_district_input?.setAdapter(null)
                 }
             }
@@ -283,8 +353,10 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Logger.debug("Jozzee", "District: onTextChanged: ${s.toString()}")
                 when (s?.length ?: 0 >= 3) {
-                    true -> viewModel.searchAddressByDistricts(s.toString(), sub_district_input?.id
-                            ?: -1)
+                    true -> viewModel.searchAddressByDistricts(
+                        s.toString(), sub_district_input?.id
+                            ?: -1
+                    )
                     false -> sub_district_input?.setAdapter(null)
                 }
             }
@@ -300,8 +372,10 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             override fun onTextChanged(s: CharSequence?, start: Int, before: Int, count: Int) {
                 Logger.debug("Jozzee", "Province: onTextChanged: ${s.toString()}")
                 when (s?.length ?: 0 >= 3) {
-                    true -> viewModel.searchAddressByProvince(s.toString(), sub_district_input?.id
-                            ?: -1)
+                    true -> viewModel.searchAddressByProvince(
+                        s.toString(), sub_district_input?.id
+                            ?: -1
+                    )
                     false -> sub_district_input?.setAdapter(null)
                 }
             }
@@ -345,7 +419,9 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if ((BuildConfig.DEBUG.not() || AppPreference.getEnvironment(requireContext()) == Environment.PRODUCTION) && citizenId.isThaiCitizenId().not()) {
+        if ((BuildConfig.DEBUG.not() || AppPreference.getEnvironment(requireContext()) == Environment.PRODUCTION) && citizenId.isThaiCitizenId()
+                .not()
+        ) {
             showAlertDialog(getString(R.string.warning), getString(R.string.please_enter_correct_citizen_id))
             return false
         }
@@ -357,7 +433,9 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             return false
         }
 
-        if ((BuildConfig.DEBUG.not() || AppPreference.getEnvironment(requireContext()) == Environment.PRODUCTION) && phone.isPhoneNumber().not()) {
+        if ((BuildConfig.DEBUG.not() || AppPreference.getEnvironment(requireContext()) == Environment.PRODUCTION) && phone.isPhoneNumber()
+                .not()
+        ) {
             showAlertDialog(getString(R.string.warning), getString(R.string.please_enter_correct_phone_number))
             return false
         }
@@ -442,12 +520,16 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
     }
 
     private fun getFullAddress(): String {
-        return "${address_input?.content()}, ${address_house_no_input?.content()}, ${address_village_no_input?.content()}, ${sub_district_input?.content()}, " +
+        return "${getString(R.string.house_no)} ${address_house_no_input?.content()} ${getString(R.string.village_no)} ${address_village_no_input?.content()}, ${sub_district_input?.content()}, " +
                 "${district_input?.content()}, ${province_input?.content()}, ${zip_code_input?.content()}"
     }
 
     private fun updateUserDataFromUserInfo() = launch {
-        requireActivity().getViewModel<UserViewModel>(UserViewModel.Factory(requireContext())).getUSerInfoInstance()?.also { userInfo ->
+
+        val factory = UserViewModel.Factory(requireContext())
+
+        requireActivity().getViewModel<UserViewModel>(factory).getUSerInfoInstance()?.also { userInfo ->
+
             //Set user info form view model
             first_name_input?.setText(userInfo.firstName ?: "")
             last_name_input?.setText(userInfo.lastName ?: "")
@@ -457,7 +539,11 @@ class FillOutUserInfoFragment : BaseScreen(), DatePickerDialog.OnDateSetListener
             currentBirthDate = userInfo.birthDate
             userInfo.getBirthDateCalendar()?.also { calendar ->
                 when (calendar.year() > 1000) {
-                    true -> birth_date_input?.setText(userInfo.getBirthDateDisplay(DISPLAY_DATE_FORMAT_FULL_MONTH))
+                    true -> birth_date_input?.setText(
+                        userInfo.getBirthDateDisplay(
+                            DISPLAY_DATE_FORMAT_FULL_MONTH
+                        )
+                    )
                     false -> birth_date_input?.setText("")
                 }
             }

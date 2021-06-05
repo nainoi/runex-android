@@ -8,13 +8,9 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import androidx.core.view.isVisible
-import androidx.lifecycle.LifecycleOwner
-import androidx.lifecycle.lifecycleScope
 import androidx.recyclerview.widget.*
 import com.jozzee.android.core.view.gone
-import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.setVisible
-import com.jozzee.android.core.view.visible
 import com.think.runex.R
 import com.think.runex.util.extension.*
 import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
@@ -23,15 +19,12 @@ import com.think.runex.component.recyclerview.swipemenu.SwipeMenuListItemCallbac
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.dashboard.data.DeleteActivityBody
 import com.think.runex.feature.dashboard.data.UserActivityDashboard
-import com.think.runex.feature.user.data.UserInfoRequestBody
 import com.think.runex.feature.workout.history.WorkoutHistoryMonthAdapter
 import kotlinx.android.synthetic.main.list_item_dashboard_user.view.*
-import kotlinx.coroutines.launch
 
 class UserDashboardAdapter(
     private val recyclerView: RecyclerView,
-    private val owner: LifecycleOwner,
-    var deleteActivityListener: OnDeleteActivityListener? = null
+    private var listener: UserDashboardListener
 ) : RecyclerView.Adapter<UserDashboardAdapter.ViewHolder>() {
 
     private var repository: DashboardRepository? = null
@@ -94,10 +87,8 @@ class UserDashboardAdapter(
 
             if (data == null) return
 
-            //Set views to skeleton on loading
-            itemView.list_item_dashboard_user?.inVisible()
-
             //Setup views
+            itemView.full_name_label?.text = listener.getRegistrationName(data.userId)
             itemView.activity_times_label?.text = (data.activityInfoList?.size ?: 0).displayFormat()
             itemView.total_distance_label?.text = data.getTotalDistanceDisplay(getString(R.string.km))
 
@@ -127,7 +118,7 @@ class UserDashboardAdapter(
                                     negativeText = getString(R.string.cancel),
                                     positiveText = getString(R.string.delete),
                                     onPositiveClick = {
-                                        deleteActivityListener?.onDeleteActivity(
+                                        listener.onDeleteActivity(
                                             adapterPosition,
                                             activityPosition,
                                             userDashboard.id ?: "",
@@ -165,19 +156,6 @@ class UserDashboardAdapter(
                 when (itemView.user_activity_list?.adapter?.itemCount ?: 0 > 0) {
                     true -> setVisibleWorkoutDaysWithAnimation(itemView.user_activity_list?.isVisible?.not())
                     false -> itemView.user_activity_list?.gone()
-                }
-            }
-
-            //Get user name from api
-            owner.lifecycleScope.launch {
-
-                val result = repository?.getUserInfoById(UserInfoRequestBody(data.userId ?: ""))
-
-                itemView.list_item_dashboard_user?.visible()
-
-                //Update user name data
-                result?.data?.also { userInfo ->
-                    itemView.full_name_label?.text = userInfo.getFullName()
                 }
             }
         }

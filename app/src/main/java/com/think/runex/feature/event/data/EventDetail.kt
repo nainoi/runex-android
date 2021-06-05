@@ -34,6 +34,7 @@ data class EventDetail(
         @SerializedName("isOpenPayment") var isOpenPayment: Boolean? = false,
         @SerializedName("isOpenRegister") var isOpenRegister: Boolean? = false,
         @SerializedName("isOpenSendActivity") var isOpenSendActivity: Boolean? = false,
+        @SerializedName("isOpenEditProfile") var isOpenEditProfile:Boolean? = false,
         @SerializedName("isPublish") var isPublish: Boolean? = false,
         @SerializedName("isTransactionFixedRate") val isTransactionFixedRate: Boolean? = false,
         @SerializedName("organizer") var organizer: String? = "",
@@ -94,6 +95,7 @@ data class EventDetail(
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
+            parcel.readValue(Boolean::class.java.classLoader) as? Boolean,
             parcel.readString(),
             parcel.readString(),
             parcel.readString(),
@@ -140,6 +142,7 @@ data class EventDetail(
         parcel.writeValue(isOpenPayment)
         parcel.writeValue(isOpenRegister)
         parcel.writeValue(isOpenSendActivity)
+        parcel.writeValue(isOpenEditProfile)
         parcel.writeValue(isPublish)
         parcel.writeValue(isTransactionFixedRate)
         parcel.writeString(organizer)
