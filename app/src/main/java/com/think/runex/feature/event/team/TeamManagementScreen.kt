@@ -95,6 +95,7 @@ class TeamManagementScreen : BaseScreen() {
 
         //Get register data initial.
         showLoading()
+        performGetTeamImage()
         viewModel.getRegisterData(RegisteredRequestBody(eventCode, registerId, parentRegisterId, ticketId))
     }
 
@@ -164,6 +165,7 @@ class TeamManagementScreen : BaseScreen() {
             if (screenName == this@TeamManagementScreen::class.java.simpleName) {
                 //Get register data initial.
                 showLoading()
+                performGetTeamImage()
                 viewModel.getRegisterData(RegisteredRequestBody(eventCode, registerId, parentRegisterId, ticketId))
             }
         }
@@ -223,6 +225,10 @@ class TeamManagementScreen : BaseScreen() {
         if (isSuccess) {
             showAlertDialog(R.string.success, R.string.add_member_success)
         }
+    }
+
+    private fun performGetTeamImage() = launch {
+        team_image?.loadTeamImage(viewModel.getTeamImageUrl())
     }
 
     private fun showLoading() {

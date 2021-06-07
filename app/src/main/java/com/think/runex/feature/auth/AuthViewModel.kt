@@ -57,14 +57,17 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
             return@withContext false
         }
 
-        val userInfoResult = repo.getUserInfo()
-        if (userInfoResult.isSuccessful().not()) {
-            onHandleError(userInfoResult.code, userInfoResult.message)
+        loginResult.data?.also { accessToken ->
+            updateAccessToken(accessToken)
         }
 
-        loginResult.data?.also { accessToken ->
-            accessToken.userId = userInfoResult.data?.id ?: ""
-            updateAccessToken(accessToken)
+        val userInfoResult = repo.getUserInfo()
+        when (userInfoResult.isSuccessful()) {
+            true -> loginResult.data?.also { accessToken ->
+                accessToken.userId = userInfoResult.data?.id ?: ""
+                updateAccessToken(accessToken)
+            }
+            false -> onHandleError(userInfoResult.code, userInfoResult.message)
         }
 
         //Check updated firebase token to server

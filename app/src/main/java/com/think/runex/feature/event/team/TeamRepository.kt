@@ -6,8 +6,10 @@ import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.event.team.data.TeamImage
+import com.think.runex.feature.user.data.UpdateProfileImageResult
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.data.UserInfoRequestBody
+import okhttp3.MultipartBody
 
 class TeamRepository(private val api: TeamApi) : RemoteDataSource() {
 
@@ -19,8 +21,10 @@ class TeamRepository(private val api: TeamApi) : RemoteDataSource() {
 
     suspend fun getMyUserInfo() = call(api.getUserInfoAsync())
 
+    suspend fun updateTeamInfo(body: JsonObject): Result<Any> = call(api.updateTeamInfoAsync(body))
+
     suspend fun getTeamImage(body: TeamImage): Result<TeamImage> = call(api.getTeamImageAsync(body))
 
-    suspend fun updateTeamInfo(body: JsonObject): Result<Any> = call(api.updateTeamInfoAsync(body))
+    suspend fun uploadTeamImage(body: MultipartBody): Result<TeamImage> = call(api.uploadTeamImageAsync(body))
 
 }

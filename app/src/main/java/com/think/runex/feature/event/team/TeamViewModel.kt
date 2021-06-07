@@ -15,6 +15,7 @@ import com.think.runex.feature.address.data.SubDistrict
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.*
+import com.think.runex.feature.event.team.data.TeamImage
 import com.think.runex.feature.user.data.UserInfo
 import com.think.runex.feature.user.data.UserInfoRequestBody
 import com.think.runex.util.extension.launch
@@ -52,6 +53,17 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
             onHandleError(result.code, result.message)
         }
         return@withContext result.data
+    }
+
+    suspend fun getTeamImageUrl(): String? = withContext(IO) {
+
+        val result = repo.getTeamImage(TeamImage(getLeaderRegistrationData()?.id ?: ""))
+
+        if (result.isSuccessful().not()) {
+            onHandleError(result.code, result.message)
+        }
+
+        return@withContext result.data?.iconUrl
     }
 
     suspend fun addMemberToTeam(userToAdd: UserInfo): Boolean = withContext(IO) {

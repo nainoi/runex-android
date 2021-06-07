@@ -197,7 +197,11 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
     }
 
     private fun checkPermissionsAndTakePicture() {
-        val permissions = arrayOf(Manifest.permission.CAMERA, Manifest.permission.READ_EXTERNAL_STORAGE, Manifest.permission.WRITE_EXTERNAL_STORAGE)
+        val permissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
         requestPermissions(permissions) { results ->
             when {
                 //User allow all permissions (camera, storage) will be take picture
@@ -212,18 +216,19 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
         }
     }
 
-    private fun checkPermissionAndGetImageContent() = requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
-        when {
-            //User allow all permissions storage
-            isGranted -> getContentHelper?.getImage { imageUri ->
-                imageUri?.also { performUploadProfileImage(it) }
+    private fun checkPermissionAndGetImageContent() =
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+            when {
+                //User allow all permissions storage
+                isGranted -> getContentHelper?.getImage { imageUri ->
+                    imageUri?.also { performUploadProfileImage(it) }
+                }
+                //User denied access to storage.
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
             }
-            //User denied access to storage.
-            shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
-            //User denied and select don't ask again.
-            else -> requireContext().showSettingPermissionInSettingDialog()
         }
-    }
 
     private fun performUploadProfileImage(uri: Uri) = launch {
         showProgressDialog(R.string.update_profile_image)

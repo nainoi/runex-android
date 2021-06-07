@@ -1,17 +1,22 @@
 package com.think.runex.feature.event.team
 
+import android.Manifest
+import android.net.Uri
 import android.os.Bundle
 import android.text.Editable
 import android.text.TextWatcher
 import android.view.*
 import androidx.appcompat.widget.AppCompatButton
 import com.jozzee.android.core.fragment.onBackPressed
+import com.jozzee.android.core.permission.shouldShowPermissionRationale
 import com.jozzee.android.core.view.content
 import com.jozzee.android.core.view.hideKeyboard
+import com.jozzee.android.core.view.showDialog
+import com.jozzee.android.core.view.showToast
 import com.think.runex.R
 import com.think.runex.base.PermissionsLauncherScreen
+import com.think.runex.component.ImageSourcesDialog
 import com.think.runex.config.KEY_REGISTER_ID
-import com.think.runex.feature.dashboard.DashboardScreen
 import com.think.runex.feature.event.data.RegisteredData
 import com.think.runex.util.GetContentHelper
 import com.think.runex.util.NightMode
@@ -20,7 +25,7 @@ import com.think.runex.util.extension.*
 import kotlinx.android.synthetic.main.screen_team_editor.*
 import kotlinx.android.synthetic.main.toolbar.*
 
-class TeamEditorScreen : PermissionsLauncherScreen() {
+class TeamEditorScreen : PermissionsLauncherScreen(), ImageSourcesDialog.OnSelectImageSourceListener {
 
     companion object {
         @JvmStatic
@@ -77,6 +82,10 @@ class TeamEditorScreen : PermissionsLauncherScreen() {
     }
 
     private fun subscribeUi() {
+        change_team_image_button?.setOnClickListener {
+            showDialog(ImageSourcesDialog())
+        }
+
         viewModel.setOnHandleError(::errorHandler)
     }
 
@@ -137,6 +146,61 @@ class TeamEditorScreen : PermissionsLauncherScreen() {
 
         return isValid
     }
+
+    override fun onSelectImageSource(source: Int) {
+        when (source) {
+            ImageSourcesDialog.SOURCE_CAMERA -> checkPermissionsAndTakePicture()
+            ImageSourcesDialog.SOURCE_GALLERY -> checkPermissionAndGetImageContent()
+        }
+    }
+
+    private fun checkPermissionsAndTakePicture() {
+        val permissions = arrayOf(
+            Manifest.permission.CAMERA,
+            Manifest.permission.READ_EXTERNAL_STORAGE,
+            Manifest.permission.WRITE_EXTERNAL_STORAGE
+        )
+        requestPermissions(permissions) { results ->
+            when {
+                //User allow all permissions (camera, storage) will be take picture
+                allPermissionsGranted(results) -> takePictureHelper?.takePicture(requireContext()) { pictureUri ->
+                    pictureUri?.also { performUpdateTeamImage(it) }
+                }
+                //User denied access to camera or storage.
+                shouldShowPermissionRationale(permissions) -> showToast(R.string.camera_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
+            }
+        }
+    }
+
+    private fun checkPermissionAndGetImageContent() =
+        requestPermission(Manifest.permission.READ_EXTERNAL_STORAGE) { isGranted ->
+            when {
+                //User allow all permissions storage
+                isGranted -> getContentHelper?.getImage { imageUri ->
+                    imageUri?.also { performUpdateTeamImage(it) }
+                }
+                //User denied access to storage.
+                shouldShowRequestPermissionRationale(Manifest.permission.READ_EXTERNAL_STORAGE) -> showToast(R.string.gallery_permission_denied)
+                //User denied and select don't ask again.
+                else -> requireContext().showSettingPermissionInSettingDialog()
+            }
+        }
+
+    private fun performUpdateTeamImage(uri: Uri) = launch {
+
+        showProgressDialog(R.string.update_profile_image)
+        val teamImageUrl = viewModel.updateTeamImage(requireContext(), uri)
+        hideProgressDialog()
+
+        if (teamImageUrl?.isNotBlank() == true) {
+            //Update live data for refresh screen().
+            getMainViewModel().refreshScreen(TeamManagementScreen::class.java.simpleName)
+            performGetTeamImage()
+        }
+    }
+
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
         inflater.inflate(R.menu.menu_editor, menu)
