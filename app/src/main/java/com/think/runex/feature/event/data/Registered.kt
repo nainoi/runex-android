@@ -5,21 +5,23 @@ import android.os.Parcelable
 import com.google.gson.annotations.SerializedName
 
 data class Registered(
-        @SerializedName("owner_id") var ownerId: String? = null,
-        @SerializedName("user_code") var userCode: String? = null,
-        @SerializedName("event_code") var eventCode: String? = null,
-        @SerializedName("ref2") var ref2: String? = null,
-        @SerializedName("regs") var registeredDataList: List<RegisteredData>? = null,
-        @SerializedName("event") var eventDetail: EventDetail? = null) : Parcelable {
+    @SerializedName("owner_id") var ownerId: String? = null,
+    @SerializedName("user_code") var userCode: String? = null,
+    @SerializedName("event_code") var eventCode: String? = null,
+    @SerializedName("ref2") var ref2: String? = null,
+    @SerializedName("regs") var registeredDataList: List<RegisteredData>? = null,
+    @SerializedName("event") var eventDetail: EventDetail? = null
+) : Parcelable {
 
     var isChecked: Boolean = false
 
     constructor(parcel: Parcel) : this(
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.readString(),
-            parcel.createTypedArrayList(RegisteredData)) {
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.readString(),
+        parcel.createTypedArrayList(RegisteredData)
+    ) {
         isChecked = parcel.readByte() != 0.toByte()
     }
 

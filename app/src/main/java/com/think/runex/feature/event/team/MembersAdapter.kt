@@ -28,7 +28,7 @@ class MembersAdapter(context: Context, private val owner: LifecycleOwner) :
     private var repository: TeamRepository? = null
 
     init {
-        repository = TeamRepository(ApiService().provideService(context, EventApi::class.java))
+        repository = TeamRepository(ApiService().provideService(context, TeamApi::class.java))
     }
 
     private var onItemClickListener: ((registeredData: RegisteredData) -> Unit)? = null

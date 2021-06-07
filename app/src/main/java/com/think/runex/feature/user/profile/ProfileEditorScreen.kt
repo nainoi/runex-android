@@ -232,7 +232,7 @@ class ProfileEditorScreen : PermissionsLauncherScreen(), DatePickerDialog.OnDate
     }
 
     override fun onCreateOptionsMenu(menu: Menu, inflater: MenuInflater) {
-        inflater.inflate(R.menu.menu_profile_editor, menu)
+        inflater.inflate(R.menu.menu_editor, menu)
     }
 
     override fun onPrepareOptionsMenu(menu: Menu) {

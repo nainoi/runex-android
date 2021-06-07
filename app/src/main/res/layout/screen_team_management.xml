@@ -18,16 +18,75 @@
         <include layout="@layout/toolbar" />
     </com.google.android.material.appbar.AppBarLayout>
 
+    <RelativeLayout
+        android:id="@+id/team_info_layout"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/top_bar"
+        android:layout_marginTop="@dimen/space_8dp"
+        android:minHeight="@dimen/space_80dp">
+
+        <androidx.appcompat.widget.AppCompatImageView
+            android:id="@+id/team_image"
+            android:layout_width="@dimen/space_64dp"
+            android:layout_height="@dimen/space_64dp"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:background="@drawable/shape_circle_thirdly" />
+
+        <TextView
+            android:id="@+id/team_label"
+            style="@style/Text.Title.Primary.Bold"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:layout_toStartOf="@+id/edit_team_button"
+            android:layout_toEndOf="@+id/team_image"
+            android:ellipsize="end"
+            android:maxLines="2" />
+
+        <TextView
+            android:id="@+id/edit_team_button"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentEnd="true"
+            android:layout_centerVertical="true"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:background="@drawable/bg_btn_text"
+            android:clickable="true"
+            android:focusable="true"
+            android:paddingStart="@dimen/space_8dp"
+            android:paddingEnd="@dimen/space_8dp"
+            android:text="@string/edit"
+            android:textColor="@drawable/selector_text_color_btn_text"
+            android:textSize="@dimen/text_size_body_heading"
+            android:visibility="gone"
+            tools:visibility="visible" />
+
+    </RelativeLayout>
+
     <androidx.constraintlayout.widget.ConstraintLayout
         android:id="@+id/add_member_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/top_bar"
-        android:layout_marginTop="@dimen/space_16dp"
+        android:layout_below="@+id/team_info_layout"
+        android:layout_marginTop="@dimen/space_8dp"
         android:clickable="true"
         android:focusable="true"
         android:foreground="?selectableItemBackground"
         android:minHeight="@dimen/space_48dp">
+
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="@dimen/space_1dp"
+            android:layout_marginStart="@dimen/space_16dp"
+            android:layout_marginEnd="@dimen/space_16dp"
+            android:background="@color/line"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toTopOf="parent" />
 
         <androidx.appcompat.widget.AppCompatImageView
             android:id="@+id/add_member_icon"
@@ -96,8 +155,8 @@
         android:id="@+id/member_list"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_marginTop="@dimen/space_16dp"
-        android:layout_below="@+id/member_list_placeholder" />
+        android:layout_below="@+id/member_list_placeholder"
+        android:layout_marginTop="@dimen/space_16dp" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

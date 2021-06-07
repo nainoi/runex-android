@@ -12,6 +12,7 @@ import com.think.runex.base.BaseViewModel
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.address.data.SubDistrict
+import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.event.EventApi
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.user.data.UserInfo
@@ -24,7 +25,17 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
 
     var registerData: MutableLiveData<Registered> = MutableLiveData()
 
+    var isTeamLeader: Boolean = false
+
     fun getRegisterData(body: RegisteredRequestBody) = launch(IO) {
+
+        //Get my user info for check is team leader.
+        if (TokenManager.userId.isBlank()) {
+            val myUserInfoResult = repo.getMyUserInfo()
+            if (myUserInfoResult.isSuccessful()) {
+                TokenManager.updateUserId(myUserInfoResult.data?.id ?: "")
+            }
+        }
 
         val result = repo.getRegisterData(body)
 
@@ -48,13 +59,13 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         val eventDetail = registerData.value?.eventDetail ?: EventDetail()
 
         val teamLeaderRegisteredData = registerData.value?.getTeamLeaderRegisteredData()
-                ?: RegisteredData()
+            ?: RegisteredData()
 
         val teamLeaderTicketOption = teamLeaderRegisteredData.ticketOptions?.firstOrNull()
-                ?: TicketOptionEventRegistration()
+            ?: TicketOptionEventRegistration()
 
         val teamLeaderUserOption = teamLeaderTicketOption.userOption
-                ?: UserOptionEventRegistration()
+            ?: UserOptionEventRegistration()
 
         val ticketAtRegister = teamLeaderTicketOption.ticket ?: Ticket()
 
@@ -155,10 +166,18 @@ class TeamViewModel(private val repo: TeamRepository) : BaseViewModel() {
         return@withContext result.isSuccessful()
     }
 
+    fun getMyRegistrationData(): RegisteredData? {
+        return registerData.value?.registeredDataList?.find { it.userId == TokenManager.userId }
+    }
+
+    fun getLeaderRegistrationData(): RegisteredData? {
+        return registerData.value?.registeredDataList?.find { it.isTeamLead == true }
+    }
+
     class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return TeamViewModel(TeamRepository(ApiService().provideService(context, EventApi::class.java))) as T
+            return TeamViewModel(TeamRepository(ApiService().provideService(context, TeamApi::class.java))) as T
         }
     }
 }

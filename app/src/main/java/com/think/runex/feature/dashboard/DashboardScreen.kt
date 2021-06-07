@@ -13,6 +13,7 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.config.*
 import com.think.runex.feature.activity.AddActivityScreen
 import com.think.runex.feature.activity.data.ActivityForSubmitEvent
+import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.dashboard.data.DashboardInfo
 import com.think.runex.feature.dashboard.data.DeleteActivityBody
 import com.think.runex.feature.event.registration.RegistrationScreen
@@ -189,7 +190,6 @@ class DashboardScreen : BaseScreen(), UserDashboardListener {
         team_management_button?.setVisible(dashboards.isEventCategoryTeam())
         team_management_label.text = getString(if (viewModel.isTeamLeader) R.string.team_management else R.string.team)
 
-        adapter.myUserId = viewModel.myUserId
         adapter.submitList(dashboards.activityList?.toMutableList())
     }
 
@@ -200,7 +200,7 @@ class DashboardScreen : BaseScreen(), UserDashboardListener {
             this.orderId = this@DashboardScreen.orderId
             this.registerId = this@DashboardScreen.registerId
             this.parentRegisterId = this@DashboardScreen.parentRegisterId
-            this.userId = viewModel.myUserId
+            this.userId = TokenManager.userId
             this.ticket = viewModel.getTicketAtRegister()
         }
         addFragment(AddActivityScreen.newInstance(activityForSubmit))
@@ -242,6 +242,7 @@ class DashboardScreen : BaseScreen(), UserDashboardListener {
     override fun onDestroyView() {
         users_dashboard_list?.recycledViewPool?.clear()
         adapter.clear()
+        removeObservers(getMainViewModel().refreshScreen)
         super.onDestroyView()
     }
 }

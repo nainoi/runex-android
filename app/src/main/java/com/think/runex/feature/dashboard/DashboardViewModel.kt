@@ -9,10 +9,12 @@ import com.jozzee.android.core.datetime.toTimeMillis
 import com.think.runex.base.BaseViewModel
 import com.think.runex.config.SERVER_DATE_TIME_FORMAT
 import com.think.runex.datasource.api.ApiService
+import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.dashboard.data.DashboardInfo
 import com.think.runex.feature.dashboard.data.DashboardInfoRequestBody
 import com.think.runex.feature.dashboard.data.DeleteActivityBody
 import com.think.runex.feature.dashboard.data.UserActivityDashboard
+import com.think.runex.feature.event.data.RegisteredData
 import com.think.runex.feature.event.data.Ticket
 import com.think.runex.feature.workout.data.WorkoutHistoryMonth
 import com.think.runex.feature.workout.data.WorkoutInfo
@@ -22,9 +24,6 @@ import kotlinx.coroutines.withContext
 class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel() {
 
     var dashboardInfo: DashboardInfo? = null
-        private set
-
-    var myUserId: String = ""
         private set
 
     var isTeamLeader: Boolean = false
@@ -38,13 +37,13 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
     ): DashboardInfo? = withContext(IO) {
 
         //Get my user info for check is team leader.
-        if (myUserId.isBlank()) {
+        if (TokenManager.userId.isBlank()) {
             val myUserInfoResult = repo.getMyUserInfo()
             if (myUserInfoResult.isSuccessful().not()) {
                 onHandleError(myUserInfoResult.code, myUserInfoResult.message, "dashboard")
                 return@withContext null
             }
-            myUserId = myUserInfoResult.data?.id ?: ""
+            TokenManager.updateUserId(myUserInfoResult.data?.id ?: "")
         }
 
         //Get dashboard info.
@@ -61,7 +60,7 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
 
             //Update dashboard data
             dashboardInfo = result.data
-            isTeamLeader = dashboardInfo?.isTeamLeader(myUserId) ?: false
+            isTeamLeader = dashboardInfo?.isTeamLeader(TokenManager.userId) ?: false
 
         } else {
             onHandleError(result.code, result.message, "dashboard")
@@ -103,7 +102,7 @@ class DashboardViewModel(private val repo: DashboardRepository) : BaseViewModel(
 
     fun getEventId() = dashboardInfo?.registered?.eventDetail?.id ?: 0
 
-    fun getRegistrationDataForEdit() = dashboardInfo?.getRegistrationDataForEdit(myUserId)
+    fun getRegistrationDataForEdit() = dashboardInfo?.getRegistrationDataForEdit(TokenManager.userId)
 
     fun getRegistrationName(userId: String?): String {
         return dashboardInfo?.registered?.registeredDataList?.find {

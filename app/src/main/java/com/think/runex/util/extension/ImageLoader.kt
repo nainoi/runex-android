@@ -139,3 +139,17 @@ fun ImageView.loadWorkoutIcon(@DrawableRes icon: Int?) {
             .clearOnDetach()
     }
 }
+
+fun ImageView.loadTeamImage(url: String?) {
+    if (context == null || url.isNullOrBlank()) return
+    post {
+        Glide.with(this)
+            .load(url)
+            .format(DecodeFormat.PREFER_ARGB_8888)
+            .override(width, height)
+            .circleCrop()
+            //.diskCacheStrategy(DiskCacheStrategy.NONE)
+            .into(this)
+            .clearOnDetach()
+    }
+}

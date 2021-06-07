@@ -5,6 +5,7 @@ import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.event.data.*
 import com.think.runex.feature.user.UserInfoApi
+import com.think.runex.feature.user.data.UserInfo
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
 

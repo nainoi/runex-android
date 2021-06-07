@@ -13,6 +13,9 @@ class TokenManager {
         //var expiresIn: Long = 0
         //    private set
 
+        var userId: String = ""
+            private set
+
         fun isAlive(): Boolean = accessToken.isNotBlank()
 
         fun accessToken(withTokenType: Boolean = true): String {
@@ -29,9 +32,13 @@ class TokenManager {
             Companion.accessToken = accessToken.accessToken
             refreshToken = accessToken.refreshToken
             //this.expiresIn = accessToken.expiresIn
+            this.userId = accessToken.userId
         }
 
-        //private var userId: String = ""
+        fun updateUserId(userId: String) {
+            this.userId = userId
+        }
+
 
         //fun userId() = userId
 
@@ -44,6 +51,7 @@ class TokenManager {
             accessToken = ""
             refreshToken = ""
             //expiresIn = 0
+            userId = ""
         }
     }
 }

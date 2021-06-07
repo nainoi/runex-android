@@ -50,6 +50,7 @@
     <string name="check_information">Check information</string>
     <string name="citizen_id">Citizen Id</string>
     <string name="closed">Closed</string>
+    <string name="color">Color</string>
 
     <!-- D -->
     <string name="dashboard">Dashboard</string>
@@ -193,6 +194,7 @@
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">Thank you for payment.</string>
     <string name="team">Team</string>
+    <string name="team_name">Team name</string>
     <string name="team_name_optional">Team name (Optional)</string>
     <string name="team_management">Team Management</string>
     <string name="team_leader">Team Leader</string>
@@ -226,6 +228,7 @@
 
     <!-- Z -->
     <string name="zip_code">Zip code</string>
+    <string name="zone">Zone</string>
     <string name="zone_optional">Zone (Optional)</string>
 
     <!-- Hint -->

@@ -17,6 +17,7 @@ import com.think.runex.component.recyclerview.LineSeparatorItemDecoration
 import com.think.runex.component.recyclerview.swipemenu.SwipeMenu
 import com.think.runex.component.recyclerview.swipemenu.SwipeMenuListItemCallback
 import com.think.runex.datasource.api.ApiService
+import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.dashboard.data.DeleteActivityBody
 import com.think.runex.feature.dashboard.data.UserActivityDashboard
 import com.think.runex.feature.workout.history.WorkoutHistoryMonthAdapter
@@ -29,8 +30,6 @@ class UserDashboardAdapter(
 
     private var repository: DashboardRepository? = null
     private var list: ArrayList<UserActivityDashboard>? = null
-
-    var myUserId: String = ""
 
     init {
         repository = DashboardRepository(ApiService().provideService(recyclerView.context, DashboardApi::class.java))
@@ -104,7 +103,7 @@ class UserDashboardAdapter(
             itemView.user_activity_list?.layoutManager = LinearLayoutManager(requireContext())
             itemView.user_activity_list?.adapter = UserActivityAdapter(data.activityInfoList ?: emptyList())
 
-            if (data.userId == myUserId) {
+            if (data.userId == TokenManager.userId) {
                 //Set swipe menu to recycler view.
                 val swipeMenu = SwipeMenuListItemCallback(createSwipeToDeleteMenu())
                 swipeMenu.setMenuWidth(getDimension(R.dimen.space_84dp).toInt())

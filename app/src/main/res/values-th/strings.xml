@@ -43,6 +43,7 @@
     <string name="check_information">ตรวจสอบข้อมูล</string>
     <string name="citizen_id">เลขประจำตัวประชาชน</string>
     <string name="closed">ปิด</string>
+    <string name="color">สี</string>
 
     <!-- D -->
     <string name="dashboard">แดชบอร์ด</string>
@@ -183,6 +184,7 @@
     <string name="thai_bath">THB</string>
     <string name="thank_you_for_payment">ขอบคุณสำหรับการชำระเงิน</string>
     <string name="team">ทีม</string>
+    <string name="team_name">ชื่อทีม</string>
     <string name="team_name_optional">ชื่อทีม (ไม่จำเป็น)</string>
     <string name="team_management">จัดการสมาชิกในทีม</string>
     <string name="team_leader">หัวหน้าทีม</string>
@@ -214,6 +216,7 @@
 
     <!-- Z -->
     <string name="zip_code">รหัสไปรษณีย์</string>
+    <string name="zone">โซน</string>
     <string name="zone_optional">โซน (ไม่จำเป็น)</string>
 
     <!-- Input required -->

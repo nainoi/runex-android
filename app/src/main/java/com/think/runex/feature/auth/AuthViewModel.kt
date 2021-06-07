@@ -56,8 +56,15 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
             TokenManager.clearToken()
             return@withContext false
         }
-        loginResult.data?.also {
-            updateAccessToken(it)
+
+        val userInfoResult = repo.getUserInfo()
+        if (userInfoResult.isSuccessful().not()) {
+            onHandleError(userInfoResult.code, userInfoResult.message)
+        }
+
+        loginResult.data?.also { accessToken ->
+            accessToken.userId = userInfoResult.data?.id ?: ""
+            updateAccessToken(accessToken)
         }
 
         //Check updated firebase token to server
@@ -95,9 +102,12 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     class Factory(private val context: Context) : ViewModelProvider.NewInstanceFactory() {
         @Suppress("UNCHECKED_CAST")
         override fun <T : ViewModel> create(modelClass: Class<T>): T {
-            return AuthViewModel(AuthRepository(
+            return AuthViewModel(
+                AuthRepository(
                     ApiService().provideService(context, AuthApi::class.java),
-                    AppPreference.createPreference(context))) as T
+                    AppPreference.createPreference(context)
+                )
+            ) as T
         }
     }
 }
