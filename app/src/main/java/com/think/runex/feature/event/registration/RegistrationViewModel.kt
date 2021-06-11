@@ -225,7 +225,7 @@ class RegistrationViewModel(
             add("event", gSon.toJsonTree(eventDetail.value))
             addProperty("status", RegisterStatus.WAITING_PAY)
             addProperty("payment_type", "")
-            addProperty("total_price", ticketOptions.sumByDouble { it.totalPrice })
+            addProperty("total_price", ticketOptions.sumOf { it.totalPrice })
             addProperty("discount_price", 0.0)
             addProperty("promo_code", "")
             addProperty("reg_date", System.currentTimeMillis().dateTimeFormat(SERVER_DATE_TIME_FORMAT))

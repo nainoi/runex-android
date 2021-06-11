@@ -114,7 +114,7 @@ dependencies {
 
     //Crashlytics
     implementation 'com.google.firebase:firebase-analytics-ktx:19.0.0'
-    implementation 'com.google.firebase:firebase-crashlytics:18.0.0'
+    implementation 'com.google.firebase:firebase-crashlytics:18.0.1'
 
     //Google Maps
     //implementation 'com.google.android.libraries.maps:maps:3.1.0-beta'

@@ -14,7 +14,7 @@ data class DashboardInfo(
     fun getTotalDistanceDisplay(unit: String): String {
         var totalDistances = 0.0
         if (activityList?.isNotEmpty() == true) {
-            totalDistances = activityList?.sumByDouble { it.totalDistances ?: 0.0 } ?: 0.0
+            totalDistances = activityList?.sumOf { it.totalDistances ?: 0.0 } ?: 0.0
         }
         return "${totalDistances.displayFormat()} $unit"
     }

@@ -137,7 +137,7 @@ class DashboardScreen : BaseScreen(), UserDashboardListener {
         observe(getMainViewModel().refreshScreen) { screenName ->
             if (view == null || isAdded.not()) return@observe
             if (screenName == this@DashboardScreen::class.java.simpleName) {
-                performGetDashBoardInfo()
+                refreshScreen()
             }
         }
 
@@ -155,6 +155,7 @@ class DashboardScreen : BaseScreen(), UserDashboardListener {
             val dashboardInfo = viewModel.deleteActivity(activityToDelete)
             hideProgressDialog()
             if (dashboardInfo != null) {
+                total_distances_label?.text = dashboardInfo.getTotalDistanceDisplay(getString(R.string.km))
                 adapter.submitList(dashboardInfo.activityList)
             }
         }
@@ -182,7 +183,7 @@ class DashboardScreen : BaseScreen(), UserDashboardListener {
 
     private fun setupUi(dashboards: DashboardInfo) {
 
-        menuEdit?.isVisible = true//dashboards.registered?.eventDetail?.isOpenEditProfile == true
+        menuEdit?.isVisible = dashboards.registered?.eventDetail?.isOpenEditProfile == true
 
         event_name_label?.text = dashboards.registered?.eventDetail?.title ?: ""
         total_distances_label?.text = dashboards.getTotalDistanceDisplay(getString(R.string.km))
