@@ -30,6 +30,7 @@ import com.think.runex.feature.workout.MapPresenter
 import com.think.runex.feature.workout.summary.WorkoutSummaryScreen
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_workout.*
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.delay
 import java.lang.Exception
 
@@ -79,7 +80,7 @@ class WorkoutScreen : PermissionsLauncherScreen(), ActionControlsFragment.Action
                             }
 
                             intent.getParcelableExtra<WorkingOutLocation>(KEY_LOCATION)?.also { location ->
-                                mapPresenter?.addPolyline(location)
+                                mapPresenter?.addPolyline(context, location)
                                 mapPresenter?.animateCamera(location.toLatLng(), GOOGLE_MAP_WORKING_OUT_ZOOM)
                             }
                         }
@@ -123,7 +124,7 @@ class WorkoutScreen : PermissionsLauncherScreen(), ActionControlsFragment.Action
         initMaps {
             bindWorkoutService()
             LocalBroadcastManager.getInstance(requireContext())
-                    .registerReceiver(workoutReceiver, IntentFilter(WorkoutService.ACTION_BROADCAST))
+                .registerReceiver(workoutReceiver, IntentFilter(WorkoutService.ACTION_BROADCAST))
         }
     }
 
@@ -205,7 +206,8 @@ class WorkoutScreen : PermissionsLauncherScreen(), ActionControlsFragment.Action
         (childFragmentManager.findFragmentById(R.id.map_fragment) as? SupportMapFragment)?.also { mapFragment ->
             mapFragment.getMapAsync { googleMap: GoogleMap ->
                 googleMap.uiSettings.isMyLocationButtonEnabled = false
-                mapPresenter = MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
+                mapPresenter =
+                    MapPresenter(googleMap, getColor(R.color.colorAccent), getDimension(R.dimen.space_8dp).toFloat())
                 Logger.warning(simpleName(), "Setup mapPresenter")
                 callbacks.invoke()
             }

@@ -18,8 +18,11 @@ import com.think.runex.config.*
 import com.think.runex.feature.location.LocationTracking
 import com.think.runex.feature.workout.data.*
 import com.think.runex.MainActivity
+import com.think.runex.feature.workout.db.LocationDao
+import com.think.runex.feature.workout.db.WorkoutDataBase
 import com.think.runex.feature.workout.record.WorkoutScreen
-import io.realm.Realm
+import com.think.runex.util.extension.launch
+import kotlinx.coroutines.Dispatchers.IO
 import java.util.concurrent.Executors
 import java.util.concurrent.ScheduledExecutorService
 import java.util.concurrent.TimeUnit
@@ -46,6 +49,7 @@ open class WorkoutService : Service() {
 
     private lateinit var locationTracking: LocationTracking
     private var newLocation: Location? = null
+    private var locationDao: LocationDao? = null
 
     private var record: WorkingOutRecord? = null
     private var status: Int = WorkoutStatus.UNKNOWN
@@ -130,10 +134,18 @@ open class WorkoutService : Service() {
     override fun onDestroy() {
         super.onDestroy()
         Logger.error(simpleName(), "onDestroy")
+        if (locationDao != null) {
+            launch(IO) {
+                locationDao?.deleteAllLocation()
+                locationDao = null
+                WorkoutDataBase.destroy()
+            }
+        }
     }
 
     private fun onStartWorkingOut(type: String) {
         if (isRunningInForeground()) return
+        locationDao = WorkoutDataBase.getDatabase(this).locationDao()
         clearTempLocation()
         setupNotificationManager()
         record = WorkingOutRecord(type, System.currentTimeMillis())
@@ -180,6 +192,13 @@ open class WorkoutService : Service() {
         lastUpdateTimeMillis = 0
         lastUpdateLocation = null
         status = WorkoutStatus.UNKNOWN
+        if (locationDao != null) {
+            launch(IO) {
+                locationDao?.deleteAllLocation()
+                locationDao = null
+                WorkoutDataBase.destroy()
+            }
+        }
     }
 
     private fun startScheduledThread() {
@@ -231,7 +250,10 @@ open class WorkoutService : Service() {
 
         if (displayData != null) {
             intent.putExtra(KEY_DATA, displayData)
-            notificationManager?.notify(NOTIFICATION_WORKOUT_ID, getNotification(displayData.getNotificationContent(resources)))
+            notificationManager?.notify(
+                NOTIFICATION_WORKOUT_ID,
+                getNotification(displayData.getNotificationContent(resources))
+            )
         }
 
         LocalBroadcastManager.getInstance(this).sendBroadcast(intent)
@@ -244,7 +266,11 @@ open class WorkoutService : Service() {
         // Android O requires a Notification Channel.
         if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.O) {
             // Create the channel for the notification
-            val channel = NotificationChannel(NOTIFICATION_WORKOUT_CHANEL_ID, getString(R.string.workout), NotificationManager.IMPORTANCE_DEFAULT)
+            val channel = NotificationChannel(
+                NOTIFICATION_WORKOUT_CHANEL_ID,
+                getString(R.string.workout),
+                NotificationManager.IMPORTANCE_DEFAULT
+            )
             // Set the Notification Channel for the Notification Manager.
             notificationManager?.createNotificationChannel(channel)
         }
@@ -259,13 +285,13 @@ open class WorkoutService : Service() {
         val pendingIntent = PendingIntent.getActivity(this, 0, activityIntent, PendingIntent.FLAG_ONE_SHOT)
 
         val builder = NotificationCompat.Builder(this, NOTIFICATION_WORKOUT_CHANEL_ID)
-                .setOngoing(true)
-                .setOnlyAlertOnce(true)
-                .setSmallIcon(R.mipmap.ic_logo_runex)
-                .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
-                .setContentTitle(record?.type ?: "")
-                .setContentText(contentText)
-                .setContentIntent(pendingIntent)
+            .setOngoing(true)
+            .setOnlyAlertOnce(true)
+            .setSmallIcon(R.mipmap.ic_logo_runex)
+            .setVisibility(NotificationCompat.VISIBILITY_PUBLIC)
+            .setContentTitle(record?.type ?: "")
+            .setContentText(contentText)
+            .setContentIntent(pendingIntent)
 
         if (status == WorkoutStatus.WORKING_OUT || status == WorkoutStatus.PAUSE) {
             val intent = Intent(this, WorkoutService::class.java)
@@ -292,19 +318,14 @@ open class WorkoutService : Service() {
     //Update last location to realm data base
     private fun addTempLocation(location: Location?) {
         if (location == null) return
-        Realm.getDefaultInstance()?.run {
-            beginTransaction()
-            val tempLocation = createObject(WorkingOutLocation::class.java)
-            tempLocation.copy(location)
-            commitTransaction()
+        launch(IO) {
+            locationDao?.insertLocation(WorkingOutLocation(location))
         }
     }
 
     private fun clearTempLocation() {
-        Realm.getDefaultInstance().run {
-            beginTransaction()
-            delete(WorkingOutLocation::class.java)
-            commitTransaction()
+        launch(IO) {
+            locationDao?.deleteAllLocation()
         }
     }
 

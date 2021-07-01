@@ -6,8 +6,6 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.util.AppPreference
 import com.think.runex.util.Localization
 import com.think.runex.util.NightMode
-import io.realm.Realm
-import io.realm.RealmConfiguration
 
 class RunexApplication : Application() {
 
@@ -18,19 +16,6 @@ class RunexApplication : Application() {
 
     override fun onCreate() {
         super.onCreate()
-
-        initRealm()
-
         ApiConfig.updateBaseUrl(AppPreference.getEnvironment(this))
-    }
-
-    private fun initRealm(){
-        Realm.init(this)
-        val config = RealmConfiguration.Builder()
-                .name("runex.realm")
-                .schemaVersion(1)
-                .deleteRealmIfMigrationNeeded()
-                .build()
-        Realm.setDefaultConfiguration(config)
     }
 }

@@ -1,6 +1,7 @@
 package com.think.runex.feature.workout
 
 import android.annotation.SuppressLint
+import android.content.Context
 import android.graphics.Bitmap
 import android.graphics.Color
 import androidx.annotation.ColorInt
@@ -14,14 +15,16 @@ import com.google.android.gms.maps.model.Polyline
 import com.google.android.gms.maps.model.PolylineOptions
 import com.think.runex.config.GOOGLE_MAP_DEFAULT_ZOOM
 import com.think.runex.feature.workout.data.WorkingOutLocation
+import com.think.runex.feature.workout.db.WorkoutDataBase
 import com.think.runex.util.extension.launch
-import io.realm.Realm
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 
-class MapPresenter(private var googleMap: GoogleMap?,
-                   @ColorInt private var colorLine: Int = Color.BLACK,
-                   @Dimension private var widthLine: Float = 10f) {
+class MapPresenter(
+    private var googleMap: GoogleMap?,
+    @ColorInt private var colorLine: Int = Color.BLACK,
+    @Dimension private var widthLine: Float = 10f
+) {
 
     private var points: ArrayList<WorkingOutLocation>? = null
     private var lastPolyline: Polyline? = null
@@ -45,23 +48,17 @@ class MapPresenter(private var googleMap: GoogleMap?,
      * In first time [points] is null will be get temp location from
      * Realm data base adn redraw polyline
      */
-    fun addPolyline(location: WorkingOutLocation) {
-        if (points == null) {
-            Realm.getDefaultInstance().run {
-                points = ArrayList(copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync())
-                        ?: emptyList())
-            }
+    fun addPolyline(context: Context?, location: WorkingOutLocation) {
+        if (points == null && context != null) {
+            points = ArrayList(WorkoutDataBase.getDatabase(context).locationDao().getLocations())
         }
         points?.add(location)
         drawPolyline()
     }
 
-    fun drawPolylineFromDatabase(/*startTimeMillis: Long*/) {
+    fun drawPolylineFromDatabase(context: Context/*startTimeMillis: Long*/) {
         points?.clear()
-        Realm.getDefaultInstance().run {
-            points = ArrayList(copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync())
-                    ?: emptyList())
-        }
+        points = ArrayList(WorkoutDataBase.getDatabase(context).locationDao().getLocations())
         drawPolyline()
     }
 

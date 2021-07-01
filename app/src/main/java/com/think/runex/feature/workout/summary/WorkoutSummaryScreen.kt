@@ -25,9 +25,9 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.feature.event.data.EventForSubmitResult
 import com.think.runex.feature.event.registered.SelectEventsBottomSheet
 import com.think.runex.feature.workout.MapPresenter
+import com.think.runex.feature.workout.db.WorkoutDataBase
 import com.think.runex.util.NightMode
 import com.think.runex.util.extension.launch
-import io.realm.Realm
 import kotlinx.android.synthetic.main.layout_workout_summary_on_map.*
 import kotlinx.android.synthetic.main.screen_workout_summary.*
 import kotlinx.android.synthetic.main.toolbar.*
@@ -97,20 +97,16 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
     private fun performAddWorkout() = launch {
         progress_layout?.visible()
 
-        val locations = Realm.getDefaultInstance().run {
-            copyFromRealm(where(WorkingOutLocation::class.java).findAllAsync()) ?: emptyList()
-        }
+        val locations = WorkoutDataBase.getDatabase(requireContext()).locationDao().getLocations()
+
         val workout = WorkoutInfo(record, locations)
         //Logger.warning(simpleName(), "Workout: ${workout.toJson()}")
         workoutInfo = viewModel.addWorkout(workout)
         workoutId = workoutInfo?.id
         if (workoutInfo != null) {
             //Clear temp locations
-            Realm.getDefaultInstance().run {
-                beginTransaction()
-                delete(WorkingOutLocation::class.java)
-                commitTransaction()
-            }
+            WorkoutDataBase.getDatabase(requireContext()).locationDao().deleteAllLocation()
+            WorkoutDataBase.destroy()
         }
 
         progress_layout?.gone()
