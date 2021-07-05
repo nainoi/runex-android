@@ -17,6 +17,7 @@ import com.think.runex.config.GOOGLE_MAP_DEFAULT_ZOOM
 import com.think.runex.feature.workout.data.WorkingOutLocation
 import com.think.runex.feature.workout.db.WorkoutDataBase
 import com.think.runex.util.extension.launch
+import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.Dispatchers.Main
 import kotlinx.coroutines.delay
 
@@ -49,17 +50,29 @@ class MapPresenter(
      * Realm data base adn redraw polyline
      */
     fun addPolyline(context: Context?, location: WorkingOutLocation) {
-        if (points == null && context != null) {
-            points = ArrayList(WorkoutDataBase.getDatabase(context).locationDao().getLocations())
+        if (points != null) {
+            launch(Main) {
+                points?.add(location)
+                drawPolyline()
+            }
+        } else if (points == null && context != null) {
+            launch(IO) {
+                points = ArrayList(WorkoutDataBase.getDatabase(context).locationDao().getLocations())
+                delay(100)
+                launch(Main) {
+                    drawPolyline()
+                }
+            }
         }
-        points?.add(location)
-        drawPolyline()
     }
 
-    fun drawPolylineFromDatabase(context: Context/*startTimeMillis: Long*/) {
+    fun drawPolylineFromDatabase(context: Context/*startTimeMillis: Long*/) = launch(IO) {
         points?.clear()
         points = ArrayList(WorkoutDataBase.getDatabase(context).locationDao().getLocations())
-        drawPolyline()
+        delay(100)
+        launch(Main) {
+            drawPolyline()
+        }
     }
 
     private fun drawPolyline() {

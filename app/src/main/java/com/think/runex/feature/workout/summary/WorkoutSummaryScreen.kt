@@ -31,6 +31,8 @@ import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.layout_workout_summary_on_map.*
 import kotlinx.android.synthetic.main.screen_workout_summary.*
 import kotlinx.android.synthetic.main.toolbar.*
+import kotlinx.coroutines.Dispatchers.IO
+import kotlinx.coroutines.Dispatchers.Main
 
 class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSelectEventToSubmitListener {
 
@@ -97,21 +99,26 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
     private fun performAddWorkout() = launch {
         progress_layout?.visible()
 
-        val locations = WorkoutDataBase.getDatabase(requireContext()).locationDao().getLocations()
+        launch(IO) {
 
-        val workout = WorkoutInfo(record, locations)
-        //Logger.warning(simpleName(), "Workout: ${workout.toJson()}")
-        workoutInfo = viewModel.addWorkout(workout)
-        workoutId = workoutInfo?.id
-        if (workoutInfo != null) {
-            //Clear temp locations
-            WorkoutDataBase.getDatabase(requireContext()).locationDao().deleteAllLocation()
-            WorkoutDataBase.destroy()
+            val locations = WorkoutDataBase.getDatabase(requireContext()).locationDao().getLocations()
+            val workout = WorkoutInfo(record, locations)
+
+            //Logger.warning(simpleName(), "Workout: ${workout.toJson()}")
+            workoutInfo = viewModel.addWorkout(workout)
+            workoutId = workoutInfo?.id
+
+            if (workoutInfo != null) {
+                //Clear temp locations
+                WorkoutDataBase.getDatabase(requireContext()).locationDao().deleteAllLocation()
+                WorkoutDataBase.destroy()
+            }
+
+            launch(Main) {
+                progress_layout?.gone()
+                updateUi()
+            }
         }
-
-        progress_layout?.gone()
-
-        updateUi()
     }
 
     private fun performGetWorkoutInfo() = launch {
@@ -121,7 +128,6 @@ class WorkoutSummaryScreen : BaseScreen(), SelectEventsBottomSheet.OnConfirmSele
         //workoutId = workoutInfo?.id
 
         progress_layout?.gone()
-
         updateUi()
     }
 

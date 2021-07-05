@@ -31,7 +31,7 @@ abstract class WorkoutDataBase : RoomDatabase() {
                     WorkoutDataBase::class.java,
                     "workout_location_database"
                 ).fallbackToDestructiveMigration()
-                    .allowMainThreadQueries()
+                    //.allowMainThreadQueries()
                     .build()
                 INSTANCE = instance
                 return instance
