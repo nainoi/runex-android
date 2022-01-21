@@ -31,6 +31,7 @@ import com.jozzee.android.core.view.showDialog
 import com.jozzee.android.core.view.visible
 import com.think.runex.base.BaseScreen
 import com.think.runex.config.RC_RESTART_APP
+import com.think.runex.databinding.ScreenLoginNativeBinding
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.setting.EnvironmentDialog
@@ -49,35 +50,28 @@ import java.lang.Exception
 import java.util.ArrayList
 import kotlin.system.exitProcess
 
-class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListener,
-    SocialLoginListener, View.OnClickListener {
+class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListener, SocialLoginListener {
     /**
      * Main variables
      */
     private val ct = "LoginActivity->"
 
+    private val binding: ScreenLoginNativeBinding by lazy { ScreenLoginNativeBinding.inflate(layoutInflater) }
+
     // instance variables
     private var socialLoginManger: SocialLoginManger? = null
     private lateinit var viewModel: AuthViewModel
-
-    //Layout
-    private var loginLayout: RelativeLayout? = null
-
-    // Button
-    private var btnLoginFacebook: FrameLayout? = null
-    private var btnLoginGoogle: FrameLayout? = null
-    private var btnClose: AppCompatImageButton? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
 
         viewModel = getViewModel(AuthViewModel.Factory(requireContext()))
         socialLoginManger = SocialLoginManger()
-        socialLoginManger!!.setSocialLoginListener(this)
+        socialLoginManger?.setSocialLoginListener(this)
     }
 
-    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater.inflate(R.layout.screen_login_native, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View {
+        return binding.root
     }
 
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
@@ -89,7 +83,6 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
     /**
      * Matching views
      */
-
     private fun setupComponents() {
 
     }
@@ -99,36 +92,23 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
             showDialog(EnvironmentDialog())
         }
 
-//        viewModel.setOnHandleError(::errorHandler)
-//        btn_close!!.setOnClickListener(this)
-//        btn_login_with_facebook!!.setOnClickListener(this)
-//        btn_login_with_google!!.setOnClickListener(this)
-    }
+        binding.btnClose.setOnClickListener {
 
-    /**
-     * View event listener
-     */
-    private fun viewEventListener() {
-        btnClose!!.setOnClickListener(this)
-        btnLoginFacebook!!.setOnClickListener(this)
-        btnLoginGoogle!!.setOnClickListener(this)
-    }
+        }
 
-    /**
-     * View on click
-     */
-    override fun onClick(view: View) {
-        when (view.id) {
-            R.id.btn_login_with_facebook -> {
-                // prepare usage variables
-                val permissions: MutableList<String> = ArrayList()
-                // update
-                permissions.add("email")
-                socialLoginManger!!.loginWithFacebook(this, permissions)
-            }
-            R.id.btn_login_with_google -> socialLoginManger!!.loginWithGoogle(this)
+        binding.btnLoginWithFacebook.setOnClickListener {
+            // prepare usage variables
+            val permissions: MutableList<String> = ArrayList()
+            // update
+            permissions.add("email")
+            socialLoginManger?.loginWithFacebook(this, permissions)
+        }
+
+        binding.btnLoginWithGoogle.setOnClickListener {
+            socialLoginManger?.loginWithGoogle(this)
         }
     }
+
 
     /**
      * Implement methods
@@ -157,7 +137,7 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
     }
 
     private fun performResult(requestCode: Int, resultCode: Int, data: Intent?) = launch {
-        socialLoginManger!!.handleLogInResult(requestCode, resultCode, data)
+        socialLoginManger?.handleLogInResult(requestCode, resultCode, data)
     }
 
     override fun onActivityResult(requestCode: Int, resultCode: Int, data: Intent?) {
