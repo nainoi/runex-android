@@ -187,6 +187,11 @@
     <string name="service_unavailable">The service is unavailable for now.</string>
     <string name="scan_qr_code_for_add_member_in_event">Scan QR Code for add member to event</string>
     <string name="scan_qr_code">Scan QR Code</string>
+    <string name="sign_in_with_google">Signin with Google</string>
+    <string name="sign_in_with_facebook">Signin with Facebook</string>
+    <string name="sign_in_with_appleid">Signin with Apple ID</string>
+    <string name="sign_in_with_line">Signin with Line</string>
+    <string name="sign_in_title_message">Sign in \n to workout and send activities</string>
 
     <!-- T -->
     <string name="total_distances">Total Distances</string>

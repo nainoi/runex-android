@@ -32,6 +32,7 @@ import com.think.runex.config.RC_UPDATE_APP
 import com.think.runex.feature.SplashScreen
 import com.think.runex.feature.auth.*
 import com.think.runex.feature.auth.data.TokenManager
+import com.think.runex.feature.auth.login.LoginNativeActivity
 import com.think.runex.feature.auth.login.LoginScreen
 import com.think.runex.feature.event.registration.RegistrationScreen
 import com.think.runex.feature.main.MainScreen
@@ -106,7 +107,7 @@ class MainActivity : BaseActivity(), InstallStateUpdatedListener {
     }
 
     private fun gotoLoginScreen() {
-        replaceFragment(LoginScreen(), addToBackStack = false, clearFragment = false)
+        replaceFragment(LoginNativeActivity(), addToBackStack = false, clearFragment = false)
     }
 
     private fun gotoSplashScreen() {

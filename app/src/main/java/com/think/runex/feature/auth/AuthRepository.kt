@@ -15,6 +15,7 @@ import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.config.AppConfig
 import com.think.runex.feature.auth.data.request.FirebaseTokenBody
+import com.think.runex.feature.social.UserProvider
 
 class AuthRepository(private val api: AuthApi,
                      private val preferences: SharedPreferences) : RemoteDataSource() {
@@ -77,6 +78,10 @@ class AuthRepository(private val api: AuthApi,
 
     suspend fun loginWithCode(body: AuthWithCodeBody): Result<AccessToken> {
         return calls(api.authWithCodeAsync(ApiConfig.AUTH_URL, body))
+    }
+
+    suspend fun loginWithOpenID(body: UserProvider): Result<AccessToken> {
+        return calls(api.authWithOpenIDAsync(ApiConfig.AUTH_URL, body))
     }
 
     suspend fun getUserInfo(): Result<UserInfo> = call(api.getUserInfoAsync())

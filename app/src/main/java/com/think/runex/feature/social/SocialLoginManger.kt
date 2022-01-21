@@ -10,6 +10,8 @@ import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
 import com.facebook.login.LoginManager
 import com.facebook.login.LoginResult
+import com.facebook.FacebookSdk;
+import com.facebook.appevents.AppEventsLogger;
 import com.google.android.gms.auth.api.signin.GoogleSignIn
 import com.google.android.gms.auth.api.signin.GoogleSignInAccount
 import com.google.android.gms.auth.api.signin.GoogleSignInClient
@@ -19,6 +21,7 @@ import com.google.android.gms.tasks.Task
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
 import java.lang.Exception
+import java.util.*
 
 class SocialLoginManger {
     private val ct: String ="SocialLoginManager->"
@@ -73,11 +76,13 @@ class SocialLoginManger {
         val mtn: String = "loginWithFacebook() ";
 
         Logger.info(simpleName(), mtn +"loginWithFacebook");
-        LoginManager.getInstance().logIn(fragment, permissions)
+        LoginManager.getInstance().logInWithPublishPermissions(fragment, permissions)
+        //LoginManager.getInstance().login(fragment, permissions)
     }
 
     fun loginWithFacebook(activity: Activity, permissions: Collection<String> = listOf("email")) {
-        LoginManager.getInstance().logIn(activity, permissions)
+        LoginManager.getInstance().logInWithPublishPermissions(activity, permissions)
+        //LoginManager.getInstance().logIn(activity, permissions)
     }
 
     private fun onFacebookLoginResult(accessToken: AccessToken) {
@@ -134,7 +139,7 @@ class SocialLoginManger {
         return googleSignInClient
     }
 
-    private fun onGoogleLoginResult(completedTask: Task<GoogleSignInAccount>) {
+    private suspend fun onGoogleLoginResult(completedTask: Task<GoogleSignInAccount>) {
         // prepare usage variables
         val mtn: String = "onGoogleLoginResult() ";
 
@@ -185,7 +190,7 @@ class SocialLoginManger {
         LoginManager.getInstance().unregisterCallback(facebookCallbackManager)
     }
 
-    fun handleLogInResult(requestCode: Int, resultCode: Int, data: Intent?) {
+    suspend fun handleLogInResult(requestCode: Int, resultCode: Int, data: Intent?) {
         // prepare usage variables
         val mtn: String = ct +"handleLoginResult() "
         Logger.error(simpleName(), mtn +"handleLogInResult")

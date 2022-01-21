@@ -1,8 +1,8 @@
 plugins {
     id 'com.android.application'
     id 'kotlin-android'
-    id 'kotlin-android-extensions'
     id 'kotlin-kapt'
+    id 'kotlin-android-extensions'
     id 'com.google.gms.google-services'
     id 'com.google.firebase.crashlytics'
 }
@@ -22,15 +22,19 @@ android {
         buildConfigField "String", "APP_NAME", '"Runex"'
     }
 
+    buildFeatures {
+        viewBinding = true
+    }
+
     signingConfigs {
         release {
-            Properties properties = new Properties()
-            properties.load(project.rootProject.file('local.properties').newDataInputStream())
-
-            storeFile file(properties["signing.storeFile"])
-            storePassword properties["signing.storePassword"]
-            keyAlias properties["signing.keyAlias"]
-            keyPassword properties["signing.keyPassword"]
+//            Properties properties = new Properties()
+//            properties.load(project.rootProject.file('local.properties').newDataInputStream())
+//
+//            storeFile file(properties["signing.storeFile"])
+//            storePassword properties["signing.storePassword"]
+//            keyAlias properties["signing.keyAlias"]
+//            keyPassword properties["signing.keyPassword"]
         }
     }
 
@@ -135,8 +139,9 @@ dependencies {
     implementation 'com.jakewharton.retrofit:retrofit2-kotlin-coroutines-adapter:0.9.2'
 
     //Facebook
-    implementation 'com.facebook.android:facebook-share:7.0.0'
-    implementation 'com.facebook.android:facebook-login:11.3.0'
+    implementation 'com.facebook.android:facebook-android-sdk:[4,5)'
+//    implementation 'com.facebook.android:facebook-share:7.0.0'
+//    implementation 'com.facebook.android:facebook-login:11.3.0'
 
     //Glide (load image library)
     implementation 'com.github.bumptech.glide:glide:4.12.0'

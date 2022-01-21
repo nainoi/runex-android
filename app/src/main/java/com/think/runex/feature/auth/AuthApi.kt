@@ -6,6 +6,7 @@ import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.config.AppConfig
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody
 import com.think.runex.feature.auth.data.request.FirebaseTokenBody
+import com.think.runex.feature.social.UserProvider
 import com.think.runex.feature.user.data.UserInfo
 import kotlinx.coroutines.Deferred
 import retrofit2.http.*
@@ -18,6 +19,10 @@ interface AuthApi {
     @POST
     fun authWithCodeAsync(@Url url: String,
                           @Body body: AuthWithCodeBody): Deferred<AccessToken>
+
+    @POST
+    fun authWithOpenIDAsync(@Url url: String,
+                          @Body body: UserProvider): Deferred<AccessToken>
 
     @GET("/api/${API_VERSION}/user")
     fun getUserInfoAsync(): Deferred<Result<UserInfo>>

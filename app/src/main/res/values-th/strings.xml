@@ -177,6 +177,11 @@
     <string name="service_unavailable">ไม่สามารถใช้บริการได้ในขณะนี้</string>
     <string name="scan_qr_code_for_add_member_in_event">สแกน QR Code เพื่อเพิ่มทีมในรายการวิ่ง</string>
     <string name="scan_qr_code">สแกน QR Code</string>
+    <string name="sign_in_with_google">เข้าสู่ระบบด้วย Google</string>
+    <string name="sign_in_with_facebook">เข้าสู่ระบบด้วย Facebook</string>
+    <string name="sign_in_with_appleid">เข้าสู่ระบบด้วย Apple ID</string>
+    <string name="sign_in_with_line">เข้าสู่ระบบด้วย Line</string>
+    <string name="sign_in_title_message">ลงชื่อเข้าใช้งาน\nเพื่อบันทึกและส่งระยะวิ่ง</string>
 
     <!-- T -->
     <string name="total_distances">ระยะสะสม</string>

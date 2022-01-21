@@ -11,6 +11,7 @@ import com.think.runex.datasource.api.ApiService
 import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody
+import com.think.runex.feature.social.UserProvider
 import com.think.runex.util.AppPreference
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -51,6 +52,41 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
 
     suspend fun loginWithCode(code: String): Boolean = withContext(IO) {
         val loginResult = repo.loginWithCode(AuthWithCodeBody(code))
+        if (loginResult.isSuccessful().not()) {
+            onHandleError(loginResult.code, loginResult.message)
+            TokenManager.clearToken()
+            return@withContext false
+        }
+
+        loginResult.data?.also { accessToken ->
+            updateAccessToken(accessToken)
+        }
+
+        val userInfoResult = repo.getUserInfo()
+        when (userInfoResult.isSuccessful()) {
+            true -> loginResult.data?.also { accessToken ->
+                accessToken.userId = userInfoResult.data?.id ?: ""
+                updateAccessToken(accessToken)
+            }
+            false -> onHandleError(userInfoResult.code, userInfoResult.message)
+        }
+
+        //Check updated firebase token to server
+        if (TokenManager.isAlive() && repo.isUpdatedFirebaseToken().not()) {
+            repo.getFirebaseToken()?.also { firebaseToken ->
+                Logger.warning(simpleName(), "Update firebase token to server")
+                val sendFirebaseResult = repo.sendFirebaseTokenToServer(firebaseToken)
+                if (sendFirebaseResult.isSuccessful()) {
+                    repo.setUpdatedFirebaseToken(true)
+                }
+            }
+        }
+
+        return@withContext loginResult.isSuccessful()
+    }
+
+    suspend fun loginWithOpenID(userProvider: UserProvider): Boolean = withContext(IO) {
+        val loginResult = repo.loginWithOpenID(userProvider)
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.code, loginResult.message)
             TokenManager.clearToken()
