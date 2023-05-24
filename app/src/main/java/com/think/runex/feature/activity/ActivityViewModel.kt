@@ -56,7 +56,7 @@ class ActivityViewModel(private val repo: ActivityRepository) : BaseViewModel() 
         val result = repo.submitActivityToEvent(body.build())
 
         if (result.isSuccessful().not()) {
-            onHandleError(result.code, result.message)
+            onHandleError(result.code ?: 0, result.message)
         }
 
         return@withContext result.isSuccessful()

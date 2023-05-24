@@ -18,3 +18,15 @@ data class Result<T>(
 
     fun isSuccessful(): Boolean = code in 200..299
 }
+
+data class ResultAuth<T>(
+    @SerializedName("success") var success: Boolean = false,
+    @SerializedName("data") var data: T? = null) {
+
+    companion object {
+        fun <T> success(data: T?, success: Boolean? = false): ResultAuth<T> = ResultAuth(true, data)
+        fun <T> error(success: Boolean, message: String?): ResultAuth<T> = ResultAuth(false, null)
+    }
+
+    fun isSuccessful(): Boolean = success
+}

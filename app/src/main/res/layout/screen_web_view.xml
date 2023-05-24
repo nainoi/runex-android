@@ -16,7 +16,9 @@
         android:id="@+id/web_view"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:layout_below="@+id/top_bar" />
+        android:layout_below="@+id/top_bar"
+        tools:ignore="MissingConstraints"
+        android:visibility="visible" />
 
     <ProgressBar
         android:id="@+id/progress_bar"

@@ -21,6 +21,8 @@ class ApiConfig {
 
         var AUTH_URL = "https://auth.runex.co/v1/oauth2/token"
             private set
+        var CREATE_USER_URL = "https://auth.runex.co/v1/account/create"
+            private set
 
         val REFRESH_TOKEN_URL = "${BASE_URL}/api/v2/refreshAccessToken"
 
@@ -49,6 +51,7 @@ class ApiConfig {
         fun updateAppConfig(config: AppConfig?) {
             if (config == null) return
             AUTH_URL = config.authTokenUrl ?: AUTH_URL
+            CREATE_USER_URL = config.createUserUrl ?: CREATE_USER_URL
             LOGIN_URL = config.loginUrl ?: LOGIN_URL
             LEADER_BOARD_URL = config.leaderBoardUrl ?: LEADER_BOARD_URL
             PREVIEW_EVENT_URL = config.previewEventUrl ?: PREVIEW_EVENT_URL

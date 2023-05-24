@@ -1,6 +1,8 @@
 package com.think.runex.feature.auth
 
 import android.content.Context
+import android.content.SharedPreferences
+import android.util.Log
 import androidx.lifecycle.ViewModel
 import androidx.lifecycle.ViewModelProvider
 import com.jozzee.android.core.util.Logger
@@ -12,6 +14,7 @@ import com.think.runex.feature.auth.data.AccessToken
 import com.think.runex.feature.auth.data.TokenManager
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody
 import com.think.runex.feature.social.UserProvider
+import com.think.runex.feature.social.UserProviderCreate
 import com.think.runex.util.AppPreference
 import kotlinx.coroutines.Dispatchers.IO
 import kotlinx.coroutines.withContext
@@ -36,7 +39,10 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         Logger.warning(simpleName(), "initialToken")
         val accessToken = repo.getLocalAccessToken()
         TokenManager.updateToken(accessToken)
-        Logger.warning(simpleName(), "Initial token completed, Token is alive: ${TokenManager.isAlive()}")
+        Logger.warning(
+            simpleName(),
+            "Initial token completed, Token is alive: ${TokenManager.isAlive()}"
+        )
 
         //Check updated firebase token to server
         if (TokenManager.isAlive() && repo.isUpdatedFirebaseToken().not()) {
@@ -86,6 +92,8 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
     }
 
     suspend fun loginWithOpenID(userProvider: UserProvider): Boolean = withContext(IO) {
+        val userProviderCreate = UserProviderCreate()
+        userProviderCreate.providerID = userProvider.id
         val loginResult = repo.loginWithOpenID(userProvider)
         if (loginResult.isSuccessful().not()) {
             onHandleError(loginResult.code, loginResult.message)
@@ -118,6 +126,21 @@ class AuthViewModel(private val repo: AuthRepository) : BaseViewModel() {
         }
 
         return@withContext loginResult.isSuccessful()
+    }
+
+    suspend fun createUser(userProvider: UserProviderCreate): Boolean = withContext(IO) {
+        val loginResult = repo.createUserProvider(userProvider)
+        Log.d("AUTH", loginResult.data.toString())
+        if (loginResult.isSuccessful().not()) {
+            onHandleError(500, "Cannot sign in")
+            TokenManager.clearToken()
+            return@withContext false
+        }
+        loginResult.data?.let {
+            repo.setLocalCodeAccess(it?.data?.code ?: "")
+            return@withContext loginWithCode(it?.data?.code ?: "")
+        }
+        return@withContext false
     }
 
     suspend fun logout(): Boolean = withContext(IO) {

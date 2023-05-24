@@ -2,7 +2,6 @@ package com.think.runex.feature.auth.login
 
 import android.app.AlarmManager
 import android.app.PendingIntent
-import com.think.runex.feature.social.UserProvider
 import com.think.runex.R
 import android.content.Intent
 import android.os.Bundle
@@ -12,43 +11,50 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.webkit.CookieManager
-import android.widget.EditText
-import android.widget.FrameLayout
-import android.widget.RelativeLayout
-import android.widget.Toast
-import androidx.appcompat.widget.AppCompatButton
-import androidx.appcompat.widget.AppCompatImageButton
-import androidx.core.content.ContentProviderCompat.requireContext
-import androidx.fragment.app.FragmentActivity
-import com.facebook.FacebookSdk
-import com.facebook.FacebookSdk.getApplicationContext
-import com.facebook.appevents.AppEventsLogger
 import com.facebook.internal.CallbackManagerImpl.RequestCodeOffset
-import com.google.android.material.textview.MaterialTextView
 import com.jozzee.android.core.view.gone
-import com.jozzee.android.core.view.inVisible
 import com.jozzee.android.core.view.showDialog
 import com.jozzee.android.core.view.visible
+import com.linecorp.linesdk.LoginDelegate
+import com.linecorp.linesdk.LoginListener
+import com.linecorp.linesdk.Scope
+import com.linecorp.linesdk.auth.LineAuthenticationParams
+import com.linecorp.linesdk.auth.LineLoginResult
 import com.think.runex.base.BaseScreen
 import com.think.runex.config.RC_RESTART_APP
 import com.think.runex.databinding.ScreenLoginNativeBinding
 import com.think.runex.feature.auth.AuthViewModel
 import com.think.runex.feature.main.MainScreen
 import com.think.runex.feature.setting.EnvironmentDialog
-import com.think.runex.feature.social.SocialLoginListener
-import com.think.runex.feature.social.SocialLoginManger
-import com.think.runex.feature.social.SocialPlatform
-import com.think.runex.feature.social.SocialPlatform.Companion.platformText
+import com.think.runex.feature.social.*
 import com.think.runex.util.AppPreference
 import com.think.runex.util.extension.fadeIn
 import com.think.runex.util.extension.getViewModel
 import com.think.runex.util.extension.launch
 import kotlinx.android.synthetic.main.screen_login.*
-import kotlinx.android.synthetic.main.screen_login_native.*
 import kotlinx.coroutines.delay
 import java.lang.Exception
 import java.util.ArrayList
 import kotlin.system.exitProcess
+import androidx.annotation.NonNull
+
+import android.R.string.no
+import android.annotation.SuppressLint
+import androidx.annotation.Nullable
+import com.linecorp.linesdk.LineApiResponseCode
+import com.linecorp.linesdk.auth.LineLoginApi
+import com.willowtreeapps.signinwithapplebutton.SignInWithAppleConfiguration
+import com.willowtreeapps.signinwithapplebutton.SignInWithAppleResult
+import android.content.pm.PackageManager
+
+import android.content.pm.PackageInfo
+import android.os.Build
+import android.util.Base64
+import androidx.annotation.RequiresApi
+import com.facebook.AccessToken
+import java.security.MessageDigest
+import java.security.NoSuchAlgorithmException
+
 
 class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelectedListener, SocialLoginListener {
     /**
@@ -74,17 +80,38 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
         return binding.root
     }
 
+    @RequiresApi(Build.VERSION_CODES.P)
     override fun onViewCreated(view: View, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        setupComponents()
+        if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+            setupComponents()
+        }
         subscribeUi()
     }
 
     /**
      * Matching views
      */
+    @RequiresApi(Build.VERSION_CODES.P)
+    @SuppressLint("UseRequireInsteadOfGet")
     private fun setupComponents() {
-
+        try {
+            val info: PackageInfo = this.activity?.packageManager?.getPackageInfo(
+                "com.think.runex",
+                PackageManager.GET_SIGNATURES
+            )!!
+            if (Build.VERSION.SDK_INT >= Build.VERSION_CODES.P) {
+                for (signature in info.signatures){
+                    val md: MessageDigest = MessageDigest.getInstance("SHA")
+                    md.update(signature.toByteArray())
+                    Log.d("KeyHash:", Base64.encodeToString(md.digest(), Base64.DEFAULT))
+                }
+            } else {
+                TODO("VERSION.SDK_INT < P")
+            }
+        } catch (e: PackageManager.NameNotFoundException) {
+        } catch (e: NoSuchAlgorithmException) {
+        }
     }
 
     private fun subscribeUi() {
@@ -107,13 +134,83 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
         binding.btnLoginWithGoogle.setOnClickListener {
             socialLoginManger?.loginWithGoogle(this)
         }
+
+        binding.btnLoginWithApple.setOnClickListener {
+            socialLoginManger?.loginWithGoogle(this)
+        }
+
+        val configuration = SignInWithAppleConfiguration(
+            clientId = "com.your.client.id.here",
+            redirectUri = "https://your-redirect-uri.com/callback",
+            scope = "email"
+        )
+
+        binding.signInWithAppleButton.setUpSignInWithAppleOnClick(this.childFragmentManager, configuration) { result ->
+            when (result) {
+                is SignInWithAppleResult.Success -> {
+                    // Handle success
+                }
+                is SignInWithAppleResult.Failure -> {
+                    // Handle failure
+                }
+                is SignInWithAppleResult.Cancel -> {
+                    // Handle user cancel
+                }
+            }
+        }
+
+        //socialLoginManger?.setLineLogin(binding.lineLoginBtn, this)
+        val lineCallDelegate = LoginDelegate.Factory.create()
+        val params = LineAuthenticationParams.Builder()
+            .scopes(listOf(Scope.PROFILE)) // .nonce("<a randomly-generated string>") // nonce can be used to improve security
+            .build()
+        val ch = getString(R.string.line_channel_id)
+        binding.lineLoginBtn.setFragment(this)
+        binding.lineLoginBtn.setChannelId(ch)
+        binding.lineLoginBtn.enableLineAppAuthentication(true)
+        binding.lineLoginBtn.setAuthenticationParams(params)
+        binding.lineLoginBtn.setLoginDelegate(lineCallDelegate)
+        val listener = object : LoginListener {
+            override fun onLoginSuccess(result: LineLoginResult) {
+                if (result.isSuccess) {
+                    try {
+                        val user = UserProviderCreate().apply {
+                            providerID = result.lineProfile?.userId ?: ""
+                            providerName = SocialPlatform.platformText(SocialPlatform.LINE)
+                            firstName = result.lineProfile?.displayName ?: ""
+                            lastName = ""
+                            email = ""
+                            avatarUrl = result.lineProfile?.pictureUrl.toString()
+                        }
+                        //loginListener?.onLoginWithSocialCompleted(SocialPlatform.LINE, user)
+
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        //loginListener?.onLoginWithSocialError(e)
+                    }
+                }
+            }
+
+            override fun onLoginFailure(result: LineLoginResult?) {
+                //loginListener?.onLoginWithSocialError(Exception(result?.errorData?.message))
+            }
+        }
+        binding.lineLoginBtn.addLoginListener(listener)
+
+//        binding.lineLoginBtn.setOnClickListener {
+//            socialLoginManger?.loginWithLine(it, this)
+//        }
     }
 
 
     /**
      * Implement methods
      */
-    override fun onLoginWithSocialCompleted(platform: Int, userProvider: UserProvider) {
+    override fun onLoginWithSocialCompleted(
+        @SocialPlatform platform: Int,
+        userProvider: UserProviderCreate
+    ) {
         // prepare usage variables
         performLogin(userProvider)
     }
@@ -121,10 +218,9 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
     override fun onLoginWithSocialCancel() {}
     override fun onLoginWithSocialError(exception: Exception) {}
 
-    private fun performLogin(provider: UserProvider) = launch {
+    private fun performLogin(provider: UserProviderCreate) = launch {
         progress_bar?.visible()
-        web_view?.inVisible()
-        val isSuccess = viewModel.loginWithOpenID(provider)
+        val isSuccess = viewModel.createUser(provider)
         progress_bar?.gone()
         if (isSuccess) {
             replaceFragment(
@@ -146,6 +242,32 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
         ) {
             performResult(requestCode, resultCode, data)
         } else {
+            if (requestCode == 1){
+                val result = LineLoginApi.getLoginResultFromIntent(data)
+
+                when (result.responseCode) {
+                    LineApiResponseCode.SUCCESS -> {
+                        val user = UserProviderCreate().apply {
+                            providerID = result.lineProfile?.userId ?: ""
+                            providerName = SocialPlatform.platformText(SocialPlatform.LINE)
+                            firstName = result.lineProfile?.displayName ?: ""
+                            lastName = ""
+                            email = ""
+                            avatarUrl = result.lineProfile?.pictureUrl.toString()
+                        }
+
+                        performLogin(user)
+
+                    }
+                    LineApiResponseCode.CANCEL ->             // Login canceled by user
+                        Log.e("ERROR", "LINE Login Canceled by user.")
+                    else -> {
+                        // Login canceled due to other error
+                        Log.e("ERROR", "Login FAILED!")
+                        Log.e("ERROR", result.errorData.toString())
+                    }
+                }
+            }
             super.onActivityResult(requestCode, resultCode, data)
         }
     }
@@ -188,10 +310,6 @@ class LoginNativeActivity : BaseScreen(), EnvironmentDialog.OnEnvironmentSelecte
     override fun errorHandler(code: Int, message: String, tag: String?) {
         super.errorHandler(code, message, tag)
         progress_bar?.gone()
-    }
-
-    override fun onDestroyView() {
-        super.onDestroyView()
     }
 
     override fun onDestroy() {

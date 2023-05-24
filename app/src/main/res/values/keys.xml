@@ -5,6 +5,11 @@
     <string name="facebook_app_id" translatable="false">657116381441095</string>
     <string name="fb_login_protocol_scheme" translatable="false">fb657116381441095</string>
 
+    <!-- Line Id -->
+    <string name="line_channel_id" translatable="false">1656833418</string>
+    <string name="line_url_scheme" translatable="false">line3rdp</string>
+    <string name="line_auth" translatable="false">lineauth2</string>
+
     <!-- Server Id -->
 
     <!-- Service -->

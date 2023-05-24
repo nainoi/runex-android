@@ -23,6 +23,7 @@ import com.think.runex.base.BaseScreen
 import com.think.runex.config.KEY_POSITION
 import com.think.runex.config.KEY_PRICE
 import com.think.runex.feature.event.all.AllEventsScreen
+import com.think.runex.feature.event.all.AllEventsWebScreen
 import com.think.runex.feature.event.registered.MyEventsScreen
 import com.think.runex.feature.user.profile.ProfileScreen
 import com.think.runex.feature.workout.history.WorkoutHistoryScreen
@@ -78,12 +79,12 @@ class MainScreen : BaseScreen() {
                 //Default set home screen (AllEventsScreen)
                 else -> {
                     selectedBottomBarPosition = 1
-                    setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
+                    setActiveScreen<AllEventsWebScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
                 }
             }
         } else {
             when (selectedBottomBarPosition) {
-                1 -> setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
+                1 -> setActiveScreen<AllEventsWebScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
                 2 -> setActiveScreen<MyEventsScreen>(bottom_bar_menu_my_event_icon, bottom_bar_menu_my_event_label)
                 3 -> setActiveScreen<WorkoutScreen>(bottom_bar_menu_workout, bottom_bar_menu_workout_label)
                 4 -> setActiveScreen<WorkoutHistoryScreen>(bottom_bar_menu_history_icon, bottom_bar_menu_history_label)
@@ -100,7 +101,7 @@ class MainScreen : BaseScreen() {
         bottom_bar_menu_all_event?.setOnClickListener {
             if (selectedBottomBarPosition == 1) return@setOnClickListener
             selectedBottomBarPosition = 1
-            setActiveScreen<AllEventsScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
+            setActiveScreen<AllEventsWebScreen>(bottom_bar_menu_all_event_icon, bottom_bar_menu_all_event_label)
         }
 
         bottom_bar_menu_my_event?.setOnClickListener {

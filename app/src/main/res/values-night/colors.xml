@@ -23,7 +23,7 @@
     <color name="textColorHint">@color/textColorHintOnDark</color>
 
     <color name="textColorBottomBar">@color/textColorSecondary</color>
-
+    <color name="textColorBlack">#000000</color>
     <!-- Icon colors -->
     <color name="iconColorPrimary">@color/iconColorPrimaryOnDark</color>
     <color name="iconColorSecondary">@color/iconColorSecondaryOnDark</color>

@@ -28,6 +28,7 @@ const val FACE_USER_AGENT_FOR_WEB_VIEW = "Mozilla/5.0 (Linux; Android 10) AppleW
 const val KEY_ACTION = "action"
 const val KEY_API = "api"
 const val KEY_ACCESS_TOKEN = "access_token"
+const val KEY_CODE_ACCESS = "code"
 const val KEY_BODY = "body"
 const val KEY_CODE = "code"
 const val KEY_EVENT_NAME = "event_name"

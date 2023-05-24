@@ -2,20 +2,20 @@ package com.think.runex.feature.auth
 
 import android.content.SharedPreferences
 import androidx.core.content.edit
+import com.think.runex.config.*
 import com.think.runex.util.extension.toJson
 import com.think.runex.util.extension.toObject
 import com.think.runex.datasource.Result
 import com.think.runex.datasource.api.RemoteDataSource
 import com.think.runex.feature.auth.data.request.AuthWithCodeBody
 import com.think.runex.feature.user.data.UserInfo
-import com.think.runex.config.KEY_ACCESS_TOKEN
-import com.think.runex.config.KEY_API
-import com.think.runex.config.KEY_FIREBASE_TOKEN
 import com.think.runex.datasource.api.ApiConfig
 import com.think.runex.feature.auth.data.AccessToken
-import com.think.runex.config.AppConfig
+import com.think.runex.datasource.ResultAuth
+import com.think.runex.feature.auth.data.request.AuthCode
 import com.think.runex.feature.auth.data.request.FirebaseTokenBody
 import com.think.runex.feature.social.UserProvider
+import com.think.runex.feature.social.UserProviderCreate
 
 class AuthRepository(private val api: AuthApi,
                      private val preferences: SharedPreferences) : RemoteDataSource() {
@@ -72,6 +72,16 @@ class AuthRepository(private val api: AuthApi,
         }
     }
 
+    fun getLocalCodeAccess(): String? {
+        return preferences.getString(KEY_CODE_ACCESS, "")
+    }
+
+    fun setLocalCodeAccess(code: String) {
+        preferences.edit {
+            putString(KEY_CODE_ACCESS, "")
+        }
+    }
+
     suspend fun sendFirebaseTokenToServer(firebaseToken: String): Result<Any> {
         return call(api.sendFirebaseTokenToServerAsync(FirebaseTokenBody(firebaseToken)))
     }
@@ -82,6 +92,10 @@ class AuthRepository(private val api: AuthApi,
 
     suspend fun loginWithOpenID(body: UserProvider): Result<AccessToken> {
         return calls(api.authWithOpenIDAsync(ApiConfig.AUTH_URL, body))
+    }
+
+    suspend fun createUserProvider(body: UserProviderCreate): Result<ResultAuth<AuthCode>> {
+        return calls(api.createUserAsync(ApiConfig.CREATE_USER_URL, body))
     }
 
     suspend fun getUserInfo(): Result<UserInfo> = call(api.getUserInfoAsync())

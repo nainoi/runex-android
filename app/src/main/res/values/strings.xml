@@ -246,7 +246,6 @@
     <string name="input_required">%1$s is required</string>
     <string name="activity_image_required">Please add activity image</string>
     <!-- TODO: Remove or change this placeholder text -->
-    <string name="hello_blank_fragment">Hello blank fragment</string>
 
 
 </resources>

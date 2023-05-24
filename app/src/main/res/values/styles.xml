@@ -54,6 +54,10 @@
         <item name="android:textSize">@dimen/text_size_body_heading</item>
     </style>
 
+    <style name="Text.BodyHeading.Black" parent="Text.BodyHeading">
+        <item name="android:textColor">@color/textColorBlack</item>
+    </style>
+
     <style name="Text.BodyHeading.Primary" parent="Text.BodyHeading">
         <item name="android:textColor">?textColorPrimary</item>
     </style>

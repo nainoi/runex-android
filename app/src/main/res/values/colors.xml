@@ -58,8 +58,10 @@
     <color name="textColorWhite">#FFFFFF</color>
     <color name="textColorAccent">@color/colorAccent</color>
     <color name="textColorError">@color/error</color>
-
     <color name="textColorBottomBar">@color/textColorHint</color>
+    <color name="textColorBlack">#000000</color>
+    <color name="textColorBlackOnLight">#000000</color>
+    <color name="textColorBlackOnDark">#FFFFFF</color>
 
     <!-- Icon colors -->
     <color name="iconColorPrimary">@color/iconColorPrimaryOnLight</color>

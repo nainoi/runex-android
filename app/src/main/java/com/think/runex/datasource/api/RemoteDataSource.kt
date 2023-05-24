@@ -9,6 +9,7 @@ import com.jozzee.android.core.connection.NetworkMonitor
 import com.jozzee.android.core.text.isJsonFormat
 import com.think.runex.config.*
 import com.think.runex.datasource.Result
+import com.think.runex.datasource.ResultAuth
 import com.think.runex.util.*
 import com.think.runex.util.extension.toJson
 import kotlinx.coroutines.Deferred
@@ -67,6 +68,27 @@ open class RemoteDataSource {
         } catch (throwable: Throwable) {
             throwable.printStackTrace()
             Result.error(ERR_NO_STATUS_CODE, throwable.message)
+        }
+    }
+
+    suspend fun <T> callAuth(job: Deferred<T>): ResultAuth<T> = withContext(Dispatchers.IO) {
+        if (NetworkMonitor.isConnected.not()) {
+            return@withContext ResultAuth.error<T>(false, "No Internet Connection")
+        }
+        return@withContext try {
+            ResultAuth.success(job.await(), true)
+        } catch (e: HttpException) {
+            e.printStackTrace()
+            e.logToFirebase()
+            ResultAuth.error(false, getHttpExceptionMessage(e))
+        } catch (e: SocketTimeoutException) {
+            ResultAuth.error(false, e.message)
+        } catch (e: SocketException) {
+            e.printStackTrace()
+            ResultAuth.error(false, e.message)
+        } catch (throwable: Throwable) {
+            throwable.printStackTrace()
+            ResultAuth.error(false, throwable.message)
         }
     }
 

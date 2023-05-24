@@ -5,6 +5,7 @@ import android.content.Context
 import android.content.Intent
 import android.os.Bundle
 import android.util.Log
+import android.view.View
 import androidx.fragment.app.Fragment
 import com.facebook.*
 import com.facebook.internal.CallbackManagerImpl
@@ -20,8 +21,18 @@ import com.google.android.gms.common.api.ApiException
 import com.google.android.gms.tasks.Task
 import com.jozzee.android.core.util.Logger
 import com.jozzee.android.core.util.simpleName
+import com.linecorp.linesdk.LoginDelegate
 import java.lang.Exception
 import java.util.*
+import com.linecorp.linesdk.LoginListener
+import com.linecorp.linesdk.Scope
+import com.linecorp.linesdk.auth.LineLoginResult
+import com.linecorp.linesdk.auth.LineAuthenticationParams
+
+import com.linecorp.linesdk.auth.LineLoginApi
+import com.linecorp.linesdk.widget.LoginButton
+import com.think.runex.R
+import kotlin.reflect.jvm.internal.impl.load.kotlin.JvmType
 
 class SocialLoginManger {
     private val ct: String ="SocialLoginManager->"
@@ -31,9 +42,53 @@ class SocialLoginManger {
     }
 
     private var loginListener: SocialLoginListener? = null
+    private var lineLoginBtn: LoginButton? = null
 
     fun setSocialLoginListener(loginListener: SocialLoginListener) {
         this.loginListener = loginListener
+        registerLoginCallback()
+    }
+
+    fun setLineLogin(btn: LoginButton, fragment: Fragment) {
+        this.lineLoginBtn = btn
+        val lineCallDelegate = LoginDelegate.Factory.create()
+        val params = LineAuthenticationParams.Builder()
+            .scopes(listOf(Scope.PROFILE)) // .nonce("<a randomly-generated string>") // nonce can be used to improve security
+            .build()
+        val ch = fragment.getString(R.string.line_channel_id)
+        this.lineLoginBtn!!.setFragment(fragment)
+        this.lineLoginBtn!!.setChannelId(ch)
+        this.lineLoginBtn!!.enableLineAppAuthentication(true)
+        this.lineLoginBtn!!.setAuthenticationParams(params)
+        this.lineLoginBtn!!.setLoginDelegate(lineCallDelegate)
+        val listener = object : LoginListener{
+            override fun onLoginSuccess(result: LineLoginResult) {
+                if (result.isSuccess) {
+                    try {
+                        val user = UserProviderCreate().apply {
+                            providerID = result.lineProfile?.userId ?: ""
+                            providerName = SocialPlatform.platformText(SocialPlatform.LINE)
+                            firstName = result.lineProfile?.displayName ?: ""
+                            lastName = ""
+                            email = ""
+                            avatarUrl = result.lineProfile?.pictureUrl.toString() ?: ""
+                        }
+                        loginListener?.onLoginWithSocialCompleted(SocialPlatform.LINE, user)
+
+
+                    } catch (e: Exception) {
+                        e.printStackTrace()
+                        loginListener?.onLoginWithSocialError(e)
+                    }
+                }
+            }
+
+            override fun onLoginFailure(result: LineLoginResult?) {
+                loginListener?.onLoginWithSocialError(Exception(result?.errorData?.message))
+            }
+        }
+        this.lineLoginBtn!!.addLoginListener(listener)
+
     }
 
     //Google
@@ -65,6 +120,32 @@ class SocialLoginManger {
         }
     }
 
+    fun loginWithLine(view: View, fragment: Fragment, permissions: Collection<String> = listOf("profile")) {
+        // prepare usage variables
+        val mtn: String = "loginWithFacebook() ";
+
+        val ch = fragment.getString(R.string.line_channel_id)
+        val lineApi = LineLoginApi.getLoginIntent(
+            view.context,
+            ch,
+            LineAuthenticationParams.Builder()
+                .scopes(listOf(Scope.PROFILE)) // .nonce("<a randomly-generated string>") // nonce can be used to improve security
+                .build()
+        )
+        fragment.startActivityForResult(lineApi, RC_GOOGLE_LOGIN)
+    }
+
+    fun loginWithLine(view: View, activity: Activity, permissions: Collection<String> = listOf("profile")) {
+        val ch = activity.getString(R.string.line_channel_id)
+        val lineApi = LineLoginApi.getLoginIntent(
+            view.context,
+            ch,
+            LineAuthenticationParams.Builder()
+                .scopes(listOf(Scope.PROFILE)) // .nonce("<a randomly-generated string>") // nonce can be used to improve security
+                .build()
+        )
+        activity.startActivityForResult(lineApi, RC_GOOGLE_LOGIN)
+    }
 
     /**
      * [permissions] Permission set for facebook login
@@ -76,12 +157,17 @@ class SocialLoginManger {
         val mtn: String = "loginWithFacebook() ";
 
         Logger.info(simpleName(), mtn +"loginWithFacebook");
-        LoginManager.getInstance().logInWithPublishPermissions(fragment, permissions)
+//        val accessToken: AccessToken = AccessToken.getCurrentAccessToken()
+//        val isLoggedIn = accessToken != null && !accessToken.isExpired()
+//        if (isLoggedIn){
+//            LoginManager.getInstance().logOut()
+//        }
+        LoginManager.getInstance().logInWithReadPermissions(fragment, permissions)
         //LoginManager.getInstance().login(fragment, permissions)
     }
 
     fun loginWithFacebook(activity: Activity, permissions: Collection<String> = listOf("email")) {
-        LoginManager.getInstance().logInWithPublishPermissions(activity, permissions)
+        LoginManager.getInstance().logInWithReadPermissions(activity, permissions)
         //LoginManager.getInstance().logIn(activity, permissions)
     }
 
@@ -89,13 +175,13 @@ class SocialLoginManger {
         val graphRequest = GraphRequest.newMeRequest(accessToken) { jsonObject, _ ->
             if (jsonObject != null) {
                 try {
-                    val user = UserProvider().apply {
-                        id = jsonObject.getString("id") ?: ""
-                        fullName = jsonObject.getString("name") ?: ""
+                    val user = UserProviderCreate().apply {
+                        providerID = jsonObject.getString("id") ?: ""
+                        providerName = SocialPlatform.platformText(SocialPlatform.FACEBOOK)
                         firstName = jsonObject.getString("first_name") ?: ""
                         lastName = jsonObject.getString("last_name") ?: ""
                         email = jsonObject.getString("email") ?: ""
-                        avatar = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url")
+                        avatarUrl = jsonObject.getJSONObject("picture").getJSONObject("data").getString("url")
                     }
                     loginListener?.onLoginWithSocialCompleted(SocialPlatform.FACEBOOK, user)
 
@@ -139,7 +225,7 @@ class SocialLoginManger {
         return googleSignInClient
     }
 
-    private suspend fun onGoogleLoginResult(completedTask: Task<GoogleSignInAccount>) {
+    private fun onGoogleLoginResult(completedTask: Task<GoogleSignInAccount>) {
         // prepare usage variables
         val mtn: String = "onGoogleLoginResult() ";
 
@@ -148,13 +234,13 @@ class SocialLoginManger {
             if (account != null) {
                 Logger.debug(simpleName(), "Login with Google as idToken: ${account.id}")
 
-                val user = UserProvider().apply {
-                    id = account.id ?: ""
-                    fullName = account.displayName ?: ""
+                val user = UserProviderCreate().apply {
+                    providerID = account.id ?: ""
+                    providerName = SocialPlatform.platformText(SocialPlatform.GOOGLE)
                     firstName = account.givenName ?: ""
                     lastName = account.familyName ?: ""
                     email = account.email ?: ""
-                    avatar = account.photoUrl?.toString() ?: ""
+                    avatarUrl = account.photoUrl?.toString() ?: ""
                 }
                 loginListener?.onLoginWithSocialCompleted(SocialPlatform.GOOGLE, user)
 
